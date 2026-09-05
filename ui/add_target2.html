@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>AstroMatch — Cible 2</title>
+</head>
+<body>
+<script>
+(() => {
+  const KEY = "astromatch:profiles";
+
+  const profiles = JSON.parse(
+    localStorage.getItem(KEY) || "[]"
+  );
+
+  const exists = profiles.some(
+    p => String(p?.name || "").trim().toLowerCase() === "camille"
+  );
+
+  if (!exists) {
+    profiles.push({
+      id: "profile_target2_camille",
+      name: "Camille",
+      role: "target",
+      birth: {
+        date: "1996-08-17",
+        time: {
+          known: true,
+          value: "18:20"
+        }
+      },
+      place: {
+        input: "Toulouse",
+        resolved: {
+          resolution_status: "resolved",
+          latitude: 43.6047,
+          longitude: 1.4442,
+          timezone: "Europe/Paris",
+          display_name: "Toulouse"
+        }
+      },
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    });
+
+    localStorage.setItem(KEY, JSON.stringify(profiles));
+
+    document.body.innerHTML =
+      "<h2>✅ Cible 2 ajoutée : Camille</h2>";
+  } else {
+    document.body.innerHTML =
+      "<h2>ℹ️ Camille existe déjà — aucune modification</h2>";
+  }
+
+  document.body.innerHTML +=
+    "<p>Profils actuellement stockés : " +
+    profiles.length +
+    "</p><pre>" +
+    JSON.stringify(profiles, null, 2) +
+    "</pre>";
+})();
+</script>
+</body>
+</html>

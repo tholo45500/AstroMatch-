@@ -1,0 +1,149 @@
+{
+  "$id": "score.schema.json",
+  "title": "Score",
+  "type": "object",
+  "required": [
+    "score_id",
+    "synastry_id",
+    "weighting_profile_version",
+    "computed_at",
+    "weighting_config_fingerprint",
+    "global_score",
+    "domain_scores"
+  ],
+  "properties": {
+    "score_id": {
+      "type": "string"
+    },
+    "synastry_id": {
+      "type": "string"
+    },
+    "weighting_profile_version": {
+      "type": "string"
+    },
+    "computed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "partial": {
+      "type": "boolean"
+    },
+    "global_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 100
+    },
+    "domain_scores": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "domain",
+          "score",
+          "raw_positive",
+          "raw_negative",
+          "contributions"
+        ],
+        "properties": {
+          "domain": {
+            "type": "string",
+            "enum": [
+              "love",
+              "passion",
+              "communication",
+              "emotions",
+              "daily",
+              "projects",
+              "frictions"
+            ]
+          },
+          "score": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 100
+          },
+          "raw_positive": {
+            "type": "number"
+          },
+          "raw_negative": {
+            "type": "number"
+          },
+          "contributions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "rule_id",
+                "aspect_id",
+                "domain",
+                "planet_a",
+                "planet_b",
+                "aspect_type",
+                "base_points",
+                "orb",
+                "orb_max",
+                "orb_strength",
+                "planet_weight",
+                "house_weight",
+                "final_points",
+                "impact"
+              ],
+              "properties": {
+                "rule_id": {
+                  "type": "string"
+                },
+                "aspect_id": {
+                  "type": "string"
+                },
+                "domain": {
+                  "type": "string"
+                },
+                "planet_a": {
+                  "type": "string"
+                },
+                "planet_b": {
+                  "type": "string"
+                },
+                "aspect_type": {
+                  "type": "string"
+                },
+                "base_points": {
+                  "type": "number"
+                },
+                "orb": {
+                  "type": "number"
+                },
+                "orb_max": {
+                  "type": "number"
+                },
+                "orb_strength": {
+                  "type": "number"
+                },
+                "planet_weight": {
+                  "type": "number"
+                },
+                "house_weight": {
+                  "type": "number"
+                },
+                "final_points": {
+                  "type": "number"
+                },
+                "impact": {
+                  "type": "string",
+                  "enum": [
+                    "positive",
+                    "negative"
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "weighting_config_fingerprint": {
+      "type": "string",
+      "minLength": 1
+    }
+  }
+}

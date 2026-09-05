@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>AstroMatch Module Error Capture</title>
+
+<script>
+(function () {
+
+  window.__MODULE_ERRORS = [];
+
+  function report(type, value) {
+    var text = "[" + type + "] " + String(value);
+
+    window.__MODULE_ERRORS.push(text);
+
+    setTimeout(function () {
+      var box = document.getElementById("capture");
+      if (box) {
+        box.textContent = window.__MODULE_ERRORS.join("\n\n");
+      }
+    }, 0);
+
+    console.error("ASTROMATCH MODULE:", text);
+  }
+
+  window.addEventListener("error", function (event) {
+    report(
+      "ERROR",
+      [
+        event.message || "",
+        event.filename || "",
+        event.lineno || "",
+        event.colno || ""
+      ].join(" | ")
+    );
+  });
+
+  window.addEventListener("unhandledrejection", function (event) {
+    report(
+      "UNHANDLED PROMISE",
+      event.reason && event.reason.stack
+        ? event.reason.stack
+        : event.reason
+    );
+  });
+
+})();
+</script>
+
+<style>
+body {
+  background:#111;
+  color:#fff;
+  font-family:monospace;
+  padding:20px;
+}
+#capture {
+  white-space:pre-wrap;
+  background:#000;
+  border:2px solid #0f0;
+  padding:15px;
+  min-height:100px;
+}
+</style>
+</head>
+
+<body>
+
+<h2>ASTROMATCH MODULE ERROR CAPTURE</h2>
+
+<pre id="capture">Chargement du module...</pre>
+
+<script type="module" src="./astromatch_module_debug.js"></script>
+
+<script>
+setTimeout(function () {
+
+  var box = document.getElementById("capture");
+
+  if (window.__MODULE_ERRORS.length === 0) {
+    box.textContent =
+      "AUCUNE ERREUR CAPTÉE.\n\n" +
+      "Le module a probablement exécuté son code.";
+  }
+
+}, 3000);
+</script>
+
+</body>
+</html>

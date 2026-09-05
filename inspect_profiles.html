@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>AstroMatch — Inspection</title>
+</head>
+<body>
+<h2>AstroMatch — Profils stockés</h2>
+<pre id="out">Lecture...</pre>
+
+<script>
+try {
+  const raw = localStorage.getItem("astromatch:profiles");
+
+  if (!raw) {
+    document.getElementById("out").textContent =
+      "Aucune donnée dans astromatch:profiles\n\n" +
+      "Origine : " + location.origin;
+  } else {
+    const profiles = JSON.parse(raw);
+
+    document.getElementById("out").textContent =
+      "ORIGINE : " + location.origin + "\n\n" +
+      JSON.stringify(
+        profiles.map(p => ({
+          profile_id: p.profile_id,
+          role: p.role,
+          first_name: p.identity?.first_name,
+          birth_date: p.birth_data?.date,
+          birth_time: p.birth_data?.time,
+          place_raw_input: p.birth_data?.place?.raw_input,
+          place_resolved: p.birth_data?.place?.resolved
+        })),
+        null,
+        2
+      );
+  }
+} catch (e) {
+  document.getElementById("out").textContent =
+    "ERREUR : " + e.message;
+}
+</script>
+</body>
+</html>

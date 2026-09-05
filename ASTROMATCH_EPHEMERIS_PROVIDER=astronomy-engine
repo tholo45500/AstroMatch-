@@ -1,0 +1,76 @@
+[32m✔ provider Astronomy Engine est déclaré sous politique MIT [90m(32.552135ms)[39m[39m
+[32m✔ provider réel est importable quand astronomy-engine est installé [90m(203.994948ms)[39m[39m
+[32m✔ Placidus reste conforme aux fixtures numériques indépendantes [90m(22.153386ms)[39m[39m
+(node:18032) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[32m✔ house systems: Equal produit 12 cuspides à 30° de l'Ascendant [90m(18.837916ms)[39m[39m
+[32m✔ house systems: Whole Sign démarre au 0° du signe de l'Ascendant [90m(1.287604ms)[39m[39m
+[32m✔ house systems: Porphyry conserve les quatre angles [90m(1.618021ms)[39m[39m
+[32m✔ house systems: Placidus produit 12 cuspides dans un cas géométriquement valide [90m(8.738125ms)[39m[39m
+[32m✔ house systems: Porphyry est un système de profil officiellement accepté [90m(36.729844ms)[39m[39m
+[32m✔ timezone: DST été/hiver Europe/Paris est correctement converti [90m(70.326146ms)[39m[39m
+[32m✔ timezone: heure inexistante pendant le passage à l'heure d'été est refusée [90m(24.177292ms)[39m[39m
+[32m✔ timezone: heure ambiguë pendant le retour à l'heure d'hiver est refusée [90m(17.653802ms)[39m[39m
+(node:18033) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[32m✔ computeNatalChart est déterministe : même profil -> même thème [90m(413.333333ms)[39m[39m
+[32m✔ computeNatalChart calcule les 10 corps célestes [90m(20.605729ms)[39m[39m
+[32m✔ computeNatalChart : heure inconnue -> pas de maisons ni d'ascendant fiable (mode dégradé) [90m(8.492188ms)[39m[39m
+[32m✔ computeNatalChart lève une erreur typée si le lieu n'est pas résolu [90m(8.331927ms)[39m[39m
+[32m✔ validation : une date impossible ou mal formée est rejetée [90m(1.108542ms)[39m[39m
+[32m✔ validation : une mise à jour de profil est validée avant sauvegarde [90m(1.229531ms)[39m[39m
+[32m✔ mise à jour : changer le lieu sans coordonnées utilise bien le nouveau lieu [90m(4.277552ms)[39m[39m
+[32m✔ computeNatalChart expose le provider réel et le système de maisons demandé [90m(31.525625ms)[39m[39m
+[32m✔ mise à jour : une seule coordonnée manuelle est fusionnée avec l'autre coordonnée existante [90m(4.079479ms)[39m[39m
+[32m✔ normalisation : date et heure sont stockées sans espaces parasites [90m(5.341355ms)[39m[39m
+[32m✔ ephemeris capabilities déclarent le provider réel [90m(2.881041ms)[39m[39m
+[32m✔ production guard accepte le provider réel [90m(4.602969ms)[39m[39m
+[32m✔ production guard refuse explicitement un provider simulé [90m(3.720208ms)[39m[39m
+[32m✔ timezone locale -> UTC est déterministe pour Europe/Paris [90m(2.849688ms)[39m[39m
+[32m✔ timezone invalide est refusé [90m(2.801302ms)[39m[39m
+(node:18039) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[32m✔ runFullComparison traite toutes les cibles et isole les erreurs (une cible invalide n'affecte pas les autres) [90m(445.420729ms)[39m[39m
+[32m✔ runFullComparison : un seul thème principal est calculé, quel que soit le nombre de cibles (test avec 50 cibles) [90m(1301.579739ms)[39m[39m
+[32m✔ runFullComparison : chaque résultat contient un score complet et une interprétation traçable [90m(11.095ms)[39m[39m
+[32m✔ runFullComparison échoue proprement si aucun profil principal n'est défini [90m(2.960364ms)[39m[39m
+[32m✔ runFullComparison réutilise le thème d'une cible inchangée [90m(11.252656ms)[39m[39m
+[32m✔ une modification de cible invalide son thème en cache [90m(19.786927ms)[39m[39m
+[32m✔ un second profil principal est refusé [90m(1.184896ms)[39m[39m
+[32m✔ runFullComparison réutilise aussi le thème principal inchangé [90m(10.923645ms)[39m[39m
+[32m✔ le résultat de comparaison conserve l'empreinte de configuration de scoring [90m(9.554219ms)[39m[39m
+(node:18040) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[32m✔ wOrbe(0) = 1 [90m(35.459062ms)[39m[39m
+[32m✔ wOrbe(orb_max / 2) = 0.5 [90m(2.882864ms)[39m[39m
+[32m✔ wOrbe(orb_max) = 0 [90m(1.844427ms)[39m[39m
+[32m✔ wOrbe(orb_max + epsilon) = 0 [90m(1.892917ms)[39m[39m
+[32m✔ computeScore est déterministe pour une même synastrie et une même config [90m(327.385209ms)[39m[39m
+[32m✔ computeScore : le score global et tous les scores de domaine restent dans [0, 100] [90m(16.755625ms)[39m[39m
+[32m✔ computeScore : les 7 domaines sont toujours présents, même sans contribution [90m(17.127344ms)[39m[39m
+[32m✔ computeScore : chaque contribution référence un aspect réel de la synastrie [90m(16.057657ms)[39m[39m
+[32m✔ computeScore : synastrie en mode dégradé -> score marqué partial [90m(16.533073ms)[39m[39m
+[32m✔ configuration de pondération V1.0 : structure valide et poids globaux cohérents [90m(1.652292ms)[39m[39m
+[32m✔ computeScore : les frictions V1.0 produisent bien un score de friction et un impact négatif [90m(1.615625ms)[39m[39m
+[32m✔ computeScore respecte l'orb_max propre à une règle [90m(1.336198ms)[39m[39m
+[32m✔ computeScore ne déclenche pas une règle au-delà de son orb_max [90m(1.208125ms)[39m[39m
+[32m✔ weighting fingerprint is deterministic and changes with config [90m(1.476563ms)[39m[39m
+[32m✔ V1.1 config: structure and fingerprint [90m(17.178281ms)[39m[39m
+[32m✔ V1.1 config: preserves all 13 V1.0 rules [90m(2.406145ms)[39m[39m
+[32m✔ V1.1 runtime: Sun-Moon trine [90m(7.210625ms)[39m[39m
+[32m✔ V1.1 runtime: Venus-Mars square + friction [90m(2.444792ms)[39m[39m
+[32m✔ V1.1 runtime: Jupiter-Saturn trine [90m(2.493281ms)[39m[39m
+(node:18081) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[32m✔ computeSynastry ne produit que des aspects dans leur orbe maximal, avec orb_strength dans [0,1] [90m(164.56375ms)[39m[39m
+[32m✔ computeSynastry : heure inconnue -> mode dégradé, aucun overlay ni contact d'angle [90m(14.171197ms)[39m[39m
+[32m✔ computeSynastry : quand les deux thèmes sont fiables, les overlays de maison sont calculés [90m(12.387136ms)[39m[39m
+[32m✔ computeSynastry produit des aspects_id uniques (traçabilité) [90m(11.957656ms)[39m[39m
+[34mℹ tests 58[39m
+[34mℹ suites 0[39m
+[34mℹ pass 58[39m
+[34mℹ fail 0[39m
+[34mℹ cancelled 0[39m
+[34mℹ skipped 0[39m
+[34mℹ todo 0[39m
+[34mℹ duration_ms 3126.521822[39m

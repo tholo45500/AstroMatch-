@@ -1,0 +1,178 @@
+{
+  "version": "v1.0",
+  "k_saturation": 35,
+  "frictions_penalty_global": 0.20,
+  "domain_weights_global": {
+    "love": 0.25,
+    "emotions": 0.20,
+    "communication": 0.20,
+    "passion": 0.15,
+    "daily": 0.10,
+    "projects": 0.10
+  },
+  "domains": ["love", "passion", "communication", "emotions", "daily", "projects", "frictions"],
+  "aspect_orbs": {
+    "conjunction": 8,
+    "opposition": 7,
+    "trine": 7,
+    "square": 6,
+    "sextile": 4
+  },
+  "planet_weights": {
+    "sun": 1.5,
+    "moon": 1.5,
+    "mercury": 1.2,
+    "venus": 1.2,
+    "mars": 1.2,
+    "jupiter": 1.0,
+    "saturn": 1.0,
+    "uranus": 0.7,
+    "neptune": 0.7,
+    "pluto": 0.7
+  },
+  "rules": [
+    {
+      "rule_id": "AMOUR_VENUS_CONJ_VENUS",
+      "domain": "love",
+      "planet_a": "venus",
+      "aspect_type": "conjunction",
+      "planet_b": "venus",
+      "base_points": 25,
+      "orb_max": 8,
+      "overlay_house": 7,
+      "house_bonus": 1.25
+    },
+    {
+      "rule_id": "AMOUR_VENUS_TRI_SOLEIL",
+      "domain": "love",
+      "planet_a": "venus",
+      "aspect_type": "trine",
+      "planet_b": "sun",
+      "base_points": 20,
+      "orb_max": 7,
+      "overlay_house": 7,
+      "house_bonus": 1.25
+    },
+    {
+      "rule_id": "AMOUR_SATURNE_CARRE_VENUS",
+      "domain": "love",
+      "planet_a": "saturn",
+      "aspect_type": "square",
+      "planet_b": "venus",
+      "base_points": -18,
+      "orb_max": 6,
+      "overlay_house": 7,
+      "house_bonus": 1.0
+    },
+    {
+      "rule_id": "PASSION_VENUS_CONJ_MARS",
+      "domain": "passion",
+      "planet_a": "venus",
+      "aspect_type": "conjunction",
+      "planet_b": "mars",
+      "base_points": 30,
+      "orb_max": 8,
+      "overlay_house": 8,
+      "house_bonus": 1.3
+    },
+    {
+      "rule_id": "PASSION_MARS_TRI_PLUTON",
+      "domain": "passion",
+      "planet_a": "mars",
+      "aspect_type": "trine",
+      "planet_b": "pluto",
+      "base_points": 18,
+      "orb_max": 7,
+      "overlay_house": 8,
+      "house_bonus": 1.2
+    },
+    {
+      "rule_id": "COMM_MERCURE_SEX_MERCURE",
+      "domain": "communication",
+      "planet_a": "mercury",
+      "aspect_type": "sextile",
+      "planet_b": "mercury",
+      "base_points": 15,
+      "orb_max": 4,
+      "overlay_house": 3,
+      "house_bonus": 1.2
+    },
+    {
+      "rule_id": "COMM_MERCURE_CARRE_MARS",
+      "domain": "communication",
+      "planet_a": "mercury",
+      "aspect_type": "square",
+      "planet_b": "mars",
+      "base_points": -14,
+      "orb_max": 6,
+      "overlay_house": 3,
+      "house_bonus": 1.15
+    },
+    {
+      "rule_id": "EMOTIONS_LUNE_CONJ_LUNE",
+      "domain": "emotions",
+      "planet_a": "moon",
+      "aspect_type": "conjunction",
+      "planet_b": "moon",
+      "base_points": 28,
+      "orb_max": 8,
+      "overlay_house": 4,
+      "house_bonus": 1.25
+    },
+    {
+      "rule_id": "EMOTIONS_LUNE_OPPO_NEPTUNE",
+      "domain": "emotions",
+      "planet_a": "moon",
+      "aspect_type": "opposition",
+      "planet_b": "neptune",
+      "base_points": -12,
+      "orb_max": 7,
+      "overlay_house": 12,
+      "house_bonus": 1.0
+    },
+    {
+      "rule_id": "QUOTIDIEN_SATURNE_TRI_LUNE",
+      "domain": "daily",
+      "planet_a": "saturn",
+      "aspect_type": "trine",
+      "planet_b": "moon",
+      "base_points": 16,
+      "orb_max": 7,
+      "overlay_house": 6,
+      "house_bonus": 1.2
+    },
+    {
+      "rule_id": "PROJETS_SOLEIL_CONJ_SATURNE",
+      "domain": "projects",
+      "planet_a": "sun",
+      "aspect_type": "conjunction",
+      "planet_b": "saturn",
+      "base_points": 22,
+      "orb_max": 8,
+      "overlay_house": 10,
+      "house_bonus": 1.25
+    },
+    {
+      "rule_id": "FRICTIONS_MARS_OPPO_SATURNE",
+      "domain": "frictions",
+      "planet_a": "mars",
+      "aspect_type": "opposition",
+      "planet_b": "saturn",
+      "base_points": 24,
+      "orb_max": 7,
+      "overlay_house": 1,
+      "house_bonus": 1.2
+    },
+    {
+      "rule_id": "FRICTIONS_URANUS_CARRE_MARS",
+      "domain": "frictions",
+      "planet_a": "uranus",
+      "aspect_type": "square",
+      "planet_b": "mars",
+      "base_points": 20,
+      "orb_max": 6,
+      "overlay_house": 8,
+      "house_bonus": 1.15
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "name": "AstroMatch",
+  "engine_version": "3.1.0",
+  "licensing_policy": {
+    "astronomical_runtime_license": "MIT",
+    "paid_astronomical_license_required": false,
+    "commercial_distribution_target": true
+  },
+  "ephemeris": {
+    "default_provider": "astronomy-engine",
+    "production_candidate": "astronomy-engine",
+    "production_candidate_package": "astronomy-engine",
+    "supported_real_house_systems": [
+      "whole_sign",
+      "equal",
+      "porphyry",
+      "placidus"
+    ],
+    "unsupported_real_house_systems": [],
+    "timezone_standard": "IANA",
+    "house_systems": [
+      "placidus",
+      "whole_sign",
+      "equal",
+      "porphyry"
+    ]
+  },
+  "notes": [
+    "AstroMatch RC3 utilise Astronomy Engine comme provider astronomique réel sans licence astronomique payante.",
+    "Le provider simulé reste disponible uniquement pour les tests unitaires offline.",
+    "Whole Sign est le système de maisons par défaut dans ce RC; Equal est aussi supporté.",
+    "Placidus est implémenté avec un solveur semi-arc itératif et dispose de fixtures numériques de régression; le provider Astronomy Engine doit encore être exécuté dans l'environnement cible pour la validation end-to-end."
+  ]
+}

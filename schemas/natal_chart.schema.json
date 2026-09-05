@@ -1,0 +1,277 @@
+{
+  "$id": "natal_chart.schema.json",
+  "title": "NatalChart",
+  "type": "object",
+  "required": [
+    "chart_id",
+    "profile_id",
+    "source_profile_updated_at",
+    "source_profile_fingerprint",
+    "computed_at",
+    "engine_version",
+    "calculation",
+    "reliability",
+    "points",
+    "angles",
+    "houses"
+  ],
+  "properties": {
+    "chart_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "profile_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_profile_updated_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_profile_fingerprint": {
+      "type": "string",
+      "minLength": 1
+    },
+    "computed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "engine_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "calculation": {
+      "type": "object",
+      "required": [
+        "provider",
+        "status",
+        "requested_house_system",
+        "used_house_system",
+        "astrologically_valid",
+        "engine_version",
+        "supported_house_systems"
+      ],
+      "properties": {
+        "provider": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "type": "string",
+          "enum": [
+            "prototype_only",
+            "production_candidate",
+            "production"
+          ]
+        },
+        "requested_house_system": {
+          "type": "string",
+          "minLength": 1
+        },
+        "used_house_system": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "astrologically_valid": {
+          "type": "boolean"
+        },
+        "engine_version": {
+          "type": "string",
+          "minLength": 1
+        },
+        "supported_house_systems": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "calculation_meta": {
+        "type": ["object", "null"],
+        "properties": {
+          "utc": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "julian_day_ut": {
+            "type": "number"
+          },
+          "source_model": {
+            "type": "string",
+            "minLength": 1
+          },
+          "license_profile": {
+            "type": "string",
+            "minLength": 1
+          },
+          "house_system_requested": {
+            "type": "string",
+            "minLength": 1
+          },
+          "house_system_effective": {
+            "type": ["string", "null"]
+          }
+        }
+      }
+    },
+    "reliability": {
+      "type": "object",
+      "required": [
+        "time_known",
+        "houses_valid",
+        "ascendant_valid"
+      ],
+      "properties": {
+        "time_known": {
+          "type": "boolean"
+        },
+        "houses_valid": {
+          "type": "boolean"
+        },
+        "ascendant_valid": {
+          "type": "boolean"
+        }
+      }
+    },
+    "points": {
+      "type": "array",
+      "minItems": 10,
+      "items": {
+        "type": "object",
+        "required": [
+          "body",
+          "sign",
+          "degree_in_sign",
+          "absolute_degree",
+          "house",
+          "retrograde"
+        ],
+        "properties": {
+          "body": {
+            "type": "string",
+            "enum": [
+              "sun",
+              "moon",
+              "mercury",
+              "venus",
+              "mars",
+              "jupiter",
+              "saturn",
+              "uranus",
+              "neptune",
+              "pluto"
+            ]
+          },
+          "sign": {
+            "type": "string",
+            "minLength": 1
+          },
+          "degree_in_sign": {
+            "type": "number",
+            "minimum": 0,
+            "exclusiveMaximum": 30
+          },
+          "absolute_degree": {
+            "type": "number",
+            "minimum": 0,
+            "exclusiveMaximum": 360
+          },
+          "house": {
+            "type": [
+              "integer",
+              "null"
+            ],
+            "minimum": 1,
+            "maximum": 12
+          },
+          "retrograde": {
+            "type": "boolean"
+          }
+        }
+      }
+    },
+    "angles": {
+      "type": "object",
+      "required": [
+        "ascendant",
+        "midheaven",
+        "descendant",
+        "imum_coeli"
+      ],
+      "properties": {
+        "ascendant": {
+          "$ref": "#/$defs/angle"
+        },
+        "midheaven": {
+          "$ref": "#/$defs/angle"
+        },
+        "descendant": {
+          "$ref": "#/$defs/angle"
+        },
+        "imum_coeli": {
+          "$ref": "#/$defs/angle"
+        }
+      }
+    },
+    "houses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "number",
+          "cusp_degree",
+          "sign"
+        ],
+        "properties": {
+          "number": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 12
+          },
+          "cusp_degree": {
+            "type": "number",
+            "minimum": 0,
+            "exclusiveMaximum": 360
+          },
+          "sign": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "angle": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "required": [
+        "sign",
+        "degree_in_sign",
+        "absolute_degree"
+      ],
+      "properties": {
+        "sign": {
+          "type": "string",
+          "minLength": 1
+        },
+        "degree_in_sign": {
+          "type": "number",
+          "minimum": 0,
+          "exclusiveMaximum": 30
+        },
+        "absolute_degree": {
+          "type": "number",
+          "minimum": 0,
+          "exclusiveMaximum": 360
+        }
+      }
+    }
+  }
+}

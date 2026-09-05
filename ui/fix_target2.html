@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>AstroMatch — Correction Cible 2</title>
+</head>
+<body>
+<script>
+(() => {
+  const KEY = "astromatch:profiles";
+
+  const profiles = JSON.parse(
+    localStorage.getItem(KEY) || "[]"
+  );
+
+  const anthony = profiles.find(
+    p => p?.role === "primary"
+  );
+
+  if (!anthony) {
+    document.body.innerHTML =
+      "<h2>❌ Profil principal Anthony introuvable</h2>";
+    return;
+  }
+
+  const index = profiles.findIndex(
+    p =>
+      p?.id === "profile_target2_camille" ||
+      p?.profile_id === "profile_target2_camille" ||
+      p?.identity?.first_name === "Camille"
+  );
+
+  if (index === -1) {
+    document.body.innerHTML =
+      "<h2>❌ Camille introuvable</h2>";
+    return;
+  }
+
+  const old = profiles[index];
+
+  const now = new Date().toISOString();
+
+  const camille = {
+    profile_id: "profile_target2_camille",
+
+    role: "target",
+
+    identity: {
+      first_name: "Camille",
+      last_name: ""
+    },
+
+    birth_data: {
+      date: "1996-08-17",
+
+      time: {
+        value: "18:20",
+        known: true,
+        precision: "exact"
+      },
+
+      place: {
+        raw_input: "Toulouse",
+
+        resolved: {
+          latitude: 43.6047,
+          longitude: 1.4442,
+          timezone_id: "Europe/Paris",
+          resolution_status: "resolved"
+        }
+      }
+    },
+
+    house_system: "whole_sign",
+
+    created_at: old.created_at || now,
+    updated_at: now,
+
+    linked_primary_id: anthony.profile_id
+  };
+
+  profiles[index] = camille;
+
+  localStorage.setItem(
+    KEY,
+    JSON.stringify(profiles)
+  );
+
+  const finalProfiles =
+    JSON.parse(localStorage.getItem(KEY));
+
+  document.body.innerHTML = `
+    <h2>✅ Cible 2 corrigée</h2>
+    <p>Camille utilise maintenant le schéma AstroMatch réel.</p>
+    <p>Profils stockés : ${finalProfiles.length}</p>
+    <hr>
+    <pre>${JSON.stringify(finalProfiles, null, 2)}</pre>
+  `;
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{
+  "primary": {
+    "role": "primary",
+    "first_name": "Alex",
+    "last_name": "",
+    "date": "1990-05-15",
+    "time": "14:30",
+    "time_known": true,
+    "place": "Paris, France",
+    "house_system": "whole_sign"
+  },
+  "target": {
+    "role": "target",
+    "first_name": "Sam",
+    "last_name": "",
+    "date": "1992-11-03",
+    "time": "09:15",
+    "time_known": true,
+    "place": "Lyon, France",
+    "house_system": "whole_sign"
+  }
+}

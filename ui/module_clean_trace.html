@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<title>AstroMatch Trace</title>
+
+<style>
+html,body {
+  margin:0;
+  padding:0;
+  background:#111;
+  color:white;
+  font-family:monospace;
+}
+
+#page {
+  padding:15px;
+}
+
+#astro_trace_box {
+  position:fixed;
+  z-index:999999999;
+  top:10px;
+  left:10px;
+  right:10px;
+  max-height:80vh;
+  overflow:auto;
+  white-space:pre-wrap;
+  background:#050505;
+  color:#00ff66;
+  border:3px solid #00ff66;
+  border-radius:10px;
+  padding:15px;
+  font-size:14px;
+}
+</style>
+</head>
+
+<body>
+
+<div id="page">
+<h2>ASTROMATCH — TRACE MODULE</h2>
+</div>
+
+<div id="__astro_trace_box">TRACEUR HTML...</div>
+
+<script>
+window.addEventListener("error", function(e) {
+  var box = document.getElementById("__astro_trace_box");
+
+  box.textContent +=
+    "\n\n===== JAVASCRIPT ERROR =====\n" +
+    (e.message || "") +
+    "\nfile=" + (e.filename || "") +
+    "\nline=" + (e.lineno || "") +
+    "\ncolumn=" + (e.colno || "") +
+    "\nstack=" + ((e.error && e.error.stack) || "");
+});
+
+window.addEventListener("unhandledrejection", function(e) {
+  var box = document.getElementById("__astro_trace_box");
+
+  box.textContent +=
+    "\n\n===== PROMISE ERROR =====\n" +
+    String(e.reason && e.reason.stack || e.reason);
+});
+</script>
+
+<script type="module" src="./astromatch_module_clean_trace.js"></script>
+
+</body>
+</html>

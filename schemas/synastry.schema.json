@@ -1,0 +1,214 @@
+{
+  "$id": "synastry.schema.json",
+  "title": "Synastry",
+  "type": "object",
+  "required": [
+    "synastry_id",
+    "primary_chart_id",
+    "target_chart_id",
+    "computed_at",
+    "reliability",
+    "aspects"
+  ],
+  "properties": {
+    "synastry_id": {
+      "type": "string"
+    },
+    "primary_chart_id": {
+      "type": "string"
+    },
+    "target_chart_id": {
+      "type": "string"
+    },
+    "computed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "reliability": {
+      "type": "object",
+      "properties": {
+        "degraded_mode": {
+          "type": "boolean"
+        },
+        "reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "degraded_mode",
+        "reason"
+      ]
+    },
+    "aspects": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "aspect_id",
+          "body_a",
+          "body_b",
+          "aspect_type",
+          "exact_angle",
+          "actual_angle",
+          "orb",
+          "orb_max",
+          "orb_strength",
+          "polarity"
+        ],
+        "properties": {
+          "aspect_id": {
+            "type": "string"
+          },
+          "body_a": {
+            "type": "object",
+            "properties": {
+              "owner": {
+                "type": "string",
+                "enum": [
+                  "primary",
+                  "target"
+                ]
+              },
+              "body": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "owner",
+              "body"
+            ]
+          },
+          "body_b": {
+            "type": "object",
+            "properties": {
+              "owner": {
+                "type": "string",
+                "enum": [
+                  "primary",
+                  "target"
+                ]
+              },
+              "body": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "owner",
+              "body"
+            ]
+          },
+          "aspect_type": {
+            "type": "string",
+            "enum": [
+              "conjunction",
+              "sextile",
+              "square",
+              "trine",
+              "opposition"
+            ]
+          },
+          "exact_angle": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 180
+          },
+          "actual_angle": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 180
+          },
+          "orb": {
+            "type": "number",
+            "minimum": 0
+          },
+          "orb_max": {
+            "type": "number"
+          },
+          "orb_strength": {
+            "type": "number",
+            "minimum": 0,
+            "maximum": 1
+          },
+          "polarity": {
+            "type": "string",
+            "enum": [
+              "harmonious",
+              "tense",
+              "neutral"
+            ]
+          }
+        }
+      }
+    },
+    "house_overlays": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "owner_of_planet": {
+            "type": "string",
+            "enum": [
+              "primary",
+              "target"
+            ]
+          },
+          "planet": {
+            "type": "string"
+          },
+          "falls_in_house_of": {
+            "type": "string",
+            "enum": [
+              "primary",
+              "target"
+            ]
+          },
+          "house_number": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 12
+          }
+        },
+        "required": [
+          "owner_of_planet",
+          "planet",
+          "falls_in_house_of",
+          "house_number"
+        ]
+      }
+    },
+    "angle_contacts": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "owner_of_planet": {
+            "type": "string",
+            "enum": [
+              "primary",
+              "target"
+            ]
+          },
+          "planet": {
+            "type": "string"
+          },
+          "contacts_angle_of": {
+            "type": "string",
+            "enum": [
+              "primary",
+              "target"
+            ]
+          },
+          "angle": {
+            "type": "string"
+          },
+          "orb": {
+            "type": "number"
+          }
+        }
+      }
+    }
+  }
+}

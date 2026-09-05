@@ -1,0 +1,1072 @@
+{
+  "version": "v1.0-doctrinal",
+  "k_saturation": 35,
+  "frictions_penalty_global": 0.2,
+  "domain_weights_global": {
+    "love": 0.25,
+    "emotions": 0.2,
+    "communication": 0.2,
+    "passion": 0.15,
+    "daily": 0.1,
+    "projects": 0.1
+  },
+  "domains": [
+    "love",
+    "passion",
+    "communication",
+    "emotions",
+    "daily",
+    "projects",
+    "frictions"
+  ],
+  "aspect_orbs": {
+    "conjunction": 8,
+    "opposition": 7,
+    "trine": 7,
+    "square": 6,
+    "sextile": 4
+  },
+  "planet_weights": {
+    "sun": 1.5,
+    "moon": 1.5,
+    "mercury": 1.2,
+    "venus": 1.2,
+    "mars": 1.2,
+    "jupiter": 1,
+    "saturn": 1,
+    "uranus": 0.7,
+    "neptune": 0.7,
+    "pluto": 0.7
+  },
+  "rules": [
+    {
+      "rule_id": "AMOUR_VENUS_CONJ_VENUS",
+      "domain": "love",
+      "planet_a": "venus",
+      "aspect_type": "conjunction",
+      "planet_b": "venus",
+      "base_points": 25,
+      "orb_max": 8,
+      "overlay_house": 7,
+      "house_bonus": 1.25
+    },
+    {
+      "rule_id": "AMOUR_VENUS_TRI_SOLEIL",
+      "domain": "love",
+      "planet_a": "venus",
+      "aspect_type": "trine",
+      "planet_b": "sun",
+      "base_points": 20,
+      "orb_max": 7,
+      "overlay_house": 7,
+      "house_bonus": 1.25
+    },
+    {
+      "rule_id": "AMOUR_SATURNE_CARRE_VENUS",
+      "domain": "love",
+      "planet_a": "saturn",
+      "aspect_type": "square",
+      "planet_b": "venus",
+      "base_points": -18,
+      "orb_max": 6,
+      "overlay_house": 7,
+      "house_bonus": 1
+    },
+    {
+      "rule_id": "PASSION_VENUS_CONJ_MARS",
+      "domain": "passion",
+      "planet_a": "venus",
+      "aspect_type": "conjunction",
+      "planet_b": "mars",
+      "base_points": 30,
+      "orb_max": 8,
+      "overlay_house": 8,
+      "house_bonus": 1.3
+    },
+    {
+      "rule_id": "PASSION_MARS_TRI_PLUTON",
+      "domain": "passion",
+      "planet_a": "mars",
+      "aspect_type": "trine",
+      "planet_b": "pluto",
+      "base_points": 18,
+      "orb_max": 7,
+      "overlay_house": 8,
+      "house_bonus": 1.2
+    },
+    {
+      "rule_id": "COMM_MERCURE_SEX_MERCURE",
+      "domain": "communication",
+      "planet_a": "mercury",
+      "aspect_type": "sextile",
+      "planet_b": "mercury",
+      "base_points": 15,
+      "orb_max": 4,
+      "overlay_house": 3,
+      "house_bonus": 1.2
+    },
+    {
+      "rule_id": "COMM_MERCURE_CARRE_MARS",
+      "domain": "communication",
+      "planet_a": "mercury",
+      "aspect_type": "square",
+      "planet_b": "mars",
+      "base_points": -14,
+      "orb_max": 6,
+      "overlay_house": 3,
+      "house_bonus": 1.15
+    },
+    {
+      "rule_id": "EMOTIONS_LUNE_CONJ_LUNE",
+      "domain": "emotions",
+      "planet_a": "moon",
+      "aspect_type": "conjunction",
+      "planet_b": "moon",
+      "base_points": 28,
+      "orb_max": 8,
+      "overlay_house": 4,
+      "house_bonus": 1.25
+    },
+    {
+      "rule_id": "EMOTIONS_LUNE_OPPO_NEPTUNE",
+      "domain": "emotions",
+      "planet_a": "moon",
+      "aspect_type": "opposition",
+      "planet_b": "neptune",
+      "base_points": -12,
+      "orb_max": 7,
+      "overlay_house": 12,
+      "house_bonus": 1
+    },
+    {
+      "rule_id": "QUOTIDIEN_SATURNE_TRI_LUNE",
+      "domain": "daily",
+      "planet_a": "saturn",
+      "aspect_type": "trine",
+      "planet_b": "moon",
+      "base_points": 16,
+      "orb_max": 7,
+      "overlay_house": 6,
+      "house_bonus": 1.2
+    },
+    {
+      "rule_id": "PROJETS_SOLEIL_CONJ_SATURNE",
+      "domain": "projects",
+      "planet_a": "sun",
+      "aspect_type": "conjunction",
+      "planet_b": "saturn",
+      "base_points": 22,
+      "orb_max": 8,
+      "overlay_house": 10,
+      "house_bonus": 1.25
+    },
+    {
+      "rule_id": "FRICTIONS_MARS_OPPO_SATURNE",
+      "domain": "frictions",
+      "planet_a": "mars",
+      "aspect_type": "opposition",
+      "planet_b": "saturn",
+      "base_points": 24,
+      "orb_max": 7,
+      "overlay_house": 1,
+      "house_bonus": 1.2
+    },
+    {
+      "rule_id": "FRICTIONS_URANUS_CARRE_MARS",
+      "domain": "frictions",
+      "planet_a": "uranus",
+      "aspect_type": "square",
+      "planet_b": "mars",
+      "base_points": 20,
+      "orb_max": 6,
+      "overlay_house": 8,
+      "house_bonus": 1.15
+    }
+  ],
+  "methodology": {
+    "name": "Western Synastry — Doctrinal Layer",
+    "status": "experimental",
+    "numerical_weights_are_astromatch_modeling": true,
+    "astrology_is_not_a_numeric_measurement": true,
+    "traditional_planets": [
+      "sun",
+      "moon",
+      "mercury",
+      "venus",
+      "mars",
+      "jupiter",
+      "saturn"
+    ],
+    "modern_planets": [
+      "uranus",
+      "neptune",
+      "pluto"
+    ],
+    "audit_stage": "factor_justification",
+    "scoring_activation": "blocked_until_doctrinal_review"
+  },
+  "coefficient_status": {
+    "k_saturation": "ASTROMATCH_MODEL",
+    "frictions_penalty_global": "ASTROMATCH_MODEL",
+    "domain_weights_global": "ASTROMATCH_MODEL",
+    "planet_weights": "ASTROMATCH_MODEL",
+    "aspect_orbs": "ASTROLOGICAL_CONVENTION",
+    "rule_base_points": "ASTROMATCH_MODEL",
+    "house_bonus": "ASTROMATCH_MODEL"
+  },
+  "doctrinal_rules": [
+    {
+      "rule_id": "AMOUR_VENUS_CONJ_VENUS",
+      "status": "modern_secondary",
+      "confidence": "medium",
+      "interpretation": "Affection, values and tastes expressed through direct Venus-Venus contact.",
+      "traditional_direct_attestation": false,
+      "source_basis": [
+        "Cafe Astrology — Synastry: Venus-Venus Aspects Between Two Charts."
+      ],
+      "notes": [
+        "Source moderne de synastrie : la conjonction Venus-Venus est associée à des ressemblances dans les styles affectifs, les goûts et les valeurs. Il s'agit d'une documentation moderne, pas d'une attestation traditionnelle directe."
+      ],
+      "planets": [
+        "venus",
+        "venus"
+      ],
+      "scoring_status": "SCORED",
+      "aspect_doctrine": {
+        "conjunction": {
+          "status": "ACTIVE_RUNTIME_RULE",
+          "meaning": "Aspect actuellement utilisé par la règle runtime AMOUR_VENUS_CONJ_VENUS."
+        },
+        "sextile": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "square": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "trine": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "opposition": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        }
+      }
+    },
+    {
+      "rule_id": "AMOUR_VENUS_TRI_SOLEIL",
+      "status": "western_compatible",
+      "confidence": "high",
+      "interpretation": "Affection and appreciation connecting Venus with the Sun.",
+      "traditional_direct_attestation": false,
+      "source_basis": [
+        "Cafe Astrology — Synastry: Sun-Venus Aspects Between Two Charts."
+      ],
+      "notes": [
+        "Source moderne : les aspects harmonieux Sun-Venus, dont le trigone, sont présentés comme favorisant harmonie, appréciation et attraction. L'aspect exact n'est pas ici présenté comme une doctrine ptolémaïque."
+      ],
+      "planets": [
+        "venus",
+        "sun"
+      ],
+      "scoring_status": "SCORED",
+      "aspect_doctrine": {
+        "conjunction": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "sextile": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "square": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "trine": {
+          "status": "ACTIVE_RUNTIME_RULE",
+          "meaning": "Aspect actuellement utilisé par la règle runtime AMOUR_VENUS_TRI_SOLEIL."
+        },
+        "opposition": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        }
+      }
+    },
+    {
+      "rule_id": "AMOUR_SATURNE_CARRE_VENUS",
+      "status": "traditional_compatible",
+      "confidence": "high",
+      "interpretation": "Tension between Venusian affection and Saturnine restraint, seriousness or limitation.",
+      "traditional_direct_attestation": false,
+      "polarity": "ambivalent",
+      "source_basis": [
+        "Ptolemy, Tetrabiblos IV.5; Cafe Astrology — Romantic Compatibility Synastry."
+      ],
+      "notes": [
+        "Ptolémée documente l'association Venus-Saturn et lui attribue une tonalité relationnelle spécifique, mais ne fournit pas ici une matrice moderne 'Venus-Saturn carré'. La qualification traditional_compatible indique donc une compatibilité doctrinale, pas une attestation directe de cet aspect exact."
+      ],
+      "planets": [
+        "saturn",
+        "venus"
+      ],
+      "scoring_status": "SCORED",
+      "aspect_doctrine": {
+        "conjunction": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "sextile": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "square": {
+          "status": "ACTIVE_RUNTIME_RULE",
+          "meaning": "Aspect actuellement utilisé par la règle runtime AMOUR_SATURNE_CARRE_VENUS."
+        },
+        "trine": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "opposition": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        }
+      }
+    },
+    {
+      "rule_id": "PASSION_VENUS_CONJ_MARS",
+      "status": "traditional_core",
+      "confidence": "very_high",
+      "interpretation": "Amorous and passionate interaction between Venus and Mars.",
+      "traditional_direct_attestation": true,
+      "polarity": "attraction",
+      "source_basis": [
+        "Ptolemy, Tetrabiblos IV.5 and IV.7."
+      ],
+      "notes": [
+        "Attestation traditionnelle directe : Ptolémée relie explicitement Venus et Mars aux dispositions amoureuses et aux associations par amour. La règle AstroMatch applique cette relation au contact de conjonction."
+      ],
+      "planets": [
+        "venus",
+        "mars"
+      ],
+      "scoring_status": "SCORED",
+      "aspect_doctrine": {
+        "conjunction": {
+          "status": "ACTIVE_RUNTIME_RULE",
+          "meaning": "Aspect actuellement utilisé par la règle runtime PASSION_VENUS_CONJ_MARS."
+        },
+        "sextile": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "square": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "trine": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "opposition": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        }
+      }
+    },
+    {
+      "rule_id": "PASSION_MARS_TRI_PLUTON",
+      "status": "modern_only",
+      "confidence": "medium",
+      "interpretation": "Modern interpretation of intensity and force through Mars-Pluto contact.",
+      "traditional_direct_attestation": false,
+      "source_basis": [
+        "Cafe Astrology — Romantic Compatibility Synastry Analysis."
+      ],
+      "notes": [
+        "Interprétation moderne : la source inclut Mars conjoint, trigone ou sextile Pluton parmi les facteurs de compatibilité. Pluton étant une planète moderne, cette règle ne relève pas de l'astrologie traditionnelle."
+      ],
+      "planets": [
+        "mars",
+        "pluto"
+      ],
+      "scoring_status": "SCORED",
+      "aspect_doctrine": {
+        "conjunction": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "sextile": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "square": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "trine": {
+          "status": "ACTIVE_RUNTIME_RULE",
+          "meaning": "Aspect actuellement utilisé par la règle runtime PASSION_MARS_TRI_PLUTON."
+        },
+        "opposition": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        }
+      }
+    },
+    {
+      "rule_id": "COMM_MERCURE_SEX_MERCURE",
+      "status": "western_compatible",
+      "confidence": "medium",
+      "interpretation": "Mercury-Mercury contact concerning communication and mental exchange.",
+      "traditional_direct_attestation": false,
+      "source_basis": [
+        "Cafe Astrology — Compatibility Factors in Synastry."
+      ],
+      "notes": [
+        "Source moderne de synastrie : Mercury-Mercury en conjonction, sextile ou trigone est classé parmi les facteurs favorables. La règle utilise spécifiquement le sextile."
+      ],
+      "planets": [
+        "mercury",
+        "mercury"
+      ],
+      "scoring_status": "SCORED",
+      "aspect_doctrine": {
+        "conjunction": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "sextile": {
+          "status": "ACTIVE_RUNTIME_RULE",
+          "meaning": "Aspect actuellement utilisé par la règle runtime COMM_MERCURE_SEX_MERCURE."
+        },
+        "square": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "trine": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "opposition": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        }
+      }
+    },
+    {
+      "rule_id": "COMM_MERCURE_CARRE_MARS",
+      "status": "western_compatible",
+      "confidence": "high",
+      "interpretation": "Tension between Mercury's communication function and Mars' assertive/action principle.",
+      "traditional_direct_attestation": false,
+      "polarity": "tension",
+      "source_basis": [
+        "Cafe Astrology — Compatibility Factors in Synastry."
+      ],
+      "notes": [
+        "Source moderne de synastrie : Mercury-Mars en carré ou opposition est classé parmi les facteurs de difficulté. La règle utilise spécifiquement le carré."
+      ],
+      "planets": [
+        "mercury",
+        "mars"
+      ],
+      "scoring_status": "SCORED",
+      "aspect_doctrine": {
+        "conjunction": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "sextile": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "square": {
+          "status": "ACTIVE_RUNTIME_RULE",
+          "meaning": "Aspect actuellement utilisé par la règle runtime COMM_MERCURE_CARRE_MARS."
+        },
+        "trine": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "opposition": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        }
+      }
+    },
+    {
+      "rule_id": "EMOTIONS_LUNE_CONJ_LUNE",
+      "status": "modern_secondary",
+      "confidence": "medium",
+      "interpretation": "Strong interaction between the two lunar functions.",
+      "traditional_direct_attestation": false,
+      "source_basis": [
+        "Cafe Astrology — Compatibility Factors in Synastry."
+      ],
+      "notes": [
+        "Source moderne : Moon-Moon en conjonction, sextile ou trigone est présenté comme un facteur favorable de compatibilité. La règle utilise spécifiquement la conjonction."
+      ],
+      "planets": [
+        "moon",
+        "moon"
+      ],
+      "scoring_status": "SCORED",
+      "aspect_doctrine": {
+        "conjunction": {
+          "status": "ACTIVE_RUNTIME_RULE",
+          "meaning": "Aspect actuellement utilisé par la règle runtime EMOTIONS_LUNE_CONJ_LUNE."
+        },
+        "sextile": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "square": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "trine": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "opposition": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        }
+      }
+    },
+    {
+      "rule_id": "EMOTIONS_LUNE_OPPO_NEPTUNE",
+      "status": "modern_only",
+      "confidence": "medium",
+      "interpretation": "Modern interpretation involving sensitivity, idealisation and possible confusion.",
+      "traditional_direct_attestation": false,
+      "source_basis": [
+        "Cafe Astrology — Compatibility Factors in Synastry."
+      ],
+      "notes": [
+        "Source moderne : Moon-Neptune en carré ou opposition figure parmi les facteurs de difficulté. Neptune étant une planète moderne, cette règle ne relève pas de l'astrologie traditionnelle."
+      ],
+      "planets": [
+        "moon",
+        "neptune"
+      ],
+      "scoring_status": "SCORED",
+      "aspect_doctrine": {
+        "conjunction": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "sextile": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "square": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "trine": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "opposition": {
+          "status": "ACTIVE_RUNTIME_RULE",
+          "meaning": "Aspect actuellement utilisé par la règle runtime EMOTIONS_LUNE_OPPO_NEPTUNE."
+        }
+      }
+    },
+    {
+      "rule_id": "QUOTIDIEN_SATURNE_TRI_LUNE",
+      "status": "western_compatible",
+      "confidence": "medium_high",
+      "interpretation": "Saturnian structure interacting harmoniously with the lunar function.",
+      "traditional_direct_attestation": false,
+      "polarity": "supportive",
+      "source_basis": [
+        "Cafe Astrology — Compatibility Factors in Synastry."
+      ],
+      "notes": [
+        "Source moderne : Moon-Saturn en sextile ou trigone est classé parmi les facteurs favorables. La règle utilise spécifiquement le trigone."
+      ],
+      "planets": [
+        "saturn",
+        "moon"
+      ],
+      "scoring_status": "SCORED",
+      "aspect_doctrine": {
+        "conjunction": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "sextile": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "square": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "trine": {
+          "status": "ACTIVE_RUNTIME_RULE",
+          "meaning": "Aspect actuellement utilisé par la règle runtime QUOTIDIEN_SATURNE_TRI_LUNE."
+        },
+        "opposition": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        }
+      }
+    },
+    {
+      "rule_id": "PROJETS_SOLEIL_CONJ_SATURNE",
+      "status": "traditional_compatible",
+      "confidence": "high",
+      "interpretation": "Solar identity interacting with Saturnian structure, responsibility and limitation.",
+      "traditional_direct_attestation": false,
+      "polarity": "ambivalent",
+      "source_basis": [
+        "Cafe Astrology — Compatibility Factors in Synastry; Ptolemy, Tetrabiblos IV.5."
+      ],
+      "notes": [
+        "Les deux significateurs sont traditionnels et leur relation est documentée dans la tradition, notamment Sun-Saturn chez Ptolémée. La formulation spécifique 'Sun-Saturn conjunction' et son emploi dans les projets relèvent toutefois de l'interprétation moderne AstroMatch."
+      ],
+      "planets": [
+        "sun",
+        "saturn"
+      ],
+      "scoring_status": "SCORED",
+      "aspect_doctrine": {
+        "conjunction": {
+          "status": "ACTIVE_RUNTIME_RULE",
+          "meaning": "Aspect actuellement utilisé par la règle runtime PROJETS_SOLEIL_CONJ_SATURNE."
+        },
+        "sextile": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "square": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "trine": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "opposition": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        }
+      }
+    },
+    {
+      "rule_id": "FRICTIONS_MARS_OPPO_SATURNE",
+      "status": "traditional_core",
+      "confidence": "very_high",
+      "interpretation": "Conflict between Martian action and Saturnian restraint.",
+      "traditional_direct_attestation": false,
+      "polarity": "tension",
+      "source_basis": [
+        "Ptolemy, Tetrabiblos IV.7; Cafe Astrology — Compatibility Factors in Synastry."
+      ],
+      "notes": [
+        "Ptolémée associe explicitement Saturne et Mars aux querelles et oppositions entre personnes. La source moderne documente Mars-Saturn en opposition comme facteur difficile. L'attestation traditionnelle directe porte sur la relation Mars-Saturn, pas sur la matrice moderne exacte de l'opposition ; traditional_direct_attestation reste donc false."
+      ],
+      "planets": [
+        "mars",
+        "saturn"
+      ],
+      "scoring_status": "SCORED",
+      "aspect_doctrine": {
+        "conjunction": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "sextile": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "square": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "trine": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "opposition": {
+          "status": "ACTIVE_RUNTIME_RULE",
+          "meaning": "Aspect actuellement utilisé par la règle runtime FRICTIONS_MARS_OPPO_SATURNE."
+        }
+      }
+    },
+    {
+      "rule_id": "FRICTIONS_URANUS_CARRE_MARS",
+      "status": "modern_only",
+      "confidence": "medium",
+      "interpretation": "Modern interpretation of volatility and tension between Uranian disruption and Mars.",
+      "traditional_direct_attestation": false,
+      "polarity": "tension",
+      "source_basis": [
+        "Cafe Astrology — Romantic Compatibility Synastry Analysis."
+      ],
+      "notes": [
+        "Interprétation moderne : Mars-Uranus en carré ou opposition est classé parmi les facteurs de difficulté. Uranus étant une planète moderne, cette règle ne relève pas de l'astrologie traditionnelle."
+      ],
+      "planets": [
+        "uranus",
+        "mars"
+      ],
+      "scoring_status": "SCORED",
+      "aspect_doctrine": {
+        "conjunction": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "sextile": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "square": {
+          "status": "ACTIVE_RUNTIME_RULE",
+          "meaning": "Aspect actuellement utilisé par la règle runtime FRICTIONS_URANUS_CARRE_MARS."
+        },
+        "trine": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        },
+        "opposition": {
+          "status": "REVIEW_REQUIRED",
+          "meaning": "Aucune activation doctrinale aspectuelle supplémentaire établie ; revue requise avant extension du scoring."
+        }
+      }
+    },
+    {
+      "rule_id": "LUMINAIRES_SUN_MOON",
+      "status": "traditional_core",
+      "confidence": "very_high",
+      "interpretation": "Soleil et Lune en relation : une dynamique pouvant mettre en jeu l'expression identitaire, la sensibilité et les besoins émotionnels des deux personnes.",
+      "traditional_direct_attestation": true,
+      "polarity": "aspect_dependent",
+      "scoring_status": "CANDIDATE_SCORABLE",
+      "source_basis": [
+        "Ptolemy Tetrabiblos Book IV — On Marriage",
+        "Traditional Western synastry doctrine",
+        "Cafe Astrology — Synastry: Sun-Moon Aspects Between Charts"
+      ],
+      "notes": [
+        "No numerical points are assigned.",
+        "Aspect polarity is separated from overall relationship quality.",
+        "The complete chart context remains necessary for final interpretation."
+      ],
+      "aspect_doctrine": {
+        "conjunction": {
+          "status": "MODERN_INTERPRETATION",
+          "polarity": "INTENSITY",
+          "interpretation": "Contact très fort entre expression identitaire et besoins émotionnels."
+        },
+        "sextile": {
+          "status": "TRADITIONALLY_FAVOURABLE",
+          "polarity": "SUPPORTIVE",
+          "interpretation": "Coopération et complémentarité facilitées entre identité et besoins émotionnels."
+        },
+        "square": {
+          "status": "TRADITIONALLY_TENSION",
+          "polarity": "TENSION",
+          "interpretation": "Différences possibles entre expression personnelle et besoins émotionnels."
+        },
+        "trine": {
+          "status": "TRADITIONALLY_FAVOURABLE",
+          "polarity": "SUPPORTIVE",
+          "interpretation": "Fluidité et compréhension naturelle entre expression personnelle et besoins émotionnels."
+        },
+        "opposition": {
+          "status": "TRADITIONALLY_TENSION",
+          "polarity": "POLARITY",
+          "interpretation": "Forte polarité pouvant créer attraction et différences de fonctionnement émotionnel."
+        }
+      },
+      "planets": [
+        "sun",
+        "moon"
+      ],
+      "source_type": "hybrid",
+      "coefficient_status": "ASTROMATCH_MODEL"
+    },
+    {
+      "rule_id": "JUPITER_SUN",
+      "planets": [
+        "jupiter",
+        "sun"
+      ],
+      "status": "traditional_core",
+      "confidence": "high",
+      "traditional_direct_attestation": true,
+      "scoring_status": "CANDIDATE_SCORABLE",
+      "source_basis": [
+        "Ptolemy Tetrabiblos IV.5 — Of Marriage",
+        "Cafe Astrology — Synastry: Sun-Jupiter Aspects"
+      ],
+      "notes": [
+        "Ptolemy explicitly describes Jupiter in aspect with the Sun in the marriage doctrine.",
+        "The source does not establish a complete modern five-aspect scoring matrix for Sun-Jupiter.",
+        "No numerical points assigned."
+      ],
+      "interpretation": "Jupiter en aspect avec le Soleil : une dynamique pouvant associer expansion, confiance et générosité à l'expression identitaire et à la vitalité.",
+      "aspect_doctrine": {
+        "conjunction": {
+          "polarity": "SUPPORTIVE",
+          "interpretation": "Confiance, expansion et encouragement mutuel amplifiés."
+        },
+        "sextile": {
+          "polarity": "SUPPORTIVE",
+          "interpretation": "Ouverture et soutien mutuel relativement naturels."
+        },
+        "square": {
+          "polarity": "MIXED",
+          "interpretation": "Enthousiasme amplifié avec risque d'excès ou de surenchère."
+        },
+        "trine": {
+          "polarity": "SUPPORTIVE",
+          "interpretation": "Confiance, générosité et croissance mutuelle facilitées."
+        },
+        "opposition": {
+          "polarity": "MIXED",
+          "interpretation": "Forte stimulation et polarité avec risque d'exagération."
+        }
+      },
+      "source_type": "hybrid",
+      "coefficient_status": "ASTROMATCH_MODEL"
+    },
+    {
+      "rule_id": "JUPITER_MOON",
+      "planets": [
+        "jupiter",
+        "moon"
+      ],
+      "status": "traditional_core",
+      "confidence": "high",
+      "traditional_direct_attestation": true,
+      "scoring_status": "CANDIDATE_SCORABLE",
+      "source_basis": [
+        "Ptolemy Tetrabiblos IV.5 — Of Marriage",
+        "Cafe Astrology — Synastry: Moon-Jupiter Aspects Between Two Charts"
+      ],
+      "notes": [
+        "Ptolemy explicitly discusses the Moon applying to Jupiter.",
+        "This establishes traditional relational relevance but does not establish a complete modern aspect-by-aspect synastry matrix.",
+        "No numerical points assigned."
+      ],
+      "interpretation": "Jupiter en relation avec la Lune : une dynamique pouvant associer l'expansion, la confiance ou la générosité de Jupiter à la sensibilité et aux besoins émotionnels représentés par la Lune.",
+      "aspect_doctrine": {
+        "conjunction": {
+          "polarity": "SUPPORTIVE",
+          "interpretation": "Chaleur émotionnelle, générosité et enthousiasme amplifiés."
+        },
+        "sextile": {
+          "polarity": "SUPPORTIVE",
+          "interpretation": "Soutien émotionnel et bonne humeur facilités."
+        },
+        "square": {
+          "polarity": "MIXED",
+          "interpretation": "Émotions amplifiées avec risque d'excès ou de jugement émotionnel."
+        },
+        "trine": {
+          "polarity": "SUPPORTIVE",
+          "interpretation": "Générosité, confiance et soutien émotionnel naturels."
+        },
+        "opposition": {
+          "polarity": "MIXED",
+          "interpretation": "Grande stimulation émotionnelle avec difficulté possible à doser."
+        }
+      },
+      "source_type": "hybrid",
+      "coefficient_status": "ASTROMATCH_MODEL"
+    },
+    {
+      "rule_id": "JUPITER_MERCURY",
+      "planets": [
+        "jupiter",
+        "mercury"
+      ],
+      "status": "traditional_core",
+      "confidence": "high",
+      "traditional_direct_attestation": true,
+      "scoring_status": "CANDIDATE_SCORABLE",
+      "source_basis": [
+        "Ptolemy Tetrabiblos IV.7 — Of Friendship and Enmity",
+        "Cafe Astrology — Synastry: Mercury-Jupiter Aspects"
+      ],
+      "notes": [
+        "Ptolemy describes Jupiter-Mercury associations through learned discussion and philosophical inclination.",
+        "The passage concerns relational associations but does not provide a complete modern five-aspect scoring matrix.",
+        "No numerical points assigned."
+      ],
+      "interpretation": "Jupiter en relation avec Mercure : une dynamique pouvant favoriser les échanges intellectuels, la discussion et l'exploration d'idées philosophiques.",
+      "aspect_doctrine": {
+        "conjunction": {
+          "polarity": "SUPPORTIVE",
+          "interpretation": "Forte stimulation intellectuelle et envie d'échanger."
+        },
+        "sextile": {
+          "polarity": "SUPPORTIVE",
+          "interpretation": "Curiosité et échanges d'idées facilités."
+        },
+        "square": {
+          "polarity": "MIXED",
+          "interpretation": "Débats stimulants mais risque d'exagération ou de désaccord intellectuel."
+        },
+        "trine": {
+          "polarity": "SUPPORTIVE",
+          "interpretation": "Apprentissage, discussion et exploration d'idées facilités."
+        },
+        "opposition": {
+          "polarity": "MIXED",
+          "interpretation": "Visions différentes pouvant produire des débats très stimulants."
+        }
+      },
+      "source_type": "hybrid",
+      "coefficient_status": "ASTROMATCH_MODEL"
+    },
+    {
+      "rule_id": "JUPITER_VENUS",
+      "planets": [
+        "jupiter",
+        "venus"
+      ],
+      "status": "traditional_core",
+      "confidence": "very_high",
+      "traditional_direct_attestation": true,
+      "scoring_status": "CANDIDATE_SCORABLE",
+      "source_basis": [
+        "Ptolemy Tetrabiblos IV.5 — Of Marriage",
+        "Ptolemy Tetrabiblos IV.7 — Of Friendship and Enmity",
+        "Cafe Astrology — Synastry: Venus-Jupiter Aspects Between Two Charts"
+      ],
+      "notes": [
+        "Ptolemy explicitly connects Venus with Jupiter in relationship doctrine.",
+        "Ptolemy also describes Jupiter-Venus associations as friendships.",
+        "The exact modern interpretation of each major aspect requires separate documentation.",
+        "No numerical points assigned."
+      ],
+      "interpretation": "Jupiter en relation avec Vénus : une dynamique pouvant favoriser l'affection, la générosité et une appréciation partagée des plaisirs, des valeurs ou des liens sociaux.",
+      "aspect_doctrine": {
+        "conjunction": {
+          "polarity": "STRONGLY_SUPPORTIVE",
+          "interpretation": "Affection, plaisir, générosité et appréciation mutuelle amplifiés."
+        },
+        "sextile": {
+          "polarity": "SUPPORTIVE",
+          "interpretation": "Complicité, affection et plaisir partagé facilités."
+        },
+        "square": {
+          "polarity": "MIXED",
+          "interpretation": "Attraction et plaisir importants, avec risque d'excès ou d'attentes élevées."
+        },
+        "trine": {
+          "polarity": "STRONGLY_SUPPORTIVE",
+          "interpretation": "Chaleur, générosité et plaisir relationnel naturellement facilités."
+        },
+        "opposition": {
+          "polarity": "MIXED",
+          "interpretation": "Forte attraction avec tendance possible à l'exagération."
+        }
+      },
+      "source_type": "hybrid",
+      "coefficient_status": "ASTROMATCH_MODEL"
+    },
+    {
+      "rule_id": "JUPITER_MARS",
+      "planets": [
+        "jupiter",
+        "mars"
+      ],
+      "status": "traditional_core",
+      "confidence": "high",
+      "traditional_direct_attestation": true,
+      "scoring_status": "CANDIDATE_SCORABLE",
+      "source_basis": [
+        "Ptolemy Tetrabiblos IV.5 — Of Marriage",
+        "Ptolemy Tetrabiblos IV.7 — Of Friendship and Enmity",
+        "Cafe Astrology — Synastry: Mars-Jupiter Aspects"
+      ],
+      "notes": [
+        "Ptolemy explicitly describes Mars with or in aspect to Jupiter in relational contexts.",
+        "Ptolemy also associates Jupiter-Mars with associations involving dignities or management of property.",
+        "This establishes traditional relevance but not a complete modern five-aspect scoring matrix.",
+        "No numerical points assigned."
+      ],
+      "interpretation": "Jupiter en relation avec Mars : une dynamique pouvant associer l'action, l'initiative et la gestion des affaires ou des responsabilités communes.",
+      "aspect_doctrine": {
+        "conjunction": {
+          "polarity": "HIGH_ENERGY",
+          "interpretation": "Énergie, initiative, aventure et désir d'agir ensemble amplifiés."
+        },
+        "sextile": {
+          "polarity": "SUPPORTIVE",
+          "interpretation": "Motivation, action et enthousiasme facilités."
+        },
+        "square": {
+          "polarity": "MIXED",
+          "interpretation": "Énergie explosive et stimulation fortes, avec risque d'impulsivité."
+        },
+        "trine": {
+          "polarity": "SUPPORTIVE",
+          "interpretation": "Enthousiasme, confiance et action commune naturellement facilités."
+        },
+        "opposition": {
+          "polarity": "MIXED",
+          "interpretation": "Forte stimulation pouvant devenir compétitive ou excessive."
+        }
+      },
+      "source_type": "hybrid",
+      "coefficient_status": "ASTROMATCH_MODEL"
+    },
+    {
+      "rule_id": "JUPITER_SATURN",
+      "planets": [
+        "jupiter",
+        "saturn"
+      ],
+      "status": "traditional_core",
+      "confidence": "high",
+      "traditional_direct_attestation": true,
+      "scoring_status": "CANDIDATE_SCORABLE",
+      "source_basis": [
+        "Ptolemy Tetrabiblos IV.7 — Of Friendship and Enmity",
+        "Cafe Astrology — Synastry: Jupiter-Saturn Aspects"
+      ],
+      "notes": [
+        "Ptolemy explicitly describes Jupiter and Saturn approaching each other's places in the doctrine of friendship and enmity.",
+        "This is traditional relational evidence but not a modern synastry rule assigning a score to each major aspect.",
+        "No numerical points assigned."
+      ],
+      "interpretation": "Jupiter en relation avec Saturne : une dynamique pouvant associer ouverture, développement et recherche d'expansion à la structure, aux limites et au sens des responsabilités.",
+      "aspect_doctrine": {
+        "conjunction": {
+          "polarity": "STRUCTURAL_SUPPORT",
+          "interpretation": "Expansion et structure peuvent se combiner autour d'objectifs communs."
+        },
+        "sextile": {
+          "polarity": "SUPPORTIVE",
+          "interpretation": "Croissance et organisation peuvent fonctionner de manière complémentaire."
+        },
+        "square": {
+          "polarity": "TENSION",
+          "interpretation": "Tension possible entre expansion, prudence et besoin de contrôle."
+        },
+        "trine": {
+          "polarity": "STRONGLY_SUPPORTIVE",
+          "interpretation": "Vision et structure peuvent former une combinaison particulièrement constructive."
+        },
+        "opposition": {
+          "polarity": "MIXED",
+          "interpretation": "Polarité entre expansion et limites, pouvant demander des compromis."
+        }
+      },
+      "source_type": "hybrid",
+      "coefficient_status": "ASTROMATCH_MODEL"
+    }
+  ]
+}

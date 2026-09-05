@@ -1,0 +1,304 @@
+// js/profiles/profile_service.js
+//
+// Responsabilité EXACTE : créer/valider/modifier des profils et résoudre
+// le lieu de naissance en coordonnées. Ne calcule JAMAIS d'astrologie ici.
+// Ce module possède aussi les opérations de haut niveau (save/get/list/
+// delete) qui s'appuient sur le repository, pour offrir une API unique
+// de gestion des profils au reste de l'application.
+
+import { generateId, nowIso } from "../utils/id.js";
+import { repository } from "../storage/repository.js";
+import {
+  isNonEmptyString,
+  isValidDateString,
+  isPastOrTodayDate,
+  isValidTimeString,
+  isValidLatitude,
+  isValidLongitude
+} from "../utils/validation.js";
+import { isValidTimeZone } from "../astrology/ephemeris/timezone.js";
+
+// Petit annuaire de lieux simulé (pas d'appel réseau à un vrai service de
+// géocodage dans ce prototype — à remplacer plus tard par un vrai
+// géocodeur, sans changer la forme de sortie de resolvePlace).
+const KNOWN_PLACES = {
+  "paris, france": { latitude: 48.8566, longitude: 2.3522, timezone_id: "Europe/Paris" },
+  "lyon, france": { latitude: 45.7640, longitude: 4.8357, timezone_id: "Europe/Paris" },
+  "marseille, france": { latitude: 43.2965, longitude: 5.3698, timezone_id: "Europe/Paris" },
+  "gien": { latitude: 47.6933, longitude: 2.6309, timezone_id: "Europe/Paris" },
+  "gien, france": { latitude: 47.6933, longitude: 2.6309, timezone_id: "Europe/Paris" },
+  "cahors": { latitude: 44.4491, longitude: 1.4366, timezone_id: "Europe/Paris" },
+  "cahors, france": { latitude: 44.4491, longitude: 1.4366, timezone_id: "Europe/Paris" },
+  "montreal, canada": { latitude: 45.5019, longitude: -73.5674, timezone_id: "America/Montreal" },
+  "dakar, senegal": { latitude: 14.7167, longitude: -17.4677, timezone_id: "Africa/Dakar" },
+  "tokyo, japan": { latitude: 35.6895, longitude: 139.6917, timezone_id: "Asia/Tokyo" }
+};
+
+/**
+ * Résout un lieu de naissance en coordonnées.
+ * Ordre de priorité :
+ *   1. latitude/longitude fournies explicitement par l'utilisateur (fallback manuel)
+ *   2. correspondance dans l'annuaire simulé
+ *   3. échec (jamais d'approximation silencieuse)
+ */
+function resolvePlace(rawInput, manualLatitude, manualLongitude, manualTimezoneId) {
+  if (isValidLatitude(manualLatitude) && isValidLongitude(manualLongitude)) {
+    return {
+      latitude: manualLatitude,
+      longitude: manualLongitude,
+      timezone_id: manualTimezoneId || null,
+      resolution_status: "resolved"
+    };
+  }
+
+  const key = (rawInput || "").trim().toLowerCase();
+  const match = KNOWN_PLACES[key];
+  if (match) {
+    return { ...match, resolution_status: "resolved" };
+  }
+
+  return { latitude: null, longitude: null, timezone_id: null, resolution_status: "failed" };
+}
+
+/**
+ * Valide les champs obligatoires d'une entrée de profil brute.
+ * Lève une erreur typée VALIDATION_ERROR si les données sont invalides.
+ */
+function validateProfileInput(input) {
+  const errors = [];
+
+  if (!isNonEmptyString(input.first_name)) {
+    errors.push("prénom manquant");
+  }
+
+  if (!isValidDateString(input.date)) {
+    errors.push("date de naissance manquante ou invalide");
+  } else if (!isPastOrTodayDate(input.date)) {
+    errors.push("date de naissance dans le futur");
+  }
+
+  const hasManualCoords = isValidLatitude(input.latitude) && isValidLongitude(input.longitude);
+  if (!isNonEmptyString(input.place) && !hasManualCoords) {
+    errors.push("lieu de naissance manquant (ou latitude/longitude)");
+  }
+
+  if (hasManualCoords && !isNonEmptyString(input.timezone_id)) {
+    errors.push("timezone_id obligatoire avec des coordonnées manuelles (ex. Europe/Paris)");
+  }
+
+  if (input.timezone_id !== undefined && input.timezone_id !== null && isNonEmptyString(input.timezone_id) && !isValidTimeZone(input.timezone_id)) {
+    errors.push("timezone_id invalide (fuseau IANA attendu)");
+  }
+
+  if (input.role !== undefined && !["primary", "target"].includes(input.role)) {
+    errors.push("rôle invalide (primary ou target attendu)");
+  }
+
+  if (input.house_system !== undefined && !["placidus", "whole_sign", "equal", "porphyry"].includes(input.house_system)) {
+    errors.push("système de maisons invalide");
+  }
+
+  if (input.timezone_id !== undefined && input.timezone_id !== null && !isNonEmptyString(input.timezone_id)) {
+    errors.push("timezone_id invalide");
+  }
+
+  const hasLatitude = input.latitude !== undefined;
+  const hasLongitude = input.longitude !== undefined;
+  if (hasLatitude !== hasLongitude) {
+    errors.push("latitude et longitude doivent être fournies ensemble");
+  }
+
+  if (input.time_known && !isValidTimeString(input.time)) {
+    errors.push("heure marquée connue mais valeur manquante ou invalide (format attendu HH:MM)");
+  }
+
+  if (errors.length > 0) {
+    const err = new Error("Profil invalide : " + errors.join(", "));
+    err.type = "VALIDATION_ERROR";
+    err.details = errors;
+    throw err;
+  }
+}
+
+/**
+ * Construit un objet `profile` (pure, sans effet de bord) à partir d'une
+ * saisie brute de formulaire.
+ *
+ * input attendu :
+ * { role, first_name, last_name, date, time, time_known, place, latitude, longitude, house_system, linked_primary_id }
+ */
+export function buildProfile(input) {
+  validateProfileInput(input);
+
+  const resolved = resolvePlace(input.place, input.latitude, input.longitude, input.timezone_id);
+
+  return {
+    profile_id: generateId("profile"),
+    role: input.role === "primary" ? "primary" : "target",
+    identity: {
+      first_name: input.first_name.trim(),
+      last_name: (input.last_name || "").trim(),
+      gender:
+        input.gender === "male" || input.gender === "female"
+          ? input.gender
+          : null
+    },
+
+    relationship: {
+      context:
+        ["romantic", "friendship", "family"].includes(
+          input.relationship_context
+        )
+          ? input.relationship_context
+          : "romantic"
+    },
+    birth_data: {
+      date: input.date.trim(),
+      time: {
+        value: input.time_known ? input.time.trim() : null,
+        known: Boolean(input.time_known),
+        precision: input.time_known ? "exact" : "unknown"
+      },
+      place: {
+        raw_input: input.place || "",
+        resolved
+      }
+    },
+    house_system: input.house_system || "whole_sign",
+    created_at: nowIso(),
+    updated_at: nowIso(),
+    linked_primary_id: input.linked_primary_id || null
+  };
+}
+
+/**
+ * Applique une mise à jour à un profil existant (pure) et rafraîchit
+ * updated_at. Ne fait AUCUN recalcul astrologique — c'est le rôle de
+ * l'orchestrateur d'écouter ce changement (voir comparison_orchestrator.js).
+ */
+export function applyProfileUpdate(existingProfile, patchInput) {
+  const placeChanged =
+    patchInput.place !== undefined ||
+    patchInput.latitude !== undefined ||
+    patchInput.longitude !== undefined;
+
+  const currentResolved = existingProfile.birth_data.place.resolved;
+  const manualCoordsPatched =
+    patchInput.latitude !== undefined || patchInput.longitude !== undefined;
+  const currentHasCoords =
+    isValidLatitude(currentResolved.latitude) && isValidLongitude(currentResolved.longitude);
+  const mergedLatitude = manualCoordsPatched
+    ? (patchInput.latitude !== undefined ? patchInput.latitude : (currentHasCoords ? currentResolved.latitude : undefined))
+    : undefined;
+  const mergedLongitude = manualCoordsPatched
+    ? (patchInput.longitude !== undefined ? patchInput.longitude : (currentHasCoords ? currentResolved.longitude : undefined))
+    : undefined;
+
+  const mergedInput = {
+    role: existingProfile.role,
+    first_name: patchInput.first_name !== undefined
+      ? patchInput.first_name
+      : existingProfile.identity.first_name,
+    last_name: patchInput.last_name !== undefined
+      ? patchInput.last_name
+      : existingProfile.identity.last_name,
+    date: patchInput.date !== undefined
+      ? patchInput.date
+      : existingProfile.birth_data.date,
+    time: patchInput.time !== undefined
+      ? patchInput.time
+      : existingProfile.birth_data.time.value,
+    time_known: patchInput.time_known !== undefined
+      ? Boolean(patchInput.time_known)
+      : existingProfile.birth_data.time.known,
+    place: patchInput.place !== undefined
+      ? patchInput.place
+      : existingProfile.birth_data.place.raw_input,
+    latitude: placeChanged ? mergedLatitude : undefined,
+    longitude: placeChanged ? mergedLongitude : undefined,
+    house_system: patchInput.house_system || existingProfile.house_system,
+    timezone_id: patchInput.timezone_id !== undefined ? patchInput.timezone_id : currentResolved.timezone_id,
+    linked_primary_id: existingProfile.linked_primary_id
+  };
+
+  validateProfileInput(mergedInput);
+
+  const nextPlace = placeChanged
+    ? resolvePlace(mergedInput.place, mergedInput.latitude, mergedInput.longitude, mergedInput.timezone_id)
+    : existingProfile.birth_data.place.resolved;
+
+  return {
+    ...existingProfile,
+    identity: {
+      first_name: mergedInput.first_name.trim(),
+      last_name: (mergedInput.last_name || "").trim()
+    },
+    birth_data: {
+      date: mergedInput.date.trim(),
+      time: {
+        value: mergedInput.time_known ? mergedInput.time.trim() : null,
+        known: mergedInput.time_known,
+        precision: mergedInput.time_known ? "exact" : "unknown"
+      },
+      place: {
+        raw_input: mergedInput.place || "",
+        resolved: nextPlace
+      }
+    },
+    house_system: mergedInput.house_system,
+    updated_at: nowIso()
+  };
+}
+
+export function isProfileUsable(profile) {
+  return profile.birth_data.place.resolved.resolution_status === "resolved";
+}
+
+// ---------------------------------------------------------------------
+// API de haut niveau (avec effets de bord sur le repository) — c'est
+// cette API que l'UI et l'orchestrateur doivent utiliser.
+// ---------------------------------------------------------------------
+
+export function createProfile(input) {
+  if (input.role === "primary" && repository.getPrimaryProfile()) {
+    const err = new Error("Un seul profil principal est autorisé.");
+    err.type = "PRIMARY_ALREADY_EXISTS";
+    throw err;
+  }
+
+  const profile = buildProfile(input);
+  repository.saveProfile(profile);
+  return profile;
+}
+
+export function updateProfile(profileId, patchInput) {
+  const existing = repository.getProfile(profileId);
+  if (!existing) {
+    const err = new Error(`Profil introuvable : ${profileId}`);
+    err.type = "NOT_FOUND";
+    throw err;
+  }
+  const updated = applyProfileUpdate(existing, patchInput);
+  repository.saveProfile(updated);
+  return updated;
+}
+
+export function deleteProfile(profileId) {
+  repository.deleteProfile(profileId);
+}
+
+export function getProfile(profileId) {
+  return repository.getProfile(profileId);
+}
+
+export function getAllProfiles() {
+  return repository.getAllProfiles();
+}
+
+export function getTargetProfiles() {
+  return repository.getTargetProfiles();
+}
+
+export function getPrimaryProfile() {
+  return repository.getPrimaryProfile();
+}

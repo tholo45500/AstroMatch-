@@ -1,0 +1,55 @@
+{
+  "$id": "profile.schema.json",
+  "title": "Profile",
+  "type": "object",
+  "required": ["profile_id", "role", "identity", "birth_data"],
+  "properties": {
+    "profile_id": { "type": "string" },
+    "role": { "type": "string", "enum": ["primary", "target"] },
+    "identity": {
+      "type": "object",
+      "required": ["first_name"],
+      "properties": {
+        "first_name": { "type": "string" },
+        "last_name": { "type": "string" }
+      }
+    },
+    "birth_data": {
+      "type": "object",
+      "required": ["date", "time", "place"],
+      "properties": {
+        "date": { "type": "string", "format": "date" },
+        "time": {
+          "type": "object",
+          "required": ["known"],
+          "properties": {
+            "value": { "type": ["string", "null"] },
+            "known": { "type": "boolean" },
+            "precision": { "type": "string", "enum": ["exact", "approximate", "unknown"] }
+          }
+        },
+        "place": {
+          "type": "object",
+          "required": ["raw_input", "resolved"],
+          "properties": {
+            "raw_input": { "type": "string" },
+            "resolved": {
+              "type": "object",
+              "required": ["latitude", "longitude", "timezone_id", "resolution_status"],
+              "properties": {
+                "latitude": { "type": ["number", "null"] },
+                "longitude": { "type": ["number", "null"] },
+                "timezone_id": { "type": ["string", "null"] },
+                "resolution_status": { "type": "string", "enum": ["resolved", "ambiguous", "failed"] }
+              }
+            }
+          }
+        }
+      }
+    },
+    "house_system": { "type": "string", "enum": ["placidus", "whole_sign", "equal", "porphyry"] },
+    "created_at": { "type": "string", "format": "date-time" },
+    "updated_at": { "type": "string", "format": "date-time" },
+    "linked_primary_id": { "type": ["string", "null"] }
+  }
+}

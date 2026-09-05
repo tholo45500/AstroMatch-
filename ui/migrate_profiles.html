@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>AstroMatch — Migration profils</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: #09090b;
+      color: #fafafa;
+      padding: 24px;
+      line-height: 1.5;
+    }
+    pre {
+      background: #18181b;
+      padding: 16px;
+      border-radius: 12px;
+      white-space: pre-wrap;
+      overflow-x: auto;
+    }
+    .ok { color: #4ade80; }
+    .err { color: #f87171; }
+  </style>
+</head>
+
+<body>
+
+<h1>AstroMatch — Migration profils</h1>
+<pre id="output"></pre>
+
+<script>
+
+const output =
+  document.getElementById("output");
+
+function log(text, cls = "") {
+  const line = document.createElement("div");
+  line.className = cls;
+  line.textContent = text;
+  output.appendChild(line);
+}
+
+try {
+
+  const KEY = "astromatch:profiles";
+
+  const raw =
+    localStorage.getItem(KEY);
+
+  if (!raw) {
+    throw new Error("AUCUN_PROFIL_STOCKE");
+  }
+
+  const profiles =
+    JSON.parse(raw);
+
+  if (!Array.isArray(profiles)) {
+    throw new Error("PROFILS_FORMAT_INVALIDE");
+  }
+
+  /*
+   * Résolution locale déterministe.
+   *
+   * IMPORTANT :
+   * cette migration ne touche PAS au moteur
+   * et ne recrée PAS les profils.
+   */
+  const PLACES = {
+    "gien": {
+      latitude: 47.6933,
+      longitude: 2.6309,
+      timezone_id: "Europe/Paris"
+    },
+
+    "gien, france": {
+      latitude: 47.6933,
+      longitude: 2.6309,
+      timezone_id: "Europe/Paris"
+    },
+
+    "cahors": {
+      latitude: 44.4491,
+      longitude: 1.4366,
+      timezone_id: "Europe/Paris"
+    },
+
+    "cahors, france": {
+      latitude: 44.4491,
+      longitude: 1.4366,
+      timezone_id: "Europe/Paris"
+    }
+  };
+
+  log("Profils trouvés : " + profiles.length);
+  log("");
+
+  for (const profile of profiles) {
+
+    const rawPlace =
+      profile?.birth_data?.place?.raw_input || "";
+
+    const key =
+      rawPlace.trim().toLowerCase();
+
+    const resolved =
+      PLACES[key];
+
+    if (!resolved) {
+
+      throw new Error(
+        `${profile?.identity?.first_name || "Profil"} — ` +
+        `lieu non pris en charge : ${rawPlace}`
+      );
+    }
+
+    /*
+     * Modification STRICTEMENT ciblée.
+     */
+    profile.birth_data.place.resolved = {
+      latitude: resolved.latitude,
+      longitude: resolved.longitude,
+      timezone_id: resolved.timezone_id,
+      resolution_status: "resolved"
+    };
+
+    profile.updated_at =
+      new Date().toISOString();
+
+    log(
+      `${profile.identity?.first_name || "?"} — ` +
+      `${rawPlace} → resolved ` +
+      `(${resolved.latitude}, ${resolved.longitude})`,
+      "ok"
+    );
+  }
+
+  /*
+   * Écriture atomique du résultat.
+   */
+  localStorage.setItem(
+    KEY,
+    JSON.stringify(profiles)
+  );
+
+  /*
+   * Vérification immédiate après écriture.
+   */
+  const verify =
+    JSON.parse(localStorage.getItem(KEY));
+
+  for (const profile of verify) {
+
+    const status =
+      profile?.birth_data?.place?.resolved
+        ?.resolution_status;
+
+    if (status !== "resolved") {
+      throw new Error(
+        `${profile.identity?.first_name || "Profil"} ` +
+        `reste non résolu après migration`
+      );
+    }
+  }
+
+  log("");
+  log(
+    "LOCALSTORAGE MIGRATION : PASS",
+    "ok"
+  );
+
+  log(
+    "2 profils correctement résolus.",
+    "ok"
+  );
+
+  log("");
+  log("===== VÉRIFICATION FINALE =====");
+
+  for (const profile of verify) {
+
+    const r =
+      profile.birth_data.place.resolved;
+
+    log(
+      `${profile.identity.first_name} — ` +
+      `${profile.birth_data.place.raw_input} — ` +
+      `${r.latitude}, ${r.longitude} — ` +
+      `${r.timezone_id} — ${r.resolution_status}`,
+      "ok"
+    );
+  }
+
+} catch (error) {
+
+  output.innerHTML = "";
+
+  log(
+    "ERREUR : " +
+    (error?.message || String(error)),
+    "err"
+  );
+
+}
+
+</script>
+
+</body>
+</html>

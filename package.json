@@ -1,0 +1,19 @@
+{
+  "name": "astromatch",
+  "version": "3.1.0",
+  "description": "AstroMatch — moteur de compatibilité astrologique déterministe, socle commercial sans licence astronomique payante",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "ASTROMATCH_EPHEMERIS_PROVIDER=astronomy-engine node --test",
+    "demo": "ASTROMATCH_EPHEMERIS_PROVIDER=astronomy-engine node tools/demo.mjs",
+    "production:check": "ASTROMATCH_EPHEMERIS_PROVIDER=astronomy-engine node tools/production_check.mjs",
+    "test:offline": "ASTROMATCH_EPHEMERIS_PROVIDER=simulated node --test"
+  },
+  "engines": {
+    "node": ">=20.10.0"
+  },
+  "dependencies": {
+    "astronomy-engine": "2.1.19"
+  }
+}

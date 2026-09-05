@@ -1,0 +1,160 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>AstroMatch Runtime Probe</title>
+</head>
+
+<body>
+
+<pre id="probe">ASTROMATCH RUNTIME PROBE — démarrage...</pre>
+
+<script>
+(function () {
+  const box = document.getElementById("probe");
+
+  function log(title, value) {
+    box.textContent +=
+      "\n\n===== " + title + " =====\n" +
+      String(value);
+  }
+
+  window.addEventListener("error", function (e) {
+    log(
+      "JAVASCRIPT ERROR",
+      "message=" + e.message +
+      "\nfile=" + e.filename +
+      "\nline=" + e.lineno +
+      "\ncolumn=" + e.colno +
+      "\nstack=" + (e.error?.stack || "")
+    );
+  });
+
+  window.addEventListener("unhandledrejection", function (e) {
+    log(
+      "UNHANDLED PROMISE",
+      e.reason?.stack || e.reason || "Unknown rejection"
+    );
+  });
+
+  window.__probeLog = log;
+
+  log("CLASSIC", "Probe classique OK");
+})();
+</script>
+
+<script type="module">
+
+window.__probeLog(
+  "MODULE",
+  "Module AstroMatch probe démarré"
+);
+
+try {
+
+  /*
+   * On importe directement match_result.html n'est évidemment
+   * pas possible : c'est un document HTML.
+   *
+   * On récupère donc le code module via fetch puis on l'exécute
+   * dans un Blob module.
+   */
+
+  const response = await fetch("./match_result.html");
+
+  window.__probeLog(
+    "FETCH",
+    "HTTP " + response.status
+  );
+
+  const html = await response.text();
+
+  window.__probeLog(
+    "HTML",
+    "Taille : " + html.length
+  );
+
+  const marker = '<script type="module">';
+
+  const start = html.indexOf(marker);
+
+  window.__probeLog(
+    "MODULE SEARCH",
+    "Position : " + start
+  );
+
+  if (start < 0) {
+    throw new Error("SCRIPT MODULE INTROUVABLE");
+  }
+
+  const codeStart = start + marker.length;
+  const codeEnd = html.indexOf("</script>", codeStart);
+
+  window.__probeLog(
+    "MODULE RANGE",
+    codeStart + " → " + codeEnd
+  );
+
+  if (codeEnd < 0) {
+    throw new Error("FERMETURE MODULE INTROUVABLE");
+  }
+
+  const code = html.slice(codeStart, codeEnd);
+
+  window.__probeLog(
+    "MODULE CODE",
+    "Taille : " + code.length
+  );
+
+  /*
+   * Remplacement temporaire de start().
+   *
+   * On neutralise uniquement l'appel final :
+   * start();
+   *
+   * afin de pouvoir observer si le module arrive réellement
+   * jusqu'à la fin de son chargement.
+   */
+
+  const neutralized = code.replace(
+    /\nstart\(\);\s*$/,
+    "\nwindow.__probeLog('MODULE END', 'Fin du module atteinte');"
+  );
+
+  window.__probeLog(
+    "EXECUTION",
+    "Création du Blob module..."
+  );
+
+  const blob = new Blob(
+    [neutralized],
+    { type: "text/javascript" }
+  );
+
+  const url = URL.createObjectURL(blob);
+
+  window.__probeLog(
+    "BLOB",
+    "Chargement..."
+  );
+
+  await import(url);
+
+  window.__probeLog(
+    "SUCCESS",
+    "Module AstroMatch exécuté jusqu'au bout."
+  );
+
+} catch (error) {
+
+  window.__probeLog(
+    "ASTROMATCH MODULE ERROR",
+    error?.stack || error
+  );
+
+}
+
+</script>
+
+</body>
+</html>
