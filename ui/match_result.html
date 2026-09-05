@@ -1,6 +1,24 @@
 
 
 <script id="astromatch-status-legacy-global">
+
+/* ==========================================================
+   ASTROMATCH UI RESTORED HELPER — scoreProgressClass
+   ========================================================== */
+function scoreProgressClass(score) {
+  const n = Number(score);
+  if (n >= 80) return "bg-emerald-400";
+  if (n >= 60) return "bg-green-400";
+  if (n >= 50) return "bg-violet-400";
+  if (n >= 40) return "bg-amber-400";
+  return "bg-rose-400";
+}
+window.scoreProgressClass = scoreProgressClass;
+
+/* ==========================================================
+   END scoreProgressClass RESTORE
+   ========================================================== */
+
 (function () {
   "use strict";
 
@@ -1164,7 +1182,7 @@
 
   <!-- TABS -->
   <section class="mb-4">
-    <div class="grid grid-cols-3 gap-2 bg-slate-900/70 rounded-2xl p-1">
+    <div id="relationshipTabsContainer" class="grid grid-cols-3 gap-2 bg-slate-900/70 rounded-2xl p-1">
 
       <button
         id="tab-love"
@@ -1376,6 +1394,195 @@ window.addEventListener("unhandledrejection", function(e) {
 
 
 <script>
+/* ============================================================
+   ASTROMATCH UI HELPERS — RESTORED FROM LAST WORKING UI
+   ============================================================ */
+
+function factorCountLabel(count) {
+  const n = Number(count) || 0;
+  return `${n} ${n === 1 ? "facteur" : "facteurs"}`;
+}
+
+/* ============================================================
+   END ASTROMATCH UI HELPERS
+   ============================================================
+
+
+
+/* ASTROMATCH humanFactorLabel — RESTORED */
+function humanFactorLabel(value) {
+  const root = value ?? {};
+  const item = root?.item ?? root ?? {};
+
+  /*
+   * ==========================================================
+   * RESOLUTION HUMAN FACTOR — PRIORITE AU VRAI RULE_ID
+   * ==========================================================
+   *
+   * IMPORTANT :
+   * "id", "code" et "key" peuvent être des identifiants
+   * techniques d'objet et ne doivent jamais prendre priorité
+   * sur le rule_id AstroMatch.
+   */
+
+  const ruleIdCandidates = [
+    root?.rule_id,
+    root?.ruleId,
+
+    item?.rule_id,
+    item?.ruleId,
+
+    root?.contribution?.rule_id,
+    root?.contribution?.ruleId,
+
+    root?.rule?.rule_id,
+    root?.rule?.ruleId,
+
+    root?.factor?.rule_id,
+    root?.factor?.ruleId,
+
+    item?.contribution?.rule_id,
+    item?.contribution?.ruleId,
+
+    item?.rule?.rule_id,
+    item?.rule?.ruleId,
+
+    item?.factor?.rule_id,
+    item?.factor?.ruleId
+  ];
+
+  const ruleId = ruleIdCandidates.find(
+    v =>
+      v !== undefined &&
+      v !== null &&
+      String(v).trim() !== ""
+  );
+
+  const normalizedRuleId = String(
+    ruleId ?? ""
+  ).trim().toUpperCase();
+
+  /*
+   * PRIORITE ABSOLUE :
+   * dictionnaire humain V1.2.
+   */
+  if (
+    normalizedRuleId &&
+    typeof ASTROMATCH_HUMAN_FACTORS !== "undefined" &&
+    ASTROMATCH_HUMAN_FACTORS[normalizedRuleId]
+  ) {
+    const factor =
+      ASTROMATCH_HUMAN_FACTORS[normalizedRuleId];
+
+    if (typeof factor === "string") {
+      return factor;
+    }
+
+    if (factor?.title) {
+      return String(factor.title);
+    }
+  }
+
+  /*
+   * Fallback court pour compatibilité avec les anciennes
+   * structures de facteurs.
+   */
+  const shortRuleId = normalizedRuleId
+    .replace(/^V11B_/, "")
+    .replace(/^V11_/, "")
+    .replace(/^V\d+_/, "");
+
+  if (
+    shortRuleId &&
+    typeof FACTOR_FALLBACK_LABELS !== "undefined" &&
+    FACTOR_FALLBACK_LABELS[shortRuleId]
+  ) {
+    return FACTOR_FALLBACK_LABELS[shortRuleId];
+  }
+
+  /*
+   * Seulement maintenant :
+   * champs humains éventuellement fournis directement
+   * par le backend.
+   */
+  const humanFields = [
+    root?.name,
+    root?.label,
+    root?.title,
+
+    item?.name,
+    item?.label,
+    item?.title
+  ];
+
+  const humanValue = humanFields.find(
+    v =>
+      v !== undefined &&
+      v !== null &&
+      String(v).trim() !== ""
+  );
+
+  if (humanValue) {
+    return String(humanValue);
+  }
+
+  /*
+   * Dernier recours :
+   * aucun identifiant technique ne doit apparaître
+   * dans l'interface utilisateur.
+   */
+  return "Un facteur astrologique influence cette relation";
+}
+/* END humanFactorLabel */
+
+
+/* ASTROMATCH UI DEPENDENCIES — RESTORED */
+const DOMAIN_META = {
+  love: {
+    icon: "❤️",
+    label: "Amour"
+  },
+  emotions: {
+    icon: "🌙",
+    label: "Émotions"
+  },
+  communication: {
+    icon: "🗣️",
+    label: "Communication"
+  },
+  passion: {
+    icon: "🔥",
+    label: "Passion"
+  },
+  daily: {
+    icon: "🏠",
+    label: "Quotidien"
+  },
+  projects: {
+    icon: "🚀",
+    label: "Projets"
+  },
+  frictions: {
+    icon: "⚠️",
+    label: "Frictions"
+  }
+};
+
+/* END ASTROMATCH UI DEPENDENCIES */
+
+
+/* ASTROMATCH LEVEL LABELS — RESTORED */
+const LEVEL_LABELS = {
+  exceptional: "Exceptionnel",
+  very_high: "Très élevé",
+  high: "Élevé",
+  balanced: "Équilibré",
+  moderate: "Modéré",
+  low: "Faible",
+  very_low: "Très faible"
+};
+/* END LEVEL LABELS */
+
 /*
  * ============================================================
  * ASTROMATCH RELATIONSHIP VIEW ENGINE
@@ -1392,6 +1599,30 @@ window.addEventListener("unhandledrejection", function(e) {
  */
 
 let ASTROMATCH_RESULT = null;
+
+
+window.setAstroMatchRelationshipResult = function (result) {
+  if (!result || !result.global) {
+    console.warn(
+      "ASTROMATCH RELATIONSHIP RESULT — résultat invalide"
+    );
+    return;
+  }
+
+  ASTROMATCH_RESULT = result;
+  window.__astromatchLastResult = result;
+
+  console.log(
+    "ASTROMATCH RELATIONSHIP RESULT — BRIDGE OK",
+    Number(result.global.score),
+    result.global.label
+  );
+
+  if (typeof renderRelationshipMode === "function") {
+    renderRelationshipMode();
+  }
+};
+
 
 /*
  * ============================================================
@@ -2178,6 +2409,140 @@ function relationshipSpecificExplanation(factor, mode, classification) {
   }
 
   return data.favorable || data.advice || null;
+}
+
+
+
+function renderContextualRelationshipTabs(target) {
+  const container = document.getElementById(
+    "relationshipTabsContainer"
+  );
+
+  if (!container) {
+    console.warn(
+      "AstroMatch — conteneur des onglets relationnels introuvable."
+    );
+    return;
+  }
+
+  const context =
+    String(
+      target?.relationship?.context ||
+      target?.context ||
+      ""
+    )
+      .trim()
+      .toLowerCase();
+
+  let modes = [];
+
+  if (
+    context === "family" ||
+    context === "famille"
+  ) {
+    modes = ["family"];
+  } else if (
+    context === "friendship" ||
+    context === "friend" ||
+    context === "amitié" ||
+    context === "amitie"
+  ) {
+    modes = ["friendship"];
+  } else {
+    modes = ["love", "friendship", "flirt"];
+  }
+
+  const meta = {
+    love: {
+      icon: "❤️",
+      title: "Amour"
+    },
+    friendship: {
+      icon: "🤝",
+      title: "Amitié"
+    },
+    flirt: {
+      icon: "🔥",
+      title: "Flirt"
+    },
+    family: {
+      icon: "👨‍👩‍👧‍👦",
+      title: "Famille"
+    }
+  };
+
+  container.className =
+    "grid grid-cols-" +
+    (modes.length === 1 ? "1" : String(modes.length)) +
+    " gap-2 bg-slate-900/70 rounded-2xl p-1";
+
+  container.innerHTML = modes
+    .map(mode => {
+      const item = meta[mode];
+
+      return `
+        <button
+          type="button"
+          id="tab-${mode}"
+          class="relationship-tab ${
+            CURRENT_RELATIONSHIP_MODE === mode
+              ? "active"
+              : ""
+          }"
+          onclick="selectRelationshipMode('${mode}')"
+        >
+          <span class="text-xl">${item.icon}</span>
+          <span>${item.title}</span>
+        </button>
+      `;
+    })
+    .join("");
+
+  /*
+   * Le contexte du profil cible impose le premier mode
+   * autorisé si le mode courant n'est pas disponible.
+   */
+  if (!modes.includes(CURRENT_RELATIONSHIP_MODE)) {
+    CURRENT_RELATIONSHIP_MODE = modes[0];
+  }
+
+  container
+    .querySelectorAll(".relationship-tab")
+    .forEach(button => {
+      button.classList.toggle(
+        "active",
+        button.id ===
+          `tab-${CURRENT_RELATIONSHIP_MODE}`
+      );
+    });
+}
+
+function selectRelationshipMode(mode) {
+  const nextMode = String(mode || "").trim();
+
+  if (
+    typeof RELATIONSHIP_META !== "undefined" &&
+    !RELATIONSHIP_META[nextMode]
+  ) {
+    console.warn(
+      "AstroMatch — mode relationnel inconnu :",
+      nextMode
+    );
+    return;
+  }
+
+  CURRENT_RELATIONSHIP_MODE = nextMode;
+
+  console.log(
+    "ASTROMATCH RELATIONSHIP MODE — SELECT",
+    nextMode
+  );
+
+  renderRelationshipMode();
+}
+
+if (typeof window !== "undefined") {
+  window.selectRelationshipMode = selectRelationshipMode;
 }
 
 function renderRelationshipMode() {
@@ -3638,6 +4003,14 @@ function renderTargetSelector(targets, selectedTarget) {
       button.addEventListener(
         "click",
         () => {
+          console.log(
+            "🔥 ASTROMATCH TRACE — TARGET BUTTON CLICK",
+            {
+              id: button.dataset.targetId,
+              text: button.innerText.trim()
+            }
+          );
+
           selectTargetProfile(
             button.dataset.targetId
           );
@@ -3749,7 +4122,78 @@ function profileToApiInput(profile) {
   };
 }
 
+
+function normalizeRelationshipModeForTarget(target) {
+  const context =
+    target?.relationship?.context ||
+    target?.context ||
+    "";
+
+  const normalizedContext =
+    String(context).trim().toLowerCase();
+
+  /*
+   * Le contexte du profil cible pilote le mode relationnel
+   * par défaut, sans modifier le résultat astrologique.
+   */
+  if (
+    normalizedContext === "family" ||
+    normalizedContext === "famille"
+  ) {
+    CURRENT_RELATIONSHIP_MODE = "family";
+    return "family";
+  }
+
+  if (
+    normalizedContext === "friendship" ||
+    normalizedContext === "friend" ||
+    normalizedContext === "amitié" ||
+    normalizedContext === "amitie"
+  ) {
+    CURRENT_RELATIONSHIP_MODE = "friendship";
+    return "friendship";
+  }
+
+  /*
+   * Aucun contexte explicite :
+   * le profil reste polyvalent.
+   *
+   * Un mode spécialisé (family/friendship) provenant
+   * d'une cible précédente ne doit pas contaminer cette cible.
+   */
+  if (
+    CURRENT_RELATIONSHIP_MODE === "family" ||
+    CURRENT_RELATIONSHIP_MODE === "friendship"
+  ) {
+    CURRENT_RELATIONSHIP_MODE = "love";
+    return "love";
+  }
+
+  if (
+    typeof RELATIONSHIP_META !== "undefined" &&
+    RELATIONSHIP_META[CURRENT_RELATIONSHIP_MODE]
+  ) {
+    return CURRENT_RELATIONSHIP_MODE;
+  }
+
+  CURRENT_RELATIONSHIP_MODE = "love";
+  return "love";
+}
+
 function selectTargetProfile(profileId) {
+
+  console.log(
+    "ASTROMATCH TRACE — SELECT TARGET INPUT",
+    {
+      profileId: String(profileId ?? ""),
+      selectedBefore:
+        String(ASTROMATCH_SELECTED_TARGET?.profile_id || ""),
+      selectedBeforeName:
+        ASTROMATCH_SELECTED_TARGET?.identity?.first_name || ""
+    }
+  );
+
+
   const target = ASTROMATCH_TARGET_PROFILES.find(
     profile =>
       String(profile?.profile_id) === String(profileId)
@@ -3765,6 +4209,19 @@ function selectTargetProfile(profileId) {
 
   ASTROMATCH_SELECTED_TARGET = target;
 
+  console.log(
+    "ASTROMATCH TRACE — SELECT TARGET RESULT",
+    {
+      selectedId:
+        String(ASTROMATCH_SELECTED_TARGET?.profile_id || ""),
+      selectedName:
+        ASTROMATCH_SELECTED_TARGET?.identity?.first_name || "",
+      selectedLastName:
+        ASTROMATCH_SELECTED_TARGET?.identity?.last_name || ""
+    }
+  );
+
+
   /*
    * Le contexte relationnel appartient au profil cible.
    * Il pilote uniquement la présentation.
@@ -3773,9 +4230,37 @@ function selectTargetProfile(profileId) {
    */
   normalizeRelationshipModeForTarget(target);
 
-  renderTargetSelector(
-    ASTROMATCH_TARGET_PROFILES,
-    ASTROMATCH_SELECTED_TARGET
+  renderContextualRelationshipTabs(target);
+
+  console.log(
+    "🔥 ASTROMATCH TRACE — BEFORE RENDER TARGET SELECTOR",
+    {
+      selectedId:
+        String(ASTROMATCH_SELECTED_TARGET?.profile_id || ""),
+      selectedName:
+        ASTROMATCH_SELECTED_TARGET?.identity?.first_name || ""
+    }
+  );
+
+  try {
+    renderTargetSelector(
+      ASTROMATCH_TARGET_PROFILES,
+      ASTROMATCH_SELECTED_TARGET
+    );
+
+    console.log(
+      "🔥 ASTROMATCH TRACE — AFTER RENDER TARGET SELECTOR"
+    );
+  } catch (error) {
+    console.error(
+      "🔥 ASTROMATCH TRACE — RENDER TARGET SELECTOR ERROR",
+      error
+    );
+    throw error;
+  }
+
+  console.log(
+    "🔥 ASTROMATCH TRACE — BEFORE CALC STATE"
   );
 
   setTargetCalculationState("loading");
@@ -3788,6 +4273,18 @@ function selectTargetProfile(profileId) {
       target.identity?.first_name ||
       "Profil cible";
   }
+
+  console.log(
+    "ASTROMATCH TRACE — CALC TARGET",
+    {
+      id:
+        String(ASTROMATCH_SELECTED_TARGET?.profile_id || ""),
+      name:
+        ASTROMATCH_SELECTED_TARGET?.identity?.first_name || "",
+      lastName:
+        ASTROMATCH_SELECTED_TARGET?.identity?.last_name || ""
+    }
+  );
 
   calculateSelectedTarget().catch(error => {
     console.error(
@@ -3904,8 +4401,28 @@ function initializeTargetSelector(targets) {
     throw new Error("AUCUN_PROFIL_CIBLE");
   }
 
+  const previousId =
+    typeof ASTROMATCH_SELECTED_TARGET !== "undefined"
+      ? String(ASTROMATCH_SELECTED_TARGET?.profile_id || "")
+      : "";
+
+  const preservedTarget =
+    ASTROMATCH_TARGET_PROFILES.find(
+      target =>
+        String(target?.profile_id || "") === previousId
+    );
+
   ASTROMATCH_SELECTED_TARGET =
+    preservedTarget ||
     ASTROMATCH_TARGET_PROFILES[0];
+
+  normalizeRelationshipModeForTarget(
+    ASTROMATCH_SELECTED_TARGET
+  );
+
+  renderContextualRelationshipTabs(
+    ASTROMATCH_SELECTED_TARGET
+  );
 
   renderTargetSelector(
     ASTROMATCH_TARGET_PROFILES,
@@ -3916,6 +4433,18 @@ function initializeTargetSelector(targets) {
 }
 
 async function calculateSelectedTarget() {
+  console.log(
+    "🔥 ASTROMATCH TRACE — CALC ENTER",
+    {
+      selectedId:
+        String(ASTROMATCH_SELECTED_TARGET?.profile_id || ""),
+      selectedName:
+        ASTROMATCH_SELECTED_TARGET?.identity?.first_name || "",
+      selectedLastName:
+        ASTROMATCH_SELECTED_TARGET?.identity?.last_name || ""
+    }
+  );
+
   if (!ASTROMATCH_PRIMARY_PROFILE) {
     throw new Error("PROFIL_PRINCIPAL_INTRouvable");
   }
@@ -3927,8 +4456,35 @@ async function calculateSelectedTarget() {
   const primary =
     ASTROMATCH_PRIMARY_PROFILE;
 
+  /*
+   * Snapshot immuable de la cible sélectionnée pour
+   * cette requête. Une sélection ultérieure ne peut
+   * pas modifier la requête déjà construite.
+   */
   const target =
-    ASTROMATCH_SELECTED_TARGET;
+    ASTROMATCH_TARGET_PROFILES.find(
+      profile =>
+        String(profile?.profile_id) ===
+        String(
+          ASTROMATCH_SELECTED_TARGET?.profile_id || ""
+        )
+    );
+
+  if (!target) {
+    throw new Error("AUCUN_PROFIL_CIBLE");
+  }
+
+  console.log(
+    "ASTROMATCH TRACE — CALC FUNCTION RECEIVED",
+    {
+      id:
+        String(target?.profile_id || ""),
+      name:
+        target?.identity?.first_name || "",
+      lastName:
+        target?.identity?.last_name || ""
+    }
+  );
 
   const primaryInput =
     profileToApiInput(primary);
@@ -4014,14 +4570,49 @@ async function calculateSelectedTarget() {
       "RESULTAT_MATCH_INVALIDE"
     );
   }
-
+  /*
+   * SOURCE DE VÉRITÉ RELATIONNELLE
+   * Le résultat API réel alimente directement le
+   * Relationship View Engine.
+   */
   /*
    * Une réponse ancienne ne doit jamais écraser
    * le résultat du profil sélectionné ensuite.
+   *
+   * IMPORTANT :
+   * vérifier le token AVANT toute publication du résultat.
    */
   if (token !== ASTROMATCH_CALCULATION_TOKEN) {
+    console.log(
+      "ASTROMATCH — RESULT IGNORED (STALE TOKEN)",
+      {
+        token,
+        currentToken: ASTROMATCH_CALCULATION_TOKEN,
+        selectedId: String(
+          ASTROMATCH_SELECTED_TARGET?.profile_id || ""
+        ),
+        selectedName:
+          ASTROMATCH_SELECTED_TARGET?.identity?.first_name || ""
+      }
+    );
     return null;
   }
+
+  ASTROMATCH_RESULT = result;
+  window.__astromatchLastResult = result;
+
+  console.log(
+    "ASTROMATCH RESULT — SOURCE DE VÉRITÉ",
+    Number(result.global.score),
+    result.global.label
+  );
+
+  if (typeof renderRelationshipMode === "function") {
+    renderRelationshipMode();
+  }
+
+
+
 
   const global =
     result.global;
