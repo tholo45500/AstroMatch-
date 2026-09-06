@@ -1971,49 +1971,6 @@ function relationshipLevel(score) {
 }
 
 
-function debugFactorObject(value) {
-  try {
-    const root = value ?? {};
-    const item = root?.item ?? root ?? {};
-
-    const candidates = {
-      root_rule_id: root?.rule_id,
-      root_ruleId: root?.ruleId,
-      root_factor_id: root?.factor_id,
-      root_factorId: root?.factorId,
-      root_id: root?.id,
-      root_code: root?.code,
-      root_key: root?.key,
-
-      item_rule_id: item?.rule_id,
-      item_ruleId: item?.ruleId,
-      item_factor_id: item?.factor_id,
-      item_factorId: item?.factorId,
-      item_id: item?.id,
-      item_code: item?.code,
-      item_key: item?.key
-    };
-
-    console.log(
-      "ASTROMATCH FACTOR DEBUG",
-      JSON.stringify({
-        root,
-        item,
-        candidates
-      }, null, 2)
-    );
-
-    return {
-      root,
-      item,
-      candidates
-    };
-  } catch (error) {
-    console.error("ASTROMATCH FACTOR DEBUG ERROR", error);
-    return null;
-  }
-}
-
 function factorText(item) {
   /*
    * ASTROMATCH V1.2
@@ -2087,22 +2044,6 @@ function getAllFactors(result) {
   return factors;
 }
 
-function uniqueFactors(items) {
-  const seen = new Set();
-
-  return items.filter(entry => {
-    const text = factorText(entry.item || entry);
-
-    if (!text) return false;
-
-    const key = text.toLowerCase().trim();
-
-    if (seen.has(key)) return false;
-
-    seen.add(key);
-    return true;
-  });
-}
 
 function modeRelevantDomains(mode) {
   if (mode === "love") {
@@ -2118,61 +2059,8 @@ function modeRelevantDomains(mode) {
 
 
 
-function uniqueDisplayFactors(factors) {
-  const seen = new Set();
 
-  return (Array.isArray(factors) ? factors : []).filter((factor) => {
-    const item = factor?.item ?? factor;
 
-    const key = String(
-      item?.rule_id ??
-      item?.ruleId ??
-      item?.factor_id ??
-      item?.factorId ??
-      item?.id ??
-      item?.code ??
-      item?.key ??
-      humanFactorLabel(item)
-    ).toUpperCase();
-
-    if (seen.has(key)) {
-      return false;
-    }
-
-    seen.add(key);
-    return true;
-  });
-}
-
-function factorTypeIcon(type) {
-  switch (String(type || "").toLowerCase()) {
-    case "key":
-      return "◆";
-    case "strength":
-      return "✓";
-    case "tension":
-      return "⚠";
-    case "mixed":
-      return "⚖";
-    default:
-      return "•";
-  }
-}
-
-function factorTypeLabel(type) {
-  switch (String(type || "").toLowerCase()) {
-    case "key":
-      return "Facteur clé";
-    case "strength":
-      return "Point favorable";
-    case "tension":
-      return "Point de vigilance";
-    case "mixed":
-      return "Facteur mixte";
-    default:
-      return "Facteur";
-  }
-}
 
 function modeFactors(mode, result) {
   const domains = modeRelevantDomains(mode);
@@ -3000,29 +2888,7 @@ function renderTargetComparison() {
         error
       );
     }
-  } else {
-
-    /*
-     * Fallback temporaire :
-     * si le script V2.2 n'est pas encore disponible,
-     * on utilise le comparateur V2.1 existant.
-     */
-
-    if (
-      typeof window.astromatchInitComparatorV21 ===
-      "function"
-    ) {
-      try {
-        window.astromatchInitComparatorV21();
-      } catch (error) {
-        console.error(
-          "AstroMatch V2.1 fallback :",
-          error
-        );
-      }
-    }
-  }
-}
+  } }
 
 function astromatchV212RenderResult() {
   const state =
@@ -3145,16 +3011,7 @@ function astromatchV212RenderResult() {
             class="
               astromatch-compare-domain
               astromatch-domain-card-v21
-            "
-            onclick="
-              astromatchShowDomainDetail(
-                '${String(key).replace(
-                  /'/g,
-                  "\\'"
-                )}'
-              )
-            "
-          >
+            ">
 
             <div
               class="
@@ -4204,16 +4061,6 @@ function updateTargetSelectionVisual(target) {
 
   if (!hint || !target) return;
 
-  const firstName =
-    target.identity?.first_name ||
-    "Profil cible";
-
-  const lastName =
-    target.identity?.last_name ||
-    "";
-
-  const fullName =
-    `${firstName}${lastName ? " " + lastName : ""}`.trim();
 
   hint.textContent =
 
