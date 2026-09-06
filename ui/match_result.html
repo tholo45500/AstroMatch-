@@ -207,20 +207,6 @@
   padding-bottom:10px;
 }
 
-.astromatch-domain-card-v21 {
-  cursor:pointer;
-  transition:transform .16s ease, border-color .16s ease, background .16s ease;
-}
-
-.astromatch-domain-card-v21:hover {
-  transform:translateY(-2px);
-  border-color:rgba(255,255,255,.25);
-  background:rgba(255,255,255,.07);
-}
-
-.astromatch-domain-card-v21:active {
-  transform:scale(.99);
-}
 
 .astromatch-domain-detail {
   margin-top:14px;
@@ -282,178 +268,6 @@
 
 /* ASTROMATCH COMPARATOR V2.1 */
 
-
-/* ASTROMATCH V2.1.2 SELECTOR PREMIUM V2 */
-
-.astromatch-v211-selector-card {
-  margin: 0 0 18px;
-  padding: 18px;
-  border-radius: 24px;
-  border: 1px solid rgba(148,163,184,.16);
-  background:
-    linear-gradient(
-      145deg,
-      rgba(15,23,42,.96),
-      rgba(30,41,59,.88)
-    );
-  box-shadow:
-    0 18px 45px rgba(0,0,0,.20);
-}
-
-.astromatch-v211-selector-title {
-  text-align: center;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: #94a3b8;
-  margin-bottom: 15px;
-}
-
-.astromatch-v211-selector-grid {
-  display: grid;
-  grid-template-columns: minmax(0,1fr) auto minmax(0,1fr);
-  gap: 10px;
-  align-items: center;
-}
-
-.astromatch-v211-person {
-  min-width: 0;
-}
-
-.astromatch-v211-person-label {
-  display: block;
-  margin: 0 0 7px 4px;
-  font-size: 10px;
-  font-weight: 800;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: #64748b;
-}
-
-.astromatch-v211-person-box {
-  position: relative;
-  min-width: 0;
-}
-
-.astromatch-v211-person-box select {
-  width: 100%;
-  appearance: none;
-  -webkit-appearance: none;
-  padding: 13px 38px 13px 14px;
-  border-radius: 17px;
-  border: 1px solid rgba(148,163,184,.18);
-  background:
-    rgba(2,6,23,.72);
-  color: #f8fafc;
-  font-size: 14px;
-  font-weight: 700;
-  outline: none;
-  cursor: pointer;
-}
-
-.astromatch-v211-person-box::after {
-  content: "⌄";
-  position: absolute;
-  right: 14px;
-  top: 50%;
-  transform: translateY(-52%);
-  color: #94a3b8;
-  pointer-events: none;
-}
-
-.astromatch-v211-person-info {
-  margin-top: 7px;
-  padding: 9px 11px;
-  border-radius: 14px;
-  background: rgba(15,23,42,.65);
-  border: 1px solid rgba(148,163,184,.10);
-}
-
-.astromatch-v211-person-main {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  min-width: 0;
-}
-
-.astromatch-v211-person-sign {
-  flex: 0 0 auto;
-  font-size: 18px;
-}
-
-.astromatch-v211-person-name {
-  min-width: 0;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  color: #f8fafc;
-  font-size: 12px;
-  font-weight: 800;
-}
-
-.astromatch-v211-person-place {
-  margin-top: 3px;
-  padding-left: 26px;
-  color: #64748b;
-  font-size: 10px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.astromatch-v211-swap {
-  width: 42px;
-  height: 42px;
-  border-radius: 50%;
-  border: 1px solid rgba(148,163,184,.20);
-  background: rgba(15,23,42,.90);
-  color: #e2e8f0;
-  font-size: 19px;
-  font-weight: 800;
-  cursor: pointer;
-  transition:
-    transform .18s ease,
-    background .18s ease,
-    border-color .18s ease;
-}
-
-.astromatch-v211-swap:hover {
-  transform: rotate(180deg);
-  border-color: rgba(148,163,184,.38);
-}
-
-.astromatch-v211-selector-status {
-  margin-top: 12px;
-  text-align: center;
-  color: #64748b;
-  font-size: 11px;
-}
-
-.astromatch-v211-selector-status strong {
-  color: #cbd5e1;
-}
-
-@media (max-width: 560px) {
-  .astromatch-v211-selector-card {
-    padding: 14px;
-    border-radius: 20px;
-  }
-
-  .astromatch-v211-selector-grid {
-    grid-template-columns: 1fr;
-    gap: 8px;
-  }
-
-  .astromatch-v211-swap {
-    justify-self: center;
-    transform: rotate(90deg);
-  }
-
-  .astromatch-v211-swap:hover {
-    transform: rotate(270deg);
-  }
-}
 
 </style>
 <style id="ASTROMATCH_RELATIONSHIP_TABS">
@@ -2778,13 +2592,7 @@ function renderTargetSelector(targets, selectedTarget) {
       button.addEventListener(
         "click",
         () => {
-          console.log(
-            "🔥 ASTROMATCH TRACE — TARGET BUTTON CLICK",
-            {
-              id: button.dataset.targetId,
-              text: button.innerText.trim()
-            }
-          );
+          
 
           selectTargetProfile(
             button.dataset.targetId
@@ -2947,16 +2755,7 @@ function normalizeRelationshipModeForTarget(target) {
 
 function selectTargetProfile(profileId) {
 
-  console.log(
-    "ASTROMATCH TRACE — SELECT TARGET INPUT",
-    {
-      profileId: String(profileId ?? ""),
-      selectedBefore:
-        String(ASTROMATCH_SELECTED_TARGET?.profile_id || ""),
-      selectedBeforeName:
-        ASTROMATCH_SELECTED_TARGET?.identity?.first_name || ""
-    }
-  );
+  
 
 
   const target = ASTROMATCH_TARGET_PROFILES.find(
@@ -2974,17 +2773,7 @@ function selectTargetProfile(profileId) {
 
   ASTROMATCH_SELECTED_TARGET = target;
 
-  console.log(
-    "ASTROMATCH TRACE — SELECT TARGET RESULT",
-    {
-      selectedId:
-        String(ASTROMATCH_SELECTED_TARGET?.profile_id || ""),
-      selectedName:
-        ASTROMATCH_SELECTED_TARGET?.identity?.first_name || "",
-      selectedLastName:
-        ASTROMATCH_SELECTED_TARGET?.identity?.last_name || ""
-    }
-  );
+  
 
 
   /*
@@ -2997,36 +2786,12 @@ function selectTargetProfile(profileId) {
 
   renderContextualRelationshipTabs(target);
 
-  console.log(
-    "🔥 ASTROMATCH TRACE — BEFORE RENDER TARGET SELECTOR",
-    {
-      selectedId:
-        String(ASTROMATCH_SELECTED_TARGET?.profile_id || ""),
-      selectedName:
-        ASTROMATCH_SELECTED_TARGET?.identity?.first_name || ""
-    }
+  renderTargetSelector(
+    ASTROMATCH_TARGET_PROFILES,
+    ASTROMATCH_SELECTED_TARGET
   );
 
-  try {
-    renderTargetSelector(
-      ASTROMATCH_TARGET_PROFILES,
-      ASTROMATCH_SELECTED_TARGET
-    );
-
-    console.log(
-      "🔥 ASTROMATCH TRACE — AFTER RENDER TARGET SELECTOR"
-    );
-  } catch (error) {
-    console.error(
-      "🔥 ASTROMATCH TRACE — RENDER TARGET SELECTOR ERROR",
-      error
-    );
-    throw error;
-  }
-
-  console.log(
-    "🔥 ASTROMATCH TRACE — BEFORE CALC STATE"
-  );
+  
 
   setTargetCalculationState("loading");
 
@@ -3039,17 +2804,7 @@ function selectTargetProfile(profileId) {
       "Profil cible";
   }
 
-  console.log(
-    "ASTROMATCH TRACE — CALC TARGET",
-    {
-      id:
-        String(ASTROMATCH_SELECTED_TARGET?.profile_id || ""),
-      name:
-        ASTROMATCH_SELECTED_TARGET?.identity?.first_name || "",
-      lastName:
-        ASTROMATCH_SELECTED_TARGET?.identity?.last_name || ""
-    }
-  );
+  
 
   calculateSelectedTarget().catch(error => {
     console.error(
@@ -3198,17 +2953,7 @@ function initializeTargetSelector(targets) {
 }
 
 async function calculateSelectedTarget() {
-  console.log(
-    "🔥 ASTROMATCH TRACE — CALC ENTER",
-    {
-      selectedId:
-        String(ASTROMATCH_SELECTED_TARGET?.profile_id || ""),
-      selectedName:
-        ASTROMATCH_SELECTED_TARGET?.identity?.first_name || "",
-      selectedLastName:
-        ASTROMATCH_SELECTED_TARGET?.identity?.last_name || ""
-    }
-  );
+  
 
   if (!ASTROMATCH_PRIMARY_PROFILE) {
     throw new Error("PROFIL_PRINCIPAL_INTRouvable");
@@ -3239,17 +2984,7 @@ async function calculateSelectedTarget() {
     throw new Error("AUCUN_PROFIL_CIBLE");
   }
 
-  console.log(
-    "ASTROMATCH TRACE — CALC FUNCTION RECEIVED",
-    {
-      id:
-        String(target?.profile_id || ""),
-      name:
-        target?.identity?.first_name || "",
-      lastName:
-        target?.identity?.last_name || ""
-    }
-  );
+  
 
   const primaryInput =
     profileToApiInput(primary);
