@@ -1104,10 +1104,7 @@ window.scoreProgressClass = scoreProgressClass;
             class="text-xs text-slate-300 mt-1"
           >Lieu inconnu</div>
 
-          <div
-            id="primaryAstroLine"
-            class="text-xs text-slate-300 mt-1"
-          >—</div>
+
 
           <div class="profile-meta-grid mt-3">
             <div class="profile-meta-pill">
@@ -1287,7 +1284,6 @@ window.scoreProgressClass = scoreProgressClass;
       <div class="text-2xl">💚</div>
       <div>
         <h2 class="font-bold text-lg">Ce qui rapproche</h2>
-        <p class="text-xs text-slate-400">Ce qui peut naturellement vous rapprocher</p>
       </div>
     </div>
 
@@ -1304,7 +1300,6 @@ window.scoreProgressClass = scoreProgressClass;
       <div class="text-2xl">⚠️</div>
       <div>
         <h2 class="font-bold text-lg">Ce qui demande de l’attention</h2>
-        <p class="text-xs text-slate-400">Les dynamiques qui peuvent demander un peu plus d’attention</p>
       </div>
     </div>
 
@@ -1321,7 +1316,6 @@ window.scoreProgressClass = scoreProgressClass;
       <div class="text-2xl">🎯</div>
       <div>
         <h2 class="font-bold text-lg">Comment t'y prendre</h2>
-        <p class="text-xs text-slate-400">Conseils adaptés à cette dynamique</p>
       </div>
     </div>
 
@@ -1365,7 +1359,6 @@ window.scoreProgressClass = scoreProgressClass;
       <div class="text-2xl">✨</div>
       <div>
         <h2 class="font-bold text-lg">Ce qui influence cette relation</h2>
-        <p class="text-xs text-slate-400">Facteurs réellement détectés</p>
       </div>
     </div>
 
@@ -1571,6 +1564,168 @@ function humanFactorLabel(value) {
 
 
 /* ASTROMATCH UI DEPENDENCIES — RESTORED */
+/* ASTROMATCH V1.2 — HUMAN FACTORS — production UI */
+const ASTROMATCH_HUMAN_FACTORS = {
+
+  AMOUR_VENUS_CONJ_VENUS:
+    "Une façon d’aimer très proche",
+
+  AMOUR_VENUS_TRI_SOLEIL:
+    "Une belle harmonie entre affection et personnalité",
+
+  AMOUR_SATURNE_CARRE_VENUS:
+    "L’affection peut parfois sembler retenue",
+
+  PASSION_VENUS_CONJ_MARS:
+    "Une forte alchimie et une attirance naturelle",
+
+  PASSION_MARS_TRI_PLUTON:
+    "Une énergie passionnée et profondément intense",
+
+  COMM_MERCURE_SEX_MERCURE:
+    "Une communication fluide et complémentaire",
+
+  COMM_MERCURE_CARRE_MARS:
+    "Les discussions peuvent parfois devenir très vives",
+
+  EMOTIONS_LUNE_CONJ_LUNE:
+    "Une forte résonance émotionnelle",
+
+  EMOTIONS_LUNE_OPPO_NEPTUNE:
+    "Les émotions peuvent parfois manquer de clarté",
+
+  QUOTIDIEN_SATURNE_TRI_LUNE:
+    "Un bon équilibre entre stabilité et émotions",
+
+  PROJETS_SOLEIL_CONJ_SATURNE:
+    "Une capacité à construire quelque chose de solide",
+
+  FRICTIONS_MARS_OPPO_SATURNE:
+    "Des blocages peuvent apparaître face aux initiatives",
+
+  FRICTIONS_URANUS_CARRE_MARS:
+    "Une dynamique imprévisible peut créer des tensions",
+
+  V11_SUN_MOON_CONJ:
+    "Une forte connexion entre identité et émotions",
+
+  V11_SUN_MOON_TRINE:
+    "Une belle harmonie entre personnalité et émotions",
+
+  V11_SUN_MOON_SQUARE:
+    "La personnalité et les émotions peuvent parfois diverger",
+
+  V11_SUN_VENUS_CONJ:
+    "Une affection naturelle et spontanée",
+
+  V11_SUN_VENUS_SEXTILE:
+    "Une bonne entente entre personnalité et affection",
+
+  V11_SUN_VENUS_OPPOSITION:
+    "Une forte attirance, avec des différences de fonctionnement",
+
+  V11_MOON_VENUS_CONJ:
+    "Une grande douceur et une affection naturelle",
+
+  V11_MOON_VENUS_TRINE:
+    "Une belle harmonie affective",
+
+  V11_MOON_VENUS_SQUARE:
+    "Les besoins affectifs peuvent parfois se heurter",
+
+  V11_MERCURY_MOON_TRINE:
+    "Une bonne compréhension entre pensées et émotions",
+
+  V11_MERCURY_MOON_SQUARE:
+    "Les émotions peuvent parfois compliquer les échanges",
+
+  V11_MERCURY_VENUS_CONJ:
+    "Une communication naturellement chaleureuse",
+
+  V11_MERCURY_VENUS_TRINE:
+    "Une communication naturelle et agréable",
+
+  V11_MERCURY_MARS_TRINE:
+    "Des échanges dynamiques et stimulants",
+
+  V11_MOON_MARS_TRINE:
+    "Une énergie émotionnelle qui circule naturellement",
+
+  V11_MOON_MARS_SQUARE:
+    "Les émotions peuvent parfois provoquer des réactions fortes",
+
+  V11_VENUS_MARS_TRINE:
+    "Une belle alchimie entre affection et passion",
+
+  V11_VENUS_MARS_SQUARE:
+    "Une attirance intense et parfois électrique",
+
+  V11_VENUS_JUPITER_CONJ:
+    "Une grande générosité dans les sentiments",
+
+  V11_VENUS_JUPITER_TRINE:
+    "Une belle harmonie affective et généreuse",
+
+  V11_SUN_JUPITER_TRINE:
+    "Une énergie positive qui encourage la confiance",
+
+  V11_MOON_JUPITER_TRINE:
+    "Une chaleur émotionnelle et une belle générosité",
+
+  V11_JUPITER_SATURN_TRINE:
+    "Une bonne capacité à faire grandir des projets durables",
+
+  V11B_JUPITER_URANUS_CONJ:
+    "Une relation qui encourage le changement et la découverte",
+
+  V11B_JUPITER_URANUS_TRINE:
+    "Une énergie qui pousse à découvrir de nouvelles choses",
+
+  V11B_JUPITER_URANUS_SQUARE:
+    "Des envies différentes peuvent créer de l’instabilité",
+
+  V11B_JUPITER_NEPTUNE_CONJ:
+    "Une forte capacité à partager des rêves et des idéaux",
+
+  V11B_JUPITER_NEPTUNE_TRINE:
+    "Une vision commune qui peut nourrir les rêves",
+
+  V11B_JUPITER_NEPTUNE_SQUARE:
+    "Les attentes et les idéaux peuvent parfois manquer de réalisme",
+
+  V11B_JUPITER_PLUTO_CONJ:
+    "Une relation qui peut provoquer de profondes transformations",
+
+  V11B_JUPITER_PLUTO_TRINE:
+    "Une dynamique puissante qui favorise l’évolution",
+
+  V11B_JUPITER_PLUTO_SQUARE:
+    "Les ambitions peuvent parfois provoquer des rapports de force",
+
+  V11B_SATURN_URANUS_TRINE:
+    "Un bon équilibre entre stabilité et changement",
+
+  V11B_SATURN_URANUS_SQUARE:
+    "Le besoin de stabilité peut entrer en conflit avec l’envie de liberté",
+
+  V11B_SATURN_NEPTUNE_TRINE:
+    "La stabilité peut donner une forme concrète aux rêves",
+
+  V11B_SATURN_NEPTUNE_SQUARE:
+    "Les responsabilités peuvent parfois freiner les aspirations",
+
+  V11B_SATURN_PLUTO_TRINE:
+    "Une grande capacité à traverser les changements ensemble",
+
+  V11B_SATURN_PLUTO_SQUARE:
+    "Les périodes de changement peuvent créer une forte pression",
+
+};
+
+/* ASTROMATCH V1.2 — HUMAN FACTOR BRIDGE */
+window.__astromatchHumanFactorLabel = humanFactorLabel;
+
+
 const DOMAIN_META = {
   love: {
     icon: "❤️",
@@ -2709,6 +2864,12 @@ function renderRelationshipMode() {
       list.push("Utilise l'humour plutôt que la pression.");
     }
 
+    if (CURRENT_RELATIONSHIP_MODE === "family") {
+      list.push("Entretenez un dialogue simple et direct.");
+      list.push("Respecte les différences de rythme et de sensibilité.");
+      list.push("Privilégiez les moments partagés.");
+    }
+
     doList.innerHTML = list
       .map(x => `<div>• ${relationshipEscapeHtml(x)}</div>`)
       .join("");
@@ -2733,6 +2894,12 @@ function renderRelationshipMode() {
       list.push("Évite de forcer le rapprochement.");
       list.push("Évite la jalousie provoquée.");
       list.push("Évite les jeux de pouvoir.");
+    }
+
+    if (CURRENT_RELATIONSHIP_MODE === "family") {
+      list.push("Évite de surinterpréter les différences.");
+      list.push("Évite les reproches répétés ou les rapports de force.");
+      list.push("Évite de vouloir imposer ton rythme à l'autre.");
     }
 
     dontList.innerHTML = list
