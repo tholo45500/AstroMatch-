@@ -1061,41 +1061,77 @@ window.scoreProgressClass = scoreProgressClass;
   </header>
 
   <!-- PROFIL PRINCIPAL -->
-  <section class="glass rounded-3xl p-5 mb-4">
-    <div class="flex items-center gap-4">
+  <section class="mb-4">
+    <div class="astromatch-profile-card w-full text-left p-4">
+      <div class="flex items-start gap-3">
+        <div class="zodiac-art">
+          <span
+            id="primaryZodiacSymbol"
+            class="zodiac-symbol"
+          >✦</span>
+        </div>
 
-      <div class="w-14 h-14 shrink-0 rounded-2xl bg-slate-800/80 border border-slate-700 flex items-center justify-center text-2xl">
-        👤
+        <div class="min-w-0 flex-1">
+          <div class="flex items-start justify-between gap-2">
+            <div class="min-w-0">
+              <div
+                id="primaryName"
+                class="font-black text-base text-white truncate"
+              >Chargement…</div>
+
+              <div
+                id="primaryGender"
+                class="text-[11px] text-slate-400 mt-1"
+              >Profil principal</div>
+            </div>
+
+            <button
+              id="openTargetComparison"
+              type="button"
+              class="shrink-0 w-11 h-11 rounded-2xl bg-slate-800/80 border border-slate-700 flex items-center justify-center text-xl hover:bg-slate-700 transition"
+              aria-label="Comparer les profils"
+              title="Comparer les profils"
+            >⚖️</button>
+          </div>
+
+          <div
+            id="primaryBirthLine"
+            class="text-xs text-slate-400 mt-2"
+          >—</div>
+
+          <div
+            id="primaryPlaceLine"
+            class="text-xs text-slate-300 mt-1"
+          >Lieu inconnu</div>
+
+          <div
+            id="primaryAstroLine"
+            class="text-xs text-slate-300 mt-1"
+          >—</div>
+
+          <div class="profile-meta-grid mt-3">
+            <div class="profile-meta-pill">
+              <strong id="primaryMetaZodiac">—</strong>
+              <span id="primaryMetaZodiacName">Signe inconnu</span>
+            </div>
+
+            <div class="profile-meta-pill">
+              <strong id="primaryMetaAsc">↑ —</strong>
+              <span id="primaryMetaAscName">Ascendant</span>
+            </div>
+
+            <div class="profile-meta-pill">
+              <strong id="primaryElement">—</strong>
+            </div>
+
+            <div class="profile-meta-pill">
+              <strong id="primaryMetaGender">Profil principal</strong>
+            </div>
+          </div>
+        </div>
       </div>
-
-      <div class="min-w-0 flex-1">
-        <div class="text-[11px] uppercase tracking-widest text-slate-500">
-          Votre profil
-        </div>
-
-        <div
-          id="primaryName"
-          class="mt-1 font-bold text-lg truncate"
-        >
-          Chargement…
-        </div>
-
-        <div class="text-xs text-slate-500 mt-0.5">
-          Profil principal
-        </div>
-      </div>
-
-      <button
-        id="openTargetComparison"
-        type="button"
-        class="shrink-0 w-11 h-11 rounded-2xl bg-slate-800/80 border border-slate-700 flex items-center justify-center text-xl hover:bg-slate-700 transition"
-        aria-label="Comparer les profils"
-        title="Comparer les profils"
-      >⚖️</button>
-
     </div>
   </section>
-
 
   <!-- PROFILS CIBLES -->
   <section class="mb-4">
@@ -5083,78 +5119,89 @@ function renderProfileCard(target, selectedTarget) {
 function renderPrimaryProfileCard(profile) {
   if (!profile) return;
 
-  const name =
-    profileFullName(profile);
+  const name = profileFullName(profile);
+  const age = calculateAge(profile);
+  const zodiac = zodiacFromDate(profile?.birth_data?.date);
+  const asc = calculateDisplayAscendant(profile);
+  const gender = genderLabel(profile);
+  const place =
+    profile?.birth_data?.place?.raw_input || "Lieu inconnu";
+  const birth =
+    `${formatBirthDate(profile)} · ${formatBirthTime(profile)}`;
+  const element = zodiac?.element || "—";
 
-  const age =
-    calculateAge(profile);
+  const nameEl = document.getElementById("primaryName");
+  const genderEl = document.getElementById("primaryGender");
+  const birthEl = document.getElementById("primaryBirthLine");
+  const placeEl = document.getElementById("primaryPlaceLine");
+  const astroEl = document.getElementById("primaryAstroLine");
+  const elementEl = document.getElementById("primaryElement");
+  const symbolEl = document.getElementById("primaryZodiacSymbol");
 
-  const zodiac =
-    zodiacFromDate(
-      profile?.birth_data?.date
-    );
-
-  const asc =
-    calculateDisplayAscendant(profile);
-
-  const gender =
-    genderLabel(profile);
-
-  const element =
-    zodiac?.element || "";
-
-  const birthLine =
-    `${age === null ? "" : age + " ans · "}` +
-    `${formatBirthDate(profile)} · ` +
-    `${formatBirthTime(profile)} · ` +
-    `${profile?.birth_data?.place?.raw_input || "Lieu inconnu"}`;
-
-  const astroLine =
-    `${zodiac?.symbol || "✦"} ` +
-    `${zodiac?.name || "Signe inconnu"}` +
-    `${asc ? ` · ↑ ${asc.symbol} ${asc.name}` : ""}`;
-
-  const nameEl =
-    document.getElementById("primaryName");
-
-  const genderEl =
-    document.getElementById("primaryGender");
-
-  const birthEl =
-    document.getElementById("primaryBirthLine");
-
-  const astroEl =
-    document.getElementById("primaryAstroLine");
-
-  const elementEl =
-    document.getElementById("primaryElement");
-
-  const symbolEl =
-    document.getElementById("primaryZodiacSymbol");
+  const zodiacMetaEl =
+    document.getElementById("primaryMetaZodiac");
+  const zodiacNameMetaEl =
+    document.getElementById("primaryMetaZodiacName");
+  const ascMetaEl =
+    document.getElementById("primaryMetaAsc");
+  const ascNameMetaEl =
+    document.getElementById("primaryMetaAscName");
+  const genderMetaEl =
+    document.getElementById("primaryMetaGender");
 
   if (nameEl) {
     nameEl.textContent = name;
   }
 
   if (genderEl) {
-    genderEl.textContent = gender;
+    genderEl.textContent = gender || "Profil principal";
   }
 
   if (birthEl) {
-    birthEl.textContent = birthLine;
+    birthEl.textContent =
+      age === null ? birth : `${age} ans · ${birth}`;
+  }
+
+  if (placeEl) {
+    placeEl.textContent = place;
   }
 
   if (astroEl) {
-    astroEl.textContent = astroLine;
+    astroEl.textContent =
+      `${zodiac?.symbol || "✦"} ${zodiac?.name || "Signe inconnu"}` +
+      `${asc ? ` · ↑ ${asc.symbol} ${asc.name}` : ""}`;
+  }
+
+  if (symbolEl) {
+    symbolEl.textContent = zodiac?.symbol || "✦";
+  }
+
+  if (zodiacMetaEl) {
+    zodiacMetaEl.textContent = zodiac?.symbol || "—";
+  }
+
+  if (zodiacNameMetaEl) {
+    zodiacNameMetaEl.textContent =
+      zodiac?.name || "Signe inconnu";
+  }
+
+  if (ascMetaEl) {
+    ascMetaEl.textContent =
+      `↑ ${asc?.symbol || "—"}`;
+  }
+
+  if (ascNameMetaEl) {
+    ascNameMetaEl.textContent =
+      asc?.name || "Ascendant";
   }
 
   if (elementEl) {
     elementEl.textContent = element;
   }
 
-  if (symbolEl) {
-    symbolEl.textContent =
-      zodiac?.symbol || "✦";
+  if (genderMetaEl) {
+    genderMetaEl.textContent =
+      gender || "Profil principal";
   }
 }
 
@@ -6332,108 +6379,7 @@ window.addEventListener("DOMContentLoaded", function () {
 </script>
 <!-- ASTROMATCH_V22_BOOT_FIX_END -->
 
-<!-- ASTROMATCH RUNTIME DEBUG -->
-<div id="astromatchRuntimeDebug" style="
-position:fixed;
-left:0;
-right:0;
-bottom:0;
-max-height:42vh;
-overflow:auto;
-background:#000;
-color:#00ff66;
-font:11px monospace;
-z-index:2147483647;
-padding:8px;
-white-space:pre-wrap;
-border-top:2px solid #00ff66;
-"></div>
 
-<script id="astromatch-runtime-debug">
-(function () {
-  "use strict";
-
-  var box = document.getElementById("astromatchRuntimeDebug");
-
-  function stringify(value) {
-    try {
-      if (typeof value === "object" && value !== null) {
-        return JSON.stringify(value, null, 2);
-      }
-      return String(value);
-    } catch (e) {
-      return String(value);
-    }
-  }
-
-  function write() {
-    if (!box) return;
-
-    var args = Array.prototype.slice.call(arguments);
-    var text = args.map(stringify).join(" ");
-
-    box.textContent += text + "\n";
-    box.scrollTop = box.scrollHeight;
-  }
-
-  var oldLog = console.log;
-  var oldError = console.error;
-  var oldWarn = console.warn;
-
-  console.log = function () {
-    write("[LOG]", ...arguments);
-    oldLog.apply(console, arguments);
-  };
-
-  console.warn = function () {
-    write("[WARN]", ...arguments);
-    oldWarn.apply(console, arguments);
-  };
-
-  console.error = function () {
-    write("[ERROR]", ...arguments);
-    oldError.apply(console, arguments);
-  };
-
-  window.addEventListener("error", function (event) {
-    write(
-      "[WINDOW ERROR]",
-      event.message || "Erreur inconnue",
-      "ligne=" + event.lineno,
-      "col=" + event.colno,
-      event.error && event.error.stack
-        ? event.error.stack
-        : ""
-    );
-  });
-
-  window.addEventListener("unhandledrejection", function (event) {
-    write(
-      "[UNHANDLED PROMISE]",
-      event.reason && event.reason.stack
-        ? event.reason.stack
-        : event.reason
-    );
-  });
-
-  write("[DEBUG] runtime debug installé");
-  write("[DEBUG] document.readyState =", document.readyState);
-  write(
-    "[DEBUG] start =",
-    typeof start
-  );
-  write(
-    "[DEBUG] API_URL =",
-    typeof API_URL !== "undefined"
-      ? API_URL
-      : "UNDEFINED"
-  );
-  write(
-    "[DEBUG] localStorage profiles =",
-    localStorage.getItem("astromatch:profiles")
-  );
-})();
-</script>
 <!-- ASTROMATCH RUNTIME DEBUG END -->
 
 
