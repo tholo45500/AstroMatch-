@@ -73,7 +73,9 @@ function houseWeightFor(rule, aspect, synastry) {
       overlay.house_number === rule.overlay_house &&
       (overlay.planet === aspect.body_a.body || overlay.planet === aspect.body_b.body)
   );
-  return relevant ? rule.house_bonus : 1.0;
+  return relevant && rule.house_bonus > 0
+    ? rule.house_bonus
+    : 1.0;
 }
 
 /**

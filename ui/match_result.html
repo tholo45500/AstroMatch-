@@ -1,81 +1,6 @@
 
 
-<script id="astromatch-status-legacy-global">
 
-/* ==========================================================
-   ASTROMATCH UI RESTORED HELPER — scoreProgressClass
-   ========================================================== */
-function scoreProgressClass(score) {
-  const n = Number(score);
-  if (n >= 80) return "bg-emerald-400";
-  if (n >= 60) return "bg-green-400";
-  if (n >= 50) return "bg-violet-400";
-  if (n >= 40) return "bg-amber-400";
-  return "bg-rose-400";
-}
-window.scoreProgressClass = scoreProgressClass;
-
-/* ==========================================================
-   END scoreProgressClass RESTORE
-   ========================================================== */
-
-(function () {
-  "use strict";
-
-  window.__astromatchStatus = function (message) {
-    const text = String(message ?? "");
-
-    console.log("AstroMatch STATUS:", text);
-
-    const candidates = [
-      document.getElementById("status"),
-      document.getElementById("astromatchStatus"),
-      document.getElementById("loadingStatus"),
-      document.querySelector("[data-astromatch-status]")
-    ];
-
-    const target = candidates.find(Boolean);
-
-    if (target) {
-      target.textContent = text;
-    }
-  };
-
-  console.log(
-    "ASTROMATCH STATUS LEGACY GLOBAL — READY",
-    typeof window.__astromatchStatus
-  );
-})();
-</script>
-
-<script id="astromatch-status-bridge-v2">
-(function () {
-  "use strict";
-
-  function statusBridgeV2(message) {
-    const text = String(message ?? "");
-
-    console.log("AstroMatch STATUS:", text);
-
-    const candidates = [
-      document.getElementById("status"),
-      document.getElementById("astromatchStatus"),
-      document.getElementById("loadingStatus"),
-      document.querySelector("[data-astromatch-status]")
-    ];
-
-    const target = candidates.find(Boolean);
-
-    if (target) {
-      target.textContent = text;
-    }
-  }
-
-  window.__astromatchStatusBridgeV2 =
-    statusBridgeV2;
-
-})();
-</script>
 
 <!doctype html>
 <html lang="fr">
@@ -1050,6 +975,54 @@ window.scoreProgressClass = scoreProgressClass;
 </head>
 
 <body class="min-h-screen text-white">
+<script id="astromatch-status-legacy-global">
+
+/* ==========================================================
+   ASTROMATCH UI RESTORED HELPER — scoreProgressClass
+   ========================================================== */
+function scoreProgressClass(score) {
+  const n = Number(score);
+  if (n >= 80) return "bg-emerald-400";
+  if (n >= 60) return "bg-green-400";
+  if (n >= 50) return "bg-violet-400";
+  if (n >= 40) return "bg-amber-400";
+  return "bg-rose-400";
+}
+window.scoreProgressClass = scoreProgressClass;
+
+/* ==========================================================
+   END scoreProgressClass RESTORE
+   ========================================================== */
+
+(function () {
+  "use strict";
+
+  window.__astromatchStatus = function (message) {
+    const text = String(message ?? "");
+
+    console.log("AstroMatch STATUS:", text);
+
+    const candidates = [
+      document.getElementById("status"),
+      document.getElementById("astromatchStatus"),
+      document.getElementById("loadingStatus"),
+      document.querySelector("[data-astromatch-status]")
+    ];
+
+    const target = candidates.find(Boolean);
+
+    if (target) {
+      target.textContent = text;
+    }
+  };
+
+  console.log(
+    "ASTROMATCH STATUS LEGACY GLOBAL — READY",
+    typeof window.__astromatchStatus
+  );
+})();
+</script>
+
 
 
 <main class="max-w-xl mx-auto px-4 py-6 pb-12">
@@ -3870,7 +3843,7 @@ function getStoredProfiles() {
 
 async function start() {
   try {
-    window.__astromatchStatusBridgeV2("Lecture des profils AstroMatch…");
+    window.__astromatchStatus("Lecture des profils AstroMatch…");
 
     const {
       primary,
@@ -3931,7 +3904,7 @@ async function start() {
 
     const global = result.global;
 
-    window.__astromatchStatusBridgeV2(
+    window.__astromatchStatus(
       `Calcul réel terminé — ${Math.round(Number(global.score) || 0)}/100`
     );
 
@@ -4035,7 +4008,7 @@ async function start() {
       error?.message ||
       String(error);
 
-    window.__astromatchStatusBridgeV2(
+    window.__astromatchStatus(
       "ERREUR — " +
       message
     );
