@@ -1140,11 +1140,11 @@ window.scoreProgressClass = scoreProgressClass;
 
       <div>
         <div class="text-xs uppercase tracking-widest text-slate-500">
-          Profils cibles
+
         </div>
 
         <div class="text-sm text-slate-300 mt-1">
-          Choisis une personne pour voir votre dynamique.
+
         </div>
       </div>
 
@@ -1160,7 +1160,7 @@ window.scoreProgressClass = scoreProgressClass;
     <div
       id="targetSelector"
       class="space-y-2"
-      aria-label="Profils cibles"
+      aria-label="Sélection des profils"
     ></div>
 
     <div
@@ -1391,8 +1391,6 @@ window.scoreProgressClass = scoreProgressClass;
 
   </section>
 
-  <!-- RELIABILITY -->
-  <section id="reliability" class="glass rounded-3xl p-5 mb-4"></section>
 
   <!-- DIAGNOSTIC -->
   <div id="jsDiagnostic"
@@ -4078,7 +4076,7 @@ function updateTargetSelectionVisual(target) {
     `${firstName}${lastName ? " " + lastName : ""}`.trim();
 
   hint.textContent =
-    `Analyse active : ${fullName}.`;
+
 
   refreshTargetCards();
 }
@@ -4369,7 +4367,7 @@ function setTargetCalculationState(state) {
 
   if (state === "done") {
     if (element) {
-      element.textContent = "✓ Calculé";
+      element.textContent = "";
       element.className =
         "text-xs text-slate-300 whitespace-nowrap";
     }
@@ -5536,12 +5534,11 @@ function renderReliability(reliability) {
 
   element.innerHTML = `
     <div class="font-semibold">
-      Fiabilité :
-      ${escapeHtml(reliability.level || "Inconnue")}
+
     </div>
 
     <div class="mt-1 text-sm text-gray-400">
-      ${reliability.partial ? "Calcul partiel" : "Calcul complet"}
+
     </div>
 
     ${
