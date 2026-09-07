@@ -70,6 +70,56 @@ const server = http.createServer(async (req, res) => {
     });
   }
 
+  // Natal chart
+  if (req.method === "POST" && req.url === "/api/natal") {
+    try {
+      const input = await readBody(req);
+
+      if (!input.profile) {
+        return sendJson(res, 400, {
+          ok: false,
+          error: "PROFILE_REQUIRED"
+        });
+      }
+
+      console.log("API /api/natal — calcul...");
+
+      const profile =
+        buildProfile(input.profile);
+
+      const chart =
+        computeNatalChart(profile);
+
+      console.log(
+        "API /api/natal — OK:",
+        profile.identity.first_name
+      );
+
+      return sendJson(res, 200, {
+        ok: true,
+        result: {
+          profile: {
+            id: profile.profile_id,
+            name: profile.identity.first_name
+          },
+          chart
+        }
+      });
+
+    } catch (error) {
+      console.error(
+        "AstroMatch Natal API error:",
+        error
+      );
+
+      return sendJson(res, 500, {
+        ok: false,
+        error: error?.message || String(error),
+        type: error?.type || "ASTROMATCH_ERROR"
+      });
+    }
+  }
+
   // Match
   if (req.method === "POST" && req.url === "/api/match") {
     try {

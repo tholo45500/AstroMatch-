@@ -393,6 +393,14 @@ window.scoreProgressClass = scoreProgressClass;
               ✏️ Modifier
             </button>
 
+            <button
+              id="openNatalProfile"
+              type="button"
+              class="shrink-0 px-3 py-1.5 rounded-lg bg-violet-500/15 border border-violet-400/20 text-xs text-violet-200"
+            >
+              🌌 Mon thème
+            </button>
+
           </div>
 
           <div
@@ -491,6 +499,180 @@ window.scoreProgressClass = scoreProgressClass;
                 class="mt-5 w-full py-3 rounded-2xl bg-violet-600 font-black text-white">
           Enregistrer
         </button>
+
+      </div>
+    </div>
+  </div>
+
+
+  <!-- NATAL PROFILE VIEW -->
+  <div
+    id="natalProfileView"
+    class="fixed inset-0 z-[120] hidden bg-slate-950/95 backdrop-blur-sm overflow-y-auto"
+  >
+    <div class="min-h-full p-4">
+      <div class="max-w-xl mx-auto">
+
+        <div class="flex items-center justify-between mb-5">
+          <div>
+            <div class="text-xs uppercase tracking-widest text-violet-300">
+              AstroMatch
+            </div>
+            <h2 class="text-2xl font-black mt-1">
+              🌌 Mon thème astral
+            </h2>
+            <div
+              id="natalProfileName"
+              class="text-sm text-slate-400 mt-1"
+            >
+              Chargement…
+            </div>
+          </div>
+
+          <button
+            id="natalProfileClose"
+            type="button"
+            class="w-11 h-11 rounded-xl bg-white/5 border border-white/10 text-xl"
+          >
+            ×
+          </button>
+        </div>
+
+        <div
+          id="natalLoading"
+          class="rounded-2xl border border-white/10 bg-slate-900 p-4 text-sm text-slate-400"
+        >
+          Calcul du thème astral…
+        </div>
+
+        <div
+          id="natalError"
+          class="hidden rounded-2xl border border-red-500/20 bg-red-500/10 p-4 text-sm text-red-300"
+        ></div>
+
+        <div
+          id="natalContent"
+          class="hidden space-y-4"
+        >
+
+          <section class="rounded-3xl border border-white/10 bg-slate-900 p-4">
+            <div class="text-xs uppercase tracking-widest text-slate-500 mb-3">
+              Les 3 piliers
+            </div>
+
+            <div class="grid grid-cols-3 gap-3">
+              <div class="rounded-2xl bg-slate-950 p-3 text-center">
+                <div class="text-2xl">☀️</div>
+                <div class="text-xs text-slate-500 mt-1">Soleil</div>
+                <div id="natalSun" class="font-black mt-1">—</div>
+              </div>
+
+              <div class="rounded-2xl bg-slate-950 p-3 text-center">
+                <div class="text-2xl">🌙</div>
+                <div class="text-xs text-slate-500 mt-1">Lune</div>
+                <div id="natalMoon" class="font-black mt-1">—</div>
+              </div>
+
+              <div class="rounded-2xl bg-slate-950 p-3 text-center">
+                <div class="text-2xl">↑</div>
+                <div class="text-xs text-slate-500 mt-1">Ascendant</div>
+                <div id="natalAsc" class="font-black mt-1">—</div>
+              </div>
+            </div>
+          </section>
+
+          <section class="rounded-3xl border border-violet-400/10 bg-slate-900 p-4">
+            <div class="text-xs uppercase tracking-widest text-violet-300 mb-3">
+              ✨ Ta lecture
+            </div>
+
+            <div
+              id="natalSummary"
+              class="text-sm leading-relaxed text-slate-200"
+            ></div>
+
+            <div
+              id="natalInterpretations"
+              class="mt-4 space-y-3"
+            ></div>
+          </section>
+
+
+          <section class="rounded-3xl border border-white/10 bg-slate-900 p-4">
+            <div class="text-xs uppercase tracking-widest text-violet-300 mb-3">
+              ⚡ Tes dominantes
+            </div>
+
+            <div
+              id="natalDominantSummary"
+              class="text-sm text-slate-200 leading-relaxed mb-4"
+            ></div>
+
+            <div class="text-xs uppercase tracking-widest text-slate-500 mb-2">
+              Éléments
+            </div>
+
+            <div
+              id="natalElements"
+              class="grid grid-cols-2 gap-2"
+            ></div>
+
+            <div class="text-xs uppercase tracking-widest text-slate-500 mt-5 mb-2">
+              Modalités
+            </div>
+
+            <div
+              id="natalModalities"
+              class="grid grid-cols-3 gap-2"
+            ></div>
+          </section>
+
+<section class="rounded-3xl border border-white/10 bg-slate-900 p-4">
+            <div class="flex items-center justify-between mb-3">
+              <div class="text-xs uppercase tracking-widest text-slate-500">
+                Planètes
+              </div>
+              <div
+                id="natalMC"
+                class="text-xs text-slate-400"
+              >
+                MC —
+              </div>
+            </div>
+
+            <div
+              id="natalPlanets"
+              class="space-y-2"
+            ></div>
+          </section>
+
+          
+
+          <section class="rounded-3xl border border-white/10 bg-slate-900 p-4">
+            <div class="text-xs uppercase tracking-widest text-slate-500 mb-3">
+              Aspects principaux
+            </div>
+
+            <div
+              id="natalAspects"
+              class="space-y-2"
+            ></div>
+          </section>
+
+          <section class="rounded-3xl border border-white/10 bg-slate-900 p-4">
+            <div class="text-xs uppercase tracking-widest text-slate-500 mb-3">
+              Maisons
+            </div>
+
+            <div
+              id="natalHouses"
+              class="grid grid-cols-2 gap-2"
+            ></div>
+          </section>
+
+          
+
+        </div>
 
       </div>
     </div>
@@ -839,6 +1021,14 @@ window.addEventListener("DOMContentLoaded", function() {
   document
     .getElementById("primaryEditorSave")
     ?.addEventListener("click", savePrimaryEditor);
+
+  document
+    .getElementById("openNatalProfile")
+    ?.addEventListener("click", openNatalProfile);
+
+  document
+    .getElementById("natalProfileClose")
+    ?.addEventListener("click", closeNatalProfile);
 
   const box = document.getElementById("jsDiagnostic");
   if (box) box.textContent = "";
@@ -3561,6 +3751,864 @@ function relationshipContextLabel(profile) {
 }
 
 
+
+
+const NATAL_SIGNS = {
+  aries: ["♈", "Bélier"],
+  taurus: ["♉", "Taureau"],
+  gemini: ["♊", "Gémeaux"],
+  cancer: ["♋", "Cancer"],
+  leo: ["♌", "Lion"],
+  virgo: ["♍", "Vierge"],
+  libra: ["♎", "Balance"],
+  scorpio: ["♏", "Scorpion"],
+  sagittarius: ["♐", "Sagittaire"],
+  capricorn: ["♑", "Capricorne"],
+  aquarius: ["♒", "Verseau"],
+  pisces: ["♓", "Poissons"]
+};
+
+const NATAL_BODIES = {
+  sun: ["☀️", "Soleil"],
+  moon: ["🌙", "Lune"],
+  mercury: ["☿", "Mercure"],
+  venus: ["♀", "Vénus"],
+  mars: ["♂", "Mars"],
+  jupiter: ["♃", "Jupiter"],
+  saturn: ["♄", "Saturne"],
+  uranus: ["♅", "Uranus"],
+  neptune: ["♆", "Neptune"],
+  pluto: ["♇", "Pluton"]
+};
+
+function natalPositionText(point) {
+  if (!point) return "Indisponible";
+
+  const sign =
+    NATAL_SIGNS[point.sign] ||
+    ["✦", point.sign || "?"];
+
+  const degree =
+    Number.isFinite(Number(point.degree_in_sign))
+      ? Number(point.degree_in_sign).toFixed(1)
+      : "?";
+
+  return `${sign[0]} ${sign[1]} ${degree}°`;
+}
+
+
+const NATAL_ASPECTS = [
+  {
+    type: "conjunction",
+    label: "Conjonction",
+    symbol: "☌",
+    angle: 0,
+    orb: 8
+  },
+  {
+    type: "sextile",
+    label: "Sextile",
+    symbol: "⚹",
+    angle: 60,
+    orb: 4
+  },
+  {
+    type: "square",
+    label: "Carré",
+    symbol: "□",
+    angle: 90,
+    orb: 6
+  },
+  {
+    type: "trine",
+    label: "Trigone",
+    symbol: "△",
+    angle: 120,
+    orb: 7
+  },
+  {
+    type: "opposition",
+    label: "Opposition",
+    symbol: "☍",
+    angle: 180,
+    orb: 7
+  }
+];
+
+function natalAngularDistance(a, b) {
+  let d =
+    Math.abs(Number(a) - Number(b)) % 360;
+
+  if (d > 180) {
+    d = 360 - d;
+  }
+
+  return d;
+}
+
+function computeNatalAspects(points) {
+  const result = [];
+
+  for (let i = 0; i < points.length; i++) {
+    for (let j = i + 1; j < points.length; j++) {
+      const a = points[i];
+      const b = points[j];
+
+      const distance =
+        natalAngularDistance(
+          a.absolute_degree,
+          b.absolute_degree
+        );
+
+      let best = null;
+
+      for (const def of NATAL_ASPECTS) {
+        const orb =
+          Math.abs(distance - def.angle);
+
+        if (orb <= def.orb) {
+          if (!best || orb < best.orb) {
+            best = {
+              ...def,
+              orb
+            };
+          }
+        }
+      }
+
+      if (best) {
+        result.push({
+          bodyA: a,
+          bodyB: b,
+          ...best
+        });
+      }
+    }
+  }
+
+  return result.sort(
+    (a, b) => a.orb - b.orb
+  );
+}
+
+
+
+const NATAL_HOUSE_MEANINGS = {
+  1: ["Identité & apparence", "la manière dont tu te présentes et abordes le monde"],
+  2: ["Ressources & valeurs", "ton rapport à l'argent, aux possessions et à ce que tu valorises"],
+  3: ["Communication", "ta manière d'apprendre, communiquer et interagir avec ton environnement proche"],
+  4: ["Foyer & racines", "tes bases émotionnelles, ta famille et ton besoin de sécurité"],
+  5: ["Créativité & plaisir", "l'expression personnelle, les passions, les loisirs et la romance"],
+  6: ["Quotidien & travail", "tes habitudes, ton organisation, le travail quotidien et l'hygiène de vie"],
+  7: ["Relations & couple", "ta manière de vivre les partenariats, le couple et les engagements"],
+  8: ["Intimité & transformation", "les liens profonds, les crises, la transformation et les ressources partagées"],
+  9: ["Voyages & convictions", "les grandes idées, les croyances, les études et l'ouverture au monde"],
+  10: ["Carrière & ambition", "ta place sociale, tes objectifs et la manière dont tu veux être reconnu"],
+  11: ["Amis & projets", "les groupes, les amitiés, les réseaux et les projets collectifs"],
+  12: ["Monde intérieur", "l'inconscient, l'introspection, le retrait et ce qui agit en arrière-plan"]
+};
+
+
+const NATAL_HOUSE_ACTIONS = {
+  1: "Tu affirmes ton identité et abordes le monde",
+  2: "Tu construis ta sécurité matérielle et définis tes valeurs",
+  3: "Tu communiques, apprends et échanges avec ton environnement",
+  4: "Tu construis ton foyer, tes racines et ta sécurité émotionnelle",
+  5: "Tu exprimes ta créativité, tes plaisirs et tes élans amoureux",
+  6: "Tu organises ton quotidien, ton travail et tes habitudes",
+  7: "Tu recherches des relations et des partenariats",
+  8: "Tu vis l'intimité, les liens profonds et les transformations",
+  9: "Tu explores tes convictions, tes connaissances et le monde",
+  10: "Tu poursuis tes ambitions et construis ta place sociale",
+  11: "Tu t'investis dans les amitiés, les réseaux et les projets collectifs",
+  12: "Tu vis ton monde intérieur, ton intuition et ton besoin de retrait"
+};
+
+const NATAL_HOUSE_SIGN_TONES = {
+  aries:
+    "de manière directe, spontanée et volontaire, avec un fort besoin d'initiative",
+  taurus:
+    "avec patience, stabilité et pragmatisme, en recherchant sécurité et continuité",
+  gemini:
+    "avec curiosité, souplesse et besoin d'échanger, en multipliant les idées et les expériences",
+  cancer:
+    "avec sensibilité, instinct protecteur et attachement émotionnel",
+  leo:
+    "avec chaleur, expression et fierté, en recherchant reconnaissance et valorisation",
+  virgo:
+    "avec précision, analyse et sens pratique, en cherchant constamment à améliorer les choses",
+  libra:
+    "avec diplomatie, sens de l'équilibre et besoin d'harmonie dans les échanges",
+  scorpio:
+    "avec intensité, profondeur et instinct, en allant rarement à moitié dans les choses",
+  sagittarius:
+    "avec enthousiasme, liberté et besoin d'élargir tes horizons",
+  capricorn:
+    "avec sérieux, ambition et persévérance, en construisant sur le long terme",
+  aquarius:
+    "avec indépendance, originalité et besoin de fonctionner selon tes propres règles",
+  pisces:
+    "avec intuition, imagination et grande sensibilité à ton environnement"
+};
+
+function natalHouseInterpretation(houseNumber, signKey) {
+  const action =
+    NATAL_HOUSE_ACTIONS[houseNumber] ||
+    "Tu abordes ce domaine";
+
+  const tone =
+    NATAL_HOUSE_SIGN_TONES[signKey] ||
+    "d'une manière qui t'est propre";
+
+  return `${action} ${tone}.`;
+}
+
+const NATAL_SIGN_TRAITS = {
+  aries: ["Bélier", "initiative, franchise et énergie"],
+  taurus: ["Taureau", "stabilité, patience et sensualité"],
+  gemini: ["Gémeaux", "curiosité, échange et mobilité"],
+  cancer: ["Cancer", "sensibilité, protection et intuition"],
+  leo: ["Lion", "créativité, fierté et expression"],
+  virgo: ["Vierge", "analyse, précision et sens pratique"],
+  libra: ["Balance", "harmonie, diplomatie et relation"],
+  scorpio: ["Scorpion", "intensité, profondeur et instinct"],
+  sagittarius: ["Sagittaire", "liberté, enthousiasme et expansion"],
+  capricorn: ["Capricorne", "structure, endurance et ambition"],
+  aquarius: ["Verseau", "indépendance, originalité et recul"],
+  pisces: ["Poissons", "intuition, imagination et empathie"]
+};
+
+function natalTrait(sign) {
+  return NATAL_SIGN_TRAITS[sign] ||
+    [sign || "Signe inconnu", "une expression particulière"];
+}
+
+function natalPlacementCard(point, title, intro) {
+  if (!point) return "";
+
+  const sign = natalTrait(point.sign);
+
+  const house =
+    point.house
+      ? ` En maison ${point.house}, ce fonctionnement marque particulièrement ce secteur de ta vie.`
+      : "";
+
+  const retro =
+    point.retrograde
+      ? " Cette planète rétrograde s'exprime de façon plus intérieure."
+      : "";
+
+  return `
+    <div class="rounded-2xl bg-slate-950 p-4">
+      <div class="font-black text-white">
+        ${title}
+      </div>
+
+      <div class="text-sm text-slate-300 mt-2 leading-relaxed">
+        ${intro}
+        En ${sign[0]}, cela s'exprime par
+        ${sign[1]}.${house}${retro}
+      </div>
+    </div>
+  `;
+}
+
+
+const NATAL_ELEMENT_BY_SIGN = {
+  aries: "fire",
+  leo: "fire",
+  sagittarius: "fire",
+
+  taurus: "earth",
+  virgo: "earth",
+  capricorn: "earth",
+
+  gemini: "air",
+  libra: "air",
+  aquarius: "air",
+
+  cancer: "water",
+  scorpio: "water",
+  pisces: "water"
+};
+
+const NATAL_MODALITY_BY_SIGN = {
+  aries: "cardinal",
+  cancer: "cardinal",
+  libra: "cardinal",
+  capricorn: "cardinal",
+
+  taurus: "fixed",
+  leo: "fixed",
+  scorpio: "fixed",
+  aquarius: "fixed",
+
+  gemini: "mutable",
+  virgo: "mutable",
+  sagittarius: "mutable",
+  pisces: "mutable"
+};
+
+const NATAL_ELEMENT_INFO = {
+  fire: ["🔥", "Feu", "action, enthousiasme, spontanéité et affirmation"],
+  earth: ["🌱", "Terre", "réalisme, stabilité, patience et sens du concret"],
+  air: ["💨", "Air", "réflexion, communication, curiosité et sociabilité"],
+  water: ["💧", "Eau", "sensibilité, intuition, profondeur et réceptivité"]
+};
+
+const NATAL_MODALITY_INFO = {
+  cardinal: ["Cardinal", "initiative, démarrage et besoin de faire avancer les choses"],
+  fixed: ["Fixe", "constance, persévérance et capacité à tenir une direction"],
+  mutable: ["Mutable", "adaptation, souplesse et capacité à évoluer"]
+};
+
+function natalPercent(value, total) {
+  if (!total) return 0;
+  return Math.round((value / total) * 100);
+}
+
+function renderNatalDominants(chart, points) {
+  const placements = [...points];
+
+  const asc =
+    chart?.angles?.ascendant || null;
+
+  if (asc?.sign) {
+    placements.push({
+      body: "ascendant",
+      sign: asc.sign
+    });
+  }
+
+  const elements = {
+    fire: 0,
+    earth: 0,
+    air: 0,
+    water: 0
+  };
+
+  const modalities = {
+    cardinal: 0,
+    fixed: 0,
+    mutable: 0
+  };
+
+  for (const placement of placements) {
+    const element =
+      NATAL_ELEMENT_BY_SIGN[placement.sign];
+
+    const modality =
+      NATAL_MODALITY_BY_SIGN[placement.sign];
+
+    if (element) {
+      elements[element]++;
+    }
+
+    if (modality) {
+      modalities[modality]++;
+    }
+  }
+
+  const total = placements.length;
+
+  const dominantElement =
+    Object.entries(elements)
+      .sort((a, b) => b[1] - a[1])[0];
+
+  const dominantModality =
+    Object.entries(modalities)
+      .sort((a, b) => b[1] - a[1])[0];
+
+  const elementInfo =
+    NATAL_ELEMENT_INFO[dominantElement[0]];
+
+  const modalityInfo =
+    NATAL_MODALITY_INFO[dominantModality[0]];
+
+  const summary =
+    document.getElementById(
+      "natalDominantSummary"
+    );
+
+  if (summary) {
+    summary.textContent =
+      `Ta dominante élémentaire est ${elementInfo[1]} : ${elementInfo[2]}. ` +
+      `Ta modalité dominante est ${modalityInfo[0]} : ${modalityInfo[1]}.`;
+  }
+
+  const elementsEl =
+    document.getElementById("natalElements");
+
+  if (elementsEl) {
+    elementsEl.innerHTML =
+      Object.entries(elements)
+        .map(([key, count]) => {
+          const info =
+            NATAL_ELEMENT_INFO[key];
+
+          const pct =
+            natalPercent(count, total);
+
+          return `
+            <div class="rounded-xl bg-slate-950 p-3">
+              <div class="flex items-center justify-between">
+                <div class="font-bold">
+                  ${info[0]} ${info[1]}
+                </div>
+
+                <div class="text-violet-300 font-black">
+                  ${pct}%
+                </div>
+              </div>
+
+              <div class="text-xs text-slate-500 mt-1">
+                ${count} placement${count > 1 ? "s" : ""}
+              </div>
+
+              <div class="h-1.5 bg-white/5 rounded-full mt-2 overflow-hidden">
+                <div
+                  class="h-full bg-violet-400 rounded-full"
+                  style="width:${pct}%"
+                ></div>
+              </div>
+            </div>
+          `;
+        })
+        .join("");
+  }
+
+  const modalitiesEl =
+    document.getElementById(
+      "natalModalities"
+    );
+
+  if (modalitiesEl) {
+    modalitiesEl.innerHTML =
+      Object.entries(modalities)
+        .map(([key, count]) => {
+          const info =
+            NATAL_MODALITY_INFO[key];
+
+          const pct =
+            natalPercent(count, total);
+
+          return `
+            <div class="rounded-xl bg-slate-950 p-3 text-center">
+              <div class="text-sm font-bold">
+                ${info[0]}
+              </div>
+
+              <div class="text-xl font-black text-violet-300 mt-1">
+                ${pct}%
+              </div>
+
+              <div class="text-[10px] text-slate-500 mt-1">
+                ${count} placements
+              </div>
+            </div>
+          `;
+        })
+        .join("");
+  }
+}
+
+function renderNatalChart(chart, name) {
+  const points =
+    Array.isArray(chart?.points)
+      ? chart.points
+      : [];
+
+  const sun =
+    points.find(p => p.body === "sun");
+
+  const moon =
+    points.find(p => p.body === "moon");
+
+  const asc =
+    chart?.angles?.ascendant || null;
+
+  const mc =
+    chart?.angles?.midheaven || null;
+
+  document.getElementById("natalProfileName").textContent =
+    name || "Profil principal";
+
+  document.getElementById("natalSun").textContent =
+    natalPositionText(sun);
+
+  document.getElementById("natalMoon").textContent =
+    natalPositionText(moon);
+
+  document.getElementById("natalAsc").textContent =
+    asc
+      ? natalPositionText(asc)
+      : "Heure inconnue";
+
+  document.getElementById("natalMC").textContent =
+    mc
+      ? `MC ${natalPositionText(mc)}`
+      : "MC indisponible";
+
+  const planets =
+    document.getElementById("natalPlanets");
+
+  planets.innerHTML =
+    points.map(point => {
+      const body =
+        NATAL_BODIES[point.body] ||
+        ["✦", point.body];
+
+      const house =
+        point.house
+          ? `Maison ${point.house}`
+          : "Maison inconnue";
+
+      const retro =
+        point.retrograde
+          ? `<span class="text-amber-300">Rétrograde</span>`
+          : "";
+
+      return `
+        <div class="flex items-center justify-between gap-3 rounded-xl bg-slate-950 p-3">
+          <div>
+            <div class="font-bold">
+              ${body[0]} ${escapeHtml(body[1])}
+            </div>
+            <div class="text-xs text-slate-400 mt-1">
+              ${escapeHtml(natalPositionText(point))}
+            </div>
+          </div>
+
+          <div class="text-right text-xs text-slate-400">
+            <div>${escapeHtml(house)}</div>
+            <div class="mt-1">${retro}</div>
+          </div>
+        </div>
+      `;
+    }).join("");
+
+
+
+  const summary =
+    document.getElementById("natalSummary");
+
+  const interpretations =
+    document.getElementById("natalInterpretations");
+
+  if (summary && interpretations) {
+    const mercury =
+      points.find(p => p.body === "mercury");
+
+    const venus =
+      points.find(p => p.body === "venus");
+
+    const mars =
+      points.find(p => p.body === "mars");
+
+    const sunTrait =
+      sun ? natalTrait(sun.sign) : null;
+
+    const moonTrait =
+      moon ? natalTrait(moon.sign) : null;
+
+    const ascTrait =
+      asc ? natalTrait(asc.sign) : null;
+
+    const texts = [];
+
+    if (sunTrait) {
+      texts.push(
+        `Ton Soleil en ${sunTrait[0]} donne à ton identité une tonalité de ${sunTrait[1]}.`
+      );
+    }
+
+    if (moonTrait) {
+      texts.push(
+        `Ta Lune en ${moonTrait[0]} colore ton monde émotionnel par ${moonTrait[1]}.`
+      );
+    }
+
+    if (ascTrait) {
+      texts.push(
+        `Ton Ascendant ${ascTrait[0]} influence ta manière d'aborder le monde avec ${ascTrait[1]}.`
+      );
+    }
+
+    summary.textContent =
+      texts.join(" ");
+
+    interpretations.innerHTML = [
+      natalPlacementCard(
+        sun,
+        "☀️ Identité",
+        "Le Soleil représente ton identité, ta volonté et la manière dont tu cherches à t'affirmer."
+      ),
+
+      natalPlacementCard(
+        moon,
+        "🌙 Monde émotionnel",
+        "La Lune représente tes réactions instinctives, tes besoins émotionnels et ce qui te sécurise."
+      ),
+
+      natalPlacementCard(
+        mercury,
+        "☿ Communication",
+        "Mercure représente ta manière de réfléchir, comprendre et communiquer."
+      ),
+
+      natalPlacementCard(
+        venus,
+        "♀ Affectif",
+        "Vénus représente ta manière d'aimer, de créer du lien et ce que tu apprécies."
+      ),
+
+      natalPlacementCard(
+        mars,
+        "♂ Action & désir",
+        "Mars représente ta manière d'agir, de désirer et de mobiliser ton énergie."
+      )
+    ].join("");
+  }
+
+  renderNatalDominants(
+    chart,
+    points
+  );
+
+  const aspects =
+    computeNatalAspects(points);
+
+  const aspectsEl =
+    document.getElementById("natalAspects");
+
+  if (aspectsEl) {
+    if (!aspects.length) {
+      aspectsEl.innerHTML = `
+        <div class="text-sm text-slate-400">
+          Aucun aspect majeur détecté.
+        </div>
+      `;
+    } else {
+      aspectsEl.innerHTML =
+        aspects.slice(0, 15).map(aspect => {
+          const a =
+            NATAL_BODIES[aspect.bodyA.body] ||
+            ["✦", aspect.bodyA.body];
+
+          const b =
+            NATAL_BODIES[aspect.bodyB.body] ||
+            ["✦", aspect.bodyB.body];
+
+          return `
+            <div class="rounded-xl bg-slate-950 p-3">
+              <div class="flex items-center justify-between gap-3">
+                <div class="font-bold">
+                  ${a[0]} ${escapeHtml(a[1])}
+                  <span class="mx-1 text-violet-300">
+                    ${aspect.symbol}
+                  </span>
+                  ${b[0]} ${escapeHtml(b[1])}
+                </div>
+
+                <div class="text-xs text-slate-400">
+                  orbe ${aspect.orb.toFixed(1)}°
+                </div>
+              </div>
+
+              <div class="text-xs text-slate-500 mt-1">
+                ${aspect.label}
+              </div>
+            </div>
+          `;
+        }).join("");
+    }
+  }
+
+  const houses =
+    document.getElementById("natalHouses");
+
+  const houseList =
+    Array.isArray(chart?.houses)
+      ? chart.houses
+      : [];
+
+  if (!houseList.length) {
+    houses.innerHTML = `
+      <div class="col-span-2 text-sm text-slate-400">
+        Maisons indisponibles sans heure de naissance précise.
+      </div>
+    `;
+  } else {
+    const usedHouseSystem =
+      chart?.calculation?.used_house_system ||
+      chart?.calculation?.requested_house_system ||
+      "";
+
+    const wholeSign =
+      usedHouseSystem === "whole_sign";
+
+    const systemInfo =
+      wholeSign
+        ? `<div class="col-span-2 rounded-xl bg-violet-500/10 border border-violet-400/10 p-3 text-xs text-violet-200">
+             Système : Maisons entières
+           </div>`
+        : "";
+
+    houses.innerHTML =
+      systemInfo +
+      houseList.map(house => {
+        const sign =
+          NATAL_SIGNS[house.sign] ||
+          ["✦", house.sign || "?"];
+
+        const degree =
+          Number.isFinite(Number(house.cusp_degree))
+            ? (
+                (
+                  Number(house.cusp_degree) % 30
+                ) + 30
+              ) % 30
+            : null;
+
+        return `
+          <div class="rounded-xl bg-slate-950 p-3">
+            <div class="text-xs text-slate-500">
+              Maison ${house.number}
+            </div>
+
+            <div class="text-sm font-black text-white mt-1">
+              ${escapeHtml(
+                NATAL_HOUSE_MEANINGS[house.number]?.[0]
+                || "Secteur de vie"
+              )}
+            </div>
+
+            <div class="font-bold mt-2">
+              ${sign[0]} ${escapeHtml(sign[1])}
+            </div>
+
+            ${
+              wholeSign
+                ? ""
+                : `<div class="text-xs text-slate-400">
+                     ${degree === null ? "—" : degree.toFixed(1) + "°"}
+                   </div>`
+            }
+
+            <div class="text-xs text-slate-300 mt-2 leading-relaxed">
+              ${escapeHtml(
+                natalHouseInterpretation(
+                  house.number,
+                  house.sign
+                )
+              )}
+            </div>
+          </div>
+        `;
+      }).join("");
+  }
+
+  const reliability =
+    chart?.reliability || {};
+
+  const reliabilityText = [
+    reliability.time_known
+      ? "✓ Heure connue"
+      : "⚠ Heure inconnue",
+
+    reliability.ascendant_valid
+      ? "✓ Ascendant calculable"
+      : "⚠ Ascendant indisponible",
+
+    reliability.houses_valid
+      ? "✓ Maisons calculables"
+      : "⚠ Maisons indisponibles"
+  ].join(" · ");
+
+  // Fiabilité conservée en interne, non affichée dans l'interface.
+}
+
+function closeNatalProfile() {
+  document
+    .getElementById("natalProfileView")
+    ?.classList.add("hidden");
+
+  document.body.classList.remove("overflow-hidden");
+}
+
+async function openNatalProfile() {
+  const profile =
+    ASTROMATCH_PRIMARY_PROFILE;
+
+  if (!profile) return;
+
+  const view =
+    document.getElementById("natalProfileView");
+
+  const loading =
+    document.getElementById("natalLoading");
+
+  const content =
+    document.getElementById("natalContent");
+
+  const errorBox =
+    document.getElementById("natalError");
+
+  view.classList.remove("hidden");
+  loading.classList.remove("hidden");
+  content.classList.add("hidden");
+  errorBox.classList.add("hidden");
+
+  document.body.classList.add("overflow-hidden");
+
+  try {
+    const response =
+      await fetch(
+        "http://127.0.0.1:3000/api/natal",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            profile:
+              profileToApiInput(profile)
+          })
+        }
+      );
+
+    const payload =
+      await response.json();
+
+    if (!response.ok || !payload.ok) {
+      throw new Error(
+        payload.error ||
+        `API HTTP ${response.status}`
+      );
+    }
+
+    renderNatalChart(
+      payload.result?.chart,
+      payload.result?.profile?.name
+    );
+
+    loading.classList.add("hidden");
+    content.classList.remove("hidden");
+
+  } catch (error) {
+    loading.classList.add("hidden");
+
+    errorBox.textContent =
+      error?.message || String(error);
+
+    errorBox.classList.remove("hidden");
+
+    console.error(
+      "AstroMatch natal view error:",
+      error
+    );
+  }
+}
 
 function primaryEditorElement(id) {
   return document.getElementById(id);
