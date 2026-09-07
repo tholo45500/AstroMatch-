@@ -385,7 +385,14 @@ window.scoreProgressClass = scoreProgressClass;
               >Profil principal</div>
             </div>
 
-            
+            <button
+              id="editPrimaryProfile"
+              type="button"
+              class="shrink-0 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs text-slate-300"
+            >
+              ✏️ Modifier
+            </button>
+
           </div>
 
           <div
@@ -423,6 +430,71 @@ window.scoreProgressClass = scoreProgressClass;
       </div>
     </div>
   </section>
+
+
+  <!-- PRIMARY PROFILE EDITOR -->
+  <div id="primaryProfileEditor"
+       class="fixed inset-0 z-[110] hidden bg-slate-950/90 backdrop-blur-sm overflow-y-auto">
+
+    <div class="min-h-full flex items-center justify-center p-4">
+      <div class="w-full max-w-lg rounded-3xl border border-white/10 bg-slate-900 p-5">
+
+        <div class="flex justify-between items-center mb-5">
+          <div>
+            <div class="text-xs text-slate-500 uppercase">Profil principal</div>
+            <h2 class="text-xl font-black">Modifier mon profil</h2>
+          </div>
+
+          <button id="primaryEditorClose"
+                  type="button"
+                  class="w-10 h-10 rounded-xl bg-white/5 text-xl">×</button>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3">
+          <input id="primaryEditorFirstName"
+                 placeholder="Prénom"
+                 class="rounded-xl bg-slate-950 border border-white/10 p-3 text-white">
+
+          <input id="primaryEditorLastName"
+                 placeholder="Nom"
+                 class="rounded-xl bg-slate-950 border border-white/10 p-3 text-white">
+        </div>
+
+        <select id="primaryEditorGender"
+                class="mt-3 w-full rounded-xl bg-slate-950 border border-white/10 p-3 text-white">
+          <option value="">Sexe non renseigné</option>
+          <option value="female">Femme</option>
+          <option value="male">Homme</option>
+        </select>
+
+        <input id="primaryEditorDate"
+               type="date"
+               class="mt-3 w-full rounded-xl bg-slate-950 border border-white/10 p-3 text-white">
+
+        <input id="primaryEditorTime"
+               type="time"
+               class="mt-3 w-full rounded-xl bg-slate-950 border border-white/10 p-3 text-white">
+
+        <div class="mt-1 text-[11px] text-slate-500">
+          Heure vide = heure inconnue
+        </div>
+
+        <input id="primaryEditorPlace"
+               placeholder="Lieu de naissance"
+               class="mt-3 w-full rounded-xl bg-slate-950 border border-white/10 p-3 text-white">
+
+        <div id="primaryEditorError"
+             class="hidden mt-3 text-sm text-red-300"></div>
+
+        <button id="primaryEditorSave"
+                type="button"
+                class="mt-5 w-full py-3 rounded-2xl bg-violet-600 font-black text-white">
+          Enregistrer
+        </button>
+
+      </div>
+    </div>
+  </div>
 
   <!-- PROFILS CIBLES -->
   <section class="mb-4">
@@ -755,6 +827,18 @@ window.addEventListener("DOMContentLoaded", function() {
     .getElementById("targetEditorSave")
     ?.addEventListener("click", saveTargetEditor);
 
+
+  document
+    .getElementById("editPrimaryProfile")
+    ?.addEventListener("click", openPrimaryEditor);
+
+  document
+    .getElementById("primaryEditorClose")
+    ?.addEventListener("click", closePrimaryEditor);
+
+  document
+    .getElementById("primaryEditorSave")
+    ?.addEventListener("click", savePrimaryEditor);
 
   const box = document.getElementById("jsDiagnostic");
   if (box) box.textContent = "";
@@ -3476,6 +3560,179 @@ function relationshipContextLabel(profile) {
   return "❤️ Relation";
 }
 
+
+
+function primaryEditorElement(id) {
+  return document.getElementById(id);
+}
+
+function closePrimaryEditor() {
+  primaryEditorElement("primaryProfileEditor")
+    ?.classList.add("hidden");
+
+  document.body.classList.remove("overflow-hidden");
+}
+
+function openPrimaryEditor() {
+  const profile = ASTROMATCH_PRIMARY_PROFILE;
+
+  if (!profile) {
+    console.error("AstroMatch : profil principal introuvable");
+    return;
+  }
+
+  primaryEditorElement("primaryEditorFirstName").value =
+    profile?.identity?.first_name || "";
+
+  primaryEditorElement("primaryEditorLastName").value =
+    profile?.identity?.last_name || "";
+
+  primaryEditorElement("primaryEditorGender").value =
+    profile?.identity?.gender || "";
+
+  primaryEditorElement("primaryEditorDate").value =
+    profile?.birth_data?.date || "";
+
+  primaryEditorElement("primaryEditorTime").value =
+    profile?.birth_data?.time?.known
+      ? profile?.birth_data?.time?.value || ""
+      : "";
+
+  primaryEditorElement("primaryEditorPlace").value =
+    profile?.birth_data?.place?.raw_input || "";
+
+  const errorBox =
+    primaryEditorElement("primaryEditorError");
+
+  if (errorBox) {
+    errorBox.textContent = "";
+    errorBox.classList.add("hidden");
+  }
+
+  primaryEditorElement("primaryProfileEditor")
+    ?.classList.remove("hidden");
+
+  document.body.classList.add("overflow-hidden");
+}
+
+
+async function savePrimaryEditor() {
+  const errorBox =
+    primaryEditorElement("primaryEditorError");
+
+  try {
+    const existing =
+      ASTROMATCH_PRIMARY_PROFILE;
+
+    if (!existing) {
+      throw new Error(
+        "Profil principal introuvable."
+      );
+    }
+
+    const firstName =
+      primaryEditorElement(
+        "primaryEditorFirstName"
+      ).value.trim();
+
+    const lastName =
+      primaryEditorElement(
+        "primaryEditorLastName"
+      ).value.trim();
+
+    const gender =
+      primaryEditorElement(
+        "primaryEditorGender"
+      ).value || null;
+
+    const date =
+      primaryEditorElement(
+        "primaryEditorDate"
+      ).value;
+
+    const time =
+      primaryEditorElement(
+        "primaryEditorTime"
+      ).value;
+
+    const place =
+      primaryEditorElement(
+        "primaryEditorPlace"
+      ).value.trim();
+
+    if (!firstName || !date || !place) {
+      throw new Error(
+        "Prénom, date et lieu sont obligatoires."
+      );
+    }
+
+    const service =
+      await targetProfileService();
+
+    const patch = {
+      first_name: firstName,
+      last_name: lastName,
+      gender,
+      date,
+      time,
+      time_known: Boolean(time)
+    };
+
+    const oldPlace =
+      String(
+        existing?.birth_data?.place
+          ?.raw_input || ""
+      );
+
+    const unresolved =
+      existing?.birth_data?.place
+        ?.resolved?.resolution_status
+        !== "resolved";
+
+    if (place !== oldPlace || unresolved) {
+      const geo =
+        await resolveTargetBirthPlace(place);
+
+      patch.place = place;
+      patch.latitude = geo.latitude;
+      patch.longitude = geo.longitude;
+      patch.timezone_id = geo.timezone_id;
+    }
+
+    if (
+      ASTROMATCH_SELECTED_TARGET?.profile_id
+    ) {
+      sessionStorage.setItem(
+        "astromatch:selectedTargetId",
+        String(
+          ASTROMATCH_SELECTED_TARGET.profile_id
+        )
+      );
+    }
+
+    service.updateProfile(
+      existing.profile_id,
+      patch
+    );
+
+    closePrimaryEditor();
+
+    location.reload();
+
+  } catch (error) {
+    if (errorBox) {
+      errorBox.textContent =
+        error?.message || String(error);
+
+      errorBox.classList.remove("hidden");
+    }
+
+    console.error(
+      "AstroMatch primary update error:",
+      error
+    );
+  }
+}
 
 let ASTROMATCH_TARGET_EDITOR_PROFILE = null;
 
