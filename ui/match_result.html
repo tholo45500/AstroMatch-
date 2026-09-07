@@ -625,6 +625,15 @@ window.scoreProgressClass = scoreProgressClass;
               id="natalModalities"
               class="grid grid-cols-3 gap-2"
             ></div>
+
+            <div class="text-xs uppercase tracking-widest text-slate-500 mt-5 mb-2">
+              Planètes dominantes
+            </div>
+
+            <div
+              id="natalPlanetDominants"
+              class="space-y-2"
+            ></div>
           </section>
 
 <section class="rounded-3xl border border-white/10 bg-slate-900 p-4">
@@ -4067,6 +4076,232 @@ function natalPercent(value, total) {
   return Math.round((value / total) * 100);
 }
 
+
+const NATAL_SIGN_RULERS = {
+  aries: ["mars"],
+  taurus: ["venus"],
+  gemini: ["mercury"],
+  cancer: ["moon"],
+  leo: ["sun"],
+  virgo: ["mercury"],
+  libra: ["venus"],
+  scorpio: ["pluto", "mars"],
+  sagittarius: ["jupiter"],
+  capricorn: ["saturn"],
+  aquarius: ["uranus", "saturn"],
+  pisces: ["neptune", "jupiter"]
+};
+
+const NATAL_DOMINANT_MEANINGS = {
+  sun: "affirmation, identité, volonté et besoin de rayonner",
+  moon: "émotions, instinct, sécurité intérieure et réceptivité",
+  mercury: "mental, communication, curiosité et analyse",
+  venus: "relations, valeurs, séduction, harmonie et plaisir",
+  mars: "action, désir, combativité et capacité d'initiative",
+  jupiter: "expansion, confiance, vision et recherche de sens",
+  saturn: "structure, responsabilité, endurance et maîtrise",
+  uranus: "indépendance, changement, originalité et liberté",
+  neptune: "intuition, imagination, idéal et sensibilité",
+  pluto: "intensité, transformation, pouvoir intérieur et régénération"
+};
+
+function computeNatalPlanetDominance(chart, points) {
+  const scores = {};
+  const reasons = {};
+
+  for (const point of points) {
+    scores[point.body] = 1;
+    reasons[point.body] = [];
+  }
+
+  function add(body, value, reason) {
+    if (!(body in scores)) return;
+
+    scores[body] += value;
+
+    if (reason) {
+      reasons[body].push(reason);
+    }
+  }
+
+  add("sun", 2, "luminaire");
+  add("moon", 2, "luminaire");
+
+  const asc = chart?.angles?.ascendant;
+  const mc = chart?.angles?.midheaven;
+
+  for (const ruler of NATAL_SIGN_RULERS[asc?.sign] || []) {
+    add(ruler, 3, "maître de l'Ascendant");
+  }
+
+  for (const ruler of NATAL_SIGN_RULERS[mc?.sign] || []) {
+    add(ruler, 2, "maître du Milieu du Ciel");
+  }
+
+  const sun =
+    points.find(p => p.body === "sun");
+
+  const moon =
+    points.find(p => p.body === "moon");
+
+  for (const ruler of NATAL_SIGN_RULERS[sun?.sign] || []) {
+    add(ruler, 1.5, "maître du Soleil");
+  }
+
+  for (const ruler of NATAL_SIGN_RULERS[moon?.sign] || []) {
+    add(ruler, 1.5, "maître de la Lune");
+  }
+
+  const angularHouses =
+    new Set([1, 4, 7, 10]);
+
+  for (const point of points) {
+    if (angularHouses.has(point.house)) {
+      add(
+        point.body,
+        2,
+        `planète en maison ${point.house}`
+      );
+    }
+  }
+
+  const angles = [
+    chart?.angles?.ascendant,
+    chart?.angles?.midheaven,
+    chart?.angles?.descendant,
+    chart?.angles?.imum_coeli
+  ].filter(
+    angle =>
+      Number.isFinite(
+        Number(angle?.absolute_degree)
+      )
+  );
+
+  for (const point of points) {
+    if (!Number.isFinite(Number(point.absolute_degree))) {
+      continue;
+    }
+
+    let nearest = Infinity;
+
+    for (const angle of angles) {
+      nearest = Math.min(
+        nearest,
+        natalAngularDistance(
+          point.absolute_degree,
+          angle.absolute_degree
+        )
+      );
+    }
+
+    if (nearest <= 3) {
+      add(
+        point.body,
+        2.5,
+        "très proche d'un angle"
+      );
+    } else if (nearest <= 8) {
+      add(
+        point.body,
+        1.5,
+        "proche d'un angle"
+      );
+    }
+  }
+
+  const aspects =
+    computeNatalAspects(points);
+
+  for (const aspect of aspects) {
+    const bonus =
+      aspect.orb <= 3
+        ? 0.75
+        : 0.35;
+
+    add(
+      aspect.bodyA.body,
+      bonus,
+      null
+    );
+
+    add(
+      aspect.bodyB.body,
+      bonus,
+      null
+    );
+  }
+
+  const total =
+    Object.values(scores)
+      .reduce((a, b) => a + b, 0);
+
+  return Object.entries(scores)
+    .map(([body, score]) => ({
+      body,
+      score,
+      percent:
+        total > 0
+          ? Math.round((score / total) * 100)
+          : 0,
+      reasons:
+        [...new Set(reasons[body])]
+    }))
+    .sort(
+      (a, b) =>
+        b.score - a.score ||
+        a.body.localeCompare(b.body)
+    );
+}
+
+function renderNatalPlanetDominants(chart, points) {
+  const el =
+    document.getElementById(
+      "natalPlanetDominants"
+    );
+
+  if (!el) return;
+
+  const ranking =
+    computeNatalPlanetDominance(
+      chart,
+      points
+    ).slice(0, 3);
+
+  const medals = ["🥇", "🥈", "🥉"];
+
+  el.innerHTML =
+    ranking.map((item, index) => {
+      const body =
+        NATAL_BODIES[item.body] ||
+        ["✦", item.body];
+
+      const meaning =
+        NATAL_DOMINANT_MEANINGS[item.body] ||
+        "une influence importante dans ton thème";
+
+      return `
+        <div class="rounded-2xl bg-slate-950 p-4">
+          <div class="flex items-center justify-between gap-3">
+            <div class="font-black">
+              ${medals[index]}
+              ${body[0]}
+              ${escapeHtml(body[1])}
+            </div>
+
+            <div class="text-violet-300 font-black">
+              ${item.percent}%
+            </div>
+          </div>
+
+          <div class="text-sm text-slate-300 mt-2 leading-relaxed">
+            Cette dominante accentue
+            ${escapeHtml(meaning)}.
+          </div>
+        </div>
+      `;
+    }).join("");
+}
+
 function renderNatalDominants(chart, points) {
   const placements = [...points];
 
@@ -4371,6 +4606,11 @@ function renderNatalChart(chart, name) {
   }
 
   renderNatalDominants(
+    chart,
+    points
+  );
+
+  renderNatalPlanetDominants(
     chart,
     points
   );
