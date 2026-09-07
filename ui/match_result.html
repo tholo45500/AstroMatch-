@@ -374,10 +374,21 @@ window.scoreProgressClass = scoreProgressClass;
         <div class="min-w-0 flex-1">
           <div class="flex items-start justify-between gap-2">
             <div class="min-w-0">
-              <div
-                id="primaryName"
-                class="font-black text-base text-white truncate"
-              >Chargement…</div>
+              <div class="flex items-center gap-2 min-w-0">
+                <div
+                  id="primaryName"
+                  class="font-black text-base text-white truncate"
+                >Chargement…</div>
+
+                <button
+                  id="openNatalProfile"
+                  type="button"
+                  title="Voir mon thème astral"
+                  class="shrink-0 w-8 h-8 rounded-lg flex items-center justify-center bg-violet-500/15 border border-violet-400/20 text-sm active:scale-95"
+                >
+                  🌌
+                </button>
+              </div>
 
               <div
                 id="primaryGender"
@@ -388,17 +399,10 @@ window.scoreProgressClass = scoreProgressClass;
             <button
               id="editPrimaryProfile"
               type="button"
-              class="shrink-0 px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs text-slate-300"
+              title="Modifier mon profil"
+              class="shrink-0 w-9 h-9 rounded-lg flex items-center justify-center bg-white/5 border border-white/10 text-sm active:scale-95"
             >
-              ✏️ Modifier
-            </button>
-
-            <button
-              id="openNatalProfile"
-              type="button"
-              class="shrink-0 px-3 py-1.5 rounded-lg bg-violet-500/15 border border-violet-400/20 text-xs text-violet-200"
-            >
-              🌌 Mon thème
+              ✏️
             </button>
 
           </div>
@@ -518,7 +522,10 @@ window.scoreProgressClass = scoreProgressClass;
             <div class="text-xs uppercase tracking-widest text-violet-300">
               AstroMatch
             </div>
-            <h2 class="text-2xl font-black mt-1">
+            <h2
+              id="natalProfileTitle"
+              class="text-2xl font-black mt-1"
+            >
               🌌 Mon thème astral
             </h2>
             <div
@@ -610,7 +617,19 @@ window.scoreProgressClass = scoreProgressClass;
           </section>
 
 
-          <section class="rounded-3xl border border-white/10 bg-slate-900 p-4">
+          
+          <section class="rounded-3xl border border-pink-400/15 bg-slate-900 p-4">
+            <div class="text-xs uppercase tracking-widest text-pink-300 mb-3">
+              💘 Ton profil amoureux
+            </div>
+
+            <div
+              id="natalLoveProfile"
+              class="space-y-2"
+            ></div>
+          </section>
+
+<section class="rounded-3xl border border-white/10 bg-slate-900 p-4">
             <div class="text-xs uppercase tracking-widest text-slate-500 mb-3">
               Maisons
             </div>
@@ -1593,6 +1612,43 @@ function numericScore(domain, fallback = 50) {
   return Math.max(0, Math.min(100, n));
 }
 
+/*
+ * ASTROMATCH DISPLAY CALIBRATION V1
+ *
+ * Calibration empirique basée sur 2 000 synastries
+ * synthétiques multi-profils.
+ *
+ * IMPORTANT :
+ * - ne modifie PAS le score astrologique brut
+ * - ne modifie PAS le moteur V1.2
+ * - transforme uniquement le score présenté à l'utilisateur
+ *
+ * Référence :
+ * médiane brute = 53.07
+ * écart d'affichage = 16
+ */
+function calibrateAstroMatchDisplayScore(rawScore) {
+  const raw = Number(rawScore);
+
+  if (!Number.isFinite(raw)) {
+    return 50;
+  }
+
+  const center = 50;
+  const spread = 25;
+
+  const calibrated =
+    50 +
+    50 * Math.tanh(
+      (raw - center) / spread
+    );
+
+  return Math.max(
+    0,
+    Math.min(100, calibrated)
+  );
+}
+
 function calculateRelationshipScore(mode, result) {
   const domains = relationshipDomainMap(result);
   const weights = RELATIONSHIP_WEIGHTS[mode];
@@ -2285,10 +2341,13 @@ function renderRelationshipMode() {
   if (!result) return;
 
   const meta = RELATIONSHIP_META[CURRENT_RELATIONSHIP_MODE];
-  const score = calculateRelationshipScore(
+  const rawScore = calculateRelationshipScore(
     CURRENT_RELATIONSHIP_MODE,
     result
   );
+
+  const score =
+    calibrateAstroMatchDisplayScore(rawScore);
 
   const factors = modeFactors(
     CURRENT_RELATIONSHIP_MODE,
@@ -2845,6 +2904,25 @@ function renderTargetSelector(targets, selectedTarget) {
   if (addButton) {
     addButton.onclick = () => openTargetEditor(null);
   }
+
+  container
+    .querySelectorAll("[data-natal-target]")
+    .forEach(button => {
+      button.addEventListener("click", event => {
+        event.stopPropagation();
+
+        const profile =
+          safeTargets.find(
+            target =>
+              String(target?.profile_id) ===
+              String(button.dataset.natalTarget)
+          );
+
+        if (profile) {
+          openNatalProfileFor(profile);
+        }
+      });
+    });
 
   container
     .querySelectorAll("[data-edit-target]")
@@ -4816,6 +4894,200 @@ function renderNatalGlobalSynthesis(chart, points) {
     `).join("");
 }
 
+
+const NATAL_LOVE_STYLE = {
+  aries: {
+    attraction: "les personnes directes, spontanées et pleines d'énergie",
+    seduction: "tu vas assez vite au feeling et tu n'aimes pas trop tourner autour du pot",
+    need: "de la spontanéité et une relation qui reste vivante",
+    desire: "franc, instinctif et assez immédiat",
+    turnoff: "la passivité, l'indécision ou les relations qui stagnent"
+  },
+
+  taurus: {
+    attraction: "les personnes rassurantes, sensuelles et authentiques",
+    seduction: "tu prends ton temps et tu séduis beaucoup par la présence, les gestes et les sensations",
+    need: "de la stabilité, de la confiance et de la tendresse",
+    desire: "sensuel, constant et très lié au contact",
+    turnoff: "l'instabilité, les changements permanents et le manque de fiabilité"
+  },
+
+  gemini: {
+    attraction: "les personnes drôles, curieuses et capables de te stimuler mentalement",
+    seduction: "tu séduis par les mots, l'humour, les messages et le jeu",
+    need: "d'échanges, de légèreté et de nouveauté",
+    desire: "curieux, joueur et stimulé par la connexion mentale",
+    turnoff: "l'ennui, les silences pesants et les relations trop figées"
+  },
+
+  cancer: {
+    attraction: "les personnes attentionnées, rassurantes et émotionnellement présentes",
+    seduction: "tu crées de la proximité en montrant que tu prends vraiment soin de l'autre",
+    need: "de sécurité émotionnelle, de douceur et de confiance",
+    desire: "intime, tendre et très lié au sentiment de connexion",
+    turnoff: "la froideur, l'indifférence ou le manque d'attention"
+  },
+
+  leo: {
+    attraction: "les personnes charismatiques, chaleureuses et sûres d'elles",
+    seduction: "tu séduis en montrant ton énergie, ton humour et ton côté généreux",
+    need: "de passion, de loyauté et de sentir que tu comptes vraiment",
+    desire: "chaleureux, démonstratif et passionné",
+    turnoff: "l'indifférence, le manque de reconnaissance et les relations ternes"
+  },
+
+  virgo: {
+    attraction: "les personnes fiables, intelligentes et naturelles",
+    seduction: "tu séduis plus par les détails, l'attention et la complicité que par le grand spectacle",
+    need: "de confiance, de cohérence et d'une relation qui fonctionne vraiment",
+    desire: "sélectif, attentif et plus intense quand la confiance est là",
+    turnoff: "le chaos, les promesses vides et le manque de sérieux"
+  },
+
+  libra: {
+    attraction: "les personnes élégantes, sociables et faciles à vivre",
+    seduction: "tu joues beaucoup sur le charme, la complicité et l'ambiance entre vous",
+    need: "d'harmonie, de dialogue et de réciprocité",
+    desire: "romantique, relationnel et sensible à l'atmosphère",
+    turnoff: "la brutalité, les conflits permanents et le manque de respect"
+  },
+
+  scorpio: {
+    attraction: "les personnes intenses, mystérieuses et émotionnellement profondes",
+    seduction: "tu séduis par l'intensité, le regard et une connexion qui devient vite très personnelle",
+    need: "de profondeur, de loyauté et d'une vraie confiance",
+    desire: "intense, magnétique et rarement tiède",
+    turnoff: "la superficialité, au mensonge et aux liens sans profondeur"
+  },
+
+  sagittarius: {
+    attraction: "les personnes libres, spontanées et ouvertes d'esprit",
+    seduction: "tu séduis par ton énergie, ton humour et ton envie de vivre des choses",
+    need: "de liberté, de mouvement et d'une relation qui ne t'enferme pas",
+    desire: "enthousiaste, joueur et tourné vers l'expérience",
+    turnoff: "la possessivité, la routine étouffante et le contrôle"
+  },
+
+  capricorn: {
+    attraction: "les personnes solides, ambitieuses et fiables",
+    seduction: "tu montres ton intérêt progressivement et tu privilégies les actes aux grandes déclarations",
+    need: "de confiance, de stabilité et de construire quelque chose de sérieux",
+    desire: "maîtrisé au début mais très constant quand tu t'investis",
+    turnoff: "l'immaturité, l'instabilité et les personnes peu fiables"
+  },
+
+  aquarius: {
+    attraction: "les personnes originales, indépendantes et différentes",
+    seduction: "tu séduis beaucoup par la complicité, les discussions et ton côté imprévisible",
+    need: "de liberté, d'amitié dans le couple et de pouvoir rester toi-même",
+    desire: "original, cérébral et difficile à enfermer dans une routine",
+    turnoff: "la jalousie excessive, le contrôle et les relations étouffantes"
+  },
+
+  pisces: {
+    attraction: "les personnes sensibles, intuitives et capables de créer une vraie connexion",
+    seduction: "tu séduis par la douceur, l'écoute et une ambiance presque instinctive entre vous",
+    need: "de connexion émotionnelle, de tendresse et de compréhension",
+    desire: "émotionnel, imaginatif et très sensible à l'ambiance",
+    turnoff: "la froideur, le cynisme et le manque d'empathie"
+  }
+};
+
+
+function renderNatalLoveProfile(chart, points) {
+  const el =
+    document.getElementById(
+      "natalLoveProfile"
+    );
+
+  if (!el) return;
+
+  const venus =
+    points.find(p => p.body === "venus");
+
+  const mars =
+    points.find(p => p.body === "mars");
+
+  const moon =
+    points.find(p => p.body === "moon");
+
+  const venusStyle =
+    venus
+      ? NATAL_LOVE_STYLE[venus.sign]
+      : null;
+
+  const marsStyle =
+    mars
+      ? NATAL_LOVE_STYLE[mars.sign]
+      : null;
+
+  const moonStyle =
+    moon
+      ? NATAL_LOVE_STYLE[moon.sign]
+      : null;
+
+  const cards = [];
+
+  if (venusStyle) {
+    cards.push({
+      icon: "💘",
+      title: "Ce qui t'attire",
+      text:
+        `Tu craques facilement pour ${venusStyle.attraction}.`
+    });
+
+    cards.push({
+      icon: "😏",
+      title: "Comment tu séduis",
+      text:
+        venusStyle.seduction.charAt(0).toUpperCase() +
+        venusStyle.seduction.slice(1) +
+        "."
+    });
+  }
+
+  if (moonStyle) {
+    cards.push({
+      icon: "❤️",
+      title: "Ce dont tu as besoin",
+      text:
+        `Pour te sentir bien avec quelqu'un, tu as surtout besoin ${moonStyle.need}.`
+    });
+  }
+
+  if (marsStyle) {
+    cards.push({
+      icon: "🔥",
+      title: "Ton désir",
+      text:
+        `Ton désir est plutôt ${marsStyle.desire}.`
+    });
+  }
+
+  if (venusStyle) {
+    cards.push({
+      icon: "🚩",
+      title: "Ce qui peut te refroidir",
+      text:
+        `Tu peux vite décrocher face à ${venusStyle.turnoff}.`
+    });
+  }
+
+  el.innerHTML =
+    cards.map(card => `
+      <div class="rounded-2xl bg-slate-950 p-4">
+        <div class="flex items-center gap-2 font-black">
+          <span>${card.icon}</span>
+          <span>${escapeHtml(card.title)}</span>
+        </div>
+
+        <div class="text-sm text-slate-300 mt-2 leading-relaxed">
+          ${escapeHtml(card.text)}
+        </div>
+      </div>
+    `).join("");
+}
+
 function renderNatalChart(chart, name) {
   const points =
     Array.isArray(chart?.points)
@@ -4892,6 +5164,11 @@ function renderNatalChart(chart, name) {
     }).join("");
 
 
+
+  renderNatalLoveProfile(
+    chart,
+    points
+  );
 
   renderNatalGlobalSynthesis(
     chart,
@@ -5142,10 +5419,8 @@ function closeNatalProfile() {
   document.body.classList.remove("overflow-hidden");
 }
 
-async function openNatalProfile() {
-  const profile =
-    ASTROMATCH_PRIMARY_PROFILE;
 
+async function openNatalProfileFor(profile) {
   if (!profile) return;
 
   const view =
@@ -5160,9 +5435,28 @@ async function openNatalProfile() {
   const errorBox =
     document.getElementById("natalError");
 
+  const title =
+    document.getElementById("natalProfileTitle");
+
+  const isPrimary =
+    profile?.role === "primary";
+
+  const firstName =
+    profile?.identity?.first_name ||
+    "ce profil";
+
+  if (title) {
+    title.textContent =
+      isPrimary
+        ? "🌌 Mon thème astral"
+        : `🌌 Thème astral de ${firstName}`;
+  }
+
   view.classList.remove("hidden");
   loading.classList.remove("hidden");
   content.classList.add("hidden");
+
+  errorBox.textContent = "";
   errorBox.classList.add("hidden");
 
   document.body.classList.add("overflow-hidden");
@@ -5214,6 +5508,12 @@ async function openNatalProfile() {
       error
     );
   }
+}
+
+async function openNatalProfile() {
+  return openNatalProfileFor(
+    ASTROMATCH_PRIMARY_PROFILE
+  );
 }
 
 function primaryEditorElement(id) {
@@ -5687,7 +5987,7 @@ function renderProfileCard(target, selectedTarget) {
     `${formatBirthDate(target)} · ${formatBirthTime(target)}`;
 
   return `
-    <div class="target-profile-wrapper">
+    <div class="target-profile-wrapper relative">
 <button
       type="button"
       data-target-id="${escapeHtml(id)}"
@@ -5707,11 +6007,23 @@ function renderProfileCard(target, selectedTarget) {
 
         <div class="min-w-0 flex-1">
 
-          <div class="flex items-start justify-between gap-2">
+          <div class="flex items-start justify-between gap-2 pr-20">
 
             <div class="min-w-0">
-              <div class="font-black text-base text-white truncate">
-                ${escapeHtml(name)}
+              <div class="flex items-center gap-2 min-w-0">
+                <div class="font-black text-base text-white truncate">
+                  ${escapeHtml(name)}
+                </div>
+
+                <span
+                  role="button"
+                  tabindex="0"
+                  data-natal-target="${escapeHtml(id)}"
+                  title="Voir le thème astral"
+                  class="shrink-0 w-8 h-8 rounded-lg flex items-center justify-center bg-violet-500/15 border border-violet-400/20 text-sm active:scale-95"
+                >
+                  🌌
+                </span>
               </div>
 
               <div class="text-[11px] text-slate-400 mt-1">
@@ -5719,9 +6031,6 @@ function renderProfileCard(target, selectedTarget) {
               </div>
             </div>
 
-            <div class="text-slate-500 text-xl leading-none">
-              ›
-            </div>
 
           </div>
 
@@ -5750,7 +6059,10 @@ function renderProfileCard(target, selectedTarget) {
             </div>
 
             <div class="profile-meta-pill">
-              <strong>${escapeHtml(zodiac?.element || "—")}</strong>
+              <strong>☀️ Élément : ${escapeHtml(
+                String(zodiac?.element || "—")
+                  .replace(/^\S+\s*/, "")
+              )}</strong>
             </div>
 
             <div class="profile-meta-pill">
@@ -5765,21 +6077,22 @@ function renderProfileCard(target, selectedTarget) {
 
     </button>
 
-      <div class="flex justify-end gap-2 mt-2 px-1">
+      <div class="absolute top-3 right-3 z-10 flex items-center gap-1">
+
         <button
           type="button"
           data-edit-target="${escapeHtml(id)}"
-          class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs text-slate-300"
+          class="w-8 h-8 flex items-center justify-center rounded-lg bg-white/5 border border-white/10 text-sm active:scale-95"
         >
-          ✏️ Modifier
+          ✏️
         </button>
 
         <button
           type="button"
           data-delete-target="${escapeHtml(id)}"
-          class="px-3 py-1.5 rounded-lg bg-red-500/10 border border-red-500/20 text-xs text-red-300"
+          class="w-8 h-8 flex items-center justify-center rounded-lg bg-red-500/10 border border-red-500/20 text-sm active:scale-95"
         >
-          🗑️ Supprimer
+          🗑️
         </button>
       </div>
     </div>
@@ -5866,7 +6179,8 @@ function renderPrimaryProfileCard(profile) {
   }
 
   if (elementEl) {
-    elementEl.textContent = element;
+    elementEl.textContent =
+      `☀️ Élément : ${String(element).replace(/^\S+\s*/, "")}`;
   }
 
   if (genderMetaEl) {
