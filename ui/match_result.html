@@ -28,7 +28,7 @@
     border: 1px solid rgba(255,255,255,.08);
   }
 
-  
+
 <style id="ASTROMATCH_PRODUCT_POLISH">
   .domain-card {
     transition:
@@ -299,6 +299,867 @@
 
 
 
+
+<style id="ASTROMATCH_TARGET_GROUPS_V2">
+
+.target-group-title {
+  position: sticky;
+  top: 0;
+  z-index: 8;
+
+  margin: 12px 0 8px;
+  padding: 11px 13px;
+
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.10);
+
+  background: rgba(15,23,42,.96);
+  backdrop-filter: blur(12px);
+
+  display: flex;
+  align-items: center;
+  gap: 9px;
+
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: .03em;
+
+  color: white;
+  text-transform: none;
+}
+
+.target-group-title > span:first-child {
+  font-size: 19px;
+}
+
+.target-group-title[data-relation="Amour"] {
+  border-color: rgba(244,63,94,.25);
+  background:
+    linear-gradient(
+      90deg,
+      rgba(244,63,94,.15),
+      rgba(15,23,42,.96)
+    );
+}
+
+.target-group-title[data-relation="Amitié"] {
+  border-color: rgba(59,130,246,.25);
+  background:
+    linear-gradient(
+      90deg,
+      rgba(59,130,246,.14),
+      rgba(15,23,42,.96)
+    );
+}
+
+.target-group-title[data-relation="Famille"] {
+  border-color: rgba(34,197,94,.25);
+  background:
+    linear-gradient(
+      90deg,
+      rgba(34,197,94,.13),
+      rgba(15,23,42,.96)
+    );
+}
+
+.target-group-count {
+  margin-left: auto;
+
+  min-width: 26px;
+  height: 26px;
+
+  padding: 0 8px;
+
+  border-radius: 999px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgba(255,255,255,.08);
+
+  color: #cbd5e1;
+
+  font-size: 11px;
+  font-weight: 900;
+}
+
+/* profil actuellement sélectionné beaucoup plus évident */
+[data-target-id].selected {
+  border-color: rgba(167,139,250,.65) !important;
+
+  box-shadow:
+    0 0 0 1px rgba(167,139,250,.25),
+    0 10px 30px rgba(0,0,0,.22);
+}
+
+</style>
+
+
+<style id="ASTROMATCH_PRIMARY_COMPACT">
+
+.primary-compact-bubble {
+  display: inline-flex;
+  align-items: center;
+  gap: 9px;
+
+  max-width: 190px;
+
+  padding: 6px 10px 6px 6px;
+
+  border-radius: 18px;
+
+  border: 1px solid rgba(167,139,250,.35);
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(124,58,237,.13),
+      rgba(15,23,42,.92)
+    );
+
+  box-shadow:
+    0 8px 24px rgba(0,0,0,.20);
+
+  transition:
+    transform .15s ease,
+    border-color .15s ease;
+}
+
+.primary-compact-bubble:active {
+  transform: scale(.97);
+}
+
+.primary-compact-bubble[aria-expanded="true"] {
+  border-color: rgba(192,132,252,.70);
+}
+
+.primary-compact-avatar {
+  position: relative;
+
+  width: 42px;
+  height: 42px;
+
+  flex: 0 0 42px;
+
+  border-radius: 999px;
+  overflow: hidden;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    radial-gradient(
+      circle,
+      rgba(139,92,246,.28),
+      rgba(15,23,42,.95)
+    );
+
+  border: 1px solid rgba(196,181,253,.30);
+
+  font-size: 25px;
+}
+
+#primaryProfilePopover .astromatch-profile-card {
+  box-shadow:
+    0 25px 60px rgba(0,0,0,.48),
+    0 0 0 1px rgba(139,92,246,.10);
+}
+
+</style>
+
+
+<style id="ASTROMATCH_HEADER_V2">
+
+#primaryCompactBubble {
+  width: min(138px, 39vw);
+  max-width: 138px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgb(59 30 110),
+      rgb(15 23 42)
+    ) !important;
+
+  border-color:
+    rgba(196,181,253,.62) !important;
+
+  box-shadow:
+    0 8px 24px rgba(0,0,0,.48),
+    inset 0 0 0 1px rgba(255,255,255,.04);
+}
+
+#compactPrimaryName {
+  color: #fff !important;
+}
+
+#compactPrimaryAge {
+  color: rgb(203 213 225) !important;
+}
+
+#primaryProfilePopover {
+  text-align: left;
+}
+
+.target-group-title {
+  min-height: 50px;
+  padding: 10px 10px 10px 13px !important;
+}
+
+.target-group-count {
+  margin-left: auto;
+}
+
+.target-group-add {
+  width: 32px;
+  height: 32px;
+
+  flex: 0 0 32px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-left: 4px;
+
+  border-radius: 11px;
+
+  background:
+    rgba(139,92,246,.22);
+
+  border:
+    1px solid rgba(196,181,253,.32);
+
+  color: rgb(237 233 254);
+
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.target-group-add:active {
+  transform: scale(.9);
+  background:
+    rgba(139,92,246,.38);
+}
+
+</style>
+
+
+<style id="ASTROMATCH_HEADER_V3">
+
+/* Header : logo réellement centré dans l'écran */
+header > div:first-child {
+  position: relative !important;
+
+  display: flex !important;
+  align-items: center !important;
+
+  min-height: 52px;
+}
+
+#primaryCompactSection {
+  position: relative;
+  z-index: 70;
+
+  margin-right: auto;
+}
+
+#astromatchHeaderLogo {
+  position: absolute !important;
+
+  left: 50% !important;
+  top: 50% !important;
+
+  transform:
+    translate(-50%, -50%) !important;
+
+  margin: 0 !important;
+
+  z-index: 2;
+
+  text-align: center;
+
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+#appSettingsButton {
+  margin-left: auto;
+  z-index: 3;
+}
+
+/* Bulle compacte : AUCUNE transparence */
+#primaryCompactBubble {
+  background: rgb(15 23 42) !important;
+
+  background-image: none !important;
+
+  opacity: 1 !important;
+
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+
+  border-color:
+    rgb(109 91 160) !important;
+
+  box-shadow:
+    0 8px 22px rgb(0 0 0 / .55),
+    inset 0 0 0 1px rgb(255 255 255 / .04)
+    !important;
+}
+
+/* Carte complète ouverte : opaque elle aussi */
+#primaryProfilePopover
+.astromatch-profile-card {
+  background:
+    rgb(15 23 42) !important;
+
+  background-image: none !important;
+
+  opacity: 1 !important;
+
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+
+  box-shadow:
+    0 24px 60px rgb(0 0 0 / .70)
+    !important;
+}
+
+#compactPrimaryName {
+  color: white !important;
+}
+
+#compactPrimaryAge {
+  color: rgb(203 213 225) !important;
+}
+
+</style>
+
+
+<style id="ASTROMATCH_SELECTION_CLEANUP">
+#targetSelectionHint {
+  display: none !important;
+}
+</style>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<style id="ASTROMATCH_HEADER_ACCORDION_V1">
+
+header > div:first-child {
+  display: grid !important;
+
+  grid-template-columns:
+    auto minmax(0, 1fr) auto !important;
+
+  align-items: center !important;
+  gap: 8px !important;
+
+  width: 100%;
+}
+
+#primaryCompactSection {
+  grid-column: 1;
+  justify-self: start;
+
+  margin: 0 !important;
+}
+
+#astromatchHeaderLogo {
+  grid-column: 2;
+
+  position: static !important;
+
+  left: auto !important;
+  top: auto !important;
+
+  transform: none !important;
+
+  justify-self: center !important;
+
+  width: 100%;
+
+  text-align: center;
+
+  font-size:
+    clamp(16px, 4.8vw, 23px) !important;
+
+  white-space: nowrap;
+}
+
+#appSettingsButton {
+  grid-column: 3;
+
+  justify-self: end;
+
+  margin: 0 !important;
+}
+
+/* ======================================================
+   GROUPES PLIABLES
+   ====================================================== */
+
+.target-group-title {
+  display: flex !important;
+  align-items: center !important;
+
+  gap: 6px !important;
+
+  cursor: default;
+}
+
+.target-group-toggle-main {
+  flex: 1;
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 2px 0;
+
+  color: white;
+
+  text-align: left;
+
+  cursor: pointer;
+}
+
+.target-group-toggle-main
+.target-group-label {
+  font-size: 15px;
+
+  font-weight: 900;
+
+  color: rgb(226 232 240);
+}
+
+.target-group-toggle-main
+.target-group-icon {
+  font-size: 21px;
+}
+
+.target-group-toggle-main
+.target-group-count {
+  margin-left: auto !important;
+}
+
+.target-group-chevron {
+  width: 22px;
+
+  text-align: center;
+
+  font-size: 17px;
+
+  color: rgb(167 139 250);
+
+  transition:
+    transform .18s ease;
+}
+
+[data-target-group-toggle]
+[aria-hidden="true"] {
+  display: none;
+}
+
+[data-target-group-toggle]
+.target-group-chevron {
+  transform: rotate(-90deg);
+}
+
+[data-target-group-toggle]
+.target-group-chevron.open {
+  transform: rotate(0deg);
+}
+
+.target-group-body {
+  padding-top: 8px;
+  padding-bottom: 5px;
+}
+
+.target-group-empty {
+  padding: 18px;
+
+  border-radius: 18px;
+
+  border:
+    1px dashed rgba(148,163,184,.18);
+
+  color: rgb(100 116 139);
+
+  text-align: center;
+
+  font-size: 12px;
+}
+
+</style>
+
+
+<style id="ASTROMATCH_HOME_DASHBOARD_V1">
+
+/*
+ * Avec les accordéons, plus besoin
+ * d'une liste à hauteur forcée.
+ */
+#targetSelector {
+  height: auto !important;
+  max-height: none !important;
+
+  overflow: visible !important;
+}
+
+main {
+  padding-bottom: 24px !important;
+}
+
+#astromatchHomeDashboard {
+  margin-top: 18px;
+}
+
+.home-dashboard-card {
+  position: relative;
+  overflow: hidden;
+
+  border-radius: 28px;
+
+  padding: 20px;
+
+  border:
+    1px solid rgb(74 63 130);
+
+  background:
+    linear-gradient(
+      145deg,
+      rgb(19 27 50),
+      rgb(12 19 36)
+    );
+
+  box-shadow:
+    0 20px 45px rgb(0 0 0 / .30);
+}
+
+.home-dashboard-glow {
+  position: absolute;
+
+  width: 220px;
+  height: 220px;
+
+  top: -120px;
+  right: -80px;
+
+  border-radius: 999px;
+
+  background:
+    rgb(109 40 217 / .24);
+
+  filter: blur(45px);
+}
+
+.home-dashboard-kicker {
+  text-align: center;
+
+  color: rgb(196 181 253);
+
+  font-size: 12px;
+  font-weight: 900;
+
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+
+.home-dashboard-primary {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  gap: 12px;
+
+  margin-top: 17px;
+}
+
+.home-dashboard-zodiac {
+  width: 54px;
+  height: 54px;
+
+  border-radius: 18px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: rgb(39 31 77);
+
+  border:
+    1px solid rgb(89 69 150);
+
+  font-size: 30px;
+}
+
+.home-dashboard-name {
+  color: white;
+
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.home-dashboard-sub {
+  margin-top: 2px;
+
+  color: rgb(148 163 184);
+
+  font-size: 12px;
+}
+
+.home-dashboard-counts {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0,1fr));
+
+  gap: 8px;
+
+  margin-top: 20px;
+}
+
+.home-dashboard-stat {
+  padding: 12px 5px;
+
+  border-radius: 18px;
+
+  background:
+    rgb(22 31 53);
+
+  border:
+    1px solid rgb(46 57 82);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  transition:
+    transform .15s ease,
+    border-color .15s ease;
+}
+
+.home-dashboard-stat:active {
+  transform: scale(.96);
+}
+
+.home-dashboard-stat span {
+  font-size: 20px;
+}
+
+.home-dashboard-stat strong {
+  margin-top: 4px;
+
+  color: white;
+
+  font-size: 18px;
+}
+
+.home-dashboard-stat small {
+  margin-top: 1px;
+
+  color: rgb(148 163 184);
+
+  font-size: 10px;
+}
+
+.home-dashboard-section-title {
+  margin-top: 20px;
+  margin-bottom: 9px;
+
+  color: rgb(148 163 184);
+
+  font-size: 11px;
+  font-weight: 900;
+
+  text-transform: uppercase;
+  letter-spacing: .10em;
+}
+
+.home-dashboard-recents {
+  display: flex;
+  flex-direction: column;
+
+  gap: 7px;
+}
+
+.home-dashboard-person {
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+
+  gap: 10px;
+
+  padding: 10px;
+
+  border-radius: 16px;
+
+  background:
+    rgb(17 25 44);
+
+  border:
+    1px solid rgb(38 49 71);
+
+  text-align: left;
+}
+
+.home-dashboard-person-zodiac {
+  width: 38px;
+  height: 38px;
+
+  flex: 0 0 38px;
+
+  border-radius: 13px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background:
+    rgb(35 30 68);
+
+  font-size: 22px;
+}
+
+.home-dashboard-person strong {
+  display: block;
+
+  color: white;
+
+  font-size: 13px;
+
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.home-dashboard-person small {
+  display: block;
+
+  margin-top: 2px;
+
+  color: rgb(148 163 184);
+
+  font-size: 10px;
+}
+
+.home-dashboard-arrow {
+  margin-left: auto;
+
+  color: rgb(167 139 250);
+
+  font-size: 22px;
+}
+
+.home-dashboard-hint {
+  margin-top: 16px;
+
+  text-align: center;
+
+  color: rgb(100 116 139);
+
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.home-dashboard-empty {
+  margin-top: 18px;
+
+  padding: 18px;
+
+  border-radius: 18px;
+
+  border:
+    1px dashed rgb(61 72 97);
+
+  text-align: center;
+
+  color: rgb(100 116 139);
+
+  font-size: 12px;
+}
+
+</style>
+
+
+<style id="ASTROMATCH_CARDS_CLICK_FIX_V2">
+
+/* Les bandeaux ne collent PLUS pendant le scroll */
+.target-group-title {
+  position: relative !important;
+  top: auto !important;
+  z-index: 2 !important;
+
+  opacity: 1 !important;
+
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* vraie séparation avec les profils */
+.target-group-body {
+  position: relative !important;
+  z-index: 1 !important;
+
+  padding-top: 10px !important;
+}
+
+/* les cartes restent au-dessus du fond */
+.target-profile-card {
+  position: relative !important;
+  z-index: 1 !important;
+
+  cursor: pointer !important;
+
+  pointer-events: auto !important;
+}
+
+/* les boutons d'action restent au-dessus de la carte */
+.target-profile-card button,
+.target-profile-card a {
+  position: relative;
+  z-index: 5;
+}
+
+</style>
+
+
+
+
+
+<style id="ASTROMATCH_INLINE_RESULT_FINAL_V1">
+
+#astromatchComparisonHome {
+  display: none !important;
+}
+
+#astromatchComparisonArea.astromatch-inline-result {
+  margin-top: 10px !important;
+  margin-bottom: 14px !important;
+
+  scroll-margin-top: 12px;
+}
+
+</style>
+
 </head>
 
 <body class="min-h-screen text-white">
@@ -355,16 +1216,79 @@ window.scoreProgressClass = scoreProgressClass;
 <main class="max-w-xl mx-auto px-4 py-6 pb-12">
 
   <!-- HEADER -->
-  <header class="text-center mb-5">
-    <div class="text-3xl font-black tracking-tight">✨ AstroMatch</div>
-    <div class="text-sm text-slate-400 mt-1">Votre dynamique relationnelle</div>
-  </header>
 
-  <!-- PROFIL PRINCIPAL -->
-  <section class="mb-4">
+<header class="mb-5">
+
+  <div
+    class="
+      grid
+      grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)]
+      items-center
+      gap-2
+    "
+  >
+
+    <section
+    id="primaryCompactSection"
+    class="relative z-[70] justify-self-start min-w-0"
+  >
+
+    <button
+      id="primaryCompactBubble"
+      type="button"
+      aria-expanded="false"
+      class="primary-compact-bubble"
+    >
+      <div class="primary-compact-avatar">
+        <img
+          id="compactPrimaryAvatarImage"
+          alt=""
+          class="hidden w-full h-full object-cover"
+        >
+        <span id="compactPrimaryZodiac">✦</span>
+      </div>
+
+      <div class="min-w-0 text-left">
+        <div
+          id="compactPrimaryName"
+          class="font-black text-sm truncate"
+        >
+          Profil
+        </div>
+
+        <div
+          id="compactPrimaryAge"
+          class="text-[11px] text-slate-400"
+        >
+          —
+        </div>
+      </div>
+
+      <span
+        id="primaryCompactChevron"
+        class="text-violet-300 text-xl ml-1"
+      >›</span>
+    </button>
+
+    <div
+      id="primaryProfilePopover"
+      class="hidden absolute left-0 top-[calc(100%+8px)] z-[90] w-[min(92vw,430px)]"
+    >
+
     <div class="astromatch-profile-card w-full text-left p-4">
       <div class="flex items-start gap-3">
-        <div class="zodiac-art">
+        <div
+          id="primaryAvatarPicker"
+          class="zodiac-art cursor-pointer"
+          role="button"
+          tabindex="0"
+          title="Changer la photo"
+        >
+          <img
+            id="primaryAvatarImage"
+            alt=""
+            class="hidden absolute inset-0 w-full h-full object-cover z-[3]"
+          >
           <span
             id="primaryZodiacSymbol"
             class="zodiac-symbol"
@@ -417,7 +1341,7 @@ window.scoreProgressClass = scoreProgressClass;
             class="text-xs text-slate-300 mt-1"
           >Lieu inconnu</div>
 
-          
+
 
           <div class="profile-meta-grid mt-3">
             <div class="profile-meta-pill">
@@ -441,7 +1365,55 @@ window.scoreProgressClass = scoreProgressClass;
         </div>
       </div>
     </div>
-  </section>
+
+    </div>
+
+    <input
+      id="primaryAvatarInput"
+      type="file"
+      accept="image/*"
+      class="hidden"
+    >
+
+</section>
+
+    <div
+      class="
+        text-lg sm:text-2xl
+        font-black
+        tracking-tight
+        whitespace-nowrap
+        text-center
+      "
+     id="astromatchHeaderLogo">
+      ✨ AstroMatch
+    </div>
+
+    <button
+      id="appSettingsButton"
+      type="button"
+      title="Paramètres"
+      aria-label="Paramètres"
+      class="
+        justify-self-end
+        w-11 h-11
+        rounded-2xl
+        flex items-center justify-center
+        bg-slate-900
+        border border-white/10
+        text-xl
+        shadow-lg
+        active:scale-95
+      "
+    >
+      ⚙️
+    </button>
+
+  </div>
+
+
+
+</header>
 
 
   <!-- PRIMARY PROFILE EDITOR -->
@@ -588,7 +1560,7 @@ window.scoreProgressClass = scoreProgressClass;
             </div>
           </section>
 
-          
+
           <section class="rounded-3xl border border-violet-400/20 bg-slate-900 p-4">
             <div class="text-xs uppercase tracking-widest text-violet-300 mb-3">
               🧭 Synthèse globale
@@ -617,7 +1589,7 @@ window.scoreProgressClass = scoreProgressClass;
           </section>
 
 
-          
+
           <section class="rounded-3xl border border-pink-400/15 bg-slate-900 p-4">
             <div class="text-xs uppercase tracking-widest text-pink-300 mb-3">
               💘 Ton profil amoureux
@@ -697,7 +1669,7 @@ window.scoreProgressClass = scoreProgressClass;
             ></div>
           </section>
 
-          
+
 
           <section class="rounded-3xl border border-white/10 bg-slate-900 p-4">
             <div class="text-xs uppercase tracking-widest text-slate-500 mb-3">
@@ -710,9 +1682,9 @@ window.scoreProgressClass = scoreProgressClass;
             ></div>
           </section>
 
-          
 
-          
+
+
 
         </div>
 
@@ -744,24 +1716,24 @@ window.scoreProgressClass = scoreProgressClass;
 
     </div>
 
-    
+
     <div class="flex justify-end mb-3">
-      <button
-        id="addTargetProfile"
-        type="button"
-        class="px-4 py-2 rounded-xl bg-violet-500/15 border border-violet-400/20 text-violet-200 text-sm font-bold"
-      >
-        ＋ Ajouter un profil
-      </button>
+
     </div>
 
 <div
       id="targetSelector"
-      class="space-y-2"
+      class="space-y-2 max-h-[430px] overflow-y-auto overscroll-contain pr-1"
       aria-label="Sélection des profils"
     ></div>
 
+
     <div
+      id="astromatchHomeDashboard"
+      class="hidden"
+    ></div>
+
+<div
       id="targetSelectionHint"
       class="mt-3 px-1 text-xs text-slate-500"
     >
@@ -771,7 +1743,7 @@ window.scoreProgressClass = scoreProgressClass;
   </section>
 
 
-  
+
 <!-- TARGET PROFILE EDITOR -->
 <div
   id="targetProfileEditor"
@@ -857,7 +1829,13 @@ window.scoreProgressClass = scoreProgressClass;
 </div>
 
 <!-- COMPARAISON — VUE SECONDAIRE -->
-  
+<div id="astromatchComparisonHome"></div>
+<div
+  id="astromatchComparisonArea"
+  class="hidden"
+>
+
+
 
 
   <!-- TABS -->
@@ -1025,14 +2003,17 @@ window.scoreProgressClass = scoreProgressClass;
 
       <div id="domains" class="mt-4"></div>
 
-      
+
 
     </details>
 
   </section>
 
 
-  <!-- DIAGNOSTIC -->
+
+</div>
+
+<!-- DIAGNOSTIC -->
   <div id="jsDiagnostic"
        class="text-center text-xs text-slate-500 mt-4">
   </div>
@@ -1477,6 +2458,18 @@ window.setAstroMatchRelationshipResult = function (result) {
   ASTROMATCH_RESULT = result;
   window.__astromatchLastResult = result;
 
+  /*
+   * Le calcul est terminé :
+   * afficher toute la comparaison.
+   */
+  document
+    .getElementById("astromatchComparisonArea")
+    ?.classList.remove("hidden");
+
+  document.body.classList.add(
+    "astromatch-comparison-open"
+  );
+
   console.log(
     "ASTROMATCH RELATIONSHIP RESULT — BRIDGE OK",
     Number(result.global.score),
@@ -1486,6 +2479,14 @@ window.setAstroMatchRelationshipResult = function (result) {
   if (typeof renderRelationshipMode === "function") {
     renderRelationshipMode();
   }
+
+  setAstroMatchComparisonVisible(
+    true
+  );
+
+  setAstroMatchComparisonVisible(
+    true
+  );
 };
 
 
@@ -2568,10 +3569,19 @@ async function start() {
       primary;
 
     renderPrimaryProfileCard(primary);
+    initializePrimaryCompactProfile(primary);
 
     initializeTargetSelector(
       targets
     );
+
+    precomputeAstroMatchRanking()
+      .catch(error => {
+        console.warn(
+          "AstroMatch ranking global :",
+          error
+        );
+      });
 
     const selectedTarget =
       ASTROMATCH_SELECTED_TARGET;
@@ -2799,11 +3809,681 @@ function getRealProfiles() {
   };
 }
 
+
+const ASTROMATCH_OPEN_TARGET_GROUPS =
+  new Set();
+
+
+function dashboardRelationshipMeta(profile) {
+  const context =
+    String(
+      profile?.relationship?.context ||
+      "romantic"
+    ).toLowerCase();
+
+  if (context === "friendship") {
+    return {
+      key: "friendship",
+      icon: "🤝",
+      label: "Amitié"
+    };
+  }
+
+  if (context === "family") {
+    return {
+      key: "family",
+      icon: "👨‍👩‍👧‍👦",
+      label: "Famille"
+    };
+  }
+
+  return {
+    key: "romantic",
+    icon: "❤️",
+    label: "Amour"
+  };
+}
+
+function renderAstroMatchHomeDashboard(
+  targets,
+  selectedTarget
+) {
+  const box =
+    document.getElementById(
+      "astromatchHomeDashboard"
+    );
+
+  if (!box) return;
+
+  const safeTargets =
+    Array.isArray(targets)
+      ? targets
+      : [];
+
+  const anyGroupOpen =
+    typeof ASTROMATCH_OPEN_TARGET_GROUPS !==
+      "undefined" &&
+    ASTROMATCH_OPEN_TARGET_GROUPS.size > 0;
+
+  /*
+   * Accueil uniquement quand :
+   * - aucun groupe n'est ouvert
+   * - aucune cible n'est sélectionnée
+   */
+  const show =
+    !anyGroupOpen &&
+    !selectedTarget;
+
+  box.classList.toggle(
+    "hidden",
+    !show
+  );
+
+  if (!show) return;
+
+  const primary =
+    typeof ASTROMATCH_PRIMARY_PROFILE !==
+      "undefined"
+      ? ASTROMATCH_PRIMARY_PROFILE
+      : null;
+
+  const primaryName =
+    primary?.identity?.first_name ||
+    "Mon profil";
+
+  const primaryAge =
+    primary
+      ? calculateAge(primary)
+      : null;
+
+  const primaryZodiac =
+    primary
+      ? zodiacFromDate(
+          primary?.birth_data?.date
+        )
+      : null;
+
+  const counts = {
+    romantic: 0,
+    friendship: 0,
+    family: 0
+  };
+
+  safeTargets.forEach(profile => {
+    const meta =
+      dashboardRelationshipMeta(
+        profile
+      );
+
+    counts[meta.key]++;
+  });
+
+  /*
+   * Les derniers profils du tableau stocké
+   * servent d'accès rapide.
+   */
+  const quickProfiles =
+    safeTargets
+      .slice(-3)
+      .reverse();
+
+  box.innerHTML = `
+    <section class="home-dashboard-card">
+
+      <div class="home-dashboard-glow"></div>
+
+      <div class="relative z-[2]">
+
+        <div class="home-dashboard-kicker">
+          ✨ Tes connexions
+        </div>
+
+        <div class="home-dashboard-primary">
+
+          <div class="home-dashboard-zodiac">
+            ${
+              escapeHtml(
+                primaryZodiac?.symbol || "✦"
+              )
+            }
+          </div>
+
+          <div>
+            <div class="home-dashboard-name">
+              ${escapeHtml(primaryName)}
+            </div>
+
+            <div class="home-dashboard-sub">
+              ${
+                primaryAge !== null &&
+                primaryAge !== undefined
+                  ? `${primaryAge} ans · `
+                  : ""
+              }
+              ${safeTargets.length}
+              ${
+                safeTargets.length === 1
+                  ? " profil"
+                  : " profils"
+              }
+            </div>
+          </div>
+
+        </div>
+
+        <div class="home-dashboard-counts">
+
+          <button
+            type="button"
+            data-dashboard-open-group="romantic"
+            class="home-dashboard-stat"
+          >
+            <span>❤️</span>
+            <strong>${counts.romantic}</strong>
+            <small>Amour</small>
+          </button>
+
+          <button
+            type="button"
+            data-dashboard-open-group="friendship"
+            class="home-dashboard-stat"
+          >
+            <span>🤝</span>
+            <strong>${counts.friendship}</strong>
+            <small>Amitié</small>
+          </button>
+
+          <button
+            type="button"
+            data-dashboard-open-group="family"
+            class="home-dashboard-stat"
+          >
+            <span>👨‍👩‍👧‍👦</span>
+            <strong>${counts.family}</strong>
+            <small>Famille</small>
+          </button>
+
+        </div>
+
+        ${
+          quickProfiles.length
+            ? `
+              <div class="home-dashboard-section-title">
+                Accès rapide
+              </div>
+
+              <div class="home-dashboard-recents">
+
+                ${quickProfiles.map(profile => {
+                  const zodiac =
+                    zodiacFromDate(
+                      profile?.birth_data?.date
+                    );
+
+                  const meta =
+                    dashboardRelationshipMeta(
+                      profile
+                    );
+
+                  const name =
+                    profile?.identity?.first_name ||
+                    "Profil";
+
+                  return `
+                    <button
+                      type="button"
+                      data-dashboard-target="${
+                        escapeHtml(
+                          String(
+                            profile?.profile_id ||
+                            ""
+                          )
+                        )
+                      }"
+                      class="home-dashboard-person"
+                    >
+                      <span class="home-dashboard-person-zodiac">
+                        ${
+                          escapeHtml(
+                            zodiac?.symbol || "✦"
+                          )
+                        }
+                      </span>
+
+                      <span class="min-w-0">
+                        <strong>
+                          ${escapeHtml(name)}
+                        </strong>
+
+                        <small>
+                          ${meta.icon}
+                          ${meta.label}
+                        </small>
+                      </span>
+
+                      <span class="home-dashboard-arrow">
+                        ›
+                      </span>
+                    </button>
+                  `;
+                }).join("")}
+
+              </div>
+            `
+            : `
+              <div class="home-dashboard-empty">
+                Ajoute ton premier profil avec
+                l'un des boutons +
+              </div>
+            `
+        }
+
+        <div class="home-dashboard-hint">
+          Ouvre une catégorie pour parcourir
+          tes profils et découvrir vos compatibilités.
+        </div>
+
+      </div>
+    </section>
+  `;
+
+  box
+    .querySelectorAll(
+      "[data-dashboard-open-group]"
+    )
+    .forEach(button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+          ASTROMATCH_OPEN_TARGET_GROUPS.add(
+            button.dataset
+              .dashboardOpenGroup
+          );
+
+          renderTargetSelector(
+            safeTargets,
+            selectedTarget
+          );
+        }
+      );
+    });
+
+  box
+    .querySelectorAll(
+      "[data-dashboard-target]"
+    )
+    .forEach(button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+          selectTargetProfile(
+            button.dataset.dashboardTarget
+          );
+        }
+      );
+    });
+}
+
+
+function parkAstroMatchComparison() {
+  const home =
+    document.getElementById(
+      "astromatchComparisonHome"
+    );
+
+  const area =
+    document.getElementById(
+      "astromatchComparisonArea"
+    );
+
+  if (!home || !area) return;
+
+  home.insertAdjacentElement(
+    "afterend",
+    area
+  );
+
+  area.classList.remove(
+    "astromatch-inline-result"
+  );
+}
+
+
+function mountAstroMatchComparisonUnderTarget(
+  profileId
+) {
+  const area =
+    document.getElementById(
+      "astromatchComparisonArea"
+    );
+
+  if (!area) return;
+
+  const card =
+    Array.from(
+      document.querySelectorAll(
+        "#targetSelector [data-target-id]"
+      )
+    ).find(
+      element =>
+        String(element.dataset.targetId) ===
+        String(profileId)
+    );
+
+  if (!card) {
+    parkAstroMatchComparison();
+    return;
+  }
+
+  card.insertAdjacentElement(
+    "afterend",
+    area
+  );
+
+  area.classList.add(
+    "astromatch-inline-result"
+  );
+}
+
+
+
+function astroMatchTargetRankingScore(
+  profile,
+  mode
+) {
+  const id =
+    String(profile?.profile_id || "");
+
+  if (!id) return null;
+
+  if (
+    typeof ASTROMATCH_TARGET_RESULTS ===
+    "undefined"
+  ) {
+    return null;
+  }
+
+  const result =
+    ASTROMATCH_TARGET_RESULTS.get(id);
+
+  if (!result) return null;
+
+  /*
+   * IMPORTANT :
+   * même score que celui affiché
+   * dans le comparateur.
+   */
+  if (
+    typeof calculateRelationshipScore ===
+    "function"
+  ) {
+    const relationScore =
+      Number(
+        calculateRelationshipScore(
+          mode,
+          result
+        )
+      );
+
+    if (
+      Number.isFinite(
+        relationScore
+      )
+    ) {
+      return relationScore;
+    }
+  }
+
+  /*
+   * Fallback uniquement.
+   */
+  const globalScore =
+    Number(result?.global?.score);
+
+  return Number.isFinite(globalScore)
+    ? globalScore
+    : null;
+}
+
+
+function sortAstroMatchTargetsByScore(
+  list,
+  mode
+) {
+  return [...list].sort(
+    (a, b) => {
+
+      const scoreA =
+        astroMatchTargetRankingScore(
+          a,
+          mode
+        );
+
+      const scoreB =
+        astroMatchTargetRankingScore(
+          b,
+          mode
+        );
+
+      if (
+        scoreA !== null &&
+        scoreB !== null &&
+        scoreA !== scoreB
+      ) {
+        return scoreB - scoreA;
+      }
+
+      if (
+        scoreA !== null &&
+        scoreB === null
+      ) {
+        return -1;
+      }
+
+      if (
+        scoreA === null &&
+        scoreB !== null
+      ) {
+        return 1;
+      }
+
+      const nameA =
+        String(
+          a?.identity?.first_name || ""
+        );
+
+      const nameB =
+        String(
+          b?.identity?.first_name || ""
+        );
+
+      return nameA.localeCompare(
+        nameB,
+        "fr"
+      );
+    }
+  );
+}
+
+
+let ASTROMATCH_RANKING_RUNNING = false;
+
+
+async function precomputeAstroMatchRanking() {
+  if (ASTROMATCH_RANKING_RUNNING) {
+    return;
+  }
+
+  if (
+    !ASTROMATCH_PRIMARY_PROFILE ||
+    !Array.isArray(
+      ASTROMATCH_TARGET_PROFILES
+    ) ||
+    !ASTROMATCH_TARGET_PROFILES.length
+  ) {
+    return;
+  }
+
+  ASTROMATCH_RANKING_RUNNING = true;
+
+  try {
+    const primaryInput =
+      profileToApiInput(
+        ASTROMATCH_PRIMARY_PROFILE
+      );
+
+    const queue =
+      ASTROMATCH_TARGET_PROFILES
+        .filter(profile => {
+
+          const id =
+            String(
+              profile?.profile_id || ""
+            );
+
+          if (!id) return false;
+
+          return !ASTROMATCH_TARGET_RESULTS
+            .has(id);
+        })
+        .slice();
+
+    async function worker() {
+      while (queue.length) {
+
+        const target =
+          queue.shift();
+
+        if (!target) continue;
+
+        const id =
+          String(
+            target?.profile_id || ""
+          );
+
+        try {
+          const response =
+            await fetch(
+              API_URL,
+              {
+                method: "POST",
+
+                headers: {
+                  "Content-Type":
+                    "application/json"
+                },
+
+                body: JSON.stringify({
+                  primary:
+                    primaryInput,
+
+                  target:
+                    profileToApiInput(
+                      target
+                    )
+                })
+              }
+            );
+
+          if (!response.ok) {
+            console.warn(
+              "AstroMatch ranking :",
+              id,
+              response.status
+            );
+
+            continue;
+          }
+
+          const payload =
+            await response.json();
+
+          /*
+           * /api/match renvoie :
+           * { ok: true, result: {...} }
+           */
+          const result =
+            payload?.result ||
+            payload;
+
+          const score =
+            Number(
+              result?.global?.score
+            );
+
+          if (
+            Number.isFinite(score)
+          ) {
+            ASTROMATCH_TARGET_RESULTS
+              .set(
+                id,
+                result
+              );
+          }
+
+        } catch (error) {
+          console.warn(
+            "AstroMatch ranking :",
+            id,
+            error
+          );
+        }
+      }
+    }
+
+    await Promise.all([
+      worker(),
+      worker(),
+      worker(),
+      worker()
+    ]);
+
+    /*
+     * Une seule reconstruction,
+     * une fois tous les scores prêts.
+     */
+    renderTargetSelector(
+      ASTROMATCH_TARGET_PROFILES,
+      ASTROMATCH_SELECTED_TARGET
+    );
+
+    console.log(
+      "ASTROMATCH RANKING — terminé"
+    );
+
+  } finally {
+    ASTROMATCH_RANKING_RUNNING = false;
+  }
+}
+
+
 function renderTargetSelector(targets, selectedTarget) {
   const container =
     document.getElementById("targetSelector");
 
   if (!container) return;
+
+  /* ASTROMATCH_INLINE_SAFE_RENDER */
+  parkAstroMatchComparison();
+
+  const inlineSelectedId =
+    String(
+      selectedTarget?.profile_id || ""
+    );
+
+  /*
+   * Après reconstruction éventuelle des groupes,
+   * le comparateur revient sous la bonne carte.
+   */
+  queueMicrotask(() => {
+    if (inlineSelectedId) {
+      mountAstroMatchComparisonUnderTarget(
+        inlineSelectedId
+      );
+    }
+  });
 
   const safeTargets =
     Array.isArray(targets)
@@ -2813,21 +4493,22 @@ function renderTargetSelector(targets, selectedTarget) {
   const men =
     safeTargets.filter(
       target =>
-        target?.identity?.gender === "male"
+        (target?.relationship?.context || "romantic") ===
+        "romantic"
     );
 
   const women =
     safeTargets.filter(
       target =>
-        target?.identity?.gender === "female"
+        target?.relationship?.context ===
+        "friendship"
     );
 
   const unknown =
     safeTargets.filter(
       target =>
-        !["male", "female"].includes(
-          target?.identity?.gender
-        )
+        target?.relationship?.context ===
+        "family"
     );
 
   const groupHtml = (
@@ -2836,39 +4517,121 @@ function renderTargetSelector(targets, selectedTarget) {
     list
   ) => {
 
-    if (!list.length) return "";
+    const relationKey =
+      title === "Amour"
+        ? "romantic"
+        : title === "Amitié"
+          ? "friendship"
+          : "family";
+
+    /*
+     * Score réellement affiché :
+     *
+     * Amour   -> love
+     * Amitié  -> friendship
+     * Famille -> family
+     */
+    const rankingMode =
+      relationKey === "romantic"
+        ? "love"
+        : relationKey;
+
+    list =
+      sortAstroMatchTargetsByScore(
+        list,
+        rankingMode
+      );
+
+    const isOpen =
+      ASTROMATCH_OPEN_TARGET_GROUPS
+        .has(relationKey);
 
     return `
-      <div class="target-group-title">
-        <span>${icon}</span>
-        ${title}
-        <span class="text-slate-600">
-          ${list.length}
-        </span>
+      <div
+        class="target-group-title"
+        data-relation="${title}"
+      >
+
+        <button
+          type="button"
+          data-target-group-toggle="${relationKey}"
+          aria-expanded="${isOpen}"
+          class="target-group-toggle-main"
+        >
+
+          <span class="target-group-icon">
+            ${icon}
+          </span>
+
+          <span class="target-group-label">
+            ${title}
+          </span>
+
+          <span class="target-group-count">
+            ${list.length}
+          </span>
+
+          <span
+            class="
+              target-group-chevron
+              ${isOpen ? "open" : ""}
+            "
+          >
+            ⌄
+          </span>
+
+        </button>
+
+        <button
+          type="button"
+          data-add-relation="${relationKey}"
+          title="Ajouter un profil"
+          aria-label="Ajouter un profil"
+          class="target-group-add"
+        >
+          +
+        </button>
+
       </div>
 
-      <div class="space-y-3">
-        ${list
-          .map(target =>
-            renderProfileCard(
-              target,
-              selectedTarget
-            )
-          )
-          .join("")}
+      <div
+        data-target-group-body="${relationKey}"
+        class="
+          target-group-body
+          space-y-3
+          ${isOpen ? "" : "hidden"}
+        "
+      >
+
+        ${
+          list.length
+            ? list
+                .map(
+                  target =>
+                    renderProfileCard(
+                      target,
+                      selectedTarget
+                    )
+                )
+                .join("")
+            : `
+              <div class="target-group-empty">
+                Aucun profil pour le moment.
+              </div>
+            `
+        }
+
       </div>
     `;
   };
 
   container.innerHTML = `
-    ${groupHtml("♂", "Hommes", men)}
+    ${groupHtml("❤️", "Amour", men)}
 
-    ${groupHtml("♀", "Femmes", women)}
+    ${groupHtml("🤝", "Amitié", women)}
 
     ${
-      unknown.length
-        ? groupHtml("•", "À CLASSER", unknown)
-        : ""
+      groupHtml("👨‍👩‍👧‍👦", "Famille", unknown)
     }
 
     ${
@@ -2880,6 +4643,67 @@ function renderTargetSelector(targets, selectedTarget) {
     }
   `;
 
+
+
+  /* ASTROMATCH_GROUP_ACCORDION_LISTENER */
+  container
+    .querySelectorAll(
+      "[data-target-group-toggle]"
+    )
+    .forEach(button => {
+
+      button.addEventListener(
+        "click",
+        event => {
+
+          event.stopPropagation();
+
+          const relation =
+            button.dataset
+              .targetGroupToggle;
+
+          if (
+            ASTROMATCH_OPEN_TARGET_GROUPS
+              .has(relation)
+          ) {
+            ASTROMATCH_OPEN_TARGET_GROUPS
+              .delete(relation);
+          } else {
+            ASTROMATCH_OPEN_TARGET_GROUPS
+              .add(relation);
+          }
+
+          renderTargetSelector(
+            safeTargets,
+            selectedTarget
+          );
+        }
+      );
+    });
+
+  container
+    .querySelectorAll("[data-add-relation]")
+    .forEach(button => {
+      button.addEventListener(
+        "click",
+        event => {
+          event.stopPropagation();
+
+          openTargetEditor(null);
+
+          const select =
+            document.getElementById(
+              "targetEditorRelationship"
+            );
+
+          if (select) {
+            select.value =
+              button.dataset.addRelation;
+          }
+        }
+      );
+    });
+
   container
     .querySelectorAll("[data-target-id]")
     .forEach(button => {
@@ -2887,17 +4711,38 @@ function renderTargetSelector(targets, selectedTarget) {
       button.addEventListener(
         "click",
         () => {
-          
+
 
           selectTargetProfile(
             button.dataset.targetId
           );
+
+          /*
+           * Une fois la cible choisie,
+           * on amène immédiatement l'utilisateur
+           * vers la comparaison.
+           */
+          setTimeout(() => {
+            const score =
+              document.getElementById(
+                "relationshipScore"
+              );
+
+            const comparison =
+              score?.closest("section") ||
+              score;
+
+            comparison?.scrollIntoView({
+              behavior: "smooth",
+              block: "start"
+            });
+          }, 180);
         }
       );
 
     });
 
-  
+
   const addButton =
     document.getElementById("addTargetProfile");
 
@@ -3107,10 +4952,114 @@ function normalizeRelationshipModeForTarget(target) {
   return "love";
 }
 
+
+function getAstroMatchComparisonRoot() {
+  return document.getElementById(
+    "astromatchComparisonArea"
+  );
+}
+
+function setAstroMatchComparisonVisible(visible) {
+  const root =
+    getAstroMatchComparisonRoot();
+
+  if (!root) return;
+
+  const show =
+    Boolean(visible);
+
+  root.classList.toggle(
+    "hidden",
+    !show
+  );
+
+  document.body.classList.toggle(
+    "astromatch-comparison-open",
+    show
+  );
+}
+
+
 function selectTargetProfile(profileId) {
 
-  
+  const requestedTargetId =
+    String(profileId || "");
 
+  const currentTargetId =
+    String(
+      ASTROMATCH_SELECTED_TARGET
+        ?.profile_id || ""
+    );
+
+  /*
+   * Reclic sur la même personne :
+   * désélection complète.
+   */
+  if (
+    currentTargetId &&
+    currentTargetId === requestedTargetId
+  ) {
+    ASTROMATCH_SELECTED_TARGET = null;
+
+    /*
+     * Invalide aussi un éventuel calcul
+     * encore en cours.
+     */
+    if (
+      typeof ASTROMATCH_CALCULATION_TOKEN
+      !== "undefined"
+    ) {
+      ASTROMATCH_CALCULATION_TOKEN++;
+    }
+
+    if (
+      typeof ASTROMATCH_RESULT !==
+      "undefined"
+    ) {
+      ASTROMATCH_RESULT = null;
+    }
+
+    window.__astromatchLastResult = null;
+
+    sessionStorage.removeItem(
+      "astromatch:selectedTargetId"
+    );
+
+    document
+      .getElementById("astromatchComparisonArea")
+      ?.classList.add("hidden");
+
+    document.body.classList.remove(
+      "astromatch-comparison-open"
+    );
+
+    /*
+     * Reclic :
+     * on ne détruit PAS la liste.
+     */
+    refreshTargetCards();
+
+    parkAstroMatchComparison();
+
+    setAstroMatchComparisonVisible(
+      false
+    );
+
+    setTargetCalculationState(
+      "idle"
+    );
+
+    return;
+  }
+
+  /*
+   * Pendant le nouveau calcul, on masque
+   * l'ancien résultat pour ne jamais montrer
+   * la mauvaise personne.
+   */
+  setAstroMatchComparisonVisible(
+    false
+  );
 
   const target = ASTROMATCH_TARGET_PROFILES.find(
     profile =>
@@ -3127,6 +5076,8 @@ function selectTargetProfile(profileId) {
 
   ASTROMATCH_SELECTED_TARGET = target;
 
+
+
   sessionStorage.setItem(
     "astromatch:selectedTargetId",
     String(target.profile_id)
@@ -3142,12 +5093,18 @@ function selectTargetProfile(profileId) {
 
   renderContextualRelationshipTabs(target);
 
-  renderTargetSelector(
-    ASTROMATCH_TARGET_PROFILES,
-    ASTROMATCH_SELECTED_TARGET
+  /*
+   * IMPORTANT :
+   * aucun innerHTML ici.
+   * La liste reste exactement où elle est.
+   */
+  refreshTargetCards();
+
+  mountAstroMatchComparisonUnderTarget(
+    target.profile_id
   );
 
-  
+
 
   setTargetCalculationState("loading");
 
@@ -3160,7 +5117,7 @@ function selectTargetProfile(profileId) {
       "Profil cible";
   }
 
-  
+
 
   calculateSelectedTarget().catch(error => {
     console.error(
@@ -3269,6 +5226,34 @@ function humanLevelLabel(level) {
 }
 
 function initializeTargetSelector(targets) {
+
+  /*
+   * AstroMatch UX :
+   * au lancement aucune comparaison.
+   */
+  ASTROMATCH_TARGET_PROFILES =
+    Array.isArray(targets)
+      ? targets
+      : [];
+
+  ASTROMATCH_SELECTED_TARGET = null;
+
+  sessionStorage.removeItem(
+    "astromatch:selectedTargetId"
+  );
+
+  renderTargetSelector(
+    ASTROMATCH_TARGET_PROFILES,
+    null
+  );
+
+  setAstroMatchComparisonVisible(
+    false
+  );
+
+  return;
+
+
   ASTROMATCH_TARGET_PROFILES = Array.isArray(targets)
     ? targets
     : [];
@@ -3319,7 +5304,7 @@ function initializeTargetSelector(targets) {
 }
 
 async function calculateSelectedTarget() {
-  
+
 
   if (!ASTROMATCH_PRIMARY_PROFILE) {
     throw new Error("PROFIL_PRINCIPAL_INTRouvable");
@@ -3350,7 +5335,7 @@ async function calculateSelectedTarget() {
     throw new Error("AUCUN_PROFIL_CIBLE");
   }
 
-  
+
 
   const primaryInput =
     profileToApiInput(primary);
@@ -3483,6 +5468,25 @@ async function calculateSelectedTarget() {
 
   ASTROMATCH_RESULT = result;
   window.__astromatchLastResult = result;
+
+  /*
+   * RESULTAT REEL DE LA CIBLE :
+   * la comparaison peut maintenant apparaître.
+   */
+  const comparisonArea =
+    document.getElementById(
+      "astromatchComparisonArea"
+    );
+
+  if (comparisonArea) {
+    comparisonArea.classList.remove(
+      "hidden"
+    );
+  }
+
+  document.body.classList.add(
+    "astromatch-comparison-open"
+  );
 
   console.log(
     "ASTROMATCH RESULT — SOURCE DE VÉRITÉ",
@@ -6099,6 +8103,382 @@ function renderProfileCard(target, selectedTarget) {
   `;
 }
 
+
+function primaryAvatarKey(profile) {
+  return (
+    "astromatch:primary-avatar:" +
+    String(profile?.profile_id || "primary")
+  );
+}
+
+function primaryAvatarStored(profile) {
+  try {
+    return localStorage.getItem(
+      primaryAvatarKey(profile)
+    );
+  } catch {
+    return null;
+  }
+}
+
+function applyPrimaryAvatar(profile) {
+  if (!profile) return;
+
+  const zodiac =
+    zodiacFromDate(
+      profile?.birth_data?.date
+    );
+
+  const symbol =
+    zodiac?.symbol || "✦";
+
+  const custom =
+    primaryAvatarStored(profile);
+
+  const compactSymbol =
+    document.getElementById(
+      "compactPrimaryZodiac"
+    );
+
+  const compactImage =
+    document.getElementById(
+      "compactPrimaryAvatarImage"
+    );
+
+  const largeSymbol =
+    document.getElementById(
+      "primaryZodiacSymbol"
+    );
+
+  const largeImage =
+    document.getElementById(
+      "primaryAvatarImage"
+    );
+
+  if (compactSymbol) {
+    compactSymbol.textContent = symbol;
+  }
+
+  if (custom) {
+    if (compactImage) {
+      compactImage.src = custom;
+      compactImage.classList.remove("hidden");
+    }
+
+    compactSymbol?.classList.add("hidden");
+
+    if (largeImage) {
+      largeImage.src = custom;
+      largeImage.classList.remove("hidden");
+    }
+
+    largeSymbol?.classList.add("hidden");
+  } else {
+    compactImage?.classList.add("hidden");
+    compactSymbol?.classList.remove("hidden");
+
+    largeImage?.classList.add("hidden");
+    largeSymbol?.classList.remove("hidden");
+  }
+}
+
+function syncCompactPrimaryProfile(profile) {
+  if (!profile) return;
+
+  const name =
+    profile?.identity?.first_name ||
+    profileFullName(profile) ||
+    "Profil";
+
+  const age =
+    calculateAge(profile);
+
+  const nameEl =
+    document.getElementById(
+      "compactPrimaryName"
+    );
+
+  const ageEl =
+    document.getElementById(
+      "compactPrimaryAge"
+    );
+
+  if (nameEl) {
+    nameEl.textContent = name;
+  }
+
+  if (ageEl) {
+    ageEl.textContent =
+      age !== null &&
+      age !== undefined
+        ? `${age} ans`
+        : "Âge inconnu";
+  }
+
+  applyPrimaryAvatar(profile);
+}
+
+function primaryProfilePopoverOpen(open) {
+  const popover =
+    document.getElementById(
+      "primaryProfilePopover"
+    );
+
+  const bubble =
+    document.getElementById(
+      "primaryCompactBubble"
+    );
+
+  const chevron =
+    document.getElementById(
+      "primaryCompactChevron"
+    );
+
+  if (!popover || !bubble) return;
+
+  popover.classList.toggle(
+    "hidden",
+    !open
+  );
+
+  bubble.setAttribute(
+    "aria-expanded",
+    String(open)
+  );
+
+  if (chevron) {
+    chevron.textContent =
+      open ? "⌄" : "›";
+  }
+}
+
+function primaryPhotoToDataUrl(file) {
+  return new Promise(
+    (resolve, reject) => {
+      const url =
+        URL.createObjectURL(file);
+
+      const image =
+        new Image();
+
+      image.onload = () => {
+        try {
+          const size = 320;
+
+          const canvas =
+            document.createElement(
+              "canvas"
+            );
+
+          canvas.width = size;
+          canvas.height = size;
+
+          const ctx =
+            canvas.getContext("2d");
+
+          const side =
+            Math.min(
+              image.width,
+              image.height
+            );
+
+          const sx =
+            (image.width - side) / 2;
+
+          const sy =
+            (image.height - side) / 2;
+
+          ctx.drawImage(
+            image,
+            sx,
+            sy,
+            side,
+            side,
+            0,
+            0,
+            size,
+            size
+          );
+
+          const data =
+            canvas.toDataURL(
+              "image/jpeg",
+              0.86
+            );
+
+          URL.revokeObjectURL(url);
+
+          resolve(data);
+        } catch (error) {
+          URL.revokeObjectURL(url);
+          reject(error);
+        }
+      };
+
+      image.onerror = () => {
+        URL.revokeObjectURL(url);
+        reject(
+          new Error(
+            "IMAGE_INVALIDE"
+          )
+        );
+      };
+
+      image.src = url;
+    }
+  );
+}
+
+function initializePrimaryCompactProfile(profile) {
+  syncCompactPrimaryProfile(profile);
+
+  const section =
+    document.getElementById(
+      "primaryCompactSection"
+    );
+
+  const bubble =
+    document.getElementById(
+      "primaryCompactBubble"
+    );
+
+  const picker =
+    document.getElementById(
+      "primaryAvatarPicker"
+    );
+
+  const input =
+    document.getElementById(
+      "primaryAvatarInput"
+    );
+
+  if (
+    !section ||
+    !bubble ||
+    bubble.dataset.bound === "1"
+  ) {
+    return;
+  }
+
+  bubble.dataset.bound = "1";
+
+  bubble.addEventListener(
+    "click",
+    event => {
+      event.stopPropagation();
+
+      const open =
+        bubble.getAttribute(
+          "aria-expanded"
+        ) !== "true";
+
+      primaryProfilePopoverOpen(open);
+    }
+  );
+
+  const choosePhoto = event => {
+    event?.stopPropagation();
+    input?.click();
+  };
+
+  picker?.addEventListener(
+    "click",
+    choosePhoto
+  );
+
+  picker?.addEventListener(
+    "keydown",
+    event => {
+      if (
+        event.key === "Enter" ||
+        event.key === " "
+      ) {
+        event.preventDefault();
+        choosePhoto(event);
+      }
+    }
+  );
+
+  input?.addEventListener(
+    "change",
+    async () => {
+      const file =
+        input.files?.[0];
+
+      if (!file) return;
+
+      if (
+        !file.type.startsWith(
+          "image/"
+        )
+      ) {
+        alert(
+          "Choisis une image."
+        );
+        return;
+      }
+
+      try {
+        const data =
+          await primaryPhotoToDataUrl(
+            file
+          );
+
+        const current =
+          ASTROMATCH_PRIMARY_PROFILE ||
+          profile;
+
+        localStorage.setItem(
+          primaryAvatarKey(current),
+          data
+        );
+
+        applyPrimaryAvatar(
+          current
+        );
+      } catch (error) {
+        console.error(
+          "Photo profil:",
+          error
+        );
+
+        alert(
+          "Impossible d'importer cette photo."
+        );
+      }
+
+      input.value = "";
+    }
+  );
+
+  document.addEventListener(
+    "click",
+    event => {
+      if (
+        !section.contains(
+          event.target
+        )
+      ) {
+        primaryProfilePopoverOpen(
+          false
+        );
+      }
+    }
+  );
+
+  document.addEventListener(
+    "keydown",
+    event => {
+      if (event.key === "Escape") {
+        primaryProfilePopoverOpen(
+          false
+        );
+      }
+    }
+  );
+}
+
+
 function renderPrimaryProfileCard(profile) {
   if (!profile) return;
 
@@ -6679,6 +9059,21 @@ window.addEventListener("DOMContentLoaded", function () {
 });
 
 </script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </body>
 </html>
