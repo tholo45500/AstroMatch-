@@ -581,7 +581,19 @@ window.scoreProgressClass = scoreProgressClass;
             </div>
           </section>
 
-          <section class="rounded-3xl border border-violet-400/10 bg-slate-900 p-4">
+          
+          <section class="rounded-3xl border border-violet-400/20 bg-slate-900 p-4">
+            <div class="text-xs uppercase tracking-widest text-violet-300 mb-3">
+              🧭 Synthèse globale
+            </div>
+
+            <div
+              id="natalGlobalSynthesis"
+              class="space-y-3"
+            ></div>
+          </section>
+
+<section class="rounded-3xl border border-violet-400/10 bg-slate-900 p-4">
             <div class="text-xs uppercase tracking-widest text-violet-300 mb-3">
               ✨ Ta lecture
             </div>
@@ -599,6 +611,17 @@ window.scoreProgressClass = scoreProgressClass;
 
 
           <section class="rounded-3xl border border-white/10 bg-slate-900 p-4">
+            <div class="text-xs uppercase tracking-widest text-slate-500 mb-3">
+              Maisons
+            </div>
+
+            <div
+              id="natalHouses"
+              class="grid grid-cols-2 gap-2"
+            ></div>
+          </section>
+
+<section class="rounded-3xl border border-white/10 bg-slate-900 p-4">
             <div class="text-xs uppercase tracking-widest text-violet-300 mb-3">
               ⚡ Tes dominantes
             </div>
@@ -668,16 +691,7 @@ window.scoreProgressClass = scoreProgressClass;
             ></div>
           </section>
 
-          <section class="rounded-3xl border border-white/10 bg-slate-900 p-4">
-            <div class="text-xs uppercase tracking-widest text-slate-500 mb-3">
-              Maisons
-            </div>
-
-            <div
-              id="natalHouses"
-              class="grid grid-cols-2 gap-2"
-            ></div>
-          </section>
+          
 
           
 
@@ -3992,19 +4006,25 @@ function natalTrait(sign) {
     [sign || "Signe inconnu", "une expression particulière"];
 }
 
+
 function natalPlacementCard(point, title, intro) {
   if (!point) return "";
 
   const sign = natalTrait(point.sign);
 
-  const house =
+  const houseMeaning =
     point.house
-      ? ` En maison ${point.house}, ce fonctionnement marque particulièrement ce secteur de ta vie.`
+      ? NATAL_HOUSE_MEANINGS[point.house]?.[1]
+      : null;
+
+  const houseText =
+    houseMeaning
+      ? ` Ça se ressent surtout dans ${houseMeaning}.`
       : "";
 
-  const retro =
+  const retroText =
     point.retrograde
-      ? " Cette planète rétrograde s'exprime de façon plus intérieure."
+      ? " Cette énergie peut aussi être plus intérieure ou moins évidente au premier abord."
       : "";
 
   return `
@@ -4015,13 +4035,12 @@ function natalPlacementCard(point, title, intro) {
 
       <div class="text-sm text-slate-300 mt-2 leading-relaxed">
         ${intro}
-        En ${sign[0]}, cela s'exprime par
-        ${sign[1]}.${house}${retro}
+        Avec ${sign[0]}, tu tends vers
+        ${sign[1]}.${houseText}${retroText}
       </div>
     </div>
   `;
 }
-
 
 const NATAL_ELEMENT_BY_SIGN = {
   aries: "fire",
@@ -4302,6 +4321,67 @@ function renderNatalPlanetDominants(chart, points) {
     }).join("");
 }
 
+
+function natalPlacementLabel(placement) {
+  if (!placement) return "Placement";
+
+  if (placement.body === "ascendant") {
+    const sign =
+      NATAL_SIGNS[placement.sign] ||
+      ["✦", placement.sign || "?"];
+
+    return `↑ Ascendant — ${sign[0]} ${sign[1]}`;
+  }
+
+  const body =
+    NATAL_BODIES[placement.body] ||
+    ["✦", placement.body || "?"];
+
+  const sign =
+    NATAL_SIGNS[placement.sign] ||
+    ["✦", placement.sign || "?"];
+
+  return `${body[0]} ${body[1]} — ${sign[0]} ${sign[1]}`;
+}
+
+function natalPlacementDetails(items) {
+  return items
+    .map(item => `
+      <div class="py-1.5 border-t border-white/5 first:border-t-0">
+        ${escapeHtml(natalPlacementLabel(item))}
+      </div>
+    `)
+    .join("");
+}
+
+function bindNatalDominantToggles(container) {
+  if (!container) return;
+
+  container
+    .querySelectorAll("[data-natal-dominant-toggle]")
+    .forEach(button => {
+      button.addEventListener("click", () => {
+        const details =
+          button.parentElement
+            ?.querySelector("[data-natal-dominant-details]");
+
+        if (!details) return;
+
+        details.classList.toggle("hidden");
+
+        const arrow =
+          button.querySelector("[data-natal-arrow]");
+
+        if (arrow) {
+          arrow.textContent =
+            details.classList.contains("hidden")
+              ? "⌄"
+              : "⌃";
+        }
+      });
+    });
+}
+
 function renderNatalDominants(chart, points) {
   const placements = [...points];
 
@@ -4384,27 +4464,52 @@ function renderNatalDominants(chart, points) {
           const pct =
             natalPercent(count, total);
 
+          const matching =
+            placements.filter(
+              placement =>
+                NATAL_ELEMENT_BY_SIGN[placement.sign] === key
+            );
+
           return `
-            <div class="rounded-xl bg-slate-950 p-3">
-              <div class="flex items-center justify-between">
-                <div class="font-bold">
-                  ${info[0]} ${info[1]}
+            <div class="rounded-xl bg-slate-950 overflow-hidden">
+              <button
+                type="button"
+                data-natal-dominant-toggle
+                class="w-full p-3 text-left"
+              >
+                <div class="flex items-center justify-between">
+                  <div class="font-bold">
+                    ${info[0]} ${info[1]}
+                  </div>
+
+                  <div class="flex items-center gap-2">
+                    <span class="text-violet-300 font-black">
+                      ${pct}%
+                    </span>
+                    <span data-natal-arrow class="text-slate-500">
+                      ⌄
+                    </span>
+                  </div>
                 </div>
 
-                <div class="text-violet-300 font-black">
-                  ${pct}%
+                <div class="text-xs text-slate-500 mt-1">
+                  ${count} placement${count > 1 ? "s" : ""}
+                  · appuie pour voir
                 </div>
-              </div>
 
-              <div class="text-xs text-slate-500 mt-1">
-                ${count} placement${count > 1 ? "s" : ""}
-              </div>
+                <div class="h-1.5 bg-white/5 rounded-full mt-2 overflow-hidden">
+                  <div
+                    class="h-full bg-violet-400 rounded-full"
+                    style="width:${pct}%"
+                  ></div>
+                </div>
+              </button>
 
-              <div class="h-1.5 bg-white/5 rounded-full mt-2 overflow-hidden">
-                <div
-                  class="h-full bg-violet-400 rounded-full"
-                  style="width:${pct}%"
-                ></div>
+              <div
+                data-natal-dominant-details
+                class="hidden px-3 pb-3 text-xs text-slate-300"
+              >
+                ${natalPlacementDetails(matching)}
               </div>
             </div>
           `;
@@ -4427,24 +4532,288 @@ function renderNatalDominants(chart, points) {
           const pct =
             natalPercent(count, total);
 
+          const matching =
+            placements.filter(
+              placement =>
+                NATAL_MODALITY_BY_SIGN[placement.sign] === key
+            );
+
           return `
-            <div class="rounded-xl bg-slate-950 p-3 text-center">
-              <div class="text-sm font-bold">
-                ${info[0]}
-              </div>
+            <div class="rounded-xl bg-slate-950 overflow-hidden">
+              <button
+                type="button"
+                data-natal-dominant-toggle
+                class="w-full p-3 text-center"
+              >
+                <div class="text-sm font-bold">
+                  ${info[0]}
+                </div>
 
-              <div class="text-xl font-black text-violet-300 mt-1">
-                ${pct}%
-              </div>
+                <div class="text-xl font-black text-violet-300 mt-1">
+                  ${pct}%
+                </div>
 
-              <div class="text-[10px] text-slate-500 mt-1">
-                ${count} placements
+                <div class="text-[10px] text-slate-500 mt-1">
+                  ${count} placement${count > 1 ? "s" : ""}
+                  <span data-natal-arrow>⌄</span>
+                </div>
+              </button>
+
+              <div
+                data-natal-dominant-details
+                class="hidden px-2 pb-3 text-left text-[11px] text-slate-300"
+              >
+                ${natalPlacementDetails(matching)}
               </div>
             </div>
           `;
         })
         .join("");
   }
+
+  bindNatalDominantToggles(elementsEl);
+  bindNatalDominantToggles(modalitiesEl);
+}
+
+
+function computeNatalTemperament(chart, points) {
+  const placements = [...points];
+  const asc = chart?.angles?.ascendant || null;
+
+  if (asc?.sign) {
+    placements.push({ sign: asc.sign });
+  }
+
+  const elements = {
+    fire: 0,
+    earth: 0,
+    air: 0,
+    water: 0
+  };
+
+  const modalities = {
+    cardinal: 0,
+    fixed: 0,
+    mutable: 0
+  };
+
+  for (const placement of placements) {
+    const element =
+      NATAL_ELEMENT_BY_SIGN[placement.sign];
+
+    const modality =
+      NATAL_MODALITY_BY_SIGN[placement.sign];
+
+    if (element) elements[element]++;
+    if (modality) modalities[modality]++;
+  }
+
+  return {
+    element:
+      Object.entries(elements)
+        .sort((a, b) => b[1] - a[1])[0]?.[0],
+
+    modality:
+      Object.entries(modalities)
+        .sort((a, b) => b[1] - a[1])[0]?.[0]
+  };
+}
+
+function renderNatalGlobalSynthesis(chart, points) {
+  const el =
+    document.getElementById(
+      "natalGlobalSynthesis"
+    );
+
+  if (!el) return;
+
+  const sun =
+    points.find(p => p.body === "sun");
+
+  const moon =
+    points.find(p => p.body === "moon");
+
+  const venus =
+    points.find(p => p.body === "venus");
+
+  const mars =
+    points.find(p => p.body === "mars");
+
+  const asc =
+    chart?.angles?.ascendant || null;
+
+  const sunTrait =
+    sun ? natalTrait(sun.sign) : null;
+
+  const moonTrait =
+    moon ? natalTrait(moon.sign) : null;
+
+  const ascTrait =
+    asc ? natalTrait(asc.sign) : null;
+
+  const temperament =
+    computeNatalTemperament(
+      chart,
+      points
+    );
+
+  const elementInfo =
+    NATAL_ELEMENT_INFO[
+      temperament.element
+    ];
+
+  const modalityInfo =
+    NATAL_MODALITY_INFO[
+      temperament.modality
+    ];
+
+  const dominant =
+    computeNatalPlanetDominance(
+      chart,
+      points
+    )[0];
+
+  const dominantBody =
+    dominant
+      ? NATAL_BODIES[dominant.body]
+      : null;
+
+  const dominantMeaning =
+    dominant
+      ? NATAL_DOMINANT_MEANINGS[
+          dominant.body
+        ]
+      : null;
+
+  const cards = [];
+
+  if (sunTrait && moonTrait) {
+    let text =
+      `Tu combines un Soleil en ${sunTrait[0]}, avec ${sunTrait[1]}, ` +
+      `et une Lune en ${moonTrait[0]}, plus tournée vers ${moonTrait[1]}.`;
+
+    if (ascTrait) {
+      text +=
+        ` Ton Ascendant ${ascTrait[0]} ajoute ${ascTrait[1]} dans ta façon d'aborder les autres et les situations.`;
+    }
+
+    cards.push({
+      title: "✨ Ton vibe",
+      text
+    });
+  }
+
+  let dynamics = "";
+
+  if (elementInfo) {
+    dynamics +=
+      `La dominante ${elementInfo[1]} renforce ${elementInfo[2]}.`;
+  }
+
+  if (modalityInfo) {
+    dynamics +=
+      ` La dominante ${modalityInfo[0]} ajoute ${modalityInfo[1]}.`;
+  }
+
+  if (dominantBody && dominantMeaning) {
+    dynamics +=
+      ` ${dominantBody[0]} ${dominantBody[1]} ressort particulièrement et accentue ${dominantMeaning}.`;
+  }
+
+  if (dynamics) {
+    cards.push({
+      title: "⚡ Ce qui ressort fort",
+      text: dynamics
+    });
+  }
+
+  const personalBodies =
+    new Set([
+      "sun",
+      "moon",
+      "mercury",
+      "venus",
+      "mars"
+    ]);
+
+  const aspects =
+    computeNatalAspects(points);
+
+  const aspect =
+    aspects.find(a =>
+      personalBodies.has(a.bodyA.body) ||
+      personalBodies.has(a.bodyB.body)
+    ) || aspects[0];
+
+  if (aspect) {
+    const a =
+      NATAL_BODIES[aspect.bodyA.body] ||
+      ["✦", aspect.bodyA.body];
+
+    const b =
+      NATAL_BODIES[aspect.bodyB.body] ||
+      ["✦", aspect.bodyB.body];
+
+    const meanings = {
+      conjunction:
+        "Ces deux énergies fonctionnent très fortement ensemble.",
+      sextile:
+        "Ces deux côtés de ta personnalité s'entraident assez naturellement.",
+      square:
+        "Il y a une tension entre ces deux côtés de toi, mais elle peut aussi te faire avancer.",
+      trine:
+        "Ces deux énergies s'accordent naturellement chez toi.",
+      opposition:
+        "Ces deux besoins peuvent tirer dans des directions différentes et demandent de trouver un équilibre."
+    };
+
+    cards.push({
+      title: "🧩 Un truc important chez toi",
+      text:
+        `${a[1]} et ${b[1]} sont liés par un ${aspect.label.toLowerCase()}. ` +
+        `${meanings[aspect.type] || ""}`
+    });
+  }
+
+  if (venus || mars) {
+    const parts = [];
+
+    if (venus) {
+      const trait =
+        natalTrait(venus.sign);
+
+      parts.push(
+        `En flirt, Vénus en ${trait[0]} te pousse vers ${trait[1]}`
+      );
+    }
+
+    if (mars) {
+      const trait =
+        natalTrait(mars.sign);
+
+      parts.push(
+        `Mars en ${trait[0]} montre un désir marqué par ${trait[1]}`
+      );
+    }
+
+    cards.push({
+      title: "💘 Côté relations",
+      text: parts.join(". ") + "."
+    });
+  }
+
+  el.innerHTML =
+    cards.map(card => `
+      <div class="rounded-2xl bg-slate-950 p-4">
+        <div class="font-black text-white">
+          ${escapeHtml(card.title)}
+        </div>
+
+        <div class="text-sm text-slate-300 mt-2 leading-relaxed">
+          ${escapeHtml(card.text)}
+        </div>
+      </div>
+    `).join("");
 }
 
 function renderNatalChart(chart, name) {
@@ -4524,6 +4893,11 @@ function renderNatalChart(chart, name) {
 
 
 
+  renderNatalGlobalSynthesis(
+    chart,
+    points
+  );
+
   const summary =
     document.getElementById("natalSummary");
 
@@ -4575,32 +4949,32 @@ function renderNatalChart(chart, name) {
     interpretations.innerHTML = [
       natalPlacementCard(
         sun,
-        "☀️ Identité",
-        "Le Soleil représente ton identité, ta volonté et la manière dont tu cherches à t'affirmer."
+        "☀️ Ton énergie",
+        "C'est la base de ta personnalité et la façon dont tu prends ta place."
       ),
 
       natalPlacementCard(
         moon,
-        "🌙 Monde émotionnel",
-        "La Lune représente tes réactions instinctives, tes besoins émotionnels et ce qui te sécurise."
+        "🌙 Tes émotions",
+        "Ça décrit ce que tu ressens vraiment, même quand tu ne le montres pas forcément."
       ),
 
       natalPlacementCard(
         mercury,
-        "☿ Communication",
-        "Mercure représente ta manière de réfléchir, comprendre et communiquer."
+        "💬 Ta façon de parler",
+        "Ça montre comment tu réfléchis, discutes, réponds et crées le contact."
       ),
 
       natalPlacementCard(
         venus,
-        "♀ Affectif",
-        "Vénus représente ta manière d'aimer, de créer du lien et ce que tu apprécies."
+        "💘 Côté flirt",
+        "Ça montre ce qui t'attire, comment tu séduis et ce qui te donne envie de te rapprocher de quelqu'un."
       ),
 
       natalPlacementCard(
         mars,
-        "♂ Action & désir",
-        "Mars représente ta manière d'agir, de désirer et de mobiliser ton énergie."
+        "🔥 Désir & action",
+        "Ça montre comment tu fonces, ce qui te motive et comment ton désir s'exprime."
       )
     ].join("");
   }
@@ -4687,15 +5061,7 @@ function renderNatalChart(chart, name) {
     const wholeSign =
       usedHouseSystem === "whole_sign";
 
-    const systemInfo =
-      wholeSign
-        ? `<div class="col-span-2 rounded-xl bg-violet-500/10 border border-violet-400/10 p-3 text-xs text-violet-200">
-             Système : Maisons entières
-           </div>`
-        : "";
-
     houses.innerHTML =
-      systemInfo +
       houseList.map(house => {
         const sign =
           NATAL_SIGNS[house.sign] ||
