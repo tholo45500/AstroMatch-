@@ -236,7 +236,19 @@ export function applyProfileUpdate(existingProfile, patchInput) {
     ...existingProfile,
     identity: {
       first_name: mergedInput.first_name.trim(),
-      last_name: (mergedInput.last_name || "").trim()
+      last_name: (mergedInput.last_name || "").trim(),
+      gender:
+        patchInput.gender !== undefined
+          ? (["male", "female"].includes(patchInput.gender) ? patchInput.gender : null)
+          : existingProfile.identity?.gender ?? null
+    },
+    relationship: {
+      context:
+        patchInput.relationship_context !== undefined
+          ? (["romantic", "friendship", "family"].includes(patchInput.relationship_context)
+              ? patchInput.relationship_context
+              : "romantic")
+          : existingProfile.relationship?.context ?? "romantic"
     },
     birth_data: {
       date: mergedInput.date.trim(),

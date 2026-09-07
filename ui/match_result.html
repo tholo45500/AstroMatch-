@@ -448,7 +448,18 @@ window.scoreProgressClass = scoreProgressClass;
 
     </div>
 
-    <div
+    
+    <div class="flex justify-end mb-3">
+      <button
+        id="addTargetProfile"
+        type="button"
+        class="px-4 py-2 rounded-xl bg-violet-500/15 border border-violet-400/20 text-violet-200 text-sm font-bold"
+      >
+        ＋ Ajouter un profil
+      </button>
+    </div>
+
+<div
       id="targetSelector"
       class="space-y-2"
       aria-label="Sélection des profils"
@@ -464,7 +475,92 @@ window.scoreProgressClass = scoreProgressClass;
   </section>
 
 
-  <!-- COMPARAISON — VUE SECONDAIRE -->
+  
+<!-- TARGET PROFILE EDITOR -->
+<div
+  id="targetProfileEditor"
+  class="fixed inset-0 z-[100] hidden bg-slate-950/90 backdrop-blur-sm overflow-y-auto"
+>
+  <div class="min-h-full flex items-center justify-center p-4">
+    <div class="w-full max-w-lg rounded-3xl border border-white/10 bg-slate-900 p-5">
+
+      <div class="flex items-center justify-between mb-5">
+        <div>
+          <div class="text-xs uppercase tracking-widest text-slate-500">Profil cible</div>
+          <h2 id="targetEditorTitle" class="text-xl font-black mt-1">Ajouter</h2>
+        </div>
+
+        <button
+          id="targetEditorClose"
+          type="button"
+          class="w-10 h-10 rounded-xl bg-white/5 text-xl"
+        >×</button>
+      </div>
+
+      <input id="targetEditorId" type="hidden">
+
+      <div class="grid grid-cols-2 gap-3">
+        <label class="text-xs text-slate-400">
+          Prénom
+          <input id="targetEditorFirstName" class="mt-1 w-full rounded-xl bg-slate-950 border border-white/10 p-3 text-white">
+        </label>
+
+        <label class="text-xs text-slate-400">
+          Nom
+          <input id="targetEditorLastName" class="mt-1 w-full rounded-xl bg-slate-950 border border-white/10 p-3 text-white">
+        </label>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3 mt-3">
+        <label class="text-xs text-slate-400">
+          Sexe
+          <select id="targetEditorGender" class="mt-1 w-full rounded-xl bg-slate-950 border border-white/10 p-3 text-white">
+            <option value="">Non renseigné</option>
+            <option value="female">Femme</option>
+            <option value="male">Homme</option>
+          </select>
+        </label>
+
+        <label class="text-xs text-slate-400">
+          Relation
+          <select id="targetEditorRelationship" class="mt-1 w-full rounded-xl bg-slate-950 border border-white/10 p-3 text-white">
+            <option value="romantic">❤️ Relation</option>
+            <option value="friendship">🤝 Amitié</option>
+            <option value="family">👨‍👩‍👧‍👦 Famille</option>
+          </select>
+        </label>
+      </div>
+
+      <label class="block text-xs text-slate-400 mt-3">
+        Date de naissance
+        <input id="targetEditorDate" type="date" class="mt-1 w-full rounded-xl bg-slate-950 border border-white/10 p-3 text-white">
+      </label>
+
+      <label class="block text-xs text-slate-400 mt-2">
+        Heure
+        <input id="targetEditorTime" type="time" class="mt-1 w-full rounded-xl bg-slate-950 border border-white/10 p-3 text-white">
+      </label>
+
+      <label class="block text-xs text-slate-400 mt-3">
+        Lieu de naissance
+        <input id="targetEditorPlace" class="mt-1 w-full rounded-xl bg-slate-950 border border-white/10 p-3 text-white">
+      </label>
+
+      <div id="targetEditorError" class="hidden mt-3 text-sm text-red-300"></div>
+
+      <button
+        id="targetEditorSave"
+        type="button"
+        class="mt-5 w-full py-3 rounded-2xl bg-violet-600 font-black text-white"
+      >
+        Enregistrer
+      </button>
+
+    </div>
+  </div>
+</div>
+
+<!-- COMPARAISON — VUE SECONDAIRE -->
   
 
 
@@ -651,6 +747,15 @@ window.scoreProgressClass = scoreProgressClass;
 
 <script>
 window.addEventListener("DOMContentLoaded", function() {
+  document
+    .getElementById("targetEditorClose")
+    ?.addEventListener("click", closeTargetEditor);
+
+  document
+    .getElementById("targetEditorSave")
+    ?.addEventListener("click", saveTargetEditor);
+
+
   const box = document.getElementById("jsDiagnostic");
   if (box) box.textContent = "";
 });
@@ -2332,10 +2437,6 @@ function getRealProfiles() {
     )
   ];
 
-  if (!targets.length) {
-    throw new Error("AUCUN_PROFIL_CIBLE");
-  }
-
   return {
     primary,
     targets
@@ -2440,7 +2541,43 @@ function renderTargetSelector(targets, selectedTarget) {
 
     });
 
-  updateTargetSelectionVisual(
+  
+  const addButton =
+    document.getElementById("addTargetProfile");
+
+  if (addButton) {
+    addButton.onclick = () => openTargetEditor(null);
+  }
+
+  container
+    .querySelectorAll("[data-edit-target]")
+    .forEach(button => {
+      button.addEventListener("click", event => {
+        event.stopPropagation();
+
+        const profile =
+          safeTargets.find(
+            target =>
+              String(target?.profile_id) ===
+              String(button.dataset.editTarget)
+          );
+
+        if (profile) {
+          openTargetEditor(profile);
+        }
+      });
+    });
+
+  container
+    .querySelectorAll("[data-delete-target]")
+    .forEach(button => {
+      button.addEventListener("click", event => {
+        event.stopPropagation();
+        deleteTargetProfile(button.dataset.deleteTarget);
+      });
+    });
+
+updateTargetSelectionVisual(
     selectedTarget
   );
 }
@@ -2449,11 +2586,15 @@ function updateTargetSelectionVisual(target) {
   const hint =
     document.getElementById("targetSelectionHint");
 
-  if (!hint || !target) return;
+  if (hint && target) {
+    const name =
+      profileFullName(target) ||
+      target?.identity?.first_name ||
+      "Profil cible";
 
-
-  hint.textContent =
-
+    hint.textContent =
+      `Profil sélectionné : ${name}`;
+  }
 
   refreshTargetCards();
 }
@@ -2611,8 +2752,10 @@ function selectTargetProfile(profileId) {
 
   ASTROMATCH_SELECTED_TARGET = target;
 
-  
-
+  sessionStorage.setItem(
+    "astromatch:selectedTargetId",
+    String(target.profile_id)
+  );
 
   /*
    * Le contexte relationnel appartient au profil cible.
@@ -2756,13 +2899,21 @@ function initializeTargetSelector(targets) {
     : [];
 
   if (!ASTROMATCH_TARGET_PROFILES.length) {
-    throw new Error("AUCUN_PROFIL_CIBLE");
+    ASTROMATCH_SELECTED_TARGET = null;
+    renderTargetSelector([], null);
+    return;
   }
 
+  const requestedId =
+    sessionStorage.getItem("astromatch:selectedTargetId") || "";
+
   const previousId =
-    typeof ASTROMATCH_SELECTED_TARGET !== "undefined"
-      ? String(ASTROMATCH_SELECTED_TARGET?.profile_id || "")
-      : "";
+    requestedId ||
+    (
+      typeof ASTROMATCH_SELECTED_TARGET !== "undefined"
+        ? String(ASTROMATCH_SELECTED_TARGET?.profile_id || "")
+        : ""
+    );
 
   const preservedTarget =
     ASTROMATCH_TARGET_PROFILES.find(
@@ -2773,6 +2924,8 @@ function initializeTargetSelector(targets) {
   ASTROMATCH_SELECTED_TARGET =
     preservedTarget ||
     ASTROMATCH_TARGET_PROFILES[0];
+
+  sessionStorage.removeItem("astromatch:selectedTargetId");
 
   normalizeRelationshipModeForTarget(
     ASTROMATCH_SELECTED_TARGET
@@ -2852,6 +3005,23 @@ async function calculateSelectedTarget() {
   if (targetElement) {
     targetElement.textContent =
       targetName;
+  }
+
+  if (!target) {
+    window.__astromatchStatus(
+      "Profil principal chargé — ajoute un profil cible."
+    );
+
+    const globalScore = document.getElementById("globalScore");
+    if (globalScore) globalScore.textContent = "—";
+
+    const summary = document.getElementById("summary");
+    if (summary) {
+      summary.textContent =
+        "Ajoute un profil cible pour calculer une compatibilité.";
+    }
+
+    return;
   }
 
   const token =
@@ -3306,6 +3476,273 @@ function relationshipContextLabel(profile) {
   return "❤️ Relation";
 }
 
+
+let ASTROMATCH_TARGET_EDITOR_PROFILE = null;
+
+async function targetProfileService() {
+  return import("../js/profiles/profile_service.js");
+}
+
+function targetEditorElement(id) {
+  return document.getElementById(id);
+}
+
+function closeTargetEditor() {
+  targetEditorElement("targetProfileEditor")?.classList.add("hidden");
+  document.body.classList.remove("overflow-hidden");
+  ASTROMATCH_TARGET_EDITOR_PROFILE = null;
+}
+
+function openTargetEditor(profile = null) {
+  ASTROMATCH_TARGET_EDITOR_PROFILE = profile;
+
+  targetEditorElement("targetEditorId").value =
+    profile?.profile_id || "";
+
+  targetEditorElement("targetEditorFirstName").value =
+    profile?.identity?.first_name || "";
+
+  targetEditorElement("targetEditorLastName").value =
+    profile?.identity?.last_name || "";
+
+  targetEditorElement("targetEditorGender").value =
+    profile?.identity?.gender || "";
+
+  targetEditorElement("targetEditorRelationship").value =
+    profile?.relationship?.context || "romantic";
+
+  targetEditorElement("targetEditorDate").value =
+    profile?.birth_data?.date || "";
+
+  targetEditorElement("targetEditorTime").value =
+    profile?.birth_data?.time?.value || "";
+
+  targetEditorElement("targetEditorPlace").value =
+    profile?.birth_data?.place?.raw_input || "";
+
+  targetEditorElement("targetEditorTitle").textContent =
+    profile ? "Modifier le profil" : "Ajouter un profil";
+
+  targetEditorElement("targetEditorError").classList.add("hidden");
+
+  targetEditorElement("targetProfileEditor").classList.remove("hidden");
+  document.body.classList.add("overflow-hidden");
+}
+
+
+async function resolveTargetBirthPlace(place) {
+  const url = new URL("https://geocoding-api.open-meteo.com/v1/search");
+
+  url.searchParams.set("name", place);
+  url.searchParams.set("count", "1");
+  url.searchParams.set("language", "fr");
+  url.searchParams.set("format", "json");
+
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error("Impossible de résoudre le lieu de naissance.");
+  }
+
+  const data = await response.json();
+  const result = data?.results?.[0];
+
+  if (!result || !result.timezone) {
+    throw new Error(`Lieu introuvable : ${place}`);
+  }
+
+  return {
+    latitude: Number(result.latitude),
+    longitude: Number(result.longitude),
+    timezone_id: String(result.timezone)
+  };
+}
+
+async function saveTargetEditor() {
+  const errorBox = targetEditorElement("targetEditorError");
+
+  try {
+    const service = await targetProfileService();
+
+    const firstName =
+      targetEditorElement("targetEditorFirstName").value.trim();
+
+    const date =
+      targetEditorElement("targetEditorDate").value;
+
+    const place =
+      targetEditorElement("targetEditorPlace").value.trim();
+
+    const time =
+      targetEditorElement("targetEditorTime").value;
+
+    const timeKnown = Boolean(time);
+
+    if (!firstName || !date || !place) {
+      throw new Error("Prénom, date et lieu sont obligatoires.");
+    }
+
+    if (timeKnown && !time) {
+      throw new Error("Indique l'heure de naissance.");
+    }
+
+    const common = {
+      first_name: firstName,
+      last_name:
+        targetEditorElement("targetEditorLastName").value.trim(),
+
+      gender:
+        targetEditorElement("targetEditorGender").value || null,
+
+      relationship_context:
+        targetEditorElement("targetEditorRelationship").value,
+
+      date,
+      time,
+      time_known: timeKnown
+    };
+
+    if (ASTROMATCH_TARGET_EDITOR_PROFILE) {
+      const existing = ASTROMATCH_TARGET_EDITOR_PROFILE;
+      const patch = { ...common };
+
+      const placeChanged =
+        place !== String(existing?.birth_data?.place?.raw_input || "");
+
+      const unresolved =
+        existing?.birth_data?.place?.resolved?.resolution_status !== "resolved";
+
+      if (placeChanged || unresolved) {
+        const geo = await resolveTargetBirthPlace(place);
+
+        patch.place = place;
+        patch.latitude = geo.latitude;
+        patch.longitude = geo.longitude;
+        patch.timezone_id = geo.timezone_id;
+      }
+
+      service.updateProfile(existing.profile_id, patch);
+
+      sessionStorage.setItem(
+        "astromatch:selectedTargetId",
+        String(existing.profile_id)
+      );
+
+    } else {
+      const geo = await resolveTargetBirthPlace(place);
+
+      const createdProfile = service.createProfile({
+        ...common,
+        role: "target",
+        place,
+        latitude: geo.latitude,
+        longitude: geo.longitude,
+        timezone_id: geo.timezone_id,
+        house_system: ASTROMATCH_PRIMARY_PROFILE?.house_system || "whole_sign",
+        linked_primary_id: ASTROMATCH_PRIMARY_PROFILE.profile_id
+      });
+
+    sessionStorage.setItem(
+      "astromatch:selectedTargetId",
+      createdProfile.profile_id
+    );
+    }
+
+    closeTargetEditor();
+    location.reload();
+
+  } catch (error) {
+    errorBox.textContent =
+      error?.message || String(error);
+
+    errorBox.classList.remove("hidden");
+  }
+}
+
+async function deleteTargetProfile(profileId) {
+  const id = String(profileId);
+
+  const target =
+    ASTROMATCH_TARGET_PROFILES.find(
+      profile =>
+        String(profile?.profile_id) === id
+    );
+
+  if (!target) {
+    console.error(
+      "AstroMatch : profil à supprimer introuvable",
+      profileId
+    );
+    return;
+  }
+
+  const name =
+    profileFullName(target) ||
+    "ce profil";
+
+  if (!confirm(`Supprimer ${name} ?`)) {
+    return;
+  }
+
+  try {
+    const service =
+      await targetProfileService();
+
+    const currentSelectedId =
+      String(
+        ASTROMATCH_SELECTED_TARGET?.profile_id ||
+        sessionStorage.getItem(
+          "astromatch:selectedTargetId"
+        ) ||
+        ""
+      );
+
+    const remainingTargets =
+      ASTROMATCH_TARGET_PROFILES.filter(
+        profile =>
+          String(profile?.profile_id) !== id
+      );
+
+    const deletingSelected =
+      currentSelectedId === id;
+
+    service.deleteProfile(profileId);
+
+    if (deletingSelected) {
+      const nextTarget =
+        remainingTargets[0] || null;
+
+      if (nextTarget?.profile_id) {
+        sessionStorage.setItem(
+          "astromatch:selectedTargetId",
+          String(nextTarget.profile_id)
+        );
+      } else {
+        sessionStorage.removeItem(
+          "astromatch:selectedTargetId"
+        );
+      }
+    } else if (currentSelectedId) {
+      sessionStorage.setItem(
+        "astromatch:selectedTargetId",
+        currentSelectedId
+      );
+    }
+
+    location.reload();
+
+  } catch (error) {
+    console.error(
+      "AstroMatch : erreur suppression profil",
+      error
+    );
+
+    alert(
+      "Impossible de supprimer ce profil : " +
+      (error?.message || String(error))
+    );
+  }
+}
+
 function renderProfileCard(target, selectedTarget) {
   const id =
     String(target?.profile_id || "");
@@ -3339,7 +3776,8 @@ function renderProfileCard(target, selectedTarget) {
     `${formatBirthDate(target)} · ${formatBirthTime(target)}`;
 
   return `
-    <button
+    <div class="target-profile-wrapper">
+<button
       type="button"
       data-target-id="${escapeHtml(id)}"
       aria-pressed="${selected ? "true" : "false"}"
@@ -3415,6 +3853,25 @@ function renderProfileCard(target, selectedTarget) {
       </div>
 
     </button>
+
+      <div class="flex justify-end gap-2 mt-2 px-1">
+        <button
+          type="button"
+          data-edit-target="${escapeHtml(id)}"
+          class="px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs text-slate-300"
+        >
+          ✏️ Modifier
+        </button>
+
+        <button
+          type="button"
+          data-delete-target="${escapeHtml(id)}"
+          class="px-3 py-1.5 rounded-lg bg-red-500/10 border border-red-500/20 text-xs text-red-300"
+        >
+          🗑️ Supprimer
+        </button>
+      </div>
+    </div>
   `;
 }
 
@@ -3737,49 +4194,151 @@ function renderDomains(domains) {
           👆 Appuyer pour voir le détail
         </div>
 
+        <div
+          data-astromatch-domain-detail
+          class="hidden mt-4 pt-4 border-t border-white/10"
+        ></div>
+
       </article>
     `;
   }).join("");
 
   container.innerHTML = html;
 
-  /*
-   * =========================================================
-   * DETAIL DOMAINE
-   * =========================================================
-   *
-   * Le panneau est maintenant généré DANS LE MEME innerHTML
-   * que les cartes. Il fait donc partie du DOM rendu par
-   * renderDomains() et ne dépend plus d'un appendChild externe.
-   */
-
-  container.innerHTML = html + `
-    <div
-      id="astromatchPrimaryDomainDetail"
-      class="mt-5"
-      aria-live="polite"
-    ></div>
-  `;
-
-  /*
-   * =========================================================
-   * CLIC SUR LES VRAIES CARTES VISIBLES
-   * =========================================================
-   */
-
   container.querySelectorAll("[data-astromatch-domain-key]")
     .forEach(card => {
 
       const openDetail = () => {
-        const key =
-          card.getAttribute("data-astromatch-domain-key");
+        const key = card.getAttribute("data-astromatch-domain-key");
 
-        if (
-          typeof window.astromatchShowPrimaryDomainDetail ===
-          "function"
-        ) {
-          window.astromatchDirectDomainDetail(key);
+        const selectedDomain = domains.find((item, index) =>
+          String(item?.domain || `domain_${index}`) === String(key)
+        );
+
+        const detail = card.querySelector("[data-astromatch-domain-detail]");
+        if (!selectedDomain || !detail) return;
+
+        const isOpen = !detail.classList.contains("hidden");
+
+        container
+          .querySelectorAll("[data-astromatch-domain-detail]")
+          .forEach(el => el.classList.add("hidden"));
+
+        if (isOpen) return;
+
+        const groups = [
+          ["Point fort", selectedDomain.strengths, "✓", "text-green-300"],
+          ["Tension", selectedDomain.tensions, "⚠", "text-red-300"],
+          ["Facteur mixte", selectedDomain.mixed_factors, "◆", "text-yellow-300"],
+          ["Facteur clé", selectedDomain.key_factors, "•", "text-blue-300"]
+        ];
+
+        const seen = new Set();
+        const rows = [];
+
+        for (const [type, items, icon, tone] of groups) {
+          for (const raw of Array.isArray(items) ? items : []) {
+            const item = raw?.item ?? raw ?? {};
+
+            const ruleId = String(
+              raw?.rule_id ??
+              item?.rule_id ??
+              raw?.contribution?.rule_id ??
+              item?.contribution?.rule_id ??
+              ""
+            ).trim();
+
+            const label = humanFactorLabel(raw);
+            const uniqueKey = ruleId || String(label).toUpperCase();
+
+            if (seen.has(uniqueKey)) continue;
+            seen.add(uniqueKey);
+
+            const pointsRaw =
+              raw?.contribution?.score ??
+              item?.contribution?.score ??
+              raw?.final_points ??
+              item?.final_points ??
+              raw?.score ??
+              item?.score;
+
+            const points = Number(pointsRaw);
+            const pointsHtml = Number.isFinite(points)
+              ? `<span class="font-bold ${points >= 0 ? "text-green-300" : "text-red-300"}">${points > 0 ? "+" : ""}${points.toFixed(2)}</span>`
+              : "";
+
+            rows.push(`
+              <div class="rounded-xl bg-white/5 border border-white/5 p-3">
+                <div class="flex items-start justify-between gap-3">
+                  <div class="min-w-0">
+                    <div class="text-xs font-semibold ${tone}">
+                      ${icon} ${type}
+                    </div>
+                    <div class="text-sm text-slate-200 mt-1">
+                      ${escapeHtml(label)}
+                    </div>
+                  </div>
+                  ${pointsHtml}
+                </div>
+
+                ${ruleId ? `
+                  <div class="mt-2 text-xs text-slate-400">
+                    ${escapeHtml((() => {
+                      const planets = {
+                        SUN: "Soleil",
+                        MOON: "Lune",
+                        MERCURY: "Mercure",
+                        VENUS: "Vénus",
+                        MARS: "Mars",
+                        JUPITER: "Jupiter",
+                        SATURN: "Saturne",
+                        URANUS: "Uranus",
+                        NEPTUNE: "Neptune",
+                        PLUTO: "Pluton"
+                      };
+
+                      const aspects = {
+                        CONJUNCTION: "☌",
+                        OPPOSITION: "☍",
+                        SQUARE: "□",
+                        TRINE: "△",
+                        SEXTILE: "✶"
+                      };
+
+                      const parts = ruleId
+                        .replace(/^V\d+[A-Z]*_/, "")
+                        .split("_");
+
+                      const aspectKey = parts.at(-1);
+                      const bodyA = planets[parts[0]] || parts[0];
+                      const bodyB = planets[parts[1]] || parts[1];
+                      const aspect = aspects[aspectKey] || aspectKey;
+
+                      return `${bodyA} ${aspect} ${bodyB}`;
+                    })())}
+                  </div>
+                ` : ""}
+              </div>
+            `);
+          }
         }
+
+        detail.innerHTML = rows.length
+          ? `
+            <div class="text-xs uppercase tracking-widest text-slate-500 mb-3">
+              Détail des contributions
+            </div>
+            <div class="space-y-2">
+              ${rows.join("")}
+            </div>
+          `
+          : `
+            <div class="text-sm text-slate-400">
+              Aucun détail supplémentaire pour ce domaine.
+            </div>
+          `;
+
+        detail.classList.remove("hidden");
       };
 
       card.addEventListener("click", openDetail);
