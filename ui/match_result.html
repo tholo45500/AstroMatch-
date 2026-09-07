@@ -1160,6 +1160,653 @@ main {
 
 </style>
 
+
+<style id="ASTROMATCH_HOME_V2">
+
+.astro-home-v2 {
+  display: grid;
+  gap: 14px;
+  margin-top: 4px;
+}
+
+.astro-home-panel {
+  position: relative;
+  overflow: hidden;
+  border-radius: 24px;
+  border: 1px solid rgba(167,139,250,.24);
+  background:
+    radial-gradient(
+      circle at 85% 0%,
+      rgba(124,58,237,.18),
+      transparent 38%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(15,23,42,.98),
+      rgba(12,20,43,.94)
+    );
+  box-shadow:
+    0 18px 42px rgba(0,0,0,.24);
+}
+
+.astro-home-hero {
+  padding: 22px 19px;
+  background:
+    radial-gradient(
+      circle at 80% 15%,
+      rgba(236,72,153,.22),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 20% 100%,
+      rgba(99,102,241,.22),
+      transparent 45%
+    ),
+    linear-gradient(
+      150deg,
+      #111936,
+      #171333
+    );
+}
+
+.astro-home-stars {
+  position: absolute;
+  right: 18px;
+  top: 15px;
+  color: #c4b5fd;
+  opacity: .65;
+  letter-spacing: 7px;
+}
+
+.astro-home-hero h1 {
+  position: relative;
+  font-size: 27px;
+  line-height: 1.08;
+  font-weight: 950;
+  letter-spacing: -.035em;
+}
+
+.astro-home-hero h1 span {
+  color: #d8b4fe;
+}
+
+.astro-home-day-label {
+  display: inline-flex;
+  margin-top: 18px;
+  padding: 7px 11px;
+  border-radius: 999px;
+  border: 1px solid rgba(167,139,250,.30);
+  background: rgba(139,92,246,.12);
+  color: #ddd6fe;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.astro-home-day-phrase {
+  max-width: 460px;
+  margin-top: 11px;
+  color: #f8fafc;
+  font-size: 15px;
+  line-height: 1.55;
+}
+
+.astro-home-future-note {
+  margin-top: 12px;
+  color: #64748b;
+  font-size: 10px;
+  line-height: 1.4;
+}
+
+.astro-home-section {
+  padding: 16px;
+}
+
+.astro-home-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 13px;
+}
+
+.astro-home-title-row h2 {
+  font-size: 17px;
+  font-weight: 950;
+  letter-spacing: -.02em;
+}
+
+.astro-home-title-row p {
+  margin-top: 3px;
+  color: #94a3b8;
+  font-size: 11px;
+  line-height: 1.35;
+}
+
+.astro-home-total {
+  min-width: 36px;
+  padding: 7px 9px;
+  border-radius: 999px;
+  text-align: center;
+  background: rgba(139,92,246,.14);
+  border: 1px solid rgba(167,139,250,.20);
+  color: #ddd6fe;
+  font-size: 12px;
+}
+
+.astro-home-groups {
+  display: grid;
+  gap: 9px;
+}
+
+.astro-home-group {
+  display: grid;
+  grid-template-columns:
+    minmax(120px, .85fr)
+    minmax(0, 1.45fr);
+  align-items: center;
+  gap: 8px;
+  min-height: 94px;
+  padding: 10px;
+  border-radius: 19px;
+  border: 1px solid rgba(255,255,255,.08);
+}
+
+.astro-home-group-romantic {
+  background:
+    linear-gradient(
+      110deg,
+      rgba(190,24,93,.18),
+      rgba(30,41,59,.45)
+    );
+  border-color: rgba(244,114,182,.28);
+}
+
+.astro-home-group-friendship {
+  background:
+    linear-gradient(
+      110deg,
+      rgba(2,132,199,.17),
+      rgba(30,41,59,.45)
+    );
+  border-color: rgba(56,189,248,.24);
+}
+
+.astro-home-group-family {
+  background:
+    linear-gradient(
+      110deg,
+      rgba(5,150,105,.16),
+      rgba(30,41,59,.45)
+    );
+  border-color: rgba(52,211,153,.22);
+}
+
+.astro-home-group-main {
+  display: grid;
+  grid-template-columns: 35px 1fr 14px;
+  align-items: center;
+  gap: 8px;
+  text-align: left;
+}
+
+.astro-home-group-icon {
+  font-size: 27px;
+}
+
+.astro-home-group-main strong {
+  display: block;
+  font-size: 15px;
+  font-weight: 950;
+}
+
+.astro-home-group-main small {
+  display: block;
+  margin-top: 3px;
+  color: #94a3b8;
+  font-size: 9px;
+  line-height: 1.25;
+}
+
+.astro-home-group-arrow {
+  font-size: 24px;
+  color: #cbd5e1;
+}
+
+.astro-home-previews {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 7px;
+  min-width: 0;
+}
+
+.astro-home-mini {
+  min-width: 44px;
+  text-align: center;
+}
+
+.astro-home-mini-symbol {
+  width: 42px;
+  height: 42px;
+  margin: 0 auto 4px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(
+      circle,
+      rgba(139,92,246,.28),
+      #0f172a 72%
+    );
+  border: 1px solid rgba(196,181,253,.36);
+  box-shadow:
+    0 0 18px rgba(139,92,246,.16);
+  font-size: 22px;
+}
+
+.astro-home-mini strong {
+  display: block;
+  max-width: 52px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #e2e8f0;
+  font-size: 9px;
+}
+
+.astro-home-more {
+  min-width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(139,92,246,.13);
+  border: 1px solid rgba(167,139,250,.24);
+  color: #ddd6fe;
+  font-size: 11px;
+  font-weight: 900;
+}
+
+.astro-home-no-profile {
+  color: #64748b;
+  font-size: 10px;
+}
+
+.astro-home-recents {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 8px;
+}
+
+.astro-home-recent {
+  min-width: 0;
+  padding: 10px 7px;
+  border-radius: 17px;
+  text-align: center;
+  background: rgba(15,23,42,.75);
+  border: 1px solid rgba(148,163,184,.13);
+}
+
+.astro-home-recent-zodiac {
+  width: 46px;
+  height: 46px;
+  margin: 0 auto 7px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(99,102,241,.13);
+  border: 1px solid rgba(167,139,250,.24);
+  font-size: 24px;
+}
+
+.astro-home-recent-info strong {
+  display: block;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 12px;
+}
+
+.astro-home-recent-info small {
+  display: block;
+  margin-top: 2px;
+  color: #94a3b8;
+  font-size: 9px;
+}
+
+.astro-home-recent-info em {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 4px 7px;
+  border-radius: 999px;
+  background: rgba(139,92,246,.12);
+  color: #c4b5fd;
+  font-size: 8px;
+  font-style: normal;
+  font-weight: 800;
+}
+
+.astro-home-horoscope {
+  background:
+    radial-gradient(
+      circle at 0% 100%,
+      rgba(59,130,246,.16),
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(168,85,247,.16),
+      transparent 42%
+    ),
+    #0f172a;
+}
+
+.astro-home-horo-symbol {
+  font-size: 30px;
+  color: #c4b5fd;
+}
+
+.astro-home-horo-main {
+  display: grid;
+  grid-template-columns: 92px 1fr;
+  gap: 13px;
+  padding: 13px;
+  border-radius: 18px;
+  background: rgba(2,6,23,.42);
+  border: 1px solid rgba(99,102,241,.18);
+}
+
+.astro-home-horo-sign {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 5px;
+  border-right: 1px solid rgba(148,163,184,.10);
+}
+
+.astro-home-horo-sign span {
+  font-size: 46px;
+  text-shadow:
+    0 0 22px rgba(139,92,246,.5);
+}
+
+.astro-home-horo-sign strong {
+  font-size: 11px;
+}
+
+.astro-home-horo-copy {
+  color: #cbd5e1;
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.astro-home-horo-copy strong {
+  display: block;
+  margin-top: 7px;
+  color: #e2e8f0;
+}
+
+.astro-home-horo-cards {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 7px;
+  margin-top: 10px;
+}
+
+.astro-home-horo-cards > div {
+  padding: 9px;
+  border-radius: 14px;
+  background: rgba(15,23,42,.72);
+  border: 1px solid rgba(148,163,184,.10);
+}
+
+.astro-home-horo-cards span {
+  font-size: 16px;
+}
+
+.astro-home-horo-cards strong {
+  display: block;
+  margin-top: 4px;
+  font-size: 10px;
+}
+
+.astro-home-horo-cards small {
+  display: block;
+  margin-top: 3px;
+  color: #94a3b8;
+  font-size: 8px;
+  line-height: 1.3;
+}
+
+@media (max-width: 390px) {
+  .astro-home-hero h1 {
+    font-size: 24px;
+  }
+
+  .astro-home-group {
+    grid-template-columns:
+      112px minmax(0,1fr);
+  }
+
+  .astro-home-mini-symbol {
+    width: 36px;
+    height: 36px;
+    font-size: 19px;
+  }
+
+  .astro-home-previews {
+    gap: 4px;
+  }
+}
+
+</style>
+
+
+<style id="ASTROMATCH_COSMIC_BACKGROUND_V1">
+
+html {
+  background: #020617;
+}
+
+body {
+  position: relative;
+  min-height: 100vh;
+  isolation: isolate;
+
+  background:
+    radial-gradient(
+      circle at 78% 8%,
+      rgba(168,85,247,.24),
+      transparent 30%
+    ),
+    radial-gradient(
+      circle at 18% 18%,
+      rgba(79,70,229,.22),
+      transparent 34%
+    ),
+    radial-gradient(
+      circle at 50% 55%,
+      rgba(30,64,175,.12),
+      transparent 45%
+    ),
+    linear-gradient(
+      180deg,
+      #050816 0%,
+      #090d24 32%,
+      #080b1d 68%,
+      #020617 100%
+    ) !important;
+
+  background-attachment: fixed !important;
+}
+
+/*
+ * Champ d'étoiles léger.
+ * Aucun clic bloqué.
+ */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  pointer-events: none;
+
+  background-image:
+    radial-gradient(
+      circle,
+      rgba(255,255,255,.90) 0 1px,
+      transparent 1.4px
+    ),
+    radial-gradient(
+      circle,
+      rgba(196,181,253,.70) 0 1px,
+      transparent 1.3px
+    ),
+    radial-gradient(
+      circle,
+      rgba(255,255,255,.42) 0 .8px,
+      transparent 1.2px
+    );
+
+  background-size:
+    95px 95px,
+    145px 145px,
+    63px 63px;
+
+  background-position:
+    17px 11px,
+    70px 40px,
+    35px 85px;
+
+  opacity: .58;
+}
+
+/*
+ * Halo violet/rose façon ciel AstroMatch.
+ */
+body::after {
+  content: "";
+  position: fixed;
+  left: -20%;
+  right: -20%;
+  top: -12vh;
+  height: 62vh;
+  z-index: -1;
+  pointer-events: none;
+
+  background:
+    radial-gradient(
+      ellipse at 70% 25%,
+      rgba(236,72,153,.18),
+      transparent 28%
+    ),
+    radial-gradient(
+      ellipse at 35% 30%,
+      rgba(124,58,237,.22),
+      transparent 35%
+    ),
+    radial-gradient(
+      ellipse at 50% 75%,
+      rgba(59,130,246,.13),
+      transparent 42%
+    );
+
+  filter: blur(14px);
+}
+
+/*
+ * Les contenus restent parfaitement au-dessus.
+ */
+main {
+  position: relative;
+  z-index: 1;
+}
+
+/*
+ * Petit éclat supplémentaire autour du haut de page.
+ */
+header {
+  position: relative;
+}
+
+header::after {
+  content: "";
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  bottom: -18px;
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(168,85,247,.38),
+      rgba(236,72,153,.26),
+      transparent
+    );
+
+  box-shadow:
+    0 0 22px rgba(139,92,246,.28);
+
+  pointer-events: none;
+}
+
+</style>
+
+
+<style id="ASTROMATCH_COSMIC_BG_V2">
+
+html {
+  background: #030617;
+}
+
+body {
+  min-height: 100vh;
+
+  background-image:
+    linear-gradient(
+      rgba(3,6,23,.10),
+      rgba(3,6,23,.28)
+    ),
+    url("./assets/astromatch-cosmic-bg.svg")
+    !important;
+
+  background-size:
+    cover,
+    cover !important;
+
+  background-position:
+    center top,
+    center top !important;
+
+  background-repeat:
+    no-repeat,
+    no-repeat !important;
+
+  background-attachment:
+    fixed,
+    fixed !important;
+}
+
+/* Les anciens petits points CSS dégagent */
+body::before,
+body::after {
+  display: none !important;
+}
+
+/* laisse respirer le décor derrière les cartes */
+.astro-home-panel {
+  background-color:
+    rgba(7,12,35,.82) !important;
+
+  backdrop-filter:
+    blur(10px) saturate(125%);
+
+  -webkit-backdrop-filter:
+    blur(10px) saturate(125%);
+}
+
+</style>
+
 </head>
 
 <body class="min-h-screen text-white">
@@ -3853,6 +4500,11 @@ function renderAstroMatchHomeDashboard(
       "astromatchHomeDashboard"
     );
 
+  const selector =
+    document.getElementById(
+      "targetSelector"
+    );
+
   if (!box) return;
 
   const safeTargets =
@@ -3865,11 +4517,6 @@ function renderAstroMatchHomeDashboard(
       "undefined" &&
     ASTROMATCH_OPEN_TARGET_GROUPS.size > 0;
 
-  /*
-   * Accueil uniquement quand :
-   * - aucun groupe n'est ouvert
-   * - aucune cible n'est sélectionnée
-   */
   const show =
     !anyGroupOpen &&
     !selectedTarget;
@@ -3878,6 +4525,34 @@ function renderAstroMatchHomeDashboard(
     "hidden",
     !show
   );
+
+  /*
+   * Sur l'accueil :
+   * on remplace les accordéons par
+   * notre vraie vue dashboard.
+   */
+  selector?.classList.toggle(
+    "hidden",
+    show
+  );
+
+  document
+    .getElementById(
+      "targetSelectionHint"
+    )
+    ?.classList.toggle(
+      "hidden",
+      show
+    );
+
+  document
+    .getElementById(
+      "targetCalculationState"
+    )
+    ?.classList.toggle(
+      "hidden",
+      show
+    );
 
   if (!show) return;
 
@@ -3889,12 +4564,7 @@ function renderAstroMatchHomeDashboard(
 
   const primaryName =
     primary?.identity?.first_name ||
-    "Mon profil";
-
-  const primaryAge =
-    primary
-      ? calculateAge(primary)
-      : null;
+    "toi";
 
   const primaryZodiac =
     primary
@@ -3903,226 +4573,508 @@ function renderAstroMatchHomeDashboard(
         )
       : null;
 
-  const counts = {
-    romantic: 0,
-    friendship: 0,
-    family: 0
+  const signRaw =
+    String(
+      primaryZodiac?.name ||
+      primaryZodiac?.label ||
+      primaryZodiac?.sign ||
+      ""
+    ).toLowerCase();
+
+  const SIGN_FR = {
+    aries: "Bélier",
+    taurus: "Taureau",
+    gemini: "Gémeaux",
+    cancer: "Cancer",
+    leo: "Lion",
+    virgo: "Vierge",
+    libra: "Balance",
+    scorpio: "Scorpion",
+    sagittarius: "Sagittaire",
+    capricorn: "Capricorne",
+    aquarius: "Verseau",
+    pisces: "Poissons"
   };
 
-  safeTargets.forEach(profile => {
+  const signName =
+    SIGN_FR[signRaw] ||
+    primaryZodiac?.name ||
+    primaryZodiac?.label ||
+    "ton signe";
+
+  const relationshipList = key =>
+    safeTargets.filter(profile =>
+      String(
+        profile?.relationship?.context ||
+        "romantic"
+      ) === key
+    );
+
+  const romantic =
+    sortAstroMatchTargetsByScore(
+      relationshipList("romantic"),
+      "love"
+    );
+
+  const friendship =
+    sortAstroMatchTargetsByScore(
+      relationshipList("friendship"),
+      "friendship"
+    );
+
+  const family =
+    sortAstroMatchTargetsByScore(
+      relationshipList("family"),
+      "family"
+    );
+
+  const recent =
+    safeTargets
+      .slice(-3)
+      .reverse();
+
+  function profileMini(profile) {
+    const zodiac =
+      zodiacFromDate(
+        profile?.birth_data?.date
+      );
+
+    const name =
+      profile?.identity?.first_name ||
+      "Profil";
+
+    return `
+      <button
+        type="button"
+        class="astro-home-mini"
+        data-home-profile="${escapeHtml(
+          String(profile?.profile_id || "")
+        )}"
+      >
+        <span class="astro-home-mini-symbol">
+          ${escapeHtml(
+            zodiac?.symbol || "✦"
+          )}
+        </span>
+
+        <strong>
+          ${escapeHtml(name)}
+        </strong>
+      </button>
+    `;
+  }
+
+  function groupHtml(
+    key,
+    icon,
+    title,
+    subtitle,
+    list
+  ) {
+    const visible =
+      list.slice(0, 3);
+
+    const remaining =
+      Math.max(
+        0,
+        list.length -
+        visible.length
+      );
+
+    return `
+      <div
+        class="
+          astro-home-group
+          astro-home-group-${key}
+        "
+      >
+        <button
+          type="button"
+          class="astro-home-group-main"
+          data-home-group="${key}"
+        >
+          <span class="astro-home-group-icon">
+            ${icon}
+          </span>
+
+          <span>
+            <strong>${title}</strong>
+            <small>${subtitle}</small>
+          </span>
+
+          <span class="astro-home-group-arrow">
+            ›
+          </span>
+        </button>
+
+        <div class="astro-home-previews">
+          ${
+            visible.length
+              ? visible
+                  .map(profileMini)
+                  .join("")
+              : `
+                <span class="astro-home-no-profile">
+                  Aucun profil
+                </span>
+              `
+          }
+
+          ${
+            remaining
+              ? `
+                <button
+                  type="button"
+                  data-home-group="${key}"
+                  class="astro-home-more"
+                >
+                  +${remaining}
+                </button>
+              `
+              : ""
+          }
+        </div>
+      </div>
+    `;
+  }
+
+  function recentHtml(profile) {
+    const zodiac =
+      zodiacFromDate(
+        profile?.birth_data?.date
+      );
+
     const meta =
       dashboardRelationshipMeta(
         profile
       );
 
-    counts[meta.key]++;
-  });
+    const age =
+      calculateAge(profile);
 
-  /*
-   * Les derniers profils du tableau stocké
-   * servent d'accès rapide.
-   */
-  const quickProfiles =
-    safeTargets
-      .slice(-3)
-      .reverse();
+    const name =
+      profile?.identity?.first_name ||
+      "Profil";
+
+    return `
+      <button
+        type="button"
+        class="astro-home-recent"
+        data-home-profile="${escapeHtml(
+          String(profile?.profile_id || "")
+        )}"
+      >
+        <span class="astro-home-recent-zodiac">
+          ${escapeHtml(
+            zodiac?.symbol || "✦"
+          )}
+        </span>
+
+        <span class="astro-home-recent-info">
+          <strong>
+            ${escapeHtml(name)}
+          </strong>
+
+          <small>
+            ${
+              Number.isFinite(age)
+                ? `${age} ans`
+                : ""
+            }
+          </small>
+
+          <em>
+            ${meta.icon}
+            ${meta.label}
+          </em>
+        </span>
+      </button>
+    `;
+  }
 
   box.innerHTML = `
-    <section class="home-dashboard-card">
+    <div class="astro-home-v2">
 
-      <div class="home-dashboard-glow"></div>
-
-      <div class="relative z-[2]">
-
-        <div class="home-dashboard-kicker">
-          ✨ Tes connexions
+      <!-- BONJOUR + PHRASE DU JOUR -->
+      <section class="
+        astro-home-panel
+        astro-home-hero
+      ">
+        <div class="astro-home-stars">
+          ✦ · ✧ · ✦
         </div>
 
-        <div class="home-dashboard-primary">
+        <h1>
+          Bonjour
+          <span>${escapeHtml(primaryName)}</span>
+          ✨
+        </h1>
 
-          <div class="home-dashboard-zodiac">
-            ${
-              escapeHtml(
-                primaryZodiac?.symbol || "✦"
-              )
-            }
-          </div>
+        <div class="astro-home-day-label">
+          🌙 Phrase astro du jour
+        </div>
 
+        <div class="astro-home-day-phrase">
+          Aujourd’hui, ton énergie
+          ${escapeHtml(signName)}
+          t’invite à écouter ce qui te paraît
+          juste avant de forcer les choses.
+        </div>
+
+        <div class="astro-home-future-note">
+          Aperçu provisoire · le vrai ciel du jour
+          sera branché ici ensuite
+        </div>
+      </section>
+
+
+      <!-- PROFILS À EXPLORER -->
+      <section class="
+        astro-home-panel
+        astro-home-section
+      ">
+        <div class="astro-home-title-row">
           <div>
-            <div class="home-dashboard-name">
-              ${escapeHtml(primaryName)}
-            </div>
-
-            <div class="home-dashboard-sub">
-              ${
-                primaryAge !== null &&
-                primaryAge !== undefined
-                  ? `${primaryAge} ans · `
-                  : ""
-              }
-              ${safeTargets.length}
-              ${
-                safeTargets.length === 1
-                  ? " profil"
-                  : " profils"
-              }
-            </div>
+            <h2>🧭 Tes profils à explorer</h2>
+            <p>
+              Tes profils enregistrés,
+              classés par lien et compatibilité.
+            </p>
           </div>
 
+          <strong class="astro-home-total">
+            ${safeTargets.length}
+          </strong>
         </div>
 
-        <div class="home-dashboard-counts">
+        <div class="astro-home-groups">
 
-          <button
-            type="button"
-            data-dashboard-open-group="romantic"
-            class="home-dashboard-stat"
-          >
-            <span>❤️</span>
-            <strong>${counts.romantic}</strong>
-            <small>Amour</small>
-          </button>
+          ${groupHtml(
+            "romantic",
+            "❤️",
+            "Amour",
+            "Des connexions qui font battre le cœur",
+            romantic
+          )}
 
-          <button
-            type="button"
-            data-dashboard-open-group="friendship"
-            class="home-dashboard-stat"
-          >
-            <span>🤝</span>
-            <strong>${counts.friendship}</strong>
-            <small>Amitié</small>
-          </button>
+          ${groupHtml(
+            "friendship",
+            "🤝",
+            "Amitié",
+            "Des liens sur la même longueur d’onde",
+            friendship
+          )}
 
-          <button
-            type="button"
-            data-dashboard-open-group="family"
-            class="home-dashboard-stat"
-          >
-            <span>👨‍👩‍👧‍👦</span>
-            <strong>${counts.family}</strong>
-            <small>Famille</small>
-          </button>
+          ${groupHtml(
+            "family",
+            "👨‍👩‍👧‍👦",
+            "Famille",
+            "Les personnes qui comptent vraiment",
+            family
+          )}
 
+        </div>
+      </section>
+
+
+      <!-- 3 DERNIERS PROFILS -->
+      <section class="
+        astro-home-panel
+        astro-home-section
+      ">
+        <div class="astro-home-title-row">
+          <div>
+            <h2>🕘 Derniers profils enregistrés</h2>
+            <p>
+              Tes trois ajouts les plus récents.
+            </p>
+          </div>
         </div>
 
         ${
-          quickProfiles.length
+          recent.length
             ? `
-              <div class="home-dashboard-section-title">
-                Accès rapide
-              </div>
-
-              <div class="home-dashboard-recents">
-
-                ${quickProfiles.map(profile => {
-                  const zodiac =
-                    zodiacFromDate(
-                      profile?.birth_data?.date
-                    );
-
-                  const meta =
-                    dashboardRelationshipMeta(
-                      profile
-                    );
-
-                  const name =
-                    profile?.identity?.first_name ||
-                    "Profil";
-
-                  return `
-                    <button
-                      type="button"
-                      data-dashboard-target="${
-                        escapeHtml(
-                          String(
-                            profile?.profile_id ||
-                            ""
-                          )
-                        )
-                      }"
-                      class="home-dashboard-person"
-                    >
-                      <span class="home-dashboard-person-zodiac">
-                        ${
-                          escapeHtml(
-                            zodiac?.symbol || "✦"
-                          )
-                        }
-                      </span>
-
-                      <span class="min-w-0">
-                        <strong>
-                          ${escapeHtml(name)}
-                        </strong>
-
-                        <small>
-                          ${meta.icon}
-                          ${meta.label}
-                        </small>
-                      </span>
-
-                      <span class="home-dashboard-arrow">
-                        ›
-                      </span>
-                    </button>
-                  `;
-                }).join("")}
-
+              <div class="astro-home-recents">
+                ${recent
+                  .map(recentHtml)
+                  .join("")}
               </div>
             `
             : `
-              <div class="home-dashboard-empty">
-                Ajoute ton premier profil avec
-                l'un des boutons +
+              <div class="astro-home-empty">
+                Tes prochains profils
+                apparaîtront ici.
               </div>
             `
         }
+      </section>
 
-        <div class="home-dashboard-hint">
-          Ouvre une catégorie pour parcourir
-          tes profils et découvrir vos compatibilités.
+
+      <!-- HOROSCOPE -->
+      <section class="
+        astro-home-panel
+        astro-home-section
+        astro-home-horoscope
+      ">
+        <div class="astro-home-title-row">
+          <div>
+            <h2>⭐ Ton horoscope du jour</h2>
+            <p>
+              Ton éclairage astrologique quotidien.
+            </p>
+          </div>
+
+          <span class="astro-home-horo-symbol">
+            ${escapeHtml(
+              primaryZodiac?.symbol || "✦"
+            )}
+          </span>
         </div>
 
-      </div>
-    </section>
+        <div class="astro-home-horo-main">
+
+          <div class="astro-home-horo-sign">
+            <span>
+              ${escapeHtml(
+                primaryZodiac?.symbol || "✦"
+              )}
+            </span>
+
+            <strong>
+              ${escapeHtml(signName)}
+            </strong>
+          </div>
+
+          <div class="astro-home-horo-copy">
+            Cette zone accueillera ton horoscope
+            réellement personnalisé à partir de
+            ton thème natal et du ciel du jour.
+
+            <strong>
+              On garde déjà toute la place prête,
+              sans inventer de transits tant que
+              le module quotidien n’est pas branché.
+            </strong>
+          </div>
+
+        </div>
+
+        <div class="astro-home-horo-cards">
+
+          <div>
+            <span>❤️</span>
+            <strong>Cœur</strong>
+            <small>
+              Relations et ressentis
+            </small>
+          </div>
+
+          <div>
+            <span>💬</span>
+            <strong>Échanges</strong>
+            <small>
+              Communication du jour
+            </small>
+          </div>
+
+          <div>
+            <span>⚡</span>
+            <strong>Énergie</strong>
+            <small>
+              Rythme et motivation
+            </small>
+          </div>
+
+        </div>
+
+        <div class="astro-home-future-note">
+          🌌 Horoscope complet à connecter
+          au futur module astro quotidien
+        </div>
+      </section>
+
+    </div>
   `;
 
+
+  /*
+   * Ouvrir un groupe existant.
+   */
   box
     .querySelectorAll(
-      "[data-dashboard-open-group]"
+      "[data-home-group]"
     )
     .forEach(button => {
 
       button.addEventListener(
         "click",
         () => {
-          ASTROMATCH_OPEN_TARGET_GROUPS.add(
-            button.dataset
-              .dashboardOpenGroup
-          );
+
+          const relation =
+            button.dataset.homeGroup;
+
+          ASTROMATCH_OPEN_TARGET_GROUPS
+            .add(relation);
 
           renderTargetSelector(
             safeTargets,
-            selectedTarget
+            null
           );
         }
       );
+
     });
 
+
+  /*
+   * Depuis l'accueil :
+   * ouvre le bon groupe puis sélectionne
+   * le profil avec le système déjà validé.
+   */
   box
     .querySelectorAll(
-      "[data-dashboard-target]"
+      "[data-home-profile]"
     )
     .forEach(button => {
 
       button.addEventListener(
         "click",
         () => {
-          selectTargetProfile(
-            button.dataset.dashboardTarget
+
+          const id =
+            String(
+              button.dataset.homeProfile ||
+              ""
+            );
+
+          const profile =
+            safeTargets.find(target =>
+              String(
+                target?.profile_id || ""
+              ) === id
+            );
+
+          if (!profile) return;
+
+          const meta =
+            dashboardRelationshipMeta(
+              profile
+            );
+
+          ASTROMATCH_OPEN_TARGET_GROUPS
+            .add(meta.key);
+
+          renderTargetSelector(
+            safeTargets,
+            null
           );
+
+          queueMicrotask(() => {
+            selectTargetProfile(id);
+          });
         }
       );
+
     });
 }
 
@@ -4797,7 +5749,12 @@ function renderTargetSelector(targets, selectedTarget) {
       });
     });
 
-updateTargetSelectionVisual(
+renderAstroMatchHomeDashboard(
+    safeTargets,
+    selectedTarget
+  );
+
+  updateTargetSelectionVisual(
     selectedTarget
   );
 }
@@ -9074,6 +10031,159 @@ window.addEventListener("DOMContentLoaded", function () {
 
 
 
+
+
+<script id="ASTROMATCH_LOGO_HOME_V1">
+(function () {
+
+  function goAstroMatchHome() {
+
+    /*
+     * Annule un éventuel calcul en cours.
+     */
+    if (
+      typeof ASTROMATCH_CALCULATION_TOKEN !==
+      "undefined"
+    ) {
+      ASTROMATCH_CALCULATION_TOKEN++;
+    }
+
+    /*
+     * Plus aucune cible sélectionnée.
+     */
+    if (
+      typeof ASTROMATCH_SELECTED_TARGET !==
+      "undefined"
+    ) {
+      ASTROMATCH_SELECTED_TARGET = null;
+    }
+
+    if (
+      typeof ASTROMATCH_RESULT !==
+      "undefined"
+    ) {
+      ASTROMATCH_RESULT = null;
+    }
+
+    window.__astromatchLastResult = null;
+
+    sessionStorage.removeItem(
+      "astromatch:selectedTargetId"
+    );
+
+    /*
+     * Referme Amour / Amitié / Famille.
+     */
+    if (
+      typeof ASTROMATCH_OPEN_TARGET_GROUPS !==
+      "undefined"
+    ) {
+      ASTROMATCH_OPEN_TARGET_GROUPS.clear();
+    }
+
+    /*
+     * Cache le comparateur.
+     */
+    document
+      .getElementById(
+        "astromatchComparisonArea"
+      )
+      ?.classList.add("hidden");
+
+    document.body.classList.remove(
+      "astromatch-comparison-open"
+    );
+
+    if (
+      typeof setTargetCalculationState ===
+      "function"
+    ) {
+      setTargetCalculationState("idle");
+    }
+
+    /*
+     * Le rendu sans cible + sans groupe
+     * affiche automatiquement HOME V2.
+     */
+    if (
+      typeof renderTargetSelector ===
+        "function" &&
+      typeof ASTROMATCH_TARGET_PROFILES !==
+        "undefined"
+    ) {
+      renderTargetSelector(
+        ASTROMATCH_TARGET_PROFILES,
+        null
+      );
+    }
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+  }
+
+
+  function installLogoHome() {
+
+    const logo =
+      document.getElementById(
+        "astromatchHeaderLogo"
+      );
+
+    if (!logo) return;
+
+    logo.style.cursor = "pointer";
+
+    logo.setAttribute(
+      "role",
+      "button"
+    );
+
+    logo.setAttribute(
+      "tabindex",
+      "0"
+    );
+
+    logo.setAttribute(
+      "title",
+      "Retour à l’accueil"
+    );
+
+    logo.addEventListener(
+      "click",
+      goAstroMatchHome
+    );
+
+    logo.addEventListener(
+      "keydown",
+      event => {
+        if (
+          event.key === "Enter" ||
+          event.key === " "
+        ) {
+          event.preventDefault();
+          goAstroMatchHome();
+        }
+      }
+    );
+  }
+
+
+  if (
+    document.readyState === "loading"
+  ) {
+    document.addEventListener(
+      "DOMContentLoaded",
+      installLogoHome,
+      { once: true }
+    );
+  } else {
+    installLogoHome();
+  }
+
+})();
+</script>
 
 </body>
 </html>

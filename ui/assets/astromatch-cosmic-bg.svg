@@ -1,0 +1,262 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 900 1800" preserveAspectRatio="xMidYMid slice">
+
+<defs>
+
+  <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+    <stop offset="0" stop-color="#080b2c"/>
+    <stop offset=".32" stop-color="#11113a"/>
+    <stop offset=".62" stop-color="#080c28"/>
+    <stop offset="1" stop-color="#030817"/>
+  </linearGradient>
+
+  <radialGradient id="purpleGlow">
+    <stop offset="0" stop-color="#a855f7" stop-opacity=".75"/>
+    <stop offset=".45" stop-color="#7c3aed" stop-opacity=".25"/>
+    <stop offset="1" stop-color="#7c3aed" stop-opacity="0"/>
+  </radialGradient>
+
+  <radialGradient id="blueGlow">
+    <stop offset="0" stop-color="#38bdf8" stop-opacity=".45"/>
+    <stop offset=".5" stop-color="#2563eb" stop-opacity=".18"/>
+    <stop offset="1" stop-color="#2563eb" stop-opacity="0"/>
+  </radialGradient>
+
+  <radialGradient id="moon">
+    <stop offset="0" stop-color="#ffd6f6"/>
+    <stop offset=".55" stop-color="#c084fc"/>
+    <stop offset="1" stop-color="#7c3aed"/>
+  </radialGradient>
+
+  <filter id="blur">
+    <feGaussianBlur stdDeviation="45"/>
+  </filter>
+
+  <filter id="soft">
+    <feGaussianBlur stdDeviation="12"/>
+  </filter>
+
+</defs>
+
+<!-- ciel -->
+<rect width="900" height="1800" fill="url(#sky)"/>
+
+<!-- nébuleuses -->
+<ellipse
+  cx="760" cy="210"
+  rx="360" ry="280"
+  fill="url(#purpleGlow)"
+  filter="url(#blur)"
+/>
+
+<ellipse
+  cx="100" cy="580"
+  rx="320" ry="420"
+  fill="url(#blueGlow)"
+  filter="url(#blur)"
+/>
+
+<ellipse
+  cx="820" cy="1220"
+  rx="420" ry="360"
+  fill="url(#purpleGlow)"
+  opacity=".65"
+  filter="url(#blur)"
+/>
+
+<ellipse
+  cx="200" cy="1550"
+  rx="430" ry="300"
+  fill="url(#blueGlow)"
+  opacity=".5"
+  filter="url(#blur)"
+/>
+
+<!-- halo lune -->
+<circle
+  cx="735" cy="205"
+  r="155"
+  fill="#a855f7"
+  opacity=".18"
+  filter="url(#blur)"
+/>
+
+<!-- lune -->
+<circle
+  cx="735" cy="205"
+  r="72"
+  fill="url(#moon)"
+/>
+
+<circle
+  cx="760" cy="185"
+  r="72"
+  fill="#0b1030"
+/>
+
+<!-- étoiles grandes -->
+<g fill="#fff">
+
+  <circle cx="95" cy="100" r="2"/>
+  <circle cx="210" cy="160" r="1.5"/>
+  <circle cx="350" cy="80" r="2"/>
+  <circle cx="540" cy="145" r="1.4"/>
+  <circle cx="650" cy="75" r="2"/>
+  <circle cx="835" cy="115" r="1.6"/>
+
+  <circle cx="120" cy="330" r="1.5"/>
+  <circle cx="290" cy="270" r="2"/>
+  <circle cx="470" cy="360" r="1.5"/>
+  <circle cx="590" cy="300" r="2"/>
+  <circle cx="830" cy="360" r="1.7"/>
+
+  <circle cx="70" cy="700" r="2"/>
+  <circle cx="250" cy="620" r="1.5"/>
+  <circle cx="420" cy="760" r="2"/>
+  <circle cx="630" cy="650" r="1.5"/>
+  <circle cx="815" cy="720" r="2"/>
+
+  <circle cx="110" cy="1040" r="1.8"/>
+  <circle cx="330" cy="970" r="1.5"/>
+  <circle cx="520" cy="1090" r="2"/>
+  <circle cx="750" cy="1010" r="1.5"/>
+
+  <circle cx="75" cy="1370" r="2"/>
+  <circle cx="230" cy="1280" r="1.4"/>
+  <circle cx="450" cy="1390" r="2"/>
+  <circle cx="680" cy="1320" r="1.5"/>
+  <circle cx="845" cy="1440" r="2"/>
+
+  <circle cx="160" cy="1660" r="1.5"/>
+  <circle cx="410" cy="1590" r="2"/>
+  <circle cx="620" cy="1700" r="1.5"/>
+  <circle cx="810" cy="1620" r="2"/>
+
+</g>
+
+<!-- petites étoiles violettes -->
+<g fill="#c084fc" opacity=".9">
+
+  <circle cx="150" cy="220" r="1.2"/>
+  <circle cx="390" cy="230" r="1"/>
+  <circle cx="510" cy="200" r="1.3"/>
+  <circle cx="845" cy="270" r="1"/>
+
+  <circle cx="180" cy="480" r="1.3"/>
+  <circle cx="360" cy="520" r="1"/>
+  <circle cx="700" cy="500" r="1.4"/>
+
+  <circle cx="130" cy="860" r="1"/>
+  <circle cx="330" cy="830" r="1.4"/>
+  <circle cx="710" cy="860" r="1.2"/>
+
+  <circle cx="190" cy="1180" r="1.3"/>
+  <circle cx="480" cy="1200" r="1"/>
+  <circle cx="790" cy="1150" r="1.4"/>
+
+  <circle cx="310" cy="1500" r="1.2"/>
+  <circle cx="720" cy="1530" r="1.4"/>
+
+</g>
+
+<!-- étoiles avec croix -->
+<g stroke="#fff" stroke-linecap="round">
+
+  <g transform="translate(565 215)">
+    <path d="M0 -15 V15" opacity=".85"/>
+    <path d="M-15 0 H15" opacity=".65"/>
+  </g>
+
+  <g transform="translate(150 390)">
+    <path d="M0 -12 V12" opacity=".8"/>
+    <path d="M-12 0 H12" opacity=".6"/>
+  </g>
+
+  <g transform="translate(770 610)">
+    <path d="M0 -14 V14" opacity=".85"/>
+    <path d="M-14 0 H14" opacity=".6"/>
+  </g>
+
+  <g transform="translate(110 1220)">
+    <path d="M0 -14 V14" opacity=".8"/>
+    <path d="M-14 0 H14" opacity=".6"/>
+  </g>
+
+  <g transform="translate(700 1500)">
+    <path d="M0 -13 V13" opacity=".8"/>
+    <path d="M-13 0 H13" opacity=".6"/>
+  </g>
+
+</g>
+
+<!-- étoile filante -->
+<path
+  d="M560 110 L675 40"
+  stroke="#c4b5fd"
+  stroke-width="2"
+  opacity=".7"
+/>
+
+<path
+  d="M565 112 L645 63"
+  stroke="#fff"
+  stroke-width="1"
+  opacity=".55"
+/>
+
+<!-- montagnes décoratives haut -->
+<path
+  d="
+    M0 420
+    L100 350
+    L180 395
+    L300 305
+    L410 385
+    L520 315
+    L630 390
+    L760 310
+    L900 395
+    V520
+    H0 Z
+  "
+  fill="#080b20"
+  opacity=".70"
+/>
+
+<path
+  d="
+    M0 455
+    L130 385
+    L240 450
+    L350 370
+    L490 450
+    L610 380
+    L760 455
+    L900 390
+    V540
+    H0 Z
+  "
+  fill="#040818"
+  opacity=".82"
+/>
+
+<!-- horizon violet -->
+<ellipse
+  cx="450" cy="450"
+  rx="420" ry="55"
+  fill="#a855f7"
+  opacity=".10"
+  filter="url(#soft)"
+/>
+
+<!-- vignette -->
+<rect
+  width="900"
+  height="1800"
+  fill="none"
+  stroke="#020617"
+  stroke-width="90"
+  opacity=".35"
+/>
+
+</svg>
