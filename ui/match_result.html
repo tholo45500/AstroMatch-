@@ -1844,6 +1844,474 @@ body::after {
 
 </style>
 
+
+<style id="ASTROMATCH_SETTINGS_BACKUP_V1">
+
+#astromatchSettingsPanel {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 12px;
+  background: rgba(2,6,23,.76);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+#astromatchSettingsPanel.hidden {
+  display: none !important;
+}
+
+.astromatch-settings-sheet {
+  position: relative;
+  width: min(100%, 520px);
+  max-height: 88vh;
+  overflow-y: auto;
+  border-radius: 28px 28px 22px 22px;
+  border: 1px solid rgba(167,139,250,.22);
+
+  background:
+    radial-gradient(
+      circle at 90% 0%,
+      rgba(139,92,246,.17),
+      transparent 35%
+    ),
+    linear-gradient(
+      160deg,
+      rgba(15,23,42,.98),
+      rgba(8,13,35,.99)
+    );
+
+  box-shadow:
+    0 -20px 60px rgba(0,0,0,.48);
+}
+
+.astromatch-settings-handle {
+  width: 42px;
+  height: 4px;
+  margin: 9px auto 3px;
+  border-radius: 999px;
+  background: rgba(148,163,184,.35);
+}
+
+.astromatch-settings-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 15px 17px 13px;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+}
+
+.astromatch-settings-head h2 {
+  font-size: 20px;
+  font-weight: 950;
+  letter-spacing: -.025em;
+}
+
+.astromatch-settings-head p {
+  margin-top: 2px;
+  color: #94a3b8;
+  font-size: 11px;
+}
+
+#astromatchSettingsClose {
+  width: 39px;
+  height: 39px;
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  background: rgba(255,255,255,.05);
+  border: 1px solid rgba(255,255,255,.08);
+  font-size: 21px;
+}
+
+.astromatch-settings-content {
+  display: grid;
+  gap: 12px;
+  padding: 15px;
+}
+
+.astromatch-backup-card {
+  padding: 15px;
+  border-radius: 21px;
+  border: 1px solid rgba(255,255,255,.08);
+  background: rgba(15,23,42,.62);
+}
+
+.astromatch-backup-card-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.astromatch-backup-card-title > span {
+  width: 37px;
+  height: 37px;
+  display: grid;
+  place-items: center;
+  flex: 0 0 auto;
+  border-radius: 12px;
+  background: rgba(139,92,246,.14);
+  border: 1px solid rgba(167,139,250,.17);
+  font-size: 18px;
+}
+
+.astromatch-backup-card p {
+  margin-top: 8px;
+  color: #94a3b8;
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.astromatch-backup-summary {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 7px;
+  margin-top: 12px;
+}
+
+.astromatch-backup-summary > div {
+  padding: 9px 6px;
+  border-radius: 13px;
+  text-align: center;
+  background: rgba(2,6,23,.46);
+  border: 1px solid rgba(255,255,255,.06);
+}
+
+.astromatch-backup-summary strong {
+  display: block;
+  font-size: 15px;
+  color: #f8fafc;
+}
+
+.astromatch-backup-summary small {
+  display: block;
+  margin-top: 2px;
+  color: #64748b;
+  font-size: 8px;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+}
+
+.astromatch-backup-action {
+  width: 100%;
+  min-height: 47px;
+  margin-top: 12px;
+  padding: 11px 13px;
+  border-radius: 15px;
+  font-size: 12px;
+  font-weight: 900;
+  transition: transform .12s ease;
+}
+
+.astromatch-backup-action:active {
+  transform: scale(.98);
+}
+
+.astromatch-backup-save {
+  color: white;
+  border: 1px solid rgba(167,139,250,.30);
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #9333ea
+    );
+  box-shadow:
+    0 10px 25px rgba(124,58,237,.18);
+}
+
+.astromatch-backup-restore {
+  color: #ddd6fe;
+  border: 1px solid rgba(167,139,250,.22);
+  background: rgba(139,92,246,.10);
+}
+
+.astromatch-backup-info {
+  padding: 12px 13px;
+  border-radius: 16px;
+  color: #94a3b8;
+  background: rgba(2,6,23,.38);
+  border: 1px solid rgba(255,255,255,.05);
+  font-size: 10px;
+  line-height: 1.55;
+}
+
+#astromatchBackupStatus {
+  display: none;
+  padding: 11px 13px;
+  border-radius: 14px;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+#astromatchBackupStatus.visible {
+  display: block;
+}
+
+#astromatchBackupStatus.success {
+  color: #a7f3d0;
+  background: rgba(16,185,129,.11);
+  border: 1px solid rgba(52,211,153,.17);
+}
+
+#astromatchBackupStatus.error {
+  color: #fecaca;
+  background: rgba(239,68,68,.10);
+  border: 1px solid rgba(248,113,113,.16);
+}
+
+</style>
+
+
+<style id="ASTROMATCH_SHARE_MATCH_V1">
+
+.astromatch-share-launch {
+  width: 100%;
+  margin-top: 18px;
+  padding: 12px 15px;
+  border-radius: 17px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+
+  color: #f5f3ff;
+  font-size: 12px;
+  font-weight: 950;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(124,58,237,.28),
+      rgba(219,39,119,.18)
+    );
+
+  border:
+    1px solid rgba(196,181,253,.25);
+
+  box-shadow:
+    0 10px 28px rgba(76,29,149,.15);
+
+  transition:
+    transform .12s ease,
+    border-color .12s ease;
+}
+
+.astromatch-share-launch:active {
+  transform: scale(.98);
+}
+
+#astromatchSharePanel {
+  position: fixed;
+  inset: 0;
+  z-index: 260;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+
+  padding: 12px;
+
+  background:
+    rgba(2,6,23,.82);
+
+  backdrop-filter:
+    blur(12px);
+
+  -webkit-backdrop-filter:
+    blur(12px);
+}
+
+#astromatchSharePanel.hidden {
+  display: none !important;
+}
+
+.astromatch-share-sheet {
+  width: min(100%, 520px);
+  max-height: 94vh;
+  overflow-y: auto;
+
+  border-radius:
+    28px 28px 22px 22px;
+
+  border:
+    1px solid rgba(167,139,250,.24);
+
+  background:
+    radial-gradient(
+      circle at 90% 0%,
+      rgba(139,92,246,.18),
+      transparent 35%
+    ),
+    linear-gradient(
+      160deg,
+      #10172e,
+      #080d21
+    );
+
+  box-shadow:
+    0 -25px 70px rgba(0,0,0,.55);
+}
+
+.astromatch-share-handle {
+  width: 42px;
+  height: 4px;
+
+  margin:
+    9px auto 2px;
+
+  border-radius: 999px;
+
+  background:
+    rgba(148,163,184,.34);
+}
+
+.astromatch-share-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding:
+    14px 16px 12px;
+
+  border-bottom:
+    1px solid rgba(255,255,255,.07);
+}
+
+.astromatch-share-head h2 {
+  font-size: 18px;
+  font-weight: 950;
+}
+
+.astromatch-share-head p {
+  margin-top: 2px;
+
+  color: #94a3b8;
+  font-size: 10px;
+}
+
+#astromatchShareClose {
+  width: 39px;
+  height: 39px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 13px;
+
+  background:
+    rgba(255,255,255,.05);
+
+  border:
+    1px solid rgba(255,255,255,.08);
+
+  font-size: 21px;
+}
+
+.astromatch-share-preview-wrap {
+  padding: 14px;
+}
+
+#astromatchSharePreview {
+  width: 100%;
+  display: block;
+
+  border-radius: 20px;
+
+  background:
+    #080d21;
+
+  border:
+    1px solid rgba(167,139,250,.16);
+
+  box-shadow:
+    0 18px 45px rgba(0,0,0,.28);
+}
+
+.astromatch-share-loading {
+  min-height: 280px;
+
+  display: grid;
+  place-items: center;
+
+  padding: 25px;
+
+  border-radius: 20px;
+
+  color: #94a3b8;
+  font-size: 12px;
+
+  background:
+    rgba(2,6,23,.5);
+}
+
+.astromatch-share-actions {
+  display: grid;
+  grid-template-columns:
+    1fr 1fr;
+
+  gap: 9px;
+
+  padding:
+    0 14px 15px;
+}
+
+.astromatch-share-action {
+  min-height: 49px;
+
+  padding:
+    11px 10px;
+
+  border-radius: 16px;
+
+  font-size: 11px;
+  font-weight: 950;
+}
+
+.astromatch-share-native {
+  color: white;
+
+  background:
+    linear-gradient(
+      135deg,
+      #7c3aed,
+      #c026d3
+    );
+
+  border:
+    1px solid rgba(216,180,254,.25);
+}
+
+.astromatch-share-download {
+  color: #ddd6fe;
+
+  background:
+    rgba(139,92,246,.10);
+
+  border:
+    1px solid rgba(167,139,250,.20);
+}
+
+.astromatch-share-note {
+  padding:
+    0 16px 16px;
+
+  color: #64748b;
+  font-size: 9px;
+  line-height: 1.45;
+  text-align: center;
+}
+
+</style>
+
 </head>
 
 <body class="min-h-screen text-white">
@@ -10583,6 +11051,2767 @@ document.addEventListener(
 
   }
 );
+</script>
+
+
+<!-- ASTROMATCH SETTINGS BACKUP V1 START -->
+
+<div
+  id="astromatchSettingsPanel"
+  class="hidden"
+  aria-hidden="true"
+>
+  <section
+    class="astromatch-settings-sheet"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="astromatchSettingsTitle"
+  >
+
+    <div class="astromatch-settings-handle"></div>
+
+    <header class="astromatch-settings-head">
+      <div>
+        <h2 id="astromatchSettingsTitle">
+          ⚙️ Paramètres
+        </h2>
+
+        <p>
+          Gère tes données AstroMatch
+        </p>
+      </div>
+
+      <button
+        id="astromatchSettingsClose"
+        type="button"
+        aria-label="Fermer"
+      >
+        ×
+      </button>
+    </header>
+
+    <div class="astromatch-settings-content">
+
+      <article class="astromatch-backup-card">
+
+        <div class="astromatch-backup-card-title">
+          <span>📦</span>
+
+          <div>
+            Sauvegarde de mes données
+          </div>
+        </div>
+
+        <p>
+          Crée un fichier contenant tes profils,
+          relations, photos et données AstroMatch.
+          Garde-le sur ton téléphone, Drive ou ailleurs.
+        </p>
+
+        <div class="astromatch-backup-summary">
+
+          <div>
+            <strong id="astromatchBackupProfiles">
+              —
+            </strong>
+            <small>Profils</small>
+          </div>
+
+          <div>
+            <strong id="astromatchBackupPhotos">
+              —
+            </strong>
+            <small>Photos</small>
+          </div>
+
+          <div>
+            <strong id="astromatchBackupItems">
+              —
+            </strong>
+            <small>Données</small>
+          </div>
+
+        </div>
+
+        <button
+          id="astromatchBackupDownload"
+          type="button"
+          class="
+            astromatch-backup-action
+            astromatch-backup-save
+          "
+        >
+          📥 Créer une sauvegarde
+        </button>
+
+      </article>
+
+
+      <article class="astromatch-backup-card">
+
+        <div class="astromatch-backup-card-title">
+          <span>♻️</span>
+
+          <div>
+            Restaurer AstroMatch
+          </div>
+        </div>
+
+        <p>
+          Sélectionne une sauvegarde AstroMatch.
+          Les données actuelles seront remplacées
+          uniquement après ta confirmation.
+        </p>
+
+        <button
+          id="astromatchBackupRestore"
+          type="button"
+          class="
+            astromatch-backup-action
+            astromatch-backup-restore
+          "
+        >
+          📂 Choisir une sauvegarde
+        </button>
+
+        <input
+          id="astromatchBackupFile"
+          type="file"
+          accept=".json,application/json"
+          class="hidden"
+        >
+
+      </article>
+
+
+      <div
+        id="astromatchBackupStatus"
+      ></div>
+
+
+      <div class="astromatch-backup-info">
+        🔐 La sauvegarde est créée directement
+        sur ton appareil. AstroMatch n’envoie
+        aucune de ces données sur un serveur avec
+        cette fonction.
+      </div>
+
+    </div>
+
+  </section>
+</div>
+
+<!-- ASTROMATCH SETTINGS BACKUP V1 END -->
+
+
+<script id="ASTROMATCH_SETTINGS_BACKUP_V1">
+(function () {
+  "use strict";
+
+  const PREFIX =
+    "astromatch:";
+
+  function getAstroMatchStorage() {
+    const data = {};
+
+    for (
+      let index = 0;
+      index < localStorage.length;
+      index++
+    ) {
+      const key =
+        localStorage.key(index);
+
+      if (
+        !key ||
+        !key.startsWith(PREFIX)
+      ) {
+        continue;
+      }
+
+      data[key] =
+        localStorage.getItem(key);
+    }
+
+    return data;
+  }
+
+
+  function astroMatchBackupStats() {
+    let profiles = [];
+
+    try {
+      const raw =
+        localStorage.getItem(
+          "astromatch:profiles"
+        );
+
+      profiles =
+        raw
+          ? JSON.parse(raw)
+          : [];
+
+      if (!Array.isArray(profiles)) {
+        profiles = [];
+      }
+    } catch {
+      profiles = [];
+    }
+
+    let photoCount = 0;
+    let itemCount = 0;
+
+    for (
+      let index = 0;
+      index < localStorage.length;
+      index++
+    ) {
+      const key =
+        localStorage.key(index);
+
+      if (
+        !key ||
+        !key.startsWith(PREFIX)
+      ) {
+        continue;
+      }
+
+      itemCount++;
+
+      if (
+        key.startsWith(
+          "astromatch:primary-avatar:"
+        ) ||
+        key.startsWith(
+          "astromatch:target-avatar:"
+        )
+      ) {
+        photoCount++;
+      }
+    }
+
+    return {
+      profiles:
+        profiles.length,
+
+      photos:
+        photoCount,
+
+      items:
+        itemCount
+    };
+  }
+
+
+  function refreshBackupStats() {
+    const stats =
+      astroMatchBackupStats();
+
+    const profiles =
+      document.getElementById(
+        "astromatchBackupProfiles"
+      );
+
+    const photos =
+      document.getElementById(
+        "astromatchBackupPhotos"
+      );
+
+    const items =
+      document.getElementById(
+        "astromatchBackupItems"
+      );
+
+    if (profiles) {
+      profiles.textContent =
+        String(stats.profiles);
+    }
+
+    if (photos) {
+      photos.textContent =
+        String(stats.photos);
+    }
+
+    if (items) {
+      items.textContent =
+        String(stats.items);
+    }
+  }
+
+
+  function backupStatus(
+    message,
+    type = "success"
+  ) {
+    const box =
+      document.getElementById(
+        "astromatchBackupStatus"
+      );
+
+    if (!box) return;
+
+    box.textContent =
+      String(message || "");
+
+    box.className =
+      "visible " + type;
+  }
+
+
+  function openSettings() {
+    const panel =
+      document.getElementById(
+        "astromatchSettingsPanel"
+      );
+
+    if (!panel) return;
+
+    refreshBackupStats();
+
+    panel.classList.remove(
+      "hidden"
+    );
+
+    panel.setAttribute(
+      "aria-hidden",
+      "false"
+    );
+
+    document.body.style.overflow =
+      "hidden";
+  }
+
+
+  function closeSettings() {
+    const panel =
+      document.getElementById(
+        "astromatchSettingsPanel"
+      );
+
+    if (!panel) return;
+
+    panel.classList.add(
+      "hidden"
+    );
+
+    panel.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+    document.body.style.overflow =
+      "";
+  }
+
+
+  function backupFilename() {
+    const now =
+      new Date();
+
+    const pad =
+      value =>
+        String(value).padStart(
+          2,
+          "0"
+        );
+
+    return (
+      "AstroMatch_backup_" +
+      now.getFullYear() +
+      "-" +
+      pad(now.getMonth() + 1) +
+      "-" +
+      pad(now.getDate()) +
+      "_" +
+      pad(now.getHours()) +
+      "-" +
+      pad(now.getMinutes()) +
+      ".json"
+    );
+  }
+
+
+  function createBackup() {
+    try {
+      const storage =
+        getAstroMatchStorage();
+
+      const payload = {
+        format:
+          "astromatch-backup",
+
+        version:
+          1,
+
+        exported_at:
+          new Date().toISOString(),
+
+        storage
+      };
+
+      const blob =
+        new Blob(
+          [
+            JSON.stringify(
+              payload,
+              null,
+              2
+            )
+          ],
+          {
+            type:
+              "application/json;charset=utf-8"
+          }
+        );
+
+      const url =
+        URL.createObjectURL(
+          blob
+        );
+
+      const anchor =
+        document.createElement(
+          "a"
+        );
+
+      anchor.href =
+        url;
+
+      anchor.download =
+        backupFilename();
+
+      document.body.appendChild(
+        anchor
+      );
+
+      anchor.click();
+      anchor.remove();
+
+      setTimeout(
+        () =>
+          URL.revokeObjectURL(
+            url
+          ),
+        1500
+      );
+
+      backupStatus(
+        "✅ Sauvegarde créée. Garde bien le fichier quelque part.",
+        "success"
+      );
+
+    } catch (error) {
+      console.error(
+        "ASTROMATCH BACKUP ERROR",
+        error
+      );
+
+      backupStatus(
+        "❌ Impossible de créer la sauvegarde.",
+        "error"
+      );
+    }
+  }
+
+
+  function validateBackup(payload) {
+    if (
+      !payload ||
+      typeof payload !==
+        "object"
+    ) {
+      throw new Error(
+        "Fichier invalide"
+      );
+    }
+
+    if (
+      payload.format !==
+        "astromatch-backup"
+    ) {
+      throw new Error(
+        "Ce fichier n'est pas une sauvegarde AstroMatch"
+      );
+    }
+
+    if (
+      Number(payload.version) !==
+        1
+    ) {
+      throw new Error(
+        "Version de sauvegarde non compatible"
+      );
+    }
+
+    if (
+      !payload.storage ||
+      typeof payload.storage !==
+        "object" ||
+      Array.isArray(
+        payload.storage
+      )
+    ) {
+      throw new Error(
+        "Données de sauvegarde invalides"
+      );
+    }
+
+    const entries =
+      Object.entries(
+        payload.storage
+      );
+
+    if (!entries.length) {
+      throw new Error(
+        "La sauvegarde est vide"
+      );
+    }
+
+    for (
+      const [key, value]
+      of entries
+    ) {
+      if (
+        !String(key).startsWith(
+          PREFIX
+        )
+      ) {
+        throw new Error(
+          "Clé de sauvegarde invalide"
+        );
+      }
+
+      if (
+        value !== null &&
+        typeof value !==
+          "string"
+      ) {
+        throw new Error(
+          "Valeur de sauvegarde invalide"
+        );
+      }
+    }
+
+    return entries;
+  }
+
+
+  async function restoreBackup(file) {
+    try {
+      if (!file) return;
+
+      const text =
+        await file.text();
+
+      const payload =
+        JSON.parse(text);
+
+      const entries =
+        validateBackup(
+          payload
+        );
+
+      let profileCount =
+        "?";
+
+      try {
+        const profilesRaw =
+          payload.storage[
+            "astromatch:profiles"
+          ];
+
+        const profiles =
+          profilesRaw
+            ? JSON.parse(
+                profilesRaw
+              )
+            : [];
+
+        profileCount =
+          Array.isArray(profiles)
+            ? profiles.length
+            : "?";
+      } catch {}
+
+
+      const accepted =
+        window.confirm(
+          "Restaurer cette sauvegarde AstroMatch ?\n\n" +
+          "Profils trouvés : " +
+          profileCount +
+          "\n\n" +
+          "Tes données AstroMatch actuelles seront remplacées."
+        );
+
+      if (!accepted) {
+        return;
+      }
+
+
+      /*
+       * On ne touche qu'aux clés AstroMatch.
+       * Le reste du localStorage du navigateur
+       * reste intact.
+       */
+      const currentKeys = [];
+
+      for (
+        let index = 0;
+        index < localStorage.length;
+        index++
+      ) {
+        const key =
+          localStorage.key(
+            index
+          );
+
+        if (
+          key &&
+          key.startsWith(
+            PREFIX
+          )
+        ) {
+          currentKeys.push(
+            key
+          );
+        }
+      }
+
+      currentKeys.forEach(
+        key =>
+          localStorage.removeItem(
+            key
+          )
+      );
+
+
+      for (
+        const [key, value]
+        of entries
+      ) {
+        if (value !== null) {
+          localStorage.setItem(
+            key,
+            value
+          );
+        }
+      }
+
+
+      backupStatus(
+        "✅ Sauvegarde restaurée. AstroMatch redémarre…",
+        "success"
+      );
+
+
+      setTimeout(
+        () => {
+          window.location.reload();
+        },
+        700
+      );
+
+    } catch (error) {
+      console.error(
+        "ASTROMATCH RESTORE ERROR",
+        error
+      );
+
+      backupStatus(
+        "❌ " +
+        (
+          error?.message ||
+          "Sauvegarde invalide"
+        ),
+        "error"
+      );
+    }
+  }
+
+
+  function installSettingsBackup() {
+    const settingsButton =
+      document.getElementById(
+        "appSettingsButton"
+      );
+
+    const closeButton =
+      document.getElementById(
+        "astromatchSettingsClose"
+      );
+
+    const panel =
+      document.getElementById(
+        "astromatchSettingsPanel"
+      );
+
+    const download =
+      document.getElementById(
+        "astromatchBackupDownload"
+      );
+
+    const restore =
+      document.getElementById(
+        "astromatchBackupRestore"
+      );
+
+    const fileInput =
+      document.getElementById(
+        "astromatchBackupFile"
+      );
+
+
+    settingsButton
+      ?.addEventListener(
+        "click",
+        event => {
+          event.preventDefault();
+          event.stopPropagation();
+          openSettings();
+        }
+      );
+
+
+    closeButton
+      ?.addEventListener(
+        "click",
+        closeSettings
+      );
+
+
+    panel
+      ?.addEventListener(
+        "click",
+        event => {
+          if (
+            event.target ===
+            panel
+          ) {
+            closeSettings();
+          }
+        }
+      );
+
+
+    document.addEventListener(
+      "keydown",
+      event => {
+        if (
+          event.key ===
+          "Escape"
+        ) {
+          closeSettings();
+        }
+      }
+    );
+
+
+    download
+      ?.addEventListener(
+        "click",
+        createBackup
+      );
+
+
+    restore
+      ?.addEventListener(
+        "click",
+        () => {
+          if (fileInput) {
+            fileInput.value =
+              "";
+
+            fileInput.click();
+          }
+        }
+      );
+
+
+    fileInput
+      ?.addEventListener(
+        "change",
+        () => {
+          restoreBackup(
+            fileInput.files?.[0]
+          );
+        }
+      );
+  }
+
+
+  if (
+    document.readyState ===
+      "loading"
+  ) {
+    document.addEventListener(
+      "DOMContentLoaded",
+      installSettingsBackup,
+      {
+        once: true
+      }
+    );
+  } else {
+    installSettingsBackup();
+  }
+
+})();
+</script>
+
+
+<!-- ASTROMATCH SHARE MATCH V1 START -->
+
+<div
+  id="astromatchSharePanel"
+  class="hidden"
+  aria-hidden="true"
+>
+  <section
+    class="astromatch-share-sheet"
+    role="dialog"
+    aria-modal="true"
+  >
+
+    <div class="astromatch-share-handle"></div>
+
+    <header class="astromatch-share-head">
+
+      <div>
+        <h2>
+          ✨ Partager ce match
+        </h2>
+
+        <p>
+          Ta compatibilité en une carte AstroMatch
+        </p>
+      </div>
+
+      <button
+        id="astromatchShareClose"
+        type="button"
+        aria-label="Fermer"
+      >
+        ×
+      </button>
+
+    </header>
+
+
+    <div class="astromatch-share-preview-wrap">
+
+      <div
+        id="astromatchShareLoading"
+        class="astromatch-share-loading"
+      >
+        ✨ Création de ta carte…
+      </div>
+
+      <img
+        id="astromatchSharePreview"
+        alt="Carte AstroMatch"
+        class="hidden"
+      >
+
+    </div>
+
+
+    <div class="astromatch-share-actions">
+
+      <button
+        id="astromatchShareNative"
+        type="button"
+        class="
+          astromatch-share-action
+          astromatch-share-native
+        "
+      >
+        📤 Partager
+      </button>
+
+      <button
+        id="astromatchShareDownload"
+        type="button"
+        class="
+          astromatch-share-action
+          astromatch-share-download
+        "
+      >
+        💾 Enregistrer
+      </button>
+
+    </div>
+
+
+    <div class="astromatch-share-note">
+      La carte ne contient ni date de naissance,
+      ni lieu, ni autre donnée privée.
+    </div>
+
+  </section>
+</div>
+
+<!-- ASTROMATCH SHARE MATCH V1 END -->
+
+
+<script id="ASTROMATCH_SHARE_MATCH_V1">
+(function () {
+  "use strict";
+
+  let ASTROMATCH_SHARE_BLOB = null;
+  let ASTROMATCH_SHARE_URL = null;
+
+
+  function cleanText(value) {
+    return String(value || "")
+      .replace(/\s+/g, " ")
+      .trim();
+  }
+
+
+  function firstName(profile, fallback) {
+    return (
+      profile?.identity?.first_name ||
+      profile?.first_name ||
+      fallback
+    );
+  }
+
+
+  function shareCurrentPrimary() {
+    try {
+      if (
+        typeof ASTROMATCH_PRIMARY_PROFILE !==
+        "undefined"
+      ) {
+        return ASTROMATCH_PRIMARY_PROFILE;
+      }
+    } catch {}
+
+    return null;
+  }
+
+
+  function shareCurrentTarget() {
+    try {
+      if (
+        typeof ASTROMATCH_SELECTED_TARGET !==
+        "undefined"
+      ) {
+        return ASTROMATCH_SELECTED_TARGET;
+      }
+    } catch {}
+
+    return null;
+  }
+
+
+  function shareMode() {
+    try {
+      if (
+        typeof CURRENT_RELATIONSHIP_MODE !==
+        "undefined"
+      ) {
+        return CURRENT_RELATIONSHIP_MODE;
+      }
+    } catch {}
+
+    return "love";
+  }
+
+
+  function shareModeMeta() {
+    const mode =
+      shareMode();
+
+    const map = {
+      love: {
+        icon: "❤️",
+        label: "Compatibilité amoureuse"
+      },
+
+      friendship: {
+        icon: "🤝",
+        label: "Compatibilité amicale"
+      },
+
+      flirt: {
+        icon: "🔥",
+        label: "Alchimie & flirt"
+      },
+
+      family: {
+        icon: "👨‍👩‍👧‍👦",
+        label: "Compatibilité familiale"
+      }
+    };
+
+    return (
+      map[mode] ||
+      map.love
+    );
+  }
+
+
+  function profileZodiac(profile) {
+    try {
+      if (
+        typeof zodiacFromDate ===
+        "function"
+      ) {
+        return zodiacFromDate(
+          profile?.birth_data?.date
+        );
+      }
+    } catch {}
+
+    return null;
+  }
+
+
+  function storedAvatar(
+    profile,
+    type
+  ) {
+    if (!profile) return null;
+
+    try {
+      if (
+        type === "primary" &&
+        typeof primaryAvatarStored ===
+          "function"
+      ) {
+        return primaryAvatarStored(
+          profile
+        );
+      }
+
+      if (
+        type === "target" &&
+        typeof targetAvatarStored ===
+          "function"
+      ) {
+        return targetAvatarStored(
+          profile
+        );
+      }
+    } catch {}
+
+
+    const id =
+      String(
+        profile?.profile_id || ""
+      );
+
+    if (!id) return null;
+
+    const key =
+      type === "primary"
+        ? (
+          "astromatch:primary-avatar:" +
+          id
+        )
+        : (
+          "astromatch:target-avatar:" +
+          id
+        );
+
+    try {
+      return localStorage.getItem(
+        key
+      );
+    } catch {
+      return null;
+    }
+  }
+
+
+  function currentScore() {
+    const raw =
+      cleanText(
+        document
+          .getElementById(
+            "relationshipScore"
+          )
+          ?.textContent
+      );
+
+    const value =
+      Number(
+        raw.replace(
+          /[^0-9.,-]/g,
+          ""
+        ).replace(",", ".")
+      );
+
+    return Number.isFinite(value)
+      ? Math.round(value)
+      : null;
+  }
+
+
+  function shortText(
+    text,
+    max = 105
+  ) {
+    const value =
+      cleanText(text);
+
+    if (
+      value.length <= max
+    ) {
+      return value;
+    }
+
+    return (
+      value.slice(
+        0,
+        max - 1
+      ).trim() +
+      "…"
+    );
+  }
+
+
+  function extractCardsText(
+    id,
+    limit
+  ) {
+    const root =
+      document.getElementById(
+        id
+      );
+
+    if (!root) return [];
+
+    const candidates =
+      Array.from(
+        root.children
+      )
+      .map(element =>
+        shortText(
+          element.textContent,
+          230
+        )
+      )
+      .filter(Boolean);
+
+    if (candidates.length) {
+      return candidates.slice(
+        0,
+        limit
+      );
+    }
+
+    const text =
+      shortText(
+        root.textContent,
+        230
+      );
+
+    return text
+      ? [text]
+      : [];
+  }
+
+
+  function shareInsights() {
+    const strengths =
+      extractCardsText(
+        "whyMatch",
+        2
+      );
+
+    const tensions =
+      extractCardsText(
+        "whyNot",
+        1
+      );
+
+    while (
+      strengths.length < 2
+    ) {
+      strengths.push(
+        strengths.length
+          ? "Une dynamique complémentaire à explorer."
+          : "Des points de connexion ressortent de vos thèmes."
+      );
+    }
+
+    if (!tensions.length) {
+      tensions.push(
+        "Gardez de la place pour les différences de rythme et de sensibilité."
+      );
+    }
+
+    return {
+      strengths,
+      tension:
+        tensions[0]
+    };
+  }
+
+
+  function roundedRect(
+    ctx,
+    x,
+    y,
+    width,
+    height,
+    radius
+  ) {
+    const r =
+      Math.min(
+        radius,
+        width / 2,
+        height / 2
+      );
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+      x + r,
+      y
+    );
+
+    ctx.lineTo(
+      x + width - r,
+      y
+    );
+
+    ctx.quadraticCurveTo(
+      x + width,
+      y,
+      x + width,
+      y + r
+    );
+
+    ctx.lineTo(
+      x + width,
+      y + height - r
+    );
+
+    ctx.quadraticCurveTo(
+      x + width,
+      y + height,
+      x + width - r,
+      y + height
+    );
+
+    ctx.lineTo(
+      x + r,
+      y + height
+    );
+
+    ctx.quadraticCurveTo(
+      x,
+      y + height,
+      x,
+      y + height - r
+    );
+
+    ctx.lineTo(
+      x,
+      y + r
+    );
+
+    ctx.quadraticCurveTo(
+      x,
+      y,
+      x + r,
+      y
+    );
+
+    ctx.closePath();
+  }
+
+
+  function fillRoundedRect(
+    ctx,
+    x,
+    y,
+    width,
+    height,
+    radius,
+    fill
+  ) {
+    roundedRect(
+      ctx,
+      x,
+      y,
+      width,
+      height,
+      radius
+    );
+
+    ctx.fillStyle =
+      fill;
+
+    ctx.fill();
+  }
+
+
+  function strokeRoundedRect(
+    ctx,
+    x,
+    y,
+    width,
+    height,
+    radius,
+    stroke
+  ) {
+    roundedRect(
+      ctx,
+      x,
+      y,
+      width,
+      height,
+      radius
+    );
+
+    ctx.strokeStyle =
+      stroke;
+
+    ctx.stroke();
+  }
+
+
+  function wrapLines(
+    ctx,
+    text,
+    maxWidth
+  ) {
+    const words =
+      cleanText(text)
+        .split(" ");
+
+    const lines = [];
+    let current = "";
+
+    for (
+      const word
+      of words
+    ) {
+      const test =
+        current
+          ? current + " " + word
+          : word;
+
+      if (
+        ctx.measureText(
+          test
+        ).width >
+          maxWidth &&
+        current
+      ) {
+        lines.push(
+          current
+        );
+
+        current =
+          word;
+      } else {
+        current =
+          test;
+      }
+    }
+
+    if (current) {
+      lines.push(current);
+    }
+
+    return lines;
+  }
+
+
+  function drawWrappedText(
+    ctx,
+    text,
+    x,
+    y,
+    maxWidth,
+    lineHeight,
+    maxLines = 4
+  ) {
+    let lines =
+      wrapLines(
+        ctx,
+        text,
+        maxWidth
+      );
+
+    if (
+      lines.length >
+      maxLines
+    ) {
+      lines =
+        lines.slice(
+          0,
+          maxLines
+        );
+
+      lines[
+        lines.length - 1
+      ] =
+        lines[
+          lines.length - 1
+        ].replace(
+          /[.…]*$/,
+          ""
+        ) + "…";
+    }
+
+    lines.forEach(
+      (line, index) => {
+        ctx.fillText(
+          line,
+          x,
+          y +
+            index *
+            lineHeight
+        );
+      }
+    );
+
+    return (
+      y +
+      lines.length *
+      lineHeight
+    );
+  }
+
+
+  function loadImage(src) {
+    return new Promise(
+      (resolve, reject) => {
+        if (!src) {
+          resolve(null);
+          return;
+        }
+
+        const image =
+          new Image();
+
+        image.onload =
+          () => resolve(image);
+
+        image.onerror =
+          reject;
+
+        image.src =
+          src;
+      }
+    );
+  }
+
+
+  function drawCoverImage(
+    ctx,
+    image,
+    x,
+    y,
+    size
+  ) {
+    const source =
+      Math.min(
+        image.width,
+        image.height
+      );
+
+    const sx =
+      (
+        image.width -
+        source
+      ) / 2;
+
+    const sy =
+      (
+        image.height -
+        source
+      ) / 2;
+
+    ctx.save();
+
+    ctx.beginPath();
+
+    ctx.arc(
+      x,
+      y,
+      size / 2,
+      0,
+      Math.PI * 2
+    );
+
+    ctx.clip();
+
+    ctx.drawImage(
+      image,
+      sx,
+      sy,
+      source,
+      source,
+      x - size / 2,
+      y - size / 2,
+      size,
+      size
+    );
+
+    ctx.restore();
+  }
+
+
+  function drawProfile(
+    ctx,
+    {
+      x,
+      y,
+      name,
+      zodiac,
+      image
+    }
+  ) {
+    const size = 170;
+
+    ctx.save();
+
+    ctx.shadowColor =
+      "rgba(168,85,247,.55)";
+
+    ctx.shadowBlur =
+      32;
+
+    ctx.beginPath();
+
+    ctx.arc(
+      x,
+      y,
+      size / 2 + 5,
+      0,
+      Math.PI * 2
+    );
+
+    ctx.fillStyle =
+      "rgba(139,92,246,.24)";
+
+    ctx.fill();
+
+    ctx.restore();
+
+
+    ctx.beginPath();
+
+    ctx.arc(
+      x,
+      y,
+      size / 2 + 1,
+      0,
+      Math.PI * 2
+    );
+
+    ctx.strokeStyle =
+      "rgba(216,180,254,.75)";
+
+    ctx.lineWidth =
+      4;
+
+    ctx.stroke();
+
+
+    if (image) {
+      drawCoverImage(
+        ctx,
+        image,
+        x,
+        y,
+        size
+      );
+    } else {
+      ctx.beginPath();
+
+      ctx.arc(
+        x,
+        y,
+        size / 2,
+        0,
+        Math.PI * 2
+      );
+
+      const gradient =
+        ctx.createRadialGradient(
+          x,
+          y,
+          10,
+          x,
+          y,
+          size / 2
+        );
+
+      gradient.addColorStop(
+        0,
+        "#2e2a63"
+      );
+
+      gradient.addColorStop(
+        1,
+        "#0d1531"
+      );
+
+      ctx.fillStyle =
+        gradient;
+
+      ctx.fill();
+
+
+      ctx.font =
+        "700 78px Arial";
+
+      ctx.textAlign =
+        "center";
+
+      ctx.textBaseline =
+        "middle";
+
+      ctx.fillStyle =
+        "#f5f3ff";
+
+      ctx.fillText(
+        zodiac?.symbol ||
+          "✦",
+        x,
+        y + 3
+      );
+    }
+
+
+    ctx.textAlign =
+      "center";
+
+    ctx.textBaseline =
+      "alphabetic";
+
+    ctx.fillStyle =
+      "#ffffff";
+
+    ctx.font =
+      "900 34px Arial";
+
+    ctx.fillText(
+      name,
+      x,
+      y + 128
+    );
+
+
+    ctx.fillStyle =
+      "#a5b4fc";
+
+    ctx.font =
+      "600 22px Arial";
+
+    ctx.fillText(
+      zodiac?.name ||
+        "",
+      x,
+      y + 160
+    );
+  }
+
+
+  function drawInsightBox(
+    ctx,
+    {
+      x,
+      y,
+      width,
+      icon,
+      title,
+      text,
+      accent
+    }
+  ) {
+    fillRoundedRect(
+      ctx,
+      x,
+      y,
+      width,
+      205,
+      30,
+      "rgba(15,23,42,.82)"
+    );
+
+    ctx.lineWidth =
+      2;
+
+    strokeRoundedRect(
+      ctx,
+      x,
+      y,
+      width,
+      205,
+      30,
+      accent
+    );
+
+
+    ctx.textAlign =
+      "left";
+
+    ctx.fillStyle =
+      "#ffffff";
+
+    ctx.font =
+      "900 27px Arial";
+
+    ctx.fillText(
+      icon + " " + title,
+      x + 30,
+      y + 45
+    );
+
+
+    ctx.fillStyle =
+      "#cbd5e1";
+
+    ctx.font =
+      "500 19px Arial";
+
+    drawWrappedText(
+      ctx,
+      text,
+      x + 30,
+      y + 82,
+      width - 60,
+      25,
+      5
+    );
+  }
+
+
+  async function createShareCanvas() {
+    const primary =
+      shareCurrentPrimary();
+
+    const target =
+      shareCurrentTarget();
+
+    const score =
+      currentScore();
+
+    if (
+      !primary ||
+      !target ||
+      score === null
+    ) {
+      throw new Error(
+        "Ouvre d'abord un profil et attends la fin du calcul."
+      );
+    }
+
+
+    const primaryName =
+      firstName(
+        primary,
+        "Moi"
+      );
+
+    const targetName =
+      firstName(
+        target,
+        "Profil"
+      );
+
+    const primaryZodiac =
+      profileZodiac(
+        primary
+      );
+
+    const targetZodiac =
+      profileZodiac(
+        target
+      );
+
+    const mode =
+      shareModeMeta();
+
+    const insights =
+      shareInsights();
+
+
+    const [
+      primaryImage,
+      targetImage
+    ] =
+      await Promise.all([
+        loadImage(
+          storedAvatar(
+            primary,
+            "primary"
+          )
+        ).catch(() => null),
+
+        loadImage(
+          storedAvatar(
+            target,
+            "target"
+          )
+        ).catch(() => null)
+      ]);
+
+
+    const canvas =
+      document.createElement(
+        "canvas"
+      );
+
+    canvas.width =
+      1080;
+
+    canvas.height =
+      1350;
+
+    const ctx =
+      canvas.getContext(
+        "2d"
+      );
+
+
+    /*
+     * FOND COSMIQUE
+     */
+    const background =
+      ctx.createLinearGradient(
+        0,
+        0,
+        1080,
+        1350
+      );
+
+    background.addColorStop(
+      0,
+      "#070b27"
+    );
+
+    background.addColorStop(
+      .48,
+      "#13113c"
+    );
+
+    background.addColorStop(
+      1,
+      "#050817"
+    );
+
+    ctx.fillStyle =
+      background;
+
+    ctx.fillRect(
+      0,
+      0,
+      1080,
+      1350
+    );
+
+
+    const purpleGlow =
+      ctx.createRadialGradient(
+        900,
+        160,
+        20,
+        900,
+        160,
+        440
+      );
+
+    purpleGlow.addColorStop(
+      0,
+      "rgba(192,38,211,.40)"
+    );
+
+    purpleGlow.addColorStop(
+      1,
+      "rgba(124,58,237,0)"
+    );
+
+    ctx.fillStyle =
+      purpleGlow;
+
+    ctx.fillRect(
+      0,
+      0,
+      1080,
+      650
+    );
+
+
+    const blueGlow =
+      ctx.createRadialGradient(
+        100,
+        650,
+        10,
+        100,
+        650,
+        480
+      );
+
+    blueGlow.addColorStop(
+      0,
+      "rgba(37,99,235,.25)"
+    );
+
+    blueGlow.addColorStop(
+      1,
+      "rgba(37,99,235,0)"
+    );
+
+    ctx.fillStyle =
+      blueGlow;
+
+    ctx.fillRect(
+      0,
+      200,
+      700,
+      900
+    );
+
+
+    /*
+     * ETOILES
+     */
+    for (
+      let i = 0;
+      i < 74;
+      i++
+    ) {
+      const x =
+        (
+          i * 137 +
+          53
+        ) %
+        1080;
+
+      const y =
+        (
+          i * 211 +
+          91
+        ) %
+        1350;
+
+      const radius =
+        i % 9 === 0
+          ? 2.2
+          : 1.1;
+
+      ctx.beginPath();
+
+      ctx.arc(
+        x,
+        y,
+        radius,
+        0,
+        Math.PI * 2
+      );
+
+      ctx.fillStyle =
+        i % 5 === 0
+          ? "rgba(216,180,254,.72)"
+          : "rgba(255,255,255,.56)";
+
+      ctx.fill();
+    }
+
+
+    /*
+     * LOGO
+     */
+    ctx.textAlign =
+      "center";
+
+    ctx.fillStyle =
+      "#ffffff";
+
+    ctx.font =
+      "900 46px Arial";
+
+    ctx.fillText(
+      "✦ AstroMatch",
+      540,
+      78
+    );
+
+
+    ctx.fillStyle =
+      "#a5b4fc";
+
+    ctx.font =
+      "600 20px Arial";
+
+    ctx.fillText(
+      "VOTRE CONNEXION SOUS LES ÉTOILES",
+      540,
+      112
+    );
+
+
+    /*
+     * MODE
+     */
+    fillRoundedRect(
+      ctx,
+      345,
+      145,
+      390,
+      58,
+      29,
+      "rgba(139,92,246,.17)"
+    );
+
+    strokeRoundedRect(
+      ctx,
+      345,
+      145,
+      390,
+      58,
+      29,
+      "rgba(196,181,253,.28)"
+    );
+
+    ctx.fillStyle =
+      "#ede9fe";
+
+    ctx.font =
+      "800 23px Arial";
+
+    ctx.fillText(
+      mode.icon +
+      " " +
+      mode.label,
+      540,
+      183
+    );
+
+
+    /*
+     * PROFILS
+     */
+    drawProfile(
+      ctx,
+      {
+        x: 285,
+        y: 335,
+        name:
+          primaryName,
+        zodiac:
+          primaryZodiac,
+        image:
+          primaryImage
+      }
+    );
+
+    drawProfile(
+      ctx,
+      {
+        x: 795,
+        y: 335,
+        name:
+          targetName,
+        zodiac:
+          targetZodiac,
+        image:
+          targetImage
+      }
+    );
+
+
+    /*
+     * CENTRE
+     */
+    ctx.textAlign =
+      "center";
+
+    ctx.fillStyle =
+      "#c4b5fd";
+
+    ctx.font =
+      "700 34px Arial";
+
+    ctx.fillText(
+      "✦",
+      540,
+      313
+    );
+
+    ctx.fillStyle =
+      "rgba(255,255,255,.25)";
+
+    ctx.fillRect(
+      455,
+      332,
+      170,
+      2
+    );
+
+
+    /*
+     * SCORE
+     */
+    const scoreGradient =
+      ctx.createRadialGradient(
+        540,
+        570,
+        10,
+        540,
+        570,
+        145
+      );
+
+    scoreGradient.addColorStop(
+      0,
+      "rgba(147,51,234,.30)"
+    );
+
+    scoreGradient.addColorStop(
+      1,
+      "rgba(30,41,59,.22)"
+    );
+
+    ctx.beginPath();
+
+    ctx.arc(
+      540,
+      570,
+      137,
+      0,
+      Math.PI * 2
+    );
+
+    ctx.fillStyle =
+      scoreGradient;
+
+    ctx.fill();
+
+    ctx.lineWidth =
+      10;
+
+    ctx.strokeStyle =
+      "rgba(167,139,250,.30)";
+
+    ctx.stroke();
+
+
+    ctx.beginPath();
+
+    ctx.arc(
+      540,
+      570,
+      137,
+      -Math.PI / 2,
+      -Math.PI / 2 +
+      Math.PI * 2 *
+      (
+        Math.max(
+          0,
+          Math.min(
+            100,
+            score
+          )
+        ) /
+        100
+      )
+    );
+
+    ctx.lineCap =
+      "round";
+
+    ctx.strokeStyle =
+      score >= 70
+        ? "#c084fc"
+        : score >= 50
+          ? "#818cf8"
+          : "#f472b6";
+
+    ctx.lineWidth =
+      11;
+
+    ctx.stroke();
+
+
+    ctx.fillStyle =
+      "#ffffff";
+
+    ctx.font =
+      "900 93px Arial";
+
+    ctx.fillText(
+      String(score),
+      540,
+      588
+    );
+
+    ctx.fillStyle =
+      "#94a3b8";
+
+    ctx.font =
+      "700 23px Arial";
+
+    ctx.fillText(
+      "/ 100",
+      540,
+      627
+    );
+
+
+    /*
+     * SYNTHÈSE
+     */
+    ctx.fillStyle =
+      "#ffffff";
+
+    ctx.font =
+      "900 33px Arial";
+
+    ctx.fillText(
+      "Ce que racontent vos astres",
+      540,
+      760
+    );
+
+
+    drawInsightBox(
+      ctx,
+      {
+        x: 70,
+        y: 790,
+        width: 455,
+        icon: "✦",
+        title:
+          "Point fort",
+        text:
+          insights.strengths[0],
+        accent:
+          "rgba(52,211,153,.32)"
+      }
+    );
+
+
+    drawInsightBox(
+      ctx,
+      {
+        x: 555,
+        y: 790,
+        width: 455,
+        icon: "✦",
+        title:
+          "Point fort",
+        text:
+          insights.strengths[1],
+        accent:
+          "rgba(96,165,250,.32)"
+      }
+    );
+
+
+    drawInsightBox(
+      ctx,
+      {
+        x: 70,
+        y: 1015,
+        width: 940,
+        icon: "☾",
+        title:
+          "À garder en tête",
+        text:
+          insights.tension,
+        accent:
+          "rgba(244,114,182,.30)"
+      }
+    );
+
+
+    /*
+     * FOOTER
+     */
+    ctx.textAlign =
+      "center";
+
+    ctx.fillStyle =
+      "#c4b5fd";
+
+    ctx.font =
+      "800 23px Arial";
+
+    ctx.fillText(
+      "ASTROMATCH",
+      540,
+      1255
+    );
+
+
+    ctx.fillStyle =
+      "#64748b";
+
+    ctx.font =
+      "500 18px Arial";
+
+    ctx.fillText(
+      "Compatibilité astrologique • à découvrir, pas à subir ✨",
+      540,
+      1288
+    );
+
+
+    ctx.fillStyle =
+      "rgba(148,163,184,.55)";
+
+    ctx.font =
+      "500 16px Arial";
+
+    ctx.fillText(
+      "astroMatch • sous les étoiles",
+      540,
+      1320
+    );
+
+
+    return canvas;
+  }
+
+
+  function canvasBlob(canvas) {
+    return new Promise(
+      (resolve, reject) => {
+        canvas.toBlob(
+          blob => {
+            if (blob) {
+              resolve(blob);
+            } else {
+              reject(
+                new Error(
+                  "IMAGE_GENERATION_FAILED"
+                )
+              );
+            }
+          },
+          "image/png",
+          0.96
+        );
+      }
+    );
+  }
+
+
+  function releaseShareUrl() {
+    if (
+      ASTROMATCH_SHARE_URL
+    ) {
+      URL.revokeObjectURL(
+        ASTROMATCH_SHARE_URL
+      );
+
+      ASTROMATCH_SHARE_URL =
+        null;
+    }
+  }
+
+
+  async function openSharePanel() {
+    const panel =
+      document.getElementById(
+        "astromatchSharePanel"
+      );
+
+    const preview =
+      document.getElementById(
+        "astromatchSharePreview"
+      );
+
+    const loading =
+      document.getElementById(
+        "astromatchShareLoading"
+      );
+
+    if (
+      !panel ||
+      !preview ||
+      !loading
+    ) {
+      return;
+    }
+
+
+    panel.classList.remove(
+      "hidden"
+    );
+
+    panel.setAttribute(
+      "aria-hidden",
+      "false"
+    );
+
+    document.body.style.overflow =
+      "hidden";
+
+    preview.classList.add(
+      "hidden"
+    );
+
+    loading.classList.remove(
+      "hidden"
+    );
+
+    loading.textContent =
+      "✨ Création de ta carte…";
+
+
+    try {
+      releaseShareUrl();
+
+      ASTROMATCH_SHARE_BLOB =
+        null;
+
+      const canvas =
+        await createShareCanvas();
+
+      const blob =
+        await canvasBlob(
+          canvas
+        );
+
+      ASTROMATCH_SHARE_BLOB =
+        blob;
+
+      ASTROMATCH_SHARE_URL =
+        URL.createObjectURL(
+          blob
+        );
+
+      preview.src =
+        ASTROMATCH_SHARE_URL;
+
+      preview.classList.remove(
+        "hidden"
+      );
+
+      loading.classList.add(
+        "hidden"
+      );
+
+    } catch (error) {
+
+      console.error(
+        "ASTROMATCH SHARE CARD",
+        error
+      );
+
+      loading.textContent =
+        error?.message ||
+        "Impossible de créer cette carte.";
+    }
+  }
+
+
+  function closeSharePanel() {
+    const panel =
+      document.getElementById(
+        "astromatchSharePanel"
+      );
+
+    if (!panel) return;
+
+    panel.classList.add(
+      "hidden"
+    );
+
+    panel.setAttribute(
+      "aria-hidden",
+      "true"
+    );
+
+    document.body.style.overflow =
+      "";
+  }
+
+
+  function shareFilename() {
+    const primary =
+      firstName(
+        shareCurrentPrimary(),
+        "moi"
+      );
+
+    const target =
+      firstName(
+        shareCurrentTarget(),
+        "match"
+      );
+
+    const clean =
+      value =>
+        String(value)
+          .normalize("NFD")
+          .replace(
+            /[\u0300-\u036f]/g,
+            ""
+          )
+          .replace(
+            /[^a-zA-Z0-9_-]/g,
+            "_"
+          );
+
+    return (
+      "AstroMatch_" +
+      clean(primary) +
+      "_" +
+      clean(target) +
+      ".png"
+    );
+  }
+
+
+  function downloadShareImage() {
+    if (
+      !ASTROMATCH_SHARE_BLOB
+    ) {
+      return;
+    }
+
+    const url =
+      URL.createObjectURL(
+        ASTROMATCH_SHARE_BLOB
+      );
+
+    const a =
+      document.createElement(
+        "a"
+      );
+
+    a.href =
+      url;
+
+    a.download =
+      shareFilename();
+
+    document.body.appendChild(
+      a
+    );
+
+    a.click();
+    a.remove();
+
+    setTimeout(
+      () =>
+        URL.revokeObjectURL(
+          url
+        ),
+      1200
+    );
+  }
+
+
+  async function nativeShare() {
+    if (
+      !ASTROMATCH_SHARE_BLOB
+    ) {
+      return;
+    }
+
+    const file =
+      new File(
+        [
+          ASTROMATCH_SHARE_BLOB
+        ],
+        shareFilename(),
+        {
+          type:
+            "image/png"
+        }
+      );
+
+    const shareData = {
+      files: [file],
+
+      title:
+        "Mon match AstroMatch ✨",
+
+      text:
+        "Regarde notre compatibilité AstroMatch ✨"
+    };
+
+
+    try {
+      if (
+        navigator.share &&
+        (
+          !navigator.canShare ||
+          navigator.canShare(
+            shareData
+          )
+        )
+      ) {
+        await navigator.share(
+          shareData
+        );
+
+        return;
+      }
+    } catch (error) {
+      if (
+        error?.name ===
+        "AbortError"
+      ) {
+        return;
+      }
+
+      console.warn(
+        "ASTROMATCH NATIVE SHARE",
+        error
+      );
+    }
+
+
+    /*
+     * Fallback :
+     * si Android/browser ne donne pas
+     * l'API de partage, on enregistre l'image.
+     */
+    downloadShareImage();
+
+    alert(
+      "Le partage direct n'est pas disponible ici. L'image AstroMatch a été enregistrée."
+    );
+  }
+
+
+  function installShareButton() {
+    if (
+      document.getElementById(
+        "astromatchShareMatchButton"
+      )
+    ) {
+      return;
+    }
+
+    const score =
+      document.getElementById(
+        "relationshipScore"
+      );
+
+    const card =
+      score?.closest(
+        "section"
+      );
+
+    if (!card) return;
+
+
+    const button =
+      document.createElement(
+        "button"
+      );
+
+    button.id =
+      "astromatchShareMatchButton";
+
+    button.type =
+      "button";
+
+    button.className =
+      "astromatch-share-launch";
+
+    button.innerHTML =
+      "<span>📤</span><span>Partager ce match</span>";
+
+
+    button.addEventListener(
+      "click",
+      openSharePanel
+    );
+
+
+    card.appendChild(
+      button
+    );
+  }
+
+
+  function installShareFeature() {
+    installShareButton();
+
+
+    document
+      .getElementById(
+        "astromatchShareClose"
+      )
+      ?.addEventListener(
+        "click",
+        closeSharePanel
+      );
+
+
+    document
+      .getElementById(
+        "astromatchSharePanel"
+      )
+      ?.addEventListener(
+        "click",
+        event => {
+          if (
+            event.target.id ===
+            "astromatchSharePanel"
+          ) {
+            closeSharePanel();
+          }
+        }
+      );
+
+
+    document
+      .getElementById(
+        "astromatchShareNative"
+      )
+      ?.addEventListener(
+        "click",
+        nativeShare
+      );
+
+
+    document
+      .getElementById(
+        "astromatchShareDownload"
+      )
+      ?.addEventListener(
+        "click",
+        downloadShareImage
+      );
+
+
+    document.addEventListener(
+      "keydown",
+      event => {
+        if (
+          event.key ===
+          "Escape"
+        ) {
+          closeSharePanel();
+        }
+      }
+    );
+  }
+
+
+  if (
+    document.readyState ===
+    "loading"
+  ) {
+    document.addEventListener(
+      "DOMContentLoaded",
+      installShareFeature,
+      {
+        once: true
+      }
+    );
+  } else {
+    installShareFeature();
+  }
+
+})();
 </script>
 
 </body>
