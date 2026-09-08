@@ -1807,6 +1807,43 @@ body::after {
 
 </style>
 
+
+<style id="ASTROMATCH_LOGO_CLICK_FIX">
+
+#astromatchHeaderLogo {
+  pointer-events: auto !important;
+  cursor: pointer !important;
+  z-index: 80 !important;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+#astromatchHeaderLogo:active {
+  transform: scale(.96);
+}
+
+</style>
+
+
+<style id="ASTROMATCH_HOME_TARGET_AVATAR_V1">
+
+.astro-home-mini-symbol,
+.astro-home-recent-zodiac {
+  overflow: hidden;
+}
+
+.astro-home-mini-symbol img,
+.astro-home-recent-zodiac img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+</style>
+
 </head>
 
 <body class="min-h-screen text-white">
@@ -2413,6 +2450,83 @@ window.scoreProgressClass = scoreProgressClass;
       </div>
 
       <input id="targetEditorId" type="hidden">
+
+      <!-- PHOTO PROFIL CIBLE -->
+      <div
+        id="targetEditorAvatarSection"
+        class="hidden mb-5"
+      >
+        <div class="flex flex-col items-center">
+
+          <button
+            id="targetEditorAvatarButton"
+            type="button"
+            title="Changer la photo"
+            class="
+              relative
+              w-24 h-24
+              rounded-full
+              overflow-hidden
+              border border-violet-400/30
+              bg-slate-950
+              shadow-xl
+              active:scale-95
+            "
+          >
+            <img
+              id="targetEditorAvatarImage"
+              alt=""
+              class="hidden absolute inset-0 w-full h-full object-cover"
+            >
+
+            <span
+              id="targetEditorAvatarZodiac"
+              class="
+                absolute inset-0
+                flex items-center justify-center
+                text-5xl
+              "
+            >
+              ✦
+            </span>
+
+            <span
+              class="
+                absolute bottom-1 right-1
+                w-8 h-8
+                rounded-full
+                flex items-center justify-center
+                bg-violet-600
+                border-2 border-slate-950
+                text-sm
+              "
+            >
+              📷
+            </span>
+          </button>
+
+          <div class="mt-2 text-xs text-slate-400">
+            Appuie sur la photo pour la changer
+          </div>
+
+          <button
+            id="targetEditorAvatarRemove"
+            type="button"
+            class="hidden mt-2 text-xs text-rose-300"
+          >
+            Supprimer la photo
+          </button>
+
+          <input
+            id="targetEditorAvatarInput"
+            type="file"
+            accept="image/*"
+            class="hidden"
+          >
+
+        </div>
+      </div>
+
 
       <div class="grid grid-cols-2 gap-3">
         <label class="text-xs text-slate-400">
@@ -4652,9 +4766,19 @@ function renderAstroMatchHomeDashboard(
         )}"
       >
         <span class="astro-home-mini-symbol">
-          ${escapeHtml(
-            zodiac?.symbol || "✦"
-          )}
+          ${
+            targetAvatarStored(profile)
+              ? `
+                <img
+                  src="${targetAvatarStored(profile)}"
+                  alt=""
+                  class="w-full h-full object-cover rounded-full"
+                >
+              `
+              : escapeHtml(
+                  zodiac?.symbol || "✦"
+                )
+          }
         </span>
 
         <strong>
@@ -4765,9 +4889,19 @@ function renderAstroMatchHomeDashboard(
         )}"
       >
         <span class="astro-home-recent-zodiac">
-          ${escapeHtml(
-            zodiac?.symbol || "✦"
-          )}
+          ${
+            targetAvatarStored(profile)
+              ? `
+                <img
+                  src="${targetAvatarStored(profile)}"
+                  alt=""
+                  class="w-full h-full object-cover rounded-full"
+                >
+              `
+              : escapeHtml(
+                  zodiac?.symbol || "✦"
+                )
+          }
         </span>
 
         <span class="astro-home-recent-info">
@@ -8665,8 +8799,152 @@ function closeTargetEditor() {
   ASTROMATCH_TARGET_EDITOR_PROFILE = null;
 }
 
+
+function targetAvatarKey(profileOrId) {
+  const id =
+    typeof profileOrId === "string"
+      ? profileOrId
+      : profileOrId?.profile_id;
+
+  if (!id) return null;
+
+  return (
+    "astromatch:target-avatar:" +
+    String(id)
+  );
+}
+
+function targetAvatarStored(profileOrId) {
+  const key =
+    targetAvatarKey(profileOrId);
+
+  if (!key) return null;
+
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return null;
+  }
+}
+
+function targetAvatarSave(profileOrId, dataUrl) {
+  const key =
+    targetAvatarKey(profileOrId);
+
+  if (!key) return;
+
+  try {
+    localStorage.setItem(
+      key,
+      dataUrl
+    );
+  } catch (error) {
+    console.error(
+      "TARGET AVATAR SAVE",
+      error
+    );
+  }
+}
+
+function targetAvatarRemove(profileOrId) {
+  const key =
+    targetAvatarKey(profileOrId);
+
+  if (!key) return;
+
+  try {
+    localStorage.removeItem(key);
+  } catch {}
+}
+
+function updateTargetEditorAvatar(profile) {
+  const section =
+    document.getElementById(
+      "targetEditorAvatarSection"
+    );
+
+  const image =
+    document.getElementById(
+      "targetEditorAvatarImage"
+    );
+
+  const zodiacEl =
+    document.getElementById(
+      "targetEditorAvatarZodiac"
+    );
+
+  const remove =
+    document.getElementById(
+      "targetEditorAvatarRemove"
+    );
+
+  if (
+    !section ||
+    !image ||
+    !zodiacEl
+  ) {
+    return;
+  }
+
+  /*
+   * Photo uniquement dans MODIFIER,
+   * pas nécessaire lors de l'ajout.
+   */
+  if (!profile?.profile_id) {
+    section.classList.add("hidden");
+    return;
+  }
+
+  section.classList.remove("hidden");
+
+  const zodiac =
+    zodiacFromDate(
+      profile?.birth_data?.date
+    );
+
+  zodiacEl.textContent =
+    zodiac?.symbol || "✦";
+
+  const stored =
+    targetAvatarStored(profile);
+
+  if (stored) {
+    image.src = stored;
+    image.classList.remove("hidden");
+    zodiacEl.classList.add("hidden");
+    remove?.classList.remove("hidden");
+  } else {
+    image.removeAttribute("src");
+    image.classList.add("hidden");
+    zodiacEl.classList.remove("hidden");
+    remove?.classList.add("hidden");
+  }
+}
+
+function refreshTargetUIAfterAvatarChange() {
+  if (
+    typeof renderTargetSelector ===
+      "function" &&
+    Array.isArray(
+      ASTROMATCH_TARGET_PROFILES
+    )
+  ) {
+    renderTargetSelector(
+      ASTROMATCH_TARGET_PROFILES,
+      ASTROMATCH_SELECTED_TARGET
+    );
+  }
+
+  updateTargetEditorAvatar(
+    ASTROMATCH_TARGET_EDITOR_PROFILE
+  );
+}
+
+
 function openTargetEditor(profile = null) {
   ASTROMATCH_TARGET_EDITOR_PROFILE = profile;
+
+  updateTargetEditorAvatar(profile);
 
   targetEditorElement("targetEditorId").value =
     profile?.profile_id || "";
@@ -8916,6 +9194,9 @@ async function deleteTargetProfile(profileId) {
 }
 
 function renderProfileCard(target, selectedTarget) {
+  const customTargetAvatar =
+    targetAvatarStored(target);
+
   const id =
     String(target?.profile_id || "");
 
@@ -8961,9 +9242,26 @@ function renderProfileCard(target, selectedTarget) {
       <div class="flex items-start gap-3">
 
         <div class="zodiac-art">
-          <span class="zodiac-symbol">
-            ${zodiac?.symbol || "✦"}
-          </span>
+          ${
+            customTargetAvatar
+              ? `
+                <img
+                  src="${customTargetAvatar}"
+                  alt=""
+                  class="
+                    absolute inset-0
+                    w-full h-full
+                    object-cover
+                    z-[3]
+                  "
+                >
+              `
+              : `
+                <span class="zodiac-symbol">
+                  ${zodiac?.symbol || "✦"}
+                </span>
+              `
+          }
         </div>
 
         <div class="min-w-0 flex-1">
@@ -10183,6 +10481,108 @@ window.addEventListener("DOMContentLoaded", function () {
   }
 
 })();
+</script>
+
+
+<script id="ASTROMATCH_TARGET_EDITOR_AVATAR_V1">
+document.addEventListener(
+  "DOMContentLoaded",
+  function () {
+
+    const button =
+      document.getElementById(
+        "targetEditorAvatarButton"
+      );
+
+    const input =
+      document.getElementById(
+        "targetEditorAvatarInput"
+      );
+
+    const remove =
+      document.getElementById(
+        "targetEditorAvatarRemove"
+      );
+
+    button?.addEventListener(
+      "click",
+      function () {
+        input?.click();
+      }
+    );
+
+    input?.addEventListener(
+      "change",
+      async function () {
+
+        const file =
+          input.files?.[0];
+
+        const profile =
+          ASTROMATCH_TARGET_EDITOR_PROFILE;
+
+        if (
+          !file ||
+          !profile?.profile_id
+        ) {
+          input.value = "";
+          return;
+        }
+
+        try {
+
+          /*
+           * Même recadrage carré
+           * que le profil principal.
+           */
+          const dataUrl =
+            await primaryPhotoToDataUrl(
+              file
+            );
+
+          targetAvatarSave(
+            profile,
+            dataUrl
+          );
+
+          refreshTargetUIAfterAvatarChange();
+
+        } catch (error) {
+
+          console.error(
+            "TARGET AVATAR ERROR",
+            error
+          );
+
+          alert(
+            "Impossible de charger cette photo."
+          );
+
+        } finally {
+          input.value = "";
+        }
+      }
+    );
+
+    remove?.addEventListener(
+      "click",
+      function () {
+
+        const profile =
+          ASTROMATCH_TARGET_EDITOR_PROFILE;
+
+        if (!profile?.profile_id) {
+          return;
+        }
+
+        targetAvatarRemove(profile);
+
+        refreshTargetUIAfterAvatarChange();
+      }
+    );
+
+  }
+);
 </script>
 
 </body>
