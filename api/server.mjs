@@ -6,9 +6,24 @@ import { computeSynastry } from "../js/synastry/synastry_engine.js";
 import { loadWeightingConfig, computeScore } from "../js/scoring/scoring_engine.js";
 import { buildInterpretation } from "../js/interpretation/interpretation_engine.js";
 import { buildMatchResult } from "../js/match/match_result_engine.js";
+import { computeDailyTransits } from "../js/daily/transit_engine.js";
+import { computeDailyScores } from "../js/daily/daily_scoring.js";
+import { buildDailyInterpretation } from "../js/daily/daily_interpretation.js";
 
 const PORT = 3000;
 const HOST = "127.0.0.1";
+
+function localDateInTimeZone(timeZone) {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone,
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).formatToParts(new Date());
+
+  const get = type => parts.find(part => part.type === type)?.value;
+  return `${get("year")}-${get("month")}-${get("day")}`;
+}
 
 function sendJson(res, status, data) {
   const body = JSON.stringify(data);
@@ -109,6 +124,93 @@ const server = http.createServer(async (req, res) => {
     } catch (error) {
       console.error(
         "AstroMatch Natal API error:",
+        error
+      );
+
+      return sendJson(res, 500, {
+        ok: false,
+        error: error?.message || String(error),
+        type: error?.type || "ASTROMATCH_ERROR"
+      });
+    }
+  }
+
+
+  // Daily horoscope / transits
+  if (req.method === "POST" && req.url === "/api/daily") {
+    try {
+      const input = await readBody(req);
+
+      if (!input.profile) {
+        return sendJson(res, 400, {
+          ok: false,
+          error: "PROFILE_REQUIRED"
+        });
+      }
+
+      console.log("API /api/daily — calcul...");
+
+      const profile = buildProfile(input.profile);
+      const chart = computeNatalChart(profile);
+
+      const timezoneId =
+        profile.birth_data.place.resolved.timezone_id;
+
+      const date =
+        input.date || localDateInTimeZone(timezoneId);
+
+      const transits =
+        computeDailyTransits(profile, chart, date);
+
+      const scoring =
+        computeDailyScores(transits);
+
+      const interpretation =
+        buildDailyInterpretation(transits, scoring);
+
+      const result = {
+        date,
+        profile: {
+          id: profile.profile_id,
+          name: profile.identity.first_name
+        },
+        reference_time_local:
+          transits.reference_time_local,
+        timezone_id:
+          transits.timezone_id,
+        provider:
+          transits.provider,
+        reliability:
+          transits.reliability,
+        scores:
+          scoring.scores,
+        dominant_domain:
+          scoring.dominant_domain,
+        interpretation,
+        main_influences:
+          scoring.contributions.slice(0, 5),
+        transits: {
+          planetary: transits.transits,
+          houses: transits.house_transits,
+          angles: transits.angle_transits
+        }
+      };
+
+      console.log(
+        "API /api/daily — OK:",
+        result.date,
+        result.profile.name,
+        result.dominant_domain
+      );
+
+      return sendJson(res, 200, {
+        ok: true,
+        result
+      });
+
+    } catch (error) {
+      console.error(
+        "AstroMatch Daily API error:",
         error
       );
 
