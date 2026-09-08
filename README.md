@@ -1,12 +1,12 @@
 # AstroMatch — Prototype (Kit complet)
 
-Moteur de compatibilité astrologique. Prototype local, sans framework,
-sans backend, sans base de données externe. JavaScript ES Modules pur.
+Application de compatibilité astrologique avec moteur astronomique réel,
+API locale Node.js et interface mobile. JavaScript ES Modules.
 
 ## Ce que fait ce kit
 
 - Créer un profil principal et plusieurs profils cibles.
-- Calculer un thème natal simulé (déterministe) pour chaque profil.
+- Calculer un thème natal à partir de positions astronomiques réelles pour chaque profil.
 - Comparer le principal à chaque cible (synastrie : aspects, overlays de
   maison, contacts d'angle).
 - Calculer un score par domaine (Amour, Passion, Communication, Émotions,
@@ -18,28 +18,21 @@ sans backend, sans base de données externe. JavaScript ES Modules pur.
 - Recalculer automatiquement toutes les cibles quand le profil principal
   change, sans jamais recalculer inutilement les thèmes des cibles.
 
-## Ce qui est SIMULÉ (à savoir avant de lire les résultats)
+## Éphémérides et limites actuelles
 
-- **Les positions planétaires** (`js/astrology/ephemeris/simulated_ephemeris.js`)
-  ne sont pas de vraies éphémérides astronomiques. Elles sont générées de
-  façon déterministe (un même profil donne toujours le même thème), mais
-  n'ont aucune valeur astrologique réelle. Le module est conçu comme un
-  adaptateur isolé, remplaçable plus tard par un vrai moteur (ex : Swiss
-  Ephemeris) sans toucher au reste de l'application.
-- **La résolution des lieux de naissance** (`js/profiles/profile_service.js`)
-  utilise un petit annuaire de villes codé en dur (Paris, Lyon, Marseille,
-  Montréal, Dakar, Tokyo) ou une saisie manuelle de latitude/longitude.
-  Aucun vrai service de géocodage n'est appelé.
-- **Le fuseau horaire** n'est pas résolu automatiquement pour une saisie
-  manuelle de coordonnées (`timezone_id` reste `null` dans ce cas).
-- **La couche IA** (`js/ai_layer/narrative_generator.js`) ne fait AUCUN
-  appel à un vrai modèle de langage : elle recompose un texte à partir
-  des données déjà calculées, de façon déterministe. C'est le point
-  d'entrée prévu pour brancher un vrai LLM plus tard.
+AstroMatch utilise **Astronomy Engine** comme provider d’éphémérides par défaut.
 
-Tout le reste (règles de scoring, formules mathématiques, logique de
-synastrie, orchestration, gestion des erreurs) est du code réel et
-fonctionnel, pas une démonstration.
+Les positions du Soleil, de la Lune et des planètes sont calculées à partir de vraies positions astronomiques. Le moteur fournit notamment les longitudes écliptiques, signes, degrés, rétrogradations, Ascendant, MC et maisons lorsque l’heure de naissance est connue.
+
+Le provider actif par défaut est :
+
+`astronomy-engine`
+
+Le fichier `js/astrology/ephemeris/simulated_ephemeris.js` existe toujours, mais il est conservé uniquement pour des tests déterministes/offline. Il n’est pas utilisé pour les calculs normaux de profils.
+
+La résolution des lieux reste encore limitée : `profile_service.js` utilise un petit annuaire local de villes ou des coordonnées manuelles. Aucun vrai service de géocodage n’est encore branché.
+
+La couche IA actuelle ne fait pas appel à un vrai LLM externe : les interprétations restent déterministes et auditables.
 
 ## Structure du projet
 
@@ -50,7 +43,7 @@ AstroMatch/
 ├── js/
 │   ├── utils/            → fonctions pures (math, id, validation)
 │   ├── profiles/         → création/validation/gestion des profils
-│   ├── astrology/        → thème natal (+ adaptateur ephemeris simulé)
+│   ├── astrology/        → thème natal + Astronomy Engine + provider simulé de test
 │   ├── synastry/         → comparaison de deux thèmes (aspects, overlays)
 │   ├── scoring/          → calcul du score V1.0 (+ config JSON externe)
 │   ├── interpretation/   → texte structuré à partir du score
@@ -63,7 +56,7 @@ AstroMatch/
 
 ## Lancer les tests (recommandé, y compris depuis un téléphone)
 
-Ce kit ne dépend d'aucun package externe : les tests utilisent le test
+AstroMatch dépend du package astronomy-engine pour les calculs astronomiques : les tests utilisent le test
 runner intégré à Node.js (`node:test`), disponible nativement à partir de
 Node 20.
 
@@ -97,8 +90,8 @@ npm test
    Termux après chaque modification.
 
 Aucun serveur, aucun navigateur n'est nécessaire pour valider que le
-moteur fonctionne correctement : les 39 tests couvrent le calcul du
-thème natal, la synastrie, le scoring et l'orchestration.
+moteur fonctionne correctement : les tests automatisés couvrent le thème natal, les éphémérides,
+la synastrie, le scoring et l'orchestration.
 
 ## Utiliser le moteur dans du code
 
@@ -140,24 +133,20 @@ updateProfile(primaryProfileId, { time: "08:00" });
 const updatedResults = await onPrimaryProfileChanged();
 ```
 
-## Ce qui n'est PAS encore dans ce kit
+## Ce qui reste à améliorer
 
-- Pas d'interface graphique (HTML/CSS) — ce kit est le moteur pur,
-  utilisable en Node ou importable dans une page web.
-- Pas de vraies éphémérides, pas de vrai géocodage, pas de vrai appel IA
-  (voir section "Ce qui est simulé" ci-dessus).
-- Pas de gestion de fuseaux horaires historiques (changements d'heure
-  d'été passés, etc.) — sujet identifié comme risque technique mais non
-  traité dans ce prototype.
+- Géocodage réel des lieux de naissance.
+- Résolution automatique du fuseau horaire depuis le lieu.
+- Horoscope quotidien basé sur les transits.
+- Éventuelle narration enrichie avec un vrai LLM.
+- Packaging et déploiement production.
 
-## Prochaines étapes suggérées
+## Prochaines étapes
 
-1. Ajouter une interface (formulaires + affichage des résultats).
-2. Remplacer `simulated_ephemeris.js` par un vrai calcul d'éphémérides.
-3. Brancher un vrai géocodeur dans `profile_service.js`.
-4. Brancher un vrai modèle de langage dans `narrative_generator.js`,
-   sans changer sa signature d'entrée/sortie.
-
+1. Ajouter le moteur de transits quotidiens.
+2. Brancher l’horoscope personnalisé sur l’accueil.
+3. Ajouter un vrai géocodeur.
+4. Préparer le déploiement production.
 
 ### Audit V1.0.2
 - Validation structurelle de `weighting_v1.json` avant calcul.
@@ -182,8 +171,13 @@ une succession de petits packages :
 - schéma du thème natal aligné avec ces métadonnées ;
 - couverture de tests portée à 35 tests automatisés.
 
-### Important
-Le moteur d'éphémérides reste volontairement simulé dans ce kit. Tant qu'un
-provider astronomique réel n'est pas branché, les positions planétaires,
-l'Ascendant et les maisons ne doivent pas être présentés à l'utilisateur
-comme des calculs astrologiques réels.
+### Important — état actuel
+
+L’ancienne note indiquant que le moteur était simulé est obsolète.
+
+AstroMatch utilise désormais `astronomy-engine` par défaut avec :
+
+- `production_ready: true`
+- `real_astronomical_positions: true`
+
+Le provider `simulated` reste disponible uniquement pour les tests.
