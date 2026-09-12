@@ -1,6 +1,7 @@
 import http from "node:http";
 
 import { buildProfile } from "../js/profiles/profile_service.js";
+import { geocodePlace } from "../js/location/geocoding_service.js";
 import { computeNatalChart } from "../js/astrology/natal_chart_engine.js";
 import { computeSynastry } from "../js/synastry/synastry_engine.js";
 import { loadWeightingConfig, computeScore } from "../js/scoring/scoring_engine.js";
@@ -135,6 +136,52 @@ const server = http.createServer(async (req, res) => {
     }
   }
 
+
+  // Geocoding
+  if (req.method === "POST" && req.url === "/api/geocode") {
+    try {
+      const input = await readBody(req);
+      const query = String(input.query || input.place || "").trim();
+
+      if (query.length < 2) {
+        return sendJson(res, 400, {
+          ok: false,
+          error: "QUERY_REQUIRED"
+        });
+      }
+
+      console.log("API /api/geocode — recherche:", query);
+
+      const result = await geocodePlace(query);
+
+      if (!result || result.resolution_status !== "resolved") {
+        return sendJson(res, 404, {
+          ok: false,
+          error: "PLACE_NOT_FOUND"
+        });
+      }
+
+      console.log(
+        "API /api/geocode — OK:",
+        result.display_name,
+        result.timezone_id
+      );
+
+      return sendJson(res, 200, {
+        ok: true,
+        result
+      });
+
+    } catch (error) {
+      console.error("AstroMatch Geocode API error:", error);
+
+      return sendJson(res, 500, {
+        ok: false,
+        error: error?.message || String(error),
+        type: error?.type || "GEOCODING_ERROR"
+      });
+    }
+  }
 
   // Daily horoscope / transits
   if (req.method === "POST" && req.url === "/api/daily") {

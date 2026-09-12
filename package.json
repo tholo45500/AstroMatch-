@@ -14,6 +14,7 @@
     "node": ">=20.10.0"
   },
   "dependencies": {
-    "astronomy-engine": "2.1.19"
+    "astronomy-engine": "2.1.19",
+    "geo-tz": "^8.1.8"
   }
 }
