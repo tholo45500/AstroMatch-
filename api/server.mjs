@@ -1,7 +1,7 @@
 import http from "node:http";
 
 import { buildProfile } from "../js/profiles/profile_service.js";
-import { geocodePlace } from "../js/location/geocoding_service.js";
+import { geocodePlace, searchPlaces } from "../js/location/geocoding_service.js";
 import { computeNatalChart } from "../js/astrology/natal_chart_engine.js";
 import { computeSynastry } from "../js/synastry/synastry_engine.js";
 import { loadWeightingConfig, computeScore } from "../js/scoring/scoring_engine.js";
@@ -136,6 +136,37 @@ const server = http.createServer(async (req, res) => {
     }
   }
 
+
+  // Geocoding search (ambiguous places)
+  if (req.method === "POST" && req.url === "/api/geocode/search") {
+    try {
+      const input = await readBody(req);
+      const query = String(input.query || input.place || "").trim();
+
+      if (query.length < 2) {
+        return sendJson(res, 400, {
+          ok: false,
+          error: "QUERY_REQUIRED"
+        });
+      }
+
+      const results = await searchPlaces(query, { limit: 3 });
+
+      return sendJson(res, 200, {
+        ok: true,
+        results
+      });
+
+    } catch (error) {
+      console.error("AstroMatch Geocode Search API error:", error);
+
+      return sendJson(res, 500, {
+        ok: false,
+        error: error?.message || String(error),
+        type: error?.type || "GEOCODING_ERROR"
+      });
+    }
+  }
 
   // Geocoding
   if (req.method === "POST" && req.url === "/api/geocode") {

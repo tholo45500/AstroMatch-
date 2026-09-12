@@ -9206,11 +9206,18 @@ async function savePrimaryEditor() {
         ?.resolved?.resolution_status
         !== "resolved";
 
-    if (place !== oldPlace || unresolved) {
+    const needsCanonicalPlace =
+      !oldPlace.includes(",");
+
+    if (
+      place !== oldPlace ||
+      unresolved ||
+      needsCanonicalPlace
+    ) {
       const geo =
         await resolveTargetBirthPlace(place);
 
-      patch.place = place;
+      patch.place = canonicalBirthPlaceLabel(geo, place);
       patch.latitude = geo.latitude;
       patch.longitude = geo.longitude;
       patch.timezone_id = geo.timezone_id;
@@ -9448,6 +9455,152 @@ function openTargetEditor(profile = null) {
 }
 
 
+function canonicalBirthPlaceLabel(geo, fallback = "") {
+  const parts = [
+    geo?.name,
+    geo?.state,
+    geo?.country
+  ]
+    .map(value => String(value || "").trim())
+    .filter(Boolean)
+    .filter((value, index, array) =>
+      array.findIndex(
+        other => other.toLowerCase() === value.toLowerCase()
+      ) === index
+    );
+
+  if (parts.length >= 2) {
+    return parts.join(", ");
+  }
+
+  const display = String(geo?.display_name || "").trim();
+
+  if (display) {
+    const displayParts = display
+      .split(",")
+      .map(value => value.trim())
+      .filter(Boolean);
+
+    if (displayParts.length >= 2) {
+      return [
+        displayParts[0],
+        displayParts[displayParts.length - 1]
+      ].join(", ");
+    }
+  }
+
+  return String(fallback || "").trim();
+}
+
+
+function chooseBirthPlace(results, query) {
+  return new Promise(resolve => {
+    const old = document.getElementById("astromatchPlaceChooser");
+    old?.remove();
+
+    const overlay = document.createElement("div");
+    overlay.id = "astromatchPlaceChooser";
+    overlay.style.cssText = [
+      "position:fixed","inset:0","z-index:99999",
+      "background:rgba(2,6,23,.82)","backdrop-filter:blur(10px)",
+      "display:flex","align-items:flex-end","justify-content:center",
+      "padding:16px"
+    ].join(";");
+
+    const panel = document.createElement("div");
+    panel.style.cssText = [
+      "width:min(520px,100%)","max-height:78vh","overflow:auto",
+      "border-radius:24px","padding:18px",
+      "background:linear-gradient(180deg,#151a34,#0f172a)",
+      "border:1px solid rgba(196,181,253,.24)",
+      "box-shadow:0 24px 70px rgba(0,0,0,.55)",
+      "color:white"
+    ].join(";");
+
+    const title = document.createElement("div");
+    title.innerHTML =
+      '<div style="font-size:18px;font-weight:900">📍 Quel lieu ?</div>' +
+      '<div style="margin-top:5px;color:#94a3b8;font-size:13px">' +
+      'Plusieurs lieux correspondent à <strong style="color:#e2e8f0"></strong>.</div>';
+    title.querySelector("strong").textContent = query;
+    panel.appendChild(title);
+
+    const list = document.createElement("div");
+    list.style.cssText = "display:grid;gap:10px;margin-top:16px";
+
+    for (const place of results) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.style.cssText = [
+        "width:100%","text-align:left","padding:14px",
+        "border-radius:16px","border:1px solid rgba(148,163,184,.16)",
+        "background:rgba(255,255,255,.055)","color:white"
+      ].join(";");
+
+      const parts = [place.name, place.state, place.country]
+        .filter(Boolean);
+
+      button.innerHTML =
+        '<div style="font-weight:850;font-size:14px"></div>' +
+        '<div style="margin-top:4px;color:#94a3b8;font-size:12px"></div>';
+
+      button.children[0].textContent = parts.join(" · ");
+      button.children[1].textContent = place.display_name || "";
+
+      button.addEventListener("click", () => {
+        overlay.remove();
+        resolve(place);
+      });
+
+      list.appendChild(button);
+    }
+
+    const cancel = document.createElement("button");
+    cancel.type = "button";
+    cancel.textContent = "Annuler";
+    cancel.style.cssText = [
+      "width:100%","margin-top:12px","padding:12px",
+      "border-radius:14px","border:0",
+      "background:rgba(148,163,184,.10)",
+      "color:#cbd5e1","font-weight:800"
+    ].join(";");
+
+    cancel.addEventListener("click", () => {
+      overlay.remove();
+      resolve(null);
+    });
+
+    overlay.addEventListener("click", event => {
+      if (event.target === overlay) {
+        overlay.remove();
+        resolve(null);
+      }
+    });
+
+    panel.appendChild(list);
+    panel.appendChild(cancel);
+    overlay.appendChild(panel);
+    document.body.appendChild(overlay);
+  });
+}
+
+function dedupeBirthPlaces(results) {
+  const seen = new Set();
+
+  return results.filter(place => {
+    const key = [
+      String(place?.name || "").toLowerCase(),
+      String(place?.state || "").toLowerCase(),
+      String(place?.country || "").toLowerCase(),
+      String(place?.timezone_id || "").toLowerCase()
+    ].join("|");
+
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
 async function resolveTargetBirthPlace(place) {
   const query = String(place || "").trim();
 
@@ -9456,7 +9609,7 @@ async function resolveTargetBirthPlace(place) {
   }
 
   const response = await fetch(
-    "http://127.0.0.1:3000/api/geocode",
+    "http://127.0.0.1:3000/api/geocode/search",
     {
       method: "POST",
       headers: {
@@ -9470,14 +9623,36 @@ async function resolveTargetBirthPlace(place) {
 
   const payload = await response.json();
 
-  if (!response.ok || !payload?.ok || !payload?.result) {
+  if (!response.ok || !payload?.ok) {
     throw new Error(
       payload?.error ||
       `Lieu introuvable : ${query}`
     );
   }
 
-  const geo = payload.result;
+  const places = dedupeBirthPlaces(
+    Array.isArray(payload.results)
+      ? payload.results
+      : []
+  );
+
+  if (places.length === 0) {
+    throw new Error(
+      `Lieu introuvable : ${query}`
+    );
+  }
+
+  const geo =
+    places.length === 1
+      ? places[0]
+      : await chooseBirthPlace(
+          places.slice(0, 3),
+          query
+        );
+
+  if (!geo) {
+    throw new Error("Choix du lieu annulé.");
+  }
 
   if (
     !Number.isFinite(Number(geo.latitude)) ||
@@ -9490,6 +9665,10 @@ async function resolveTargetBirthPlace(place) {
   }
 
   return {
+    name: geo.name || "",
+    state: geo.state || "",
+    country: geo.country || "",
+    country_code: geo.country_code || "",
     latitude: Number(geo.latitude),
     longitude: Number(geo.longitude),
     timezone_id: String(geo.timezone_id),
@@ -9551,10 +9730,19 @@ async function saveTargetEditor() {
       const unresolved =
         existing?.birth_data?.place?.resolved?.resolution_status !== "resolved";
 
-      if (placeChanged || unresolved) {
+      const needsCanonicalPlace =
+        !String(
+          existing?.birth_data?.place?.raw_input || ""
+        ).includes(",");
+
+      if (
+        placeChanged ||
+        unresolved ||
+        needsCanonicalPlace
+      ) {
         const geo = await resolveTargetBirthPlace(place);
 
-        patch.place = place;
+        patch.place = canonicalBirthPlaceLabel(geo, place);
         patch.latitude = geo.latitude;
         patch.longitude = geo.longitude;
         patch.timezone_id = geo.timezone_id;
@@ -9573,7 +9761,7 @@ async function saveTargetEditor() {
       const createdProfile = service.createProfile({
         ...common,
         role: "target",
-        place,
+        place: canonicalBirthPlaceLabel(geo, place),
         latitude: geo.latitude,
         longitude: geo.longitude,
         timezone_id: geo.timezone_id,
