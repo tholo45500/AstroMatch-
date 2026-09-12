@@ -13814,5 +13814,510 @@ document.addEventListener(
 })();
 </script>
 
+
+<style id="ASTROMATCH_DAILY_HOME_V1">
+.astromatch-daily-grid {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:9px;
+  margin-top:14px;
+}
+
+.astromatch-daily-card {
+  min-width:0;
+  padding:12px 10px;
+  border-radius:17px;
+  border:1px solid rgba(255,255,255,.09);
+  background:rgba(2,6,23,.34);
+}
+
+.astromatch-daily-card-top {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:6px;
+}
+
+.astromatch-daily-name {
+  color:#cbd5e1;
+  font-size:11px;
+  font-weight:850;
+}
+
+.astromatch-daily-score {
+  color:#fff;
+  font-size:21px;
+  line-height:1;
+  font-weight:950;
+  letter-spacing:-.04em;
+}
+
+.astromatch-daily-bar {
+  height:6px;
+  margin-top:9px;
+  overflow:hidden;
+  border-radius:999px;
+  background:rgba(255,255,255,.07);
+}
+
+.astromatch-daily-bar > span {
+  display:block;
+  height:100%;
+  border-radius:inherit;
+  background:linear-gradient(90deg,#8b5cf6,#38bdf8);
+}
+
+.astromatch-daily-label {
+  margin-top:7px;
+  color:#94a3b8;
+  font-size:9.5px;
+  font-weight:750;
+}
+
+.astromatch-daily-summary {
+  margin-top:14px;
+  color:#cbd5e1;
+  font-size:12.5px;
+  line-height:1.55;
+}
+
+.astromatch-daily-why {
+  margin-top:13px;
+  padding-top:12px;
+  border-top:1px solid rgba(255,255,255,.07);
+}
+
+.astromatch-daily-why-title {
+  margin-bottom:8px;
+  color:#f8fafc;
+  font-size:11px;
+  font-weight:900;
+}
+
+.astromatch-daily-influence {
+  display:flex;
+  align-items:flex-start;
+  gap:8px;
+  padding:7px 0;
+  color:#cbd5e1;
+  font-size:11px;
+  line-height:1.42;
+}
+
+.astromatch-daily-influence + .astromatch-daily-influence {
+  border-top:1px solid rgba(255,255,255,.045);
+}
+
+.astromatch-daily-influence-icon {
+  flex:0 0 auto;
+  font-size:13px;
+}
+
+.astromatch-daily-date {
+  margin-top:11px;
+  color:#64748b;
+  font-size:9.5px;
+  text-align:right;
+}
+
+.astromatch-daily-loading,
+.astromatch-daily-error {
+  margin-top:14px;
+  padding:13px;
+  border-radius:15px;
+  border:1px solid rgba(255,255,255,.07);
+  background:rgba(2,6,23,.28);
+  color:#94a3b8;
+  font-size:12px;
+  line-height:1.45;
+}
+
+.astromatch-daily-error {
+  border-color:rgba(251,113,133,.18);
+}
+
+@media (max-width:420px) {
+  .astromatch-daily-grid {
+    gap:7px;
+  }
+
+  .astromatch-daily-card {
+    padding:11px 8px;
+  }
+
+  .astromatch-daily-name {
+    font-size:10px;
+  }
+
+  .astromatch-daily-score {
+    font-size:19px;
+  }
+}
+</style>
+
+<script id="ASTROMATCH_DAILY_HOME_V1_SCRIPT">
+(() => {
+  const API_URL = "http://127.0.0.1:3000/api/daily";
+  const requests = new Map();
+  let scheduled = false;
+
+  function esc(value) {
+    return String(value ?? "")
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
+  function profileTimezone(profile) {
+    return profile?.birth_data?.place?.resolved?.timezone_id ||
+      Intl.DateTimeFormat().resolvedOptions().timeZone ||
+      "Europe/Paris";
+  }
+
+  function dateInTimezone(timeZone) {
+    const parts = new Intl.DateTimeFormat("en-CA", {
+      timeZone,
+      year:"numeric",
+      month:"2-digit",
+      day:"2-digit"
+    }).formatToParts(new Date());
+
+    const get = type =>
+      parts.find(part => part.type === type)?.value;
+
+    return `${get("year")}-${get("month")}-${get("day")}`;
+  }
+
+  function prettyDate(date) {
+    try {
+      return new Intl.DateTimeFormat("fr-FR", {
+        day:"numeric",
+        month:"long",
+        year:"numeric"
+      }).format(new Date(`${date}T12:00:00`));
+    } catch {
+      return date;
+    }
+  }
+
+  function scoreCard(icon, name, data) {
+    const score = Math.max(
+      0,
+      Math.min(100, Number(data?.score) || 50)
+    );
+
+    const label =
+      data?.label ||
+      (
+        score >= 68 ? "Très favorable" :
+        score >= 56 ? "Favorable" :
+        score <= 32 ? "Plus sensible" :
+        score <= 44 ? "À nuancer" :
+        "Équilibré"
+      );
+
+    return `
+      <div class="astromatch-daily-card">
+        <div class="astromatch-daily-card-top">
+          <div class="astromatch-daily-name">
+            ${icon} ${esc(name)}
+          </div>
+          <div class="astromatch-daily-score">
+            ${Math.round(score)}
+          </div>
+        </div>
+
+        <div class="astromatch-daily-bar">
+          <span style="width:${score}%"></span>
+        </div>
+
+        <div class="astromatch-daily-label">
+          ${esc(label)}
+        </div>
+      </div>
+    `;
+  }
+
+  function uniqueWhy(list) {
+    const seen = new Set();
+
+    return (Array.isArray(list) ? list : [])
+      .filter(item => {
+        const key = [
+          item?.transiting_body,
+          item?.natal_body,
+          item?.aspect_type,
+          item?.house_number,
+          item?.label
+        ].join("|");
+
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      })
+      .slice(0,3);
+  }
+
+  function renderLoading(section, phrase) {
+    if (phrase) {
+      phrase.textContent =
+        "Calcul de ton ciel du jour…";
+    }
+
+    section.innerHTML = `
+      <div class="astro-home-title-row">
+        <div>
+          <h2>⭐ Ton horoscope du jour</h2>
+          <p>Lecture personnalisée à partir de ton thème natal.</p>
+        </div>
+      </div>
+
+      <div class="astromatch-daily-loading">
+        ✨ Calcul de tes transits du jour…
+      </div>
+    `;
+  }
+
+  function renderError(section, phrase) {
+    if (phrase) {
+      phrase.textContent =
+        "Ton éclairage du jour sera disponible dès que le moteur astrologique sera accessible.";
+    }
+
+    section.innerHTML = `
+      <div class="astro-home-title-row">
+        <div>
+          <h2>⭐ Ton horoscope du jour</h2>
+          <p>Lecture personnalisée à partir de ton thème natal.</p>
+        </div>
+      </div>
+
+      <div class="astromatch-daily-error">
+        Horoscope du jour indisponible pour le moment.
+      </div>
+    `;
+  }
+
+  function renderResult(section, phrase, result) {
+    const interpretation = result?.interpretation || {};
+    const domains = interpretation?.domains || {};
+    const scores = result?.scores || {};
+
+    const heart = {
+      ...(scores.heart || {}),
+      ...(domains.heart || {})
+    };
+
+    const communication = {
+      ...(scores.communication || {}),
+      ...(domains.communication || {})
+    };
+
+    const energy = {
+      ...(scores.energy || {}),
+      ...(domains.energy || {})
+    };
+
+    if (phrase && interpretation.phrase) {
+      phrase.textContent = interpretation.phrase;
+    }
+
+    const why = uniqueWhy(interpretation.why_today);
+
+    section.innerHTML = `
+      <div class="astro-home-title-row">
+        <div>
+          <h2>⭐ Ton horoscope du jour</h2>
+          <p>Lecture personnalisée de tes transits.</p>
+        </div>
+      </div>
+
+      <div class="astromatch-daily-grid">
+        ${scoreCard("❤️","Cœur",heart)}
+        ${scoreCard("💬","Échanges",communication)}
+        ${scoreCard("⚡","Énergie",energy)}
+      </div>
+
+      <div class="astromatch-daily-summary">
+        ${esc(interpretation.summary || "")}
+      </div>
+
+      ${
+        why.length
+          ? `
+            <div class="astromatch-daily-why">
+              <div class="astromatch-daily-why-title">
+                Pourquoi aujourd’hui ?
+              </div>
+
+              ${why.map(item => `
+                <div class="astromatch-daily-influence">
+                  <span class="astromatch-daily-influence-icon">
+                    ${item?.impact === "tense" ? "⚡" : "✨"}
+                  </span>
+                  <span>
+                    ${esc(item?.text || item?.label || "")}
+                  </span>
+                </div>
+              `).join("")}
+            </div>
+          `
+          : ""
+      }
+
+      <div class="astromatch-daily-date">
+        Ciel du ${esc(prettyDate(result.date))}
+      </div>
+    `;
+  }
+
+  async function loadDaily(profile, date) {
+    const input = profileToApiInput(profile);
+    const key = `${date}|${JSON.stringify(input)}`;
+
+    if (!requests.has(key)) {
+      const request = fetch(API_URL, {
+        method:"POST",
+        headers:{
+          "Content-Type":"application/json"
+        },
+        body:JSON.stringify({
+          date,
+          profile:input
+        })
+      })
+        .then(async response => {
+          const payload = await response.json();
+
+          if (!response.ok || !payload?.ok) {
+            throw new Error(
+              payload?.error ||
+              `DAILY_HTTP_${response.status}`
+            );
+          }
+
+          return payload.result;
+        })
+        .catch(error => {
+          requests.delete(key);
+          throw error;
+        });
+
+      requests.set(key, request);
+    }
+
+    return {
+      key,
+      result: await requests.get(key)
+    };
+  }
+
+  async function hydrate() {
+    const section =
+      document.querySelector(".astro-home-horoscope");
+
+    const phrase =
+      document.querySelector(".astro-home-day-phrase");
+
+    if (!section) return;
+
+    const profile =
+      typeof ASTROMATCH_PRIMARY_PROFILE !== "undefined"
+        ? ASTROMATCH_PRIMARY_PROFILE
+        : null;
+
+    if (!profile) {
+      renderError(section, phrase);
+      return;
+    }
+
+    const timezone = profileTimezone(profile);
+    const date = dateInTimezone(timezone);
+
+    let input;
+    try {
+      input = profileToApiInput(profile);
+    } catch {
+      renderError(section, phrase);
+      return;
+    }
+
+    const key = `${date}|${JSON.stringify(input)}`;
+
+    if (
+      section.dataset.astromatchDailyKey === key &&
+      (
+        section.dataset.astromatchDailyState === "loading" ||
+        section.dataset.astromatchDailyState === "loaded"
+      )
+    ) {
+      return;
+    }
+
+    section.dataset.astromatchDailyKey = key;
+    section.dataset.astromatchDailyState = "loading";
+    renderLoading(section, phrase);
+
+    try {
+      const loaded = await loadDaily(profile, date);
+
+      if (!document.body.contains(section)) return;
+
+      section.dataset.astromatchDailyKey = loaded.key;
+      section.dataset.astromatchDailyState = "loaded";
+
+      renderResult(
+        section,
+        phrase,
+        loaded.result
+      );
+    } catch (error) {
+      console.error(
+        "AstroMatch daily home:",
+        error
+      );
+
+      if (!document.body.contains(section)) return;
+
+      section.dataset.astromatchDailyState = "error";
+      renderError(section, phrase);
+    }
+  }
+
+  function scheduleHydrate() {
+    if (scheduled) return;
+    scheduled = true;
+
+    queueMicrotask(() => {
+      scheduled = false;
+      hydrate();
+    });
+  }
+
+  const observer =
+    new MutationObserver(scheduleHydrate);
+
+  observer.observe(
+    document.body,
+    {
+      childList:true,
+      subtree:true
+    }
+  );
+
+  if (document.readyState === "loading") {
+    document.addEventListener(
+      "DOMContentLoaded",
+      scheduleHydrate,
+      { once:true }
+    );
+  } else {
+    scheduleHydrate();
+  }
+})();
+</script>
+
 </body>
 </html>
