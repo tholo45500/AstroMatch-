@@ -9449,29 +9449,51 @@ function openTargetEditor(profile = null) {
 
 
 async function resolveTargetBirthPlace(place) {
-  const url = new URL("https://geocoding-api.open-meteo.com/v1/search");
+  const query = String(place || "").trim();
 
-  url.searchParams.set("name", place);
-  url.searchParams.set("count", "1");
-  url.searchParams.set("language", "fr");
-  url.searchParams.set("format", "json");
-
-  const response = await fetch(url);
-  if (!response.ok) {
-    throw new Error("Impossible de résoudre le lieu de naissance.");
+  if (!query) {
+    throw new Error("Indique un lieu de naissance.");
   }
 
-  const data = await response.json();
-  const result = data?.results?.[0];
+  const response = await fetch(
+    "http://127.0.0.1:3000/api/geocode",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        query
+      })
+    }
+  );
 
-  if (!result || !result.timezone) {
-    throw new Error(`Lieu introuvable : ${place}`);
+  const payload = await response.json();
+
+  if (!response.ok || !payload?.ok || !payload?.result) {
+    throw new Error(
+      payload?.error ||
+      `Lieu introuvable : ${query}`
+    );
+  }
+
+  const geo = payload.result;
+
+  if (
+    !Number.isFinite(Number(geo.latitude)) ||
+    !Number.isFinite(Number(geo.longitude)) ||
+    !geo.timezone_id
+  ) {
+    throw new Error(
+      `Lieu incomplet : ${query}`
+    );
   }
 
   return {
-    latitude: Number(result.latitude),
-    longitude: Number(result.longitude),
-    timezone_id: String(result.timezone)
+    latitude: Number(geo.latitude),
+    longitude: Number(geo.longitude),
+    timezone_id: String(geo.timezone_id),
+    display_name: geo.display_name || query
   };
 }
 
