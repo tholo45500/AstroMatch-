@@ -9604,6 +9604,25 @@ function dedupeBirthPlaces(results) {
 async function resolveTargetBirthPlace(place) {
   const query = String(place || "").trim();
 
+  const pickedSuggestion =
+    typeof window !== "undefined" &&
+    typeof window.astromatchSelectedBirthPlace === "function"
+      ? window.astromatchSelectedBirthPlace(query)
+      : null;
+
+  if (pickedSuggestion) {
+    return {
+      name: pickedSuggestion.name || "",
+      state: pickedSuggestion.state || "",
+      country: pickedSuggestion.country || "",
+      country_code: pickedSuggestion.country_code || "",
+      latitude: Number(pickedSuggestion.latitude),
+      longitude: Number(pickedSuggestion.longitude),
+      timezone_id: String(pickedSuggestion.timezone_id),
+      display_name: pickedSuggestion.display_name || query
+    };
+  }
+
   if (!query) {
     throw new Error("Indique un lieu de naissance.");
   }
@@ -14525,6 +14544,241 @@ document.addEventListener(
     );
   } else {
     scheduleHydrate();
+  }
+})();
+</script>
+
+
+<script id="ASTROMATCH_PLACE_AUTOCOMPLETE_V1">
+(() => {
+  const API = "http://127.0.0.1:3000/api/geocode/search";
+  const selected = new Map();
+
+  function clean(value) {
+    return String(value || "").trim();
+  }
+
+  function canonical(place, fallback = "") {
+    const parts = [place?.name, place?.state, place?.country]
+      .map(clean)
+      .filter(Boolean)
+      .filter((value, index, array) =>
+        array.findIndex(other =>
+          other.toLowerCase() === value.toLowerCase()
+        ) === index
+      );
+
+    return parts.length >= 2
+      ? parts.join(", ")
+      : clean(place?.display_name || fallback);
+  }
+
+  function dedupe(results) {
+    const seen = new Set();
+
+    return (Array.isArray(results) ? results : []).filter(place => {
+      const key = [
+        place?.name,
+        place?.state,
+        place?.country,
+        place?.timezone_id
+      ].map(value => clean(value).toLowerCase()).join("|");
+
+      if (!key || seen.has(key)) return false;
+
+      if (
+        !Number.isFinite(Number(place?.latitude)) ||
+        !Number.isFinite(Number(place?.longitude)) ||
+        !place?.timezone_id
+      ) {
+        return false;
+      }
+
+      seen.add(key);
+      return true;
+    });
+  }
+
+  window.astromatchSelectedBirthPlace = query =>
+    selected.get(clean(query)) || null;
+
+  function install(inputId) {
+    const input = document.getElementById(inputId);
+
+    if (!input || input.dataset.placeAutocomplete === "1") return;
+
+    input.dataset.placeAutocomplete = "1";
+    input.autocomplete = "off";
+    input.spellcheck = false;
+
+    const host = input.parentElement;
+    host.style.position = "relative";
+
+    const box = document.createElement("div");
+    box.hidden = true;
+    box.style.cssText = [
+      "position:absolute",
+      "left:0",
+      "right:0",
+      "top:calc(100% + 7px)",
+      "z-index:100000",
+      "overflow:hidden",
+      "border-radius:16px",
+      "border:1px solid rgba(167,139,250,.24)",
+      "background:rgba(10,15,35,.98)",
+      "box-shadow:0 18px 45px rgba(0,0,0,.45)",
+      "backdrop-filter:blur(14px)"
+    ].join(";");
+
+    input.insertAdjacentElement("afterend", box);
+
+    let timer = 0;
+    let controller = null;
+    let selectedKey = "";
+
+    function hide() {
+      box.hidden = true;
+      box.replaceChildren();
+    }
+
+    function render(places, query) {
+      box.replaceChildren();
+
+      if (!places.length) {
+        hide();
+        return;
+      }
+
+      for (const place of places.slice(0, 4)) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.style.cssText = [
+          "display:block",
+          "width:100%",
+          "padding:12px 13px",
+          "text-align:left",
+          "border:0",
+          "border-bottom:1px solid rgba(255,255,255,.06)",
+          "background:transparent",
+          "color:#fff"
+        ].join(";");
+
+        const title = document.createElement("div");
+        title.style.cssText =
+          "font-size:13px;font-weight:850;line-height:1.25";
+
+        title.textContent = [place.name, place.state, place.country]
+          .filter(Boolean)
+          .join(" · ");
+
+        const detail = document.createElement("div");
+        detail.style.cssText =
+          "margin-top:3px;color:#94a3b8;font-size:11px;line-height:1.25";
+
+        detail.textContent = place.display_name || "";
+
+        button.append(title, detail);
+
+        button.addEventListener("pointerdown", event => {
+          event.preventDefault();
+
+          const label = canonical(place, query);
+
+          if (selectedKey) selected.delete(selectedKey);
+
+          input.value = label;
+          selected.set(label, place);
+          selectedKey = label;
+
+          hide();
+
+          input.dispatchEvent(
+            new Event("change", { bubbles: true })
+          );
+        });
+
+        box.appendChild(button);
+      }
+
+      box.hidden = false;
+    }
+
+    input.addEventListener("input", () => {
+      const query = clean(input.value);
+
+      if (selectedKey && query !== selectedKey) {
+        selected.delete(selectedKey);
+        selectedKey = "";
+      }
+
+      clearTimeout(timer);
+      controller?.abort();
+
+      if (query.length < 3) {
+        hide();
+        return;
+      }
+
+      timer = setTimeout(async () => {
+        controller = new AbortController();
+
+        try {
+          const response = await fetch(API, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              query,
+              limit: 5
+            }),
+            signal: controller.signal
+          });
+
+          const payload = await response.json();
+
+          if (!response.ok || !payload?.ok) {
+            hide();
+            return;
+          }
+
+          if (clean(input.value) !== query) return;
+
+          render(
+            dedupe(payload.results),
+            query
+          );
+        } catch (error) {
+          if (error?.name !== "AbortError") {
+            hide();
+          }
+        }
+      }, 900);
+    });
+
+    input.addEventListener("keydown", event => {
+      if (event.key === "Escape") hide();
+    });
+
+    document.addEventListener("pointerdown", event => {
+      if (
+        event.target !== input &&
+        !box.contains(event.target)
+      ) {
+        hide();
+      }
+    });
+  }
+
+  function boot() {
+    install("primaryEditorPlace");
+    install("targetEditorPlace");
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", boot, { once: true });
+  } else {
+    boot();
   }
 })();
 </script>
