@@ -3,9 +3,31 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <script>
-    location.replace("./match_result.html");
-  </script>
+  <title>AstroMatch</title>
 </head>
-<body></body>
+<body>
+<script>
+(() => {
+  try {
+    const raw =
+      localStorage.getItem("astromatch:profiles");
+
+    const profiles =
+      raw ? JSON.parse(raw) : [];
+
+    const hasProfile =
+      Array.isArray(profiles) &&
+      profiles.length > 0;
+
+    location.replace(
+      hasProfile
+        ? "./match_result.html"
+        : "./profile_setup.html"
+    );
+  } catch {
+    location.replace("./profile_setup.html");
+  }
+})();
+</script>
+</body>
 </html>
