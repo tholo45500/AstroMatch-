@@ -14960,5 +14960,246 @@ document.addEventListener(
 })();
 </script>
 
+
+<!-- ASTROMATCH_NAV_POINT2_START -->
+
+<style id="ASTROMATCH_NAV_POINT2_STYLE">
+body {
+  padding-bottom: 105px !important;
+}
+
+/* Le thème astral possède son propre scroll :
+   on réserve donc aussi la place de la navigation dedans. */
+#natalProfileView > div {
+  padding-bottom: 125px !important;
+}
+
+#astromatchMainNav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transform: none;
+  z-index: 999;
+
+  width: 100%;
+  max-width: none;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+
+  padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
+
+  border-top: 1px solid rgba(255,255,255,.12);
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 0;
+  border-radius: 20px 20px 0 0;
+
+  background: rgba(9, 14, 32, .98);
+  backdrop-filter: blur(18px);
+
+  box-shadow: 0 16px 45px rgba(0,0,0,.45);
+}
+
+.astromatch-main-nav-button {
+  min-height: 58px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 3px;
+
+  border: 0;
+  border-radius: 18px;
+
+  background: transparent;
+  color: #94a3b8;
+
+  font: inherit;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.astromatch-main-nav-button .nav-icon {
+  font-size: 21px;
+  line-height: 1;
+}
+
+.astromatch-main-nav-button.active {
+  color: white;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(124,58,237,.36),
+      rgba(168,85,247,.18)
+    );
+}
+</style>
+
+<nav
+  id="astromatchMainNav"
+  aria-label="Navigation principale"
+>
+  <button
+    type="button"
+    class="astromatch-main-nav-button active"
+    data-main-tab="today"
+  >
+    <span class="nav-icon">☀️</span>
+    <span>Aujourd’hui</span>
+  </button>
+
+  <button
+    type="button"
+    class="astromatch-main-nav-button"
+    data-main-tab="relations"
+  >
+    <span class="nav-icon">❤️</span>
+    <span>Relations</span>
+  </button>
+
+  <button
+    type="button"
+    class="astromatch-main-nav-button"
+    data-main-tab="me"
+  >
+    <span class="nav-icon">👤</span>
+    <span>Moi</span>
+  </button>
+</nav>
+
+<script id="ASTROMATCH_NAV_POINT2_SCRIPT">
+(() => {
+  document
+    .querySelectorAll("[data-main-tab]")
+    .forEach(button => {
+      button.addEventListener("click", () => {
+        document
+          .querySelectorAll("[data-main-tab]")
+          .forEach(item =>
+            item.classList.toggle(
+              "active",
+              item === button
+            )
+          );
+
+        if (button.dataset.mainTab === "today") {
+
+          if (
+            typeof closeNatalProfile ===
+            "function"
+          ) {
+            closeNatalProfile();
+          }
+
+          document
+            .getElementById("astromatchHeaderLogo")
+            ?.click();
+        }
+
+        if (button.dataset.mainTab === "me") {
+          if (
+            typeof openNatalProfile ===
+            "function"
+          ) {
+            openNatalProfile();
+          } else {
+            document
+              .getElementById("openNatalProfile")
+              ?.click();
+          }
+        }
+
+        if (button.dataset.mainTab === "relations") {
+
+          if (
+            typeof closeNatalProfile ===
+            "function"
+          ) {
+            closeNatalProfile();
+          }
+
+          if (
+            typeof ASTROMATCH_CALCULATION_TOKEN !==
+            "undefined"
+          ) {
+            ASTROMATCH_CALCULATION_TOKEN++;
+          }
+
+          if (
+            typeof ASTROMATCH_SELECTED_TARGET !==
+            "undefined"
+          ) {
+            ASTROMATCH_SELECTED_TARGET = null;
+          }
+
+          if (
+            typeof ASTROMATCH_RESULT !==
+            "undefined"
+          ) {
+            ASTROMATCH_RESULT = null;
+          }
+
+          window.__astromatchLastResult = null;
+
+          sessionStorage.removeItem(
+            "astromatch:selectedTargetId"
+          );
+
+          document
+            .getElementById("astromatchComparisonArea")
+            ?.classList.add("hidden");
+
+          document.body.classList.remove(
+            "astromatch-comparison-open"
+          );
+
+          if (
+            typeof ASTROMATCH_OPEN_TARGET_GROUPS !==
+            "undefined"
+          ) {
+            ASTROMATCH_OPEN_TARGET_GROUPS.clear();
+            ASTROMATCH_OPEN_TARGET_GROUPS.add("romantic");
+            ASTROMATCH_OPEN_TARGET_GROUPS.add("friendship");
+            ASTROMATCH_OPEN_TARGET_GROUPS.add("family");
+          }
+
+          if (
+            typeof renderTargetSelector ===
+              "function" &&
+            typeof ASTROMATCH_TARGET_PROFILES !==
+              "undefined"
+          ) {
+            renderTargetSelector(
+              ASTROMATCH_TARGET_PROFILES,
+              null
+            );
+          }
+
+          setTimeout(() => {
+            document
+              .getElementById("targetSelector")
+              ?.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+              });
+          }, 50);
+        }
+      });
+    });
+
+  console.log(
+    "ASTROMATCH POINT 2 NAV — READY"
+  );
+})();
+</script>
+
+<!-- ASTROMATCH_NAV_POINT2_END -->
+
 </body>
 </html>
