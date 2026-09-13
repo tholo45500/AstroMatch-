@@ -15,17 +15,43 @@
     const profiles =
       raw ? JSON.parse(raw) : [];
 
-    const hasProfile =
-      Array.isArray(profiles) &&
-      profiles.length > 0;
+    const primary =
+      Array.isArray(profiles)
+        ? profiles.find(profile =>
+            profile &&
+            profile.role === "primary" &&
+            profile.profile_id &&
+            (
+              profile.identity?.first_name ||
+              profile.first_name
+            )
+          )
+        : null;
+
+    if (!primary) {
+      localStorage.removeItem(
+        "astromatch:profiles"
+      );
+
+      location.replace(
+        "./profile_setup.html"
+      );
+
+      return;
+    }
 
     location.replace(
-      hasProfile
-        ? "./match_result.html"
-        : "./profile_setup.html"
+      "./match_result.html"
     );
+
   } catch {
-    location.replace("./profile_setup.html");
+    localStorage.removeItem(
+      "astromatch:profiles"
+    );
+
+    location.replace(
+      "./profile_setup.html"
+    );
   }
 })();
 </script>
