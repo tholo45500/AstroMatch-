@@ -4883,6 +4883,35 @@ async function start() {
     const selectedTarget =
       ASTROMATCH_SELECTED_TARGET;
 
+    /*
+     * Le premier lancement ne crée que le profil principal.
+     * Sans cible, l'accueil reste utilisable et propose les boutons +
+     * des groupes Amour, Amitié et Famille.
+     */
+    if (!selectedTarget) {
+      setAstroMatchComparisonVisible(false);
+
+      window.__astromatchStatus(
+        targets.length
+          ? "Choisis une relation pour lancer la comparaison."
+          : "Profil prêt — ajoute une relation quand tu le souhaites."
+      );
+
+      const primaryName =
+        primary.identity?.first_name ||
+        primary.first_name ||
+        "Profil principal";
+
+      const primaryElement =
+        document.getElementById("primaryName");
+
+      if (primaryElement) {
+        primaryElement.textContent = primaryName;
+      }
+
+      return;
+    }
+
     const primaryName =
       primary.identity?.first_name ||
       primary.first_name ||
