@@ -36,6 +36,9 @@ jobs:
       - name: Build AstroMatch runtime
         run: npm run build:runtime
 
+      - name: Build mobile web
+        run: npm run build:mobile-web
+
       - name: Run tests
         run: npm test
 

@@ -1,5 +1,5 @@
 {
   "appId": "com.astromatch.app",
   "appName": "AstroMatch",
-  "webDir": "ui"
+  "webDir": "dist-mobile"
 }

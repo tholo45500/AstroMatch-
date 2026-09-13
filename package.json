@@ -9,7 +9,8 @@
     "demo": "ASTROMATCH_EPHEMERIS_PROVIDER=astronomy-engine node tools/demo.mjs",
     "production:check": "ASTROMATCH_EPHEMERIS_PROVIDER=astronomy-engine node tools/production_check.mjs",
     "provider:simulated:check": "ASTROMATCH_EPHEMERIS_PROVIDER=simulated node --input-type=module -e \"import('./js/astrology/ephemeris/ephemeris_adapter.js').then(m=>console.log(m.getEphemerisCapabilities()))\"",
-    "build:runtime": "node tools/build_runtime.mjs"
+    "build:runtime": "node tools/build_runtime.mjs",
+    "build:mobile-web": "node tools/build_mobile_web.mjs"
   },
   "engines": {
     "node": ">=20.10.0"
