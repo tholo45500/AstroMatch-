@@ -86,6 +86,24 @@
   }
 
 </style>
+
+<style id="ASTROMATCH_HIDE_TECHNICAL_LOCATION">
+.grid.grid-cols-2.gap-3:has(#primaryLatitude),
+.grid.grid-cols-2.gap-3:has(#targetLatitude),
+div:has(> #primaryTimezone),
+div:has(> #targetTimezone) {
+  display:none !important;
+}
+</style>
+
+<style id="ASTROMATCH_HIDE_TECHNICAL_LOCATION">
+.grid.grid-cols-2.gap-3:has(#primaryLatitude),
+.grid.grid-cols-2.gap-3:has(#targetLatitude),
+div:has(> #primaryTimezone),
+div:has(> #targetTimezone) {
+  display:none !important;
+}
+</style>
 </head>
 
 <body class="min-h-screen">
@@ -250,8 +268,7 @@
             placeholder="Paris, France">
 
           <p class="text-xs text-zinc-500 mt-1">
-            Lieu reconnu actuellement :
-            Paris, Lyon, Marseille, Montréal, Dakar, Tokyo.
+            Ville, région ou pays. AstroMatch trouve automatiquement le bon fuseau.
           </p>
         </div>
 
@@ -644,6 +661,196 @@ function numberOrUndefined(id) {
 }
 
 
+
+async function hydrateSetupGeocode(prefix) {
+  const placeInput =
+    document.getElementById(`${prefix}Place`);
+
+  const query =
+    String(placeInput?.value || "").trim();
+
+  if (query.length < 2) {
+    throw new Error("Indique un lieu de naissance.");
+  }
+
+  const response = await fetch(
+    "http://127.0.0.1:3000/api/geocode/search",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        query,
+        limit: 3
+      })
+    }
+  );
+
+  const payload = await response.json();
+
+  if (!response.ok || !payload?.ok) {
+    throw new Error(
+      payload?.error || `Lieu introuvable : ${query}`
+    );
+  }
+
+  const seen = new Set();
+
+  const results =
+    (payload.results || []).filter(place => {
+      const key = [
+        place?.name,
+        place?.state,
+        place?.country,
+        place?.timezone_id
+      ]
+        .map(v => String(v || "").toLowerCase())
+        .join("|");
+
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+
+  if (!results.length) {
+    throw new Error(`Lieu introuvable : ${query}`);
+  }
+
+  if (results.length > 1) {
+    throw new Error(
+      `Lieu ambigu : précise la région ou le pays pour "${query}".`
+    );
+  }
+
+  const geo = results[0];
+
+  document.getElementById(
+    `${prefix}Latitude`
+  ).value = geo.latitude;
+
+  document.getElementById(
+    `${prefix}Longitude`
+  ).value = geo.longitude;
+
+  document.getElementById(
+    `${prefix}Timezone`
+  ).value = geo.timezone_id;
+
+  const label = [
+    geo.name,
+    geo.state,
+    geo.country
+  ]
+    .filter(Boolean)
+    .filter((value,index,array) =>
+      array.findIndex(
+        other =>
+          String(other).toLowerCase() ===
+          String(value).toLowerCase()
+      ) === index
+    )
+    .join(", ");
+
+  placeInput.value =
+    label || query;
+}
+
+
+async function hydrateSetupGeocode(prefix) {
+  const placeInput =
+    document.getElementById(`${prefix}Place`);
+
+  const query =
+    String(placeInput?.value || "").trim();
+
+  if (query.length < 2) {
+    throw new Error("Indique un lieu de naissance.");
+  }
+
+  const response = await fetch(
+    "http://127.0.0.1:3000/api/geocode/search",
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        query,
+        limit: 3
+      })
+    }
+  );
+
+  const payload = await response.json();
+
+  if (!response.ok || !payload?.ok) {
+    throw new Error(
+      payload?.error || `Lieu introuvable : ${query}`
+    );
+  }
+
+  const seen = new Set();
+
+  const results =
+    (payload.results || []).filter(place => {
+      const key = [
+        place?.name,
+        place?.state,
+        place?.country,
+        place?.timezone_id
+      ]
+        .map(v => String(v || "").toLowerCase())
+        .join("|");
+
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
+
+  if (!results.length) {
+    throw new Error(`Lieu introuvable : ${query}`);
+  }
+
+  if (results.length > 1) {
+    throw new Error(
+      `Lieu ambigu : précise la région ou le pays pour "${query}".`
+    );
+  }
+
+  const geo = results[0];
+
+  document.getElementById(
+    `${prefix}Latitude`
+  ).value = geo.latitude;
+
+  document.getElementById(
+    `${prefix}Longitude`
+  ).value = geo.longitude;
+
+  document.getElementById(
+    `${prefix}Timezone`
+  ).value = geo.timezone_id;
+
+  const label = [
+    geo.name,
+    geo.state,
+    geo.country
+  ]
+    .filter(Boolean)
+    .filter((value,index,array) =>
+      array.findIndex(
+        other =>
+          String(other).toLowerCase() ===
+          String(value).toLowerCase()
+      ) === index
+    )
+    .join(", ");
+
+  placeInput.value =
+    label || query;
+}
+
 function buildInput(prefix, role, linkedPrimaryId = null) {
 
   const timeKnown =
@@ -761,7 +968,7 @@ function refreshState() {
 
 document
   .getElementById("primaryForm")
-  .addEventListener("submit", event => {
+  .addEventListener("submit", async event => {
 
     event.preventDefault();
 
@@ -781,6 +988,10 @@ document
         return;
       }
 
+
+      await hydrateSetupGeocode("primary");
+
+      await hydrateSetupGeocode("primary");
 
       const input =
         buildInput(
@@ -821,7 +1032,7 @@ document
 
 document
   .getElementById("targetForm")
-  .addEventListener("submit", event => {
+  .addEventListener("submit", async event => {
 
     event.preventDefault();
 
@@ -839,6 +1050,10 @@ document
 
       }
 
+
+      await hydrateSetupGeocode("target");
+
+      await hydrateSetupGeocode("target");
 
       const input =
         buildInput(

@@ -18,7 +18,7 @@ test("computeNatalChart est déterministe : même profil -> même thème", () =>
     date: "1990-04-12",
     time: "14:35",
     time_known: true,
-    place: "Lyon, France"
+    place: "Lyon, France", latitude: 45.7640, longitude: 4.8357, timezone_id: "Europe/Paris"
   });
 
   const chart1 = computeNatalChart(profile);
@@ -38,7 +38,7 @@ test("computeNatalChart calcule les 10 corps célestes", () => {
     date: "1990-04-12",
     time: "14:35",
     time_known: true,
-    place: "Lyon, France"
+    place: "Lyon, France", latitude: 45.7640, longitude: 4.8357, timezone_id: "Europe/Paris"
   });
 
   const chart = computeNatalChart(profile);
@@ -54,7 +54,7 @@ test("computeNatalChart : heure inconnue -> pas de maisons ni d'ascendant fiable
     date: "1990-04-12",
     time: null,
     time_known: false,
-    place: "Lyon, France"
+    place: "Lyon, France", latitude: 45.7640, longitude: 4.8357, timezone_id: "Europe/Paris"
   });
 
   const chart = computeNatalChart(profile);
@@ -89,7 +89,7 @@ test("validation : une date impossible ou mal formée est rejetée", () => {
       date: "1990-99-99",
       time: "14:35",
       time_known: true,
-      place: "Lyon, France"
+      place: "Lyon, France", latitude: 45.7640, longitude: 4.8357, timezone_id: "Europe/Paris"
     })
   );
 });
@@ -102,7 +102,7 @@ test("validation : une mise à jour de profil est validée avant sauvegarde", ()
     date: "1990-04-12",
     time: "14:35",
     time_known: true,
-    place: "Lyon, France"
+    place: "Lyon, France", latitude: 45.7640, longitude: 4.8357, timezone_id: "Europe/Paris"
   });
 
   assert.ok(profile.profile_id);
@@ -117,7 +117,7 @@ test("mise à jour : changer le lieu sans coordonnées utilise bien le nouveau l
     date: "1990-04-12",
     time: "14:35",
     time_known: true,
-    place: "Lyon, France"
+    place: "Lyon, France", latitude: 45.7640, longitude: 4.8357, timezone_id: "Europe/Paris"
   });
 
   assert.equal(profile.birth_data.place.resolved.resolution_status, "resolved");
@@ -131,7 +131,7 @@ test("computeNatalChart expose le provider réel et le système de maisons deman
     date: "1990-04-12",
     time: "14:35",
     time_known: true,
-    place: "Lyon, France"
+    place: "Lyon, France", latitude: 45.7640, longitude: 4.8357, timezone_id: "Europe/Paris"
   });
 
   const chart = computeNatalChart(profile);
@@ -151,7 +151,7 @@ test("mise à jour : une seule coordonnée manuelle est fusionnée avec l'autre 
     date: "1990-04-12",
     time: "14:35",
     time_known: true,
-    place: "Lyon, France"
+    place: "Lyon, France", latitude: 45.7640, longitude: 4.8357, timezone_id: "Europe/Paris"
   });
 
   assert.ok(profile.birth_data.place.resolved.latitude != null);
@@ -166,7 +166,7 @@ test("normalisation : date et heure sont stockées sans espaces parasites", () =
     date: " 1990-04-12 ",
     time: " 14:35 ",
     time_known: true,
-    place: "Lyon, France"
+    place: "Lyon, France", latitude: 45.7640, longitude: 4.8357, timezone_id: "Europe/Paris"
   });
 
   assert.equal(profile.birth_data.date, "1990-04-12");
@@ -214,7 +214,7 @@ test("timezone locale -> UTC est déterministe pour Europe/Paris", () => {
     date: "1990-04-12",
     time: "14:35",
     time_known: true,
-    place: "Lyon, France"
+    place: "Lyon, France", latitude: 45.7640, longitude: 4.8357, timezone_id: "Europe/Paris"
   });
 
   assert.ok(profile.birth_data.place.resolved.timezone_id);

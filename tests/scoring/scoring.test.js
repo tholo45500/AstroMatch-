@@ -16,7 +16,7 @@ const PRIMARY_INPUT = {
   date: "1990-04-12",
   time: "14:35",
   time_known: true,
-  place: "Lyon, France"
+  place: "Lyon, France", latitude: 45.7640, longitude: 4.8357, timezone_id: "Europe/Paris"
 };
 
 const TARGET_INPUT = {
@@ -25,7 +25,7 @@ const TARGET_INPUT = {
   date: "1992-08-03",
   time: "09:10",
   time_known: true,
-  place: "Paris, France"
+  place: "Paris, France", latitude: 48.8566, longitude: 2.3522, timezone_id: "Europe/Paris"
 };
 
 test("wOrbe(0) = 1", () => {

@@ -18,51 +18,27 @@ import {
 } from "../utils/validation.js";
 import { isValidTimeZone } from "../astrology/ephemeris/timezone.js";
 
-// Petit annuaire de lieux simulé (pas d'appel réseau à un vrai service de
-// géocodage dans ce prototype — à remplacer plus tard par un vrai
-// géocodeur, sans changer la forme de sortie de resolvePlace).
-const KNOWN_PLACES = {
-  "paris, france": { latitude: 48.8566, longitude: 2.3522, timezone_id: "Europe/Paris" },
-  "lyon, france": { latitude: 45.7640, longitude: 4.8357, timezone_id: "Europe/Paris" },
-  "marseille, france": { latitude: 43.2965, longitude: 5.3698, timezone_id: "Europe/Paris" },
-  "gien": { latitude: 47.6933, longitude: 2.6309, timezone_id: "Europe/Paris" },
-  "gien, france": { latitude: 47.6933, longitude: 2.6309, timezone_id: "Europe/Paris" },
-  "cahors": { latitude: 44.4491, longitude: 1.4366, timezone_id: "Europe/Paris" },
-  "cahors, france": { latitude: 44.4491, longitude: 1.4366, timezone_id: "Europe/Paris" },
-  "montreal, canada": { latitude: 45.5019, longitude: -73.5674, timezone_id: "America/Montreal" },
-  "dakar, senegal": { latitude: 14.7167, longitude: -17.4677, timezone_id: "Africa/Dakar" },
-  "tokyo, japan": { latitude: 35.6895, longitude: 139.6917, timezone_id: "Asia/Tokyo" },
-  "épinal": { latitude: 48.1733, longitude: 6.4510, timezone_id: "Europe/Paris" },
-  "epinal": { latitude: 48.1733, longitude: 6.4510, timezone_id: "Europe/Paris" },
-  "namur": { latitude: 50.4674, longitude: 4.8718, timezone_id: "Europe/Brussels" },
-  "namur, belgique": { latitude: 50.4674, longitude: 4.8718, timezone_id: "Europe/Brussels" },
-  "namur, belgium": { latitude: 50.4674, longitude: 4.8718, timezone_id: "Europe/Brussels" }
-};
-
 /**
- * Résout un lieu de naissance en coordonnées.
- * Ordre de priorité :
- *   1. latitude/longitude fournies explicitement par l'utilisateur (fallback manuel)
- *   2. correspondance dans l'annuaire simulé
- *   3. échec (jamais d'approximation silencieuse)
+ * Valide un lieu déjà résolu par la couche de géocodage.
+ * Ce service ne fait aucun appel réseau et ne contient aucune ville codée en dur.
+ * Sans latitude/longitude valides, le lieu reste non résolu.
  */
 function resolvePlace(rawInput, manualLatitude, manualLongitude, manualTimezoneId) {
   if (isValidLatitude(manualLatitude) && isValidLongitude(manualLongitude)) {
     return {
-      latitude: manualLatitude,
-      longitude: manualLongitude,
+      latitude: Number(manualLatitude),
+      longitude: Number(manualLongitude),
       timezone_id: manualTimezoneId || null,
       resolution_status: "resolved"
     };
   }
 
-  const key = (rawInput || "").trim().toLowerCase();
-  const match = KNOWN_PLACES[key];
-  if (match) {
-    return { ...match, resolution_status: "resolved" };
-  }
-
-  return { latitude: null, longitude: null, timezone_id: null, resolution_status: "failed" };
+  return {
+    latitude: null,
+    longitude: null,
+    timezone_id: null,
+    resolution_status: "failed"
+  };
 }
 
 /**

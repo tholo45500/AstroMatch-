@@ -20,7 +20,7 @@ function makeProfile({ timeKnown = true } = {}) {
     date: "1990-04-12",
     time: timeKnown ? "14:35" : "",
     time_known: timeKnown,
-    place: "Lyon, France",
+    place: "Lyon, France", latitude: 45.7640, longitude: 4.8357, timezone_id: "Europe/Paris",
     house_system: "placidus"
   });
 }

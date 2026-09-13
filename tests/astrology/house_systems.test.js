@@ -33,7 +33,7 @@ test("house systems: Placidus produit 12 cuspides dans un cas géométriquement 
 
 test("house systems: Porphyry est un système de profil officiellement accepté", async () => {
   const { buildProfile } = await import("../../js/profiles/profile_service.js");
-  const p = buildProfile({ role: "target", first_name: "Test", date: "1990-01-01", time: "12:00", time_known: true, place: "Paris, France", house_system: "porphyry" });
+  const p = buildProfile({ role: "target", first_name: "Test", date: "1990-01-01", time: "12:00", time_known: true, place: "Paris, France", latitude: 48.8566, longitude: 2.3522, timezone_id: "Europe/Paris", house_system: "porphyry" });
   assert.equal(p.house_system, "porphyry");
 });
 

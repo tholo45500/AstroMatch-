@@ -13,7 +13,25 @@ const PRIMARY_INPUT = {
   date: "1990-04-12",
   time: "14:35",
   time_known: true,
-  place: "Lyon, France"
+  place: "Lyon, France", latitude: 45.7640, longitude: 4.8357, timezone_id: "Europe/Paris"
+};
+
+const TEST_PLACE_COORDS = {
+  "Paris, France": {
+    latitude: 48.8566,
+    longitude: 2.3522,
+    timezone_id: "Europe/Paris"
+  },
+  "Marseille, France": {
+    latitude: 43.2965,
+    longitude: 5.3698,
+    timezone_id: "Europe/Paris"
+  },
+  "Tokyo, Japan": {
+    latitude: 35.6895,
+    longitude: 139.6917,
+    timezone_id: "Asia/Tokyo"
+  }
 };
 
 function targetInput(firstName, place) {
@@ -23,7 +41,8 @@ function targetInput(firstName, place) {
     date: "1992-08-03",
     time: "09:10",
     time_known: true,
-    place
+    place,
+    ...(TEST_PLACE_COORDS[place] || {})
   };
 }
 
