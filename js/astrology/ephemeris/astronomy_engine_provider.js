@@ -2,7 +2,7 @@
 // Astronomy Engine provides deterministic planetary astronomy in JS/Node/browser.
 // It is NOT a Swiss Ephemeris drop-in: this adapter deliberately exposes only
 // capabilities we can validate and does not pretend to provide Placidus yet.
-import { createRequire } from "node:module";
+import * as AstronomyEngine from "astronomy-engine";
 import { localBirthToUtc, localBirthAtNoonUtc } from "./timezone.js";
 import { normalizeDegrees } from "../../utils/math.js";
 
@@ -18,16 +18,19 @@ function signOf(deg) {
   return { sign: signs[i], degree_in_sign: Number((n - i * 30).toFixed(6)) };
 }
 
-const require = createRequire(import.meta.url);
-
 function loadApi() {
-  try { return require("astronomy-engine"); }
-  catch (cause) {
-    const err = new Error("Le provider Astronomy Engine nécessite le package astronomy-engine. Lance npm install dans le kit.");
+  if (
+    !AstronomyEngine?.Body ||
+    typeof AstronomyEngine.GeoVector !== "function"
+  ) {
+    const err = new Error(
+      "Astronomy Engine indisponible."
+    );
     err.type = "EPHEMERIS_PROVIDER_UNAVAILABLE";
-    err.cause = cause;
     throw err;
   }
+
+  return AstronomyEngine;
 }
 
 function utcDate(birthData) {

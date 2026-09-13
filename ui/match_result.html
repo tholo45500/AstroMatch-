@@ -2313,6 +2313,7 @@ body::after {
 </style>
 
 <script src="./astromatch_api.js"></script>
+<script src="./astromatch_runtime.bundle.js"></script>
 </head>
 
 <body class="min-h-screen text-white">
@@ -4762,7 +4763,73 @@ function renderRelationshipMode() {
 }
 
 
+
 const API_URL = window.AstroMatchApi.url("/api/match");
+
+async function requestAstroMatchMatch(
+  primaryInput,
+  targetInput
+) {
+  const input = {
+    primary: primaryInput,
+    target: targetInput
+  };
+
+  if (
+    window.AstroMatchRuntime &&
+    typeof window.AstroMatchRuntime.match === "function"
+  ) {
+    try {
+      const localPayload =
+        await window.AstroMatchRuntime.match(input);
+
+      if (
+        localPayload?.ok &&
+        localPayload?.result?.global
+      ) {
+        window.__astromatchMatchTransport =
+          "runtime";
+
+        return localPayload;
+      }
+
+      console.warn(
+        "AstroMatch match runtime invalide -> fallback API"
+      );
+    } catch (runtimeError) {
+      console.warn(
+        "AstroMatch match runtime -> fallback API",
+        runtimeError
+      );
+    }
+  }
+
+  window.__astromatchMatchTransport =
+    "api";
+
+  const response =
+    await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "Content-Type":
+          "application/json"
+      },
+      body:
+        JSON.stringify(input)
+    });
+
+  const payload =
+    await response.json();
+
+  if (!response.ok || !payload?.ok) {
+    throw new Error(
+      payload?.error ||
+      `API HTTP ${response.status}`
+    );
+  }
+
+  return payload;
+}
 
 function getStoredProfiles() {
   const raw = localStorage.getItem("astromatch:profiles");
@@ -5919,46 +5986,14 @@ async function precomputeAstroMatchRanking() {
           );
 
         try {
-          const response =
-            await fetch(
-              API_URL,
-              {
-                method: "POST",
-
-                headers: {
-                  "Content-Type":
-                    "application/json"
-                },
-
-                body: JSON.stringify({
-                  primary:
-                    primaryInput,
-
-                  target:
-                    profileToApiInput(
-                      target
-                    )
-                })
-              }
-            );
-
-          if (!response.ok) {
-            console.warn(
-              "AstroMatch ranking :",
-              id,
-              response.status
-            );
-
-            continue;
-          }
-
           const payload =
-            await response.json();
+            await requestAstroMatchMatch(
+              primaryInput,
+              profileToApiInput(
+                target
+              )
+            );
 
-          /*
-           * /api/match renvoie :
-           * { ok: true, result: {...} }
-           */
           const result =
             payload?.result ||
             payload;
@@ -6963,35 +6998,14 @@ async function calculateSelectedTarget() {
     `Calcul réel : ${primaryName} × ${targetName}…`
   );
 
-  const response = await fetch(API_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      primary: primaryInput,
-      target: targetInput
-    })
-  });
-
-  if (!response.ok) {
-    throw new Error(
-      `API HTTP ${response.status}`
-    );
-  }
-
   const payload =
-    await response.json();
-
-  if (!payload.ok) {
-    throw new Error(
-      payload.error ||
-      "Erreur API inconnue"
+    await requestAstroMatchMatch(
+      primaryInput,
+      targetInput
     );
-  }
 
   const result =
-    payload.result;
+    payload?.result || payload;
 
   if (!result || !result.global) {
     throw new Error(
@@ -9026,29 +9040,54 @@ async function openNatalProfileFor(profile) {
   document.body.classList.add("overflow-hidden");
 
   try {
-    const response =
-      await fetch(
-        window.AstroMatchApi.url("/api/natal"),
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({
-            profile:
-              profileToApiInput(profile)
-          })
-        }
-      );
+    const natalInput = {
+      profile:
+        profileToApiInput(profile)
+    };
 
-    const payload =
-      await response.json();
+    let payload = null;
 
-    if (!response.ok || !payload.ok) {
-      throw new Error(
-        payload.error ||
-        `API HTTP ${response.status}`
-      );
+    if (
+      window.AstroMatchRuntime &&
+      typeof window.AstroMatchRuntime.natal === "function"
+    ) {
+      try {
+        payload =
+          await window.AstroMatchRuntime.natal(
+            natalInput
+          );
+      } catch (runtimeError) {
+        console.warn(
+          "AstroMatch natal runtime -> fallback API",
+          runtimeError
+        );
+      }
+    }
+
+    if (!payload?.ok) {
+      const response =
+        await fetch(
+          window.AstroMatchApi.url("/api/natal"),
+          {
+            method: "POST",
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+            body:
+              JSON.stringify(natalInput)
+          }
+        );
+
+      payload =
+        await response.json();
+
+      if (!response.ok || !payload.ok) {
+        throw new Error(
+          payload.error ||
+          `API HTTP ${response.status}`
+        );
+      }
     }
 
     renderNatalChart(
@@ -14408,28 +14447,65 @@ document.addEventListener(
     const key = `${date}|${JSON.stringify(input)}`;
 
     if (!requests.has(key)) {
-      const request = fetch(API_URL, {
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json"
-        },
-        body:JSON.stringify({
+      const request = (async () => {
+        const dailyInput = {
           date,
-          profile:input
-        })
-      })
-        .then(async response => {
-          const payload = await response.json();
+          profile: input
+        };
 
-          if (!response.ok || !payload?.ok) {
-            throw new Error(
-              payload?.error ||
-              `DAILY_HTTP_${response.status}`
+        if (
+          window.AstroMatchRuntime &&
+          typeof window.AstroMatchRuntime.daily === "function"
+        ) {
+          try {
+            const localPayload =
+              await window.AstroMatchRuntime.daily(
+                dailyInput
+              );
+
+            if (
+              localPayload?.ok &&
+              localPayload?.result
+            ) {
+              window.__astromatchDailyTransport =
+                "runtime";
+
+              return localPayload.result;
+            }
+          } catch (runtimeError) {
+            console.warn(
+              "AstroMatch daily runtime -> fallback API",
+              runtimeError
             );
           }
+        }
 
-          return payload.result;
-        })
+        window.__astromatchDailyTransport =
+          "api";
+
+        const response =
+          await fetch(API_URL, {
+            method: "POST",
+            headers: {
+              "Content-Type":
+                "application/json"
+            },
+            body:
+              JSON.stringify(dailyInput)
+          });
+
+        const payload =
+          await response.json();
+
+        if (!response.ok || !payload?.ok) {
+          throw new Error(
+            payload?.error ||
+            `DAILY_HTTP_${response.status}`
+          );
+        }
+
+        return payload.result;
+      })()
         .catch(error => {
           requests.delete(key);
           throw error;

@@ -3,7 +3,13 @@ import { computeAstronomyEngineEphemeris, ENGINE_VERSION as AE_ENGINE_VERSION } 
 
 // Commercial-zero-license distribution: Astronomy Engine (MIT) is the real provider.
 // The simulated provider remains available only for deterministic offline tests.
-export const EPHEMERIS_PROVIDER = process.env.ASTROMATCH_EPHEMERIS_PROVIDER || "astronomy-engine";
+const ASTROMATCH_RUNTIME_PROVIDER =
+  globalThis?.ASTROMATCH_EPHEMERIS_PROVIDER ||
+  globalThis?.process?.env?.ASTROMATCH_EPHEMERIS_PROVIDER ||
+  "astronomy-engine";
+
+export const EPHEMERIS_PROVIDER =
+  ASTROMATCH_RUNTIME_PROVIDER;
 export const EPHEMERIS_ENGINE_VERSION = EPHEMERIS_PROVIDER === "astronomy-engine"
   ? AE_ENGINE_VERSION
   : `adapter-2.2.0+${SIMULATED_ENGINE_VERSION}`;
