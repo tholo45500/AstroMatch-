@@ -15,10 +15,13 @@
     "node": ">=20.10.0"
   },
   "dependencies": {
+    "@capacitor/android": "^8.5.2",
+    "@capacitor/core": "^8.5.2",
     "astronomy-engine": "2.1.19",
     "geo-tz": "^8.1.8"
   },
   "devDependencies": {
+    "@capacitor/cli": "^8.5.2",
     "esbuild": "^0.28.2"
   }
 }

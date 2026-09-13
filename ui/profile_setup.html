@@ -675,7 +675,7 @@ async function hydrateSetupGeocode(prefix) {
   }
 
   const response = await fetch(
-    window.AstroMatchApi.url("/api/geocode/search"),
+    window.AstroMatchApi.geocodeUrl("/api/geocode/search"),
     {
       method: "POST",
       headers: {
@@ -770,7 +770,7 @@ async function hydrateSetupGeocode(prefix) {
   }
 
   const response = await fetch(
-    window.AstroMatchApi.url("/api/geocode/search"),
+    window.AstroMatchApi.geocodeUrl("/api/geocode/search"),
     {
       method: "POST",
       headers: {

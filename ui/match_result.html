@@ -9668,7 +9668,7 @@ async function resolveTargetBirthPlace(place) {
   }
 
   const response = await fetch(
-    window.AstroMatchApi.url("/api/geocode/search"),
+    window.AstroMatchApi.geocodeUrl("/api/geocode/search"),
     {
       method: "POST",
       headers: {
@@ -14628,7 +14628,7 @@ document.addEventListener(
 
 <script id="ASTROMATCH_PLACE_AUTOCOMPLETE_V1">
 (() => {
-  const API = window.AstroMatchApi.url("/api/geocode/search");
+  const API = window.AstroMatchApi.geocodeUrl("/api/geocode/search");
   const selected = new Map();
 
   function clean(value) {
