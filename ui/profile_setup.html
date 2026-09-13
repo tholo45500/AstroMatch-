@@ -104,6 +104,7 @@ div:has(> #targetTimezone) {
   display:none !important;
 }
 </style>
+<script src="./astromatch_api.js"></script>
 </head>
 
 <body class="min-h-screen">
@@ -674,7 +675,7 @@ async function hydrateSetupGeocode(prefix) {
   }
 
   const response = await fetch(
-    "http://127.0.0.1:3000/api/geocode/search",
+    window.AstroMatchApi.url("/api/geocode/search"),
     {
       method: "POST",
       headers: {
@@ -769,7 +770,7 @@ async function hydrateSetupGeocode(prefix) {
   }
 
   const response = await fetch(
-    "http://127.0.0.1:3000/api/geocode/search",
+    window.AstroMatchApi.url("/api/geocode/search"),
     {
       method: "POST",
       headers: {

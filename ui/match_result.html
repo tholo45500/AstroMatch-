@@ -2312,6 +2312,7 @@ body::after {
 
 </style>
 
+<script src="./astromatch_api.js"></script>
 </head>
 
 <body class="min-h-screen text-white">
@@ -4761,7 +4762,7 @@ function renderRelationshipMode() {
 }
 
 
-const API_URL = "http://127.0.0.1:3000/api/match";
+const API_URL = window.AstroMatchApi.url("/api/match");
 
 function getStoredProfiles() {
   const raw = localStorage.getItem("astromatch:profiles");
@@ -9027,7 +9028,7 @@ async function openNatalProfileFor(profile) {
   try {
     const response =
       await fetch(
-        "http://127.0.0.1:3000/api/natal",
+        window.AstroMatchApi.url("/api/natal"),
         {
           method: "POST",
           headers: {
@@ -9628,7 +9629,7 @@ async function resolveTargetBirthPlace(place) {
   }
 
   const response = await fetch(
-    "http://127.0.0.1:3000/api/geocode/search",
+    window.AstroMatchApi.url("/api/geocode/search"),
     {
       method: "POST",
       headers: {
@@ -14186,7 +14187,7 @@ document.addEventListener(
 
 <script id="ASTROMATCH_DAILY_HOME_V1_SCRIPT">
 (() => {
-  const API_URL = "http://127.0.0.1:3000/api/daily";
+  const API_URL = window.AstroMatchApi.url("/api/daily");
   const requests = new Map();
   let scheduled = false;
 
@@ -14551,7 +14552,7 @@ document.addEventListener(
 
 <script id="ASTROMATCH_PLACE_AUTOCOMPLETE_V1">
 (() => {
-  const API = "http://127.0.0.1:3000/api/geocode/search";
+  const API = window.AstroMatchApi.url("/api/geocode/search");
   const selected = new Map();
 
   function clean(value) {
@@ -14780,6 +14781,77 @@ document.addEventListener(
   } else {
     boot();
   }
+})();
+</script>
+
+
+<script id="ASTROMATCH_HOME_RECENT_SCROLL_FIX_V1">
+(function () {
+  function findTargetCard(profileId) {
+    return Array.from(
+      document.querySelectorAll(
+        "#targetSelector [data-target-id]"
+      )
+    ).find(
+      element =>
+        String(element.dataset.targetId || "") ===
+        String(profileId || "")
+    ) || null;
+  }
+
+  function focusRecentProfile(profileId, force = false) {
+    const card = findTargetCard(profileId);
+
+    if (!card) return false;
+
+    const rect = card.getBoundingClientRect();
+
+    const alreadyWellPlaced =
+      rect.top >= 55 &&
+      rect.top <= 240;
+
+    if (force || !alreadyWellPlaced) {
+      card.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+    }
+
+    return true;
+  }
+
+  document.addEventListener("click", event => {
+    const source =
+      event.target instanceof Element
+        ? event.target
+        : null;
+
+    const button =
+      source?.closest("[data-home-profile]");
+
+    if (!button) return;
+
+    const profileId =
+      String(
+        button.dataset.homeProfile || ""
+      );
+
+    if (!profileId) return;
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        focusRecentProfile(profileId, true);
+      });
+    });
+
+    setTimeout(() => {
+      focusRecentProfile(profileId, false);
+    }, 450);
+
+    setTimeout(() => {
+      focusRecentProfile(profileId, false);
+    }, 900);
+  });
 })();
 </script>
 
