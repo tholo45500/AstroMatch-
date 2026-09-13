@@ -732,13 +732,52 @@ async function hydrateSetupGeocode(prefix) {
     throw new Error(`Lieu introuvable : ${query}`);
   }
 
-  if (results.length > 1) {
+  const normalizedQuery =
+    query.trim().toLowerCase();
+
+  const exactMatches =
+    results.filter(place =>
+      String(place?.name || "")
+        .trim()
+        .toLowerCase() ===
+      normalizedQuery
+    );
+
+  let geo = null;
+
+  if (exactMatches.length === 1) {
+    geo = exactMatches[0];
+  } else if (results.length === 1) {
+    geo = results[0];
+  } else if (exactMatches.length > 1) {
+    const choices =
+      exactMatches
+        .slice(0, 3)
+        .map(place =>
+          [place.name, place.state, place.country]
+            .filter(Boolean)
+            .join(", ")
+        )
+        .join(" / ");
+
     throw new Error(
-      `Lieu ambigu : précise la région ou le pays pour "${query}".`
+      `Lieu ambigu : ${choices}`
+    );
+  } else {
+    const choices =
+      results
+        .slice(0, 3)
+        .map(place =>
+          [place.name, place.state, place.country]
+            .filter(Boolean)
+            .join(", ")
+        )
+        .join(" / ");
+
+    throw new Error(
+      `Lieu ambigu : ${choices}`
     );
   }
-
-  const geo = results[0];
 
   document.getElementById(
     `${prefix}Latitude`
@@ -827,13 +866,52 @@ async function hydrateSetupGeocode(prefix) {
     throw new Error(`Lieu introuvable : ${query}`);
   }
 
-  if (results.length > 1) {
+  const normalizedQuery =
+    query.trim().toLowerCase();
+
+  const exactMatches =
+    results.filter(place =>
+      String(place?.name || "")
+        .trim()
+        .toLowerCase() ===
+      normalizedQuery
+    );
+
+  let geo = null;
+
+  if (exactMatches.length === 1) {
+    geo = exactMatches[0];
+  } else if (results.length === 1) {
+    geo = results[0];
+  } else if (exactMatches.length > 1) {
+    const choices =
+      exactMatches
+        .slice(0, 3)
+        .map(place =>
+          [place.name, place.state, place.country]
+            .filter(Boolean)
+            .join(", ")
+        )
+        .join(" / ");
+
     throw new Error(
-      `Lieu ambigu : précise la région ou le pays pour "${query}".`
+      `Lieu ambigu : ${choices}`
+    );
+  } else {
+    const choices =
+      results
+        .slice(0, 3)
+        .map(place =>
+          [place.name, place.state, place.country]
+            .filter(Boolean)
+            .join(", ")
+        )
+        .join(" / ");
+
+    throw new Error(
+      `Lieu ambigu : ${choices}`
     );
   }
-
-  const geo = results[0];
 
   document.getElementById(
     `${prefix}Latitude`
