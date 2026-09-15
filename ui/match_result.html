@@ -4049,7 +4049,7 @@ const RELATIONSHIP_META = {
   friendship: {
     icon: "🤝",
     title: "Amitié",
-    subtitle: "Complicité, confiance et qualité des échanges"
+    subtitle: "Complicité, communication, confiance et projets partagés"
   },
   flirt: {
     icon: "🔥",
@@ -4059,11 +4059,17 @@ const RELATIONSHIP_META = {
   family: {
     icon: "👨‍👩‍👧‍👦",
     title: "Famille",
-    subtitle: "Liens familiaux, compréhension et équilibre"
+    subtitle: "Sécurité émotionnelle, compréhension et vie quotidienne"
   }
 };
 
 const RELATIONSHIP_WEIGHTS = {
+
+  /*
+   * AMOUR
+   * Priorité :
+   * affection + émotions + attraction.
+   */
   love: {
     love: 0.30,
     emotions: 0.20,
@@ -4074,16 +4080,28 @@ const RELATIONSHIP_WEIGHTS = {
     frictions: 0.20
   },
 
+  /*
+   * AMITIÉ
+   * Priorité :
+   * communication + complicité émotionnelle
+   * + quotidien + projets partagés.
+   *
+   * La passion devient volontairement marginale.
+   */
   friendship: {
     love: 0.05,
     emotions: 0.25,
     communication: 0.30,
-    passion: 0.05,
+    passion: 0.02,
     daily: 0.20,
-    projects: 0.15,
+    projects: 0.18,
     frictions: 0.15
   },
 
+  /*
+   * FLIRT
+   * Conservé pour les profils romantiques.
+   */
   flirt: {
     love: 0.35,
     emotions: 0.10,
@@ -4095,19 +4113,23 @@ const RELATIONSHIP_WEIGHTS = {
   },
 
   /*
-   * Famille = présentation relationnelle.
-   * On réutilise volontairement la pondération
-   * de l'amitié tant qu'aucune doctrine familiale
-   * spécifique n'est définie.
+   * FAMILLE
+   * AUCUNE pondération romantique ou sexuelle.
+   *
+   * On évalue surtout :
+   * - sécurité émotionnelle
+   * - compréhension
+   * - fonctionnement quotidien
+   * - capacité à avancer ensemble
    */
   family: {
-    love: 0.05,
-    emotions: 0.25,
-    communication: 0.30,
-    passion: 0.05,
-    daily: 0.20,
+    love: 0.00,
+    emotions: 0.35,
+    communication: 0.25,
+    passion: 0.00,
+    daily: 0.25,
     projects: 0.15,
-    frictions: 0.15
+    frictions: 0.22
   }
 };
 
@@ -4301,15 +4323,55 @@ function getAllFactors(result) {
 
 
 function modeRelevantDomains(mode) {
+
+  /*
+   * Ici on décide quels facteurs astrologiques
+   * ont réellement du sens pour le contexte choisi.
+   */
+
   if (mode === "love") {
-    return ["love", "emotions", "communication", "passion", "daily", "projects"];
+    return [
+      "love",
+      "emotions",
+      "passion",
+      "communication",
+      "daily",
+      "projects"
+    ];
   }
 
   if (mode === "friendship") {
-    return ["communication", "emotions", "daily", "projects", "love"];
+    return [
+      "communication",
+      "emotions",
+      "projects",
+      "daily",
+      "love"
+    ];
   }
 
-  return ["passion", "love", "communication", "emotions"];
+  if (mode === "family") {
+    return [
+      "emotions",
+      "communication",
+      "daily",
+      "projects"
+    ];
+  }
+
+  if (mode === "flirt") {
+    return [
+      "passion",
+      "love",
+      "communication",
+      "emotions"
+    ];
+  }
+
+  return [
+    "communication",
+    "emotions"
+  ];
 }
 
 
@@ -4446,11 +4508,11 @@ function buildPositiveExplanation(mode, factor, score) {
   }
 
   if (mode === "friendship") {
-    return "Cette dynamique peut soutenir la complicité, la confiance et une relation naturelle.";
+    return "Cette dynamique peut favoriser une amitié stimulante : échanges faciles, confiance, entraide et plaisir de partager des activités ou des projets.";
   }
 
   if (mode === "family") {
-    return "Cette dynamique peut favoriser la compréhension, la solidarité et une relation familiale plus naturelle.";
+    return "Cette dynamique peut renforcer le sentiment de sécurité, la compréhension mutuelle et la capacité à fonctionner ensemble au quotidien.";
   }
 
   return "Cette dynamique peut faciliter la connexion et les échanges dans une dynamique de séduction.";
@@ -4470,11 +4532,11 @@ function buildNegativeExplanation(mode, factor) {
   }
 
   if (mode === "friendship") {
-    return "Cette dynamique demande surtout de respecter le rythme et la façon de communiquer de chacun.";
+    return "Cette dynamique peut provoquer des décalages dans la communication ou dans les attentes de disponibilité. L'amitié fonctionne mieux quand chacun garde son espace.";
   }
 
   if (mode === "family") {
-    return "Cette dynamique demande surtout de respecter les différences de rythme, de sensibilité et de communication au sein de la famille.";
+    return "Cette dynamique peut créer des tensions répétitives dans la vie quotidienne ou dans la manière d'exprimer les émotions. Le lien familial demande ici davantage d'écoute et de souplesse.";
   }
 
   return "Cette dynamique peut créer de la tension dans la séduction si elle devient un rapport de force.";
@@ -16225,5 +16287,6 @@ body {
 
 <!-- ASTROMATCH_OPEN_CREATED_TARGET_V2_END -->
 
+<!-- ASTROMATCH_RELATION_CONTEXT_V2 -->
 </body>
 </html>
