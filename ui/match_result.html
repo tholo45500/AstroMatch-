@@ -5,13 +5,16 @@
 <!doctype html>
 <html lang="fr">
 <head>
+
+
+
 <meta charset="utf-8">
 <meta name="viewport"
       content="width=device-width,initial-scale=1,viewport-fit=cover">
 
 <title>AstroMatch — Match Result</title>
 
-<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="./tailwind.local.css?v=offline-v1">
 
 
 
@@ -2312,7 +2315,7 @@ body::after {
 
 </style>
 
-<script src="./astromatch_api.js"></script>
+<script src="./astromatch_api.js?v=offline-v4"></script>
 <script src="./astromatch_runtime.bundle.js"></script>
 </head>
 
@@ -9976,31 +9979,24 @@ async function resolveTargetBirthPlace(place) {
     throw new Error("Indique un lieu de naissance.");
   }
 
-  const response = await fetch(
-    window.AstroMatchApi.geocodeUrl("/api/geocode/search"),
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        query
-      })
-    }
-  );
-
-  const payload = await response.json();
-
-  if (!response.ok || !payload?.ok) {
+  if (
+    !window.AstroMatchApi ||
+    typeof window.AstroMatchApi.searchLocalPlaces !== "function"
+  ) {
     throw new Error(
-      payload?.error ||
-      `Lieu introuvable : ${query}`
+      "Recherche locale des villes indisponible."
     );
   }
 
+  const localResults =
+    await window.AstroMatchApi.searchLocalPlaces(
+      query,
+      5
+    );
+
   const places = dedupeBirthPlaces(
-    Array.isArray(payload.results)
-      ? payload.results
+    Array.isArray(localResults)
+      ? localResults
       : []
   );
 
@@ -10139,6 +10135,11 @@ async function saveTargetEditor() {
 
     sessionStorage.setItem(
       "astromatch:selectedTargetId",
+      createdProfile.profile_id
+    );
+
+    sessionStorage.setItem(
+      "astromatch:openTargetAfterCreate",
       createdProfile.profile_id
     );
     }
@@ -15109,24 +15110,22 @@ document.addEventListener(
         controller = new AbortController();
 
         try {
-          const response = await fetch(API, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              query,
-              limit: 5
-            }),
-            signal: controller.signal
-          });
-
-          const payload = await response.json();
-
-          if (!response.ok || !payload?.ok) {
+          if (
+            !window.AstroMatchApi ||
+            typeof window.AstroMatchApi.searchLocalPlaces !== "function"
+          ) {
             hide();
             return;
           }
+
+          const payload = {
+            ok: true,
+            results:
+              await window.AstroMatchApi.searchLocalPlaces(
+                query,
+                5
+              )
+          };
 
           if (clean(input.value) !== query) return;
 
@@ -16074,6 +16073,157 @@ body {
 </script>
 
 <!-- ASTROMATCH_TODAY_POINT3_END -->
+
+
+
+
+
+<!-- ASTROMATCH_OPEN_CREATED_TARGET_V2_START -->
+
+<script id="ASTROMATCH_OPEN_CREATED_TARGET_V2">
+(() => {
+
+  const STORAGE_KEY =
+    "astromatch:openTargetAfterCreate";
+
+
+  function tryOpenCreatedTarget() {
+
+    const targetId =
+      sessionStorage.getItem(
+        STORAGE_KEY
+      );
+
+    if (!targetId) {
+      return;
+    }
+
+
+    let attempts = 0;
+
+    const timer =
+      setInterval(
+        () => {
+
+          attempts++;
+
+          const ready =
+            typeof selectTargetProfile ===
+              "function" &&
+            typeof ASTROMATCH_TARGET_PROFILES !==
+              "undefined" &&
+            Array.isArray(
+              ASTROMATCH_TARGET_PROFILES
+            ) &&
+            ASTROMATCH_TARGET_PROFILES.some(
+              profile =>
+                String(
+                  profile?.profile_id
+                ) ===
+                String(targetId)
+            );
+
+
+          if (!ready) {
+
+            if (attempts >= 80) {
+              clearInterval(timer);
+
+              console.error(
+                "ASTROMATCH AUTO OPEN — cible introuvable",
+                targetId
+              );
+            }
+
+            return;
+          }
+
+
+          clearInterval(timer);
+
+
+          /*
+           * Passe d'abord dans l'onglet Relations.
+           */
+          const relationsButton =
+            document.querySelector(
+              '[data-main-tab="relations"]'
+            );
+
+          relationsButton?.click();
+
+
+          /*
+           * Le clic Relations réinitialise
+           * volontairement la sélection.
+           * On ouvre donc le nouveau profil juste après.
+           */
+          setTimeout(
+            () => {
+
+              selectTargetProfile(
+                targetId
+              );
+
+              sessionStorage.removeItem(
+                STORAGE_KEY
+              );
+
+
+              /*
+               * Ramène l'utilisateur au début
+               * de la fiche de comparaison.
+               */
+              setTimeout(
+                () => {
+
+                  const comparison =
+                    document.getElementById(
+                      "astromatchComparisonArea"
+                    );
+
+                  comparison?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                  });
+
+                },
+                250
+              );
+
+            },
+            120
+          );
+
+        },
+        50
+      );
+  }
+
+
+  if (
+    document.readyState === "loading"
+  ) {
+    document.addEventListener(
+      "DOMContentLoaded",
+      () =>
+        setTimeout(
+          tryOpenCreatedTarget,
+          150
+        ),
+      { once: true }
+    );
+  } else {
+    setTimeout(
+      tryOpenCreatedTarget,
+      150
+    );
+  }
+
+})();
+</script>
+
+<!-- ASTROMATCH_OPEN_CREATED_TARGET_V2_END -->
 
 </body>
 </html>
