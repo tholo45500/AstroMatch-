@@ -79,6 +79,40 @@ function normalizeContribution(contribution) {
     planet_a: contribution.planet_a ?? null,
     planet_b: contribution.planet_b ?? null,
     aspect_type: contribution.aspect_type ?? null,
+
+    /*
+     * POINT 7 — TRAÇABILITÉ ASTROLOGIQUE
+     * On conserve les données utilisées par le scoring afin que
+     * l'interface puisse expliquer chaque conclusion.
+     */
+    orb:
+      contribution.orb !== undefined &&
+      contribution.orb !== null &&
+      Number.isFinite(Number(contribution.orb))
+        ? Number(contribution.orb)
+        : null,
+
+    orb_max:
+      contribution.orb_max !== undefined &&
+      contribution.orb_max !== null &&
+      Number.isFinite(Number(contribution.orb_max))
+        ? Number(contribution.orb_max)
+        : null,
+
+    orb_strength:
+      contribution.orb_strength !== undefined &&
+      contribution.orb_strength !== null &&
+      Number.isFinite(Number(contribution.orb_strength))
+        ? Number(contribution.orb_strength)
+        : null,
+
+    house_weight:
+      contribution.house_weight !== undefined &&
+      contribution.house_weight !== null &&
+      Number.isFinite(Number(contribution.house_weight))
+        ? Number(contribution.house_weight)
+        : null,
+
     final_points: finalPoints,
     doctrine_polarity: contribution.doctrine_polarity ?? null,
     impact:
