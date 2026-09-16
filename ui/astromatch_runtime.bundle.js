@@ -7315,6 +7315,15 @@
       planet_a: contribution.planet_a ?? null,
       planet_b: contribution.planet_b ?? null,
       aspect_type: contribution.aspect_type ?? null,
+      /*
+       * POINT 7 — TRAÇABILITÉ ASTROLOGIQUE
+       * On conserve les données utilisées par le scoring afin que
+       * l'interface puisse expliquer chaque conclusion.
+       */
+      orb: contribution.orb !== void 0 && contribution.orb !== null && Number.isFinite(Number(contribution.orb)) ? Number(contribution.orb) : null,
+      orb_max: contribution.orb_max !== void 0 && contribution.orb_max !== null && Number.isFinite(Number(contribution.orb_max)) ? Number(contribution.orb_max) : null,
+      orb_strength: contribution.orb_strength !== void 0 && contribution.orb_strength !== null && Number.isFinite(Number(contribution.orb_strength)) ? Number(contribution.orb_strength) : null,
+      house_weight: contribution.house_weight !== void 0 && contribution.house_weight !== null && Number.isFinite(Number(contribution.house_weight)) ? Number(contribution.house_weight) : null,
       final_points: finalPoints,
       doctrine_polarity: contribution.doctrine_polarity ?? null,
       impact: contribution.impact ?? (finalPoints >= 0 ? "positive" : "negative")

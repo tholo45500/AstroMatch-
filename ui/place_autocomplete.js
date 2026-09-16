@@ -19,33 +19,25 @@
   }
 
   async function search(query) {
-    const response = await fetch(
-      window.AstroMatchApi.geocodeUrl(
-        "/api/geocode/search"
-      ),
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          query,
-          limit: 5
-        })
-      }
-    );
 
-    const payload = await response.json();
-
-    if (!response.ok || !payload?.ok) {
+    if (
+      !window.AstroMatchApi ||
+      typeof window.AstroMatchApi.searchLocalPlaces !== "function"
+    ) {
       throw new Error(
-        payload?.error || "Recherche de ville impossible."
+        "Recherche locale des villes indisponible."
       );
     }
 
+    const results =
+      await window.AstroMatchApi.searchLocalPlaces(
+        query,
+        5
+      );
+
     const seen = new Set();
 
-    return (payload.results || []).filter(place => {
+    return (results || []).filter(place => {
       const key = [
         place?.name,
         place?.state,
@@ -55,8 +47,8 @@
       ].join("|");
 
       if (seen.has(key)) return false;
-      seen.add(key);
 
+      seen.add(key);
       return true;
     });
   }

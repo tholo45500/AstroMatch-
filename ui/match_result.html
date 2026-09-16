@@ -5,13 +5,16 @@
 <!doctype html>
 <html lang="fr">
 <head>
+
+
+
 <meta charset="utf-8">
 <meta name="viewport"
       content="width=device-width,initial-scale=1,viewport-fit=cover">
 
 <title>AstroMatch — Match Result</title>
 
-<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="./tailwind.local.css?v=offline-v1">
 
 
 
@@ -2312,8 +2315,1124 @@ body::after {
 
 </style>
 
-<script src="./astromatch_api.js"></script>
+<script src="./astromatch_api.js?v=offline-v4"></script>
 <script src="./astromatch_runtime.bundle.js"></script>
+
+<style id="ASTROMATCH_RELATIONSHIP_DYNAMIC_V1">
+
+.relationship-dynamic-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.relationship-dynamic-icon {
+  width: 52px;
+  height: 52px;
+  flex: 0 0 52px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 17px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(139,92,246,.18),
+      rgba(15,23,42,.78)
+    );
+
+  border:
+    1px solid rgba(167,139,250,.17);
+
+  font-size: 27px;
+}
+
+.relationship-dynamic-kicker {
+  margin-top: 22px;
+
+  color: #8b5cf6;
+
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: .16em;
+}
+
+.relationship-dynamic-headline {
+  margin-top: 7px;
+
+  color: #f8fafc;
+
+  font-size: 24px;
+  line-height: 1.22;
+  font-weight: 950;
+
+  letter-spacing: -.025em;
+}
+
+.relationship-dynamic-summary {
+  margin-top: 9px;
+
+  color: #cbd5e1;
+
+  font-size: 13px;
+  line-height: 1.58;
+}
+
+
+.relationship-score-row {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  margin-top: 17px;
+  padding: 13px 14px;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(124,58,237,.12),
+      rgba(2,6,23,.48)
+    );
+
+  border:
+    1px solid rgba(167,139,250,.14);
+}
+
+.relationship-score-number {
+  flex: 0 0 auto;
+
+  color: #f8fafc;
+
+  font-size: 36px;
+  line-height: 1;
+  font-weight: 950;
+
+  letter-spacing: -.045em;
+}
+
+.relationship-score-number small {
+  margin-left: 2px;
+
+  color: #64748b;
+
+  font-size: 12px;
+  font-weight: 800;
+
+  letter-spacing: 0;
+}
+
+.relationship-score-reading {
+  min-width: 0;
+}
+
+.relationship-score-verdict {
+  color: #e2e8f0;
+
+  font-size: 14px;
+  line-height: 1.3;
+
+  font-weight: 900;
+}
+
+.relationship-score-note {
+  margin-top: 4px;
+
+  color: #64748b;
+
+  font-size: 9px;
+  line-height: 1.35;
+}
+
+.relationship-dynamic-axes {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0,1fr));
+
+  gap: 7px;
+
+  margin-top: 17px;
+}
+
+.relationship-dynamic-axis {
+  min-width: 0;
+
+  padding: 12px 8px;
+
+  border-radius: 16px;
+
+  background:
+    rgba(2,6,23,.40);
+
+  border:
+    1px solid rgba(255,255,255,.065);
+
+  text-align: center;
+}
+
+.relationship-dynamic-axis-icon {
+  font-size: 18px;
+}
+
+.relationship-dynamic-axis-label {
+  margin-top: 5px;
+
+  color: #94a3b8;
+
+  font-size: 9px;
+  line-height: 1.2;
+
+  text-transform: uppercase;
+  letter-spacing: .055em;
+}
+
+.relationship-dynamic-axis-value {
+  margin-top: 5px;
+
+  color: #f1f5f9;
+
+  font-size: 11px;
+  line-height: 1.25;
+
+  font-weight: 900;
+}
+
+</style>
+
+
+<style id="ASTROMATCH_POINT7_WHY_V1">
+
+.astro-evidence {
+  margin-top: 12px;
+  padding-top: 11px;
+
+  border-top:
+    1px solid rgba(255,255,255,.07);
+}
+
+.astro-evidence-summary {
+  list-style: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+
+  color: #a78bfa;
+
+  font-size: 11px;
+  font-weight: 900;
+
+  cursor: pointer;
+
+  user-select: none;
+}
+
+.astro-evidence-summary::-webkit-details-marker {
+  display: none;
+}
+
+.astro-evidence-chevron {
+  font-size: 18px;
+  line-height: 1;
+
+  transition:
+    transform .18s ease;
+}
+
+.astro-evidence[open]
+.astro-evidence-chevron {
+  transform: rotate(180deg);
+}
+
+.astro-evidence-content {
+  margin-top: 12px;
+
+  padding: 12px;
+
+  border-radius: 15px;
+
+  background:
+    rgba(2,6,23,.48);
+
+  border:
+    1px solid rgba(167,139,250,.10);
+}
+
+.astro-evidence-label {
+  color: #64748b;
+
+  font-size: 8px;
+  font-weight: 950;
+
+  letter-spacing: .13em;
+}
+
+.astro-evidence-aspect {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0,1fr)
+    auto
+    minmax(0,1fr);
+
+  align-items: center;
+
+  gap: 7px;
+
+  margin-top: 10px;
+}
+
+.astro-evidence-body {
+  min-width: 0;
+
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  color: #cbd5e1;
+
+  font-size: 10px;
+  line-height: 1.3;
+}
+
+.astro-evidence-body strong {
+  color: #f8fafc;
+}
+
+.astro-evidence-body-right {
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.astro-evidence-planet {
+  flex: 0 0 auto;
+
+  color: #c4b5fd;
+
+  font-size: 20px;
+}
+
+.astro-evidence-aspect-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  color: #a78bfa;
+}
+
+.astro-evidence-aspect-symbol {
+  font-size: 21px;
+  line-height: 1;
+}
+
+.astro-evidence-aspect-center small {
+  margin-top: 3px;
+
+  color: #64748b;
+
+  font-size: 8px;
+}
+
+.astro-evidence-meta {
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 5px;
+
+  margin-top: 11px;
+}
+
+.astro-evidence-meta span {
+  padding: 4px 7px;
+
+  border-radius: 999px;
+
+  color: #94a3b8;
+
+  background:
+    rgba(255,255,255,.035);
+
+  border:
+    1px solid rgba(255,255,255,.055);
+
+  font-size: 8px;
+  font-weight: 750;
+}
+
+.astro-evidence-house {
+  margin-top: 9px;
+
+  color: #cbd5e1;
+
+  font-size: 9px;
+  line-height: 1.4;
+}
+
+
+
+</style>
+
+
+<style id="ASTROMATCH_POLISH_RELATIONS_V1">
+
+.astromatch-relations-section {
+  padding-bottom: 10px;
+}
+
+.astromatch-relations-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+
+  margin-bottom: 15px;
+  padding: 2px 3px 0;
+}
+
+.astromatch-relations-kicker {
+  color: #a78bfa;
+
+  font-size: 10px;
+  font-weight: 950;
+
+  letter-spacing: .15em;
+}
+
+.astromatch-relations-title {
+  margin-top: 4px;
+
+  color: #f8fafc;
+
+  font-size: 24px;
+  line-height: 1.15;
+
+  font-weight: 950;
+
+  letter-spacing: -.025em;
+}
+
+.astromatch-relations-subtitle {
+  margin-top: 6px;
+
+  max-width: 300px;
+
+  color: #94a3b8;
+
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.astromatch-relations-status {
+  min-width: 0;
+
+  color: #8b5cf6;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  text-align: right;
+}
+
+.astromatch-relations-status:empty {
+  display: none;
+}
+
+#targetSelector {
+  max-height:
+    calc(100dvh - 280px) !important;
+
+  scrollbar-width: thin;
+}
+
+.astromatch-relations-hint {
+  margin-top: 11px;
+  padding: 0 3px;
+
+  color: #475569;
+
+  font-size: 10px;
+  line-height: 1.4;
+
+  text-align: center;
+}
+
+</style>
+
+
+<style id="ASTROMATCH_POLISH_TODAY_V1">
+
+.today-head {
+  margin-bottom: 17px;
+  padding: 2px 3px 0;
+}
+
+.today-title {
+  margin-top: 4px;
+
+  color: #f8fafc;
+
+  font-size: 24px;
+  line-height: 1.15;
+
+  font-weight: 950;
+
+  letter-spacing: -.025em;
+}
+
+.today-date {
+  margin-top: 6px !important;
+  margin-bottom: 0 !important;
+
+  color: #64748b !important;
+
+  font-size: 11px !important;
+
+  font-weight: 700;
+}
+
+.today-hero {
+  position: relative;
+  overflow: hidden;
+
+  padding: 21px !important;
+
+  border-radius: 26px !important;
+
+  background:
+    radial-gradient(
+      circle at 90% 0%,
+      rgba(139,92,246,.18),
+      transparent 38%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(30,41,59,.88),
+      rgba(2,6,23,.96)
+    ) !important;
+}
+
+.today-hero::after {
+  content: "✦";
+
+  position: absolute;
+  top: 12px;
+  right: 17px;
+
+  color: rgba(196,181,253,.22);
+
+  font-size: 34px;
+
+  pointer-events: none;
+}
+
+.today-hero-label {
+  color: #a78bfa !important;
+
+  font-size: 9px !important;
+  font-weight: 950 !important;
+
+  letter-spacing: .14em;
+}
+
+.today-phrase {
+  max-width: 92%;
+
+  margin-top: 11px !important;
+
+  font-size: 21px !important;
+  line-height: 1.32 !important;
+
+  letter-spacing: -.018em;
+}
+
+.today-meta {
+  margin-top: 11px !important;
+
+  color: #475569 !important;
+
+  font-size: 9px !important;
+}
+
+.today-domains {
+  gap: 7px !important;
+
+  margin-top: 10px !important;
+}
+
+.today-domain {
+  min-width: 0;
+
+  padding: 12px 6px !important;
+
+  border-radius: 17px !important;
+
+  background:
+    rgba(15,23,42,.68) !important;
+}
+
+.today-domain-icon {
+  font-size: 19px !important;
+}
+
+.today-domain-score {
+  margin-top: 4px !important;
+
+  font-size: 21px !important;
+}
+
+.today-domain-name {
+  margin-top: 3px !important;
+
+  font-size: 10px !important;
+}
+
+.today-domain-label {
+  margin-top: 3px !important;
+
+  color: #64748b !important;
+
+  font-size: 8px !important;
+}
+
+.today-panel {
+  margin-top: 10px !important;
+  padding: 16px !important;
+
+  border-radius: 21px !important;
+
+  background:
+    rgba(15,23,42,.66) !important;
+
+  box-shadow: none !important;
+}
+
+.today-panel-title {
+  font-size: 14px !important;
+}
+
+.today-summary {
+  margin-top: 9px !important;
+
+  color: #cbd5e1 !important;
+
+  font-size: 13px !important;
+  line-height: 1.6 !important;
+}
+
+.today-why {
+  gap: 7px !important;
+}
+
+.today-influence {
+  padding: 12px !important;
+
+  border-radius: 15px !important;
+
+  background:
+    rgba(2,6,23,.38) !important;
+}
+
+.today-influence strong {
+  font-size: 12px !important;
+}
+
+.today-influence p {
+  font-size: 12px !important;
+  line-height: 1.55 !important;
+}
+
+</style>
+
+
+<style id="ASTROMATCH_POLISH_MOI_V1">
+
+#natalProfileView {
+  background:
+    radial-gradient(
+      circle at 50% -10%,
+      rgba(124,58,237,.13),
+      transparent 35%
+    ),
+    #020617 !important;
+}
+
+#natalProfileView > div {
+  padding-bottom: 30px;
+}
+
+.astromatch-moi-kicker {
+  color: #a78bfa;
+
+  font-size: 10px;
+  font-weight: 950;
+
+  letter-spacing: .15em;
+}
+
+.astromatch-moi-title {
+  margin-top: 4px;
+
+  color: #f8fafc;
+
+  font-size: 24px;
+  line-height: 1.15;
+
+  font-weight: 950;
+
+  letter-spacing: -.025em;
+}
+
+#natalProfileName {
+  margin-top: 6px !important;
+
+  color: #64748b !important;
+
+  font-size: 11px !important;
+
+  font-weight: 700;
+}
+
+#natalProfileClose {
+  width: 40px !important;
+  height: 40px !important;
+
+  border-radius: 14px !important;
+
+  background:
+    rgba(255,255,255,.045) !important;
+
+  color: #cbd5e1;
+
+  border:
+    1px solid rgba(255,255,255,.07) !important;
+}
+
+#natalContent > section {
+  border-radius: 22px !important;
+
+  background:
+    rgba(15,23,42,.70) !important;
+
+  border:
+    1px solid rgba(255,255,255,.07) !important;
+
+  box-shadow: none !important;
+}
+
+#natalContent > section:first-child {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(30,41,59,.88),
+      rgba(2,6,23,.90)
+    ) !important;
+
+  border:
+    1px solid rgba(167,139,250,.13) !important;
+}
+
+#natalContent .grid.grid-cols-3 > div {
+  border-radius: 16px !important;
+
+  background:
+    rgba(2,6,23,.50) !important;
+
+  border:
+    1px solid rgba(255,255,255,.045);
+}
+
+#natalSun,
+#natalMoon,
+#natalAsc {
+  color: #f8fafc;
+
+  font-size: 13px;
+}
+
+#natalGlobalSynthesis,
+#natalSummary,
+#natalLoveProfile,
+#natalDominantSummary {
+  line-height: 1.6;
+}
+
+#natalInterpretations > *,
+#natalLoveProfile > *,
+#natalElements > *,
+#natalModalities > *,
+#natalPlanetDominants > *,
+#natalPlanets > *,
+#natalHouses > *,
+#natalAspects > * {
+  border-radius: 14px !important;
+}
+
+#natalLoading {
+  border-radius: 18px !important;
+
+  background:
+    rgba(15,23,42,.70) !important;
+}
+
+</style>
+
+
+<style id="ASTROMATCH_POLISH_COMPARISON_V1">
+
+.astromatch-comparison-area {
+  padding-bottom: 20px;
+}
+
+
+/* ----------------------------------------------------------
+   TABS
+---------------------------------------------------------- */
+
+#relationshipTabsContainer {
+  position: relative;
+
+  gap: 4px !important;
+
+  padding: 4px !important;
+
+  border-radius: 18px !important;
+
+  background:
+    rgba(15,23,42,.72) !important;
+
+  border:
+    1px solid rgba(255,255,255,.055);
+
+  overflow: hidden;
+}
+
+.relationship-tab {
+  min-height: 54px;
+
+  border-radius: 14px !important;
+
+  color: #64748b;
+
+  transition:
+    background .15s ease,
+    color .15s ease,
+    transform .12s ease;
+}
+
+.relationship-tab:active {
+  transform: scale(.97);
+}
+
+.relationship-tab.active {
+  color: #f8fafc !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(124,58,237,.28),
+      rgba(139,92,246,.14)
+    ) !important;
+
+  border:
+    1px solid rgba(167,139,250,.16);
+}
+
+.relationship-tab span:last-child {
+  font-size: 10px;
+  font-weight: 850;
+}
+
+
+/* ----------------------------------------------------------
+   HERO DYNAMIQUE
+---------------------------------------------------------- */
+
+#relationshipDynamicCard {
+  position: relative;
+
+  overflow: hidden;
+
+  border-radius: 26px !important;
+
+  padding: 19px !important;
+
+  background:
+    radial-gradient(
+      circle at 95% 0%,
+      rgba(139,92,246,.16),
+      transparent 38%
+    ),
+    linear-gradient(
+      150deg,
+      rgba(30,41,59,.82),
+      rgba(2,6,23,.94)
+    ) !important;
+
+  border:
+    1px solid rgba(167,139,250,.12) !important;
+
+  box-shadow:
+    0 16px 42px rgba(0,0,0,.18);
+}
+
+#relationshipDynamicCard::after {
+  content: "✦";
+
+  position: absolute;
+  top: 14px;
+  right: 17px;
+
+  color:
+    rgba(196,181,253,.13);
+
+  font-size: 37px;
+
+  pointer-events: none;
+}
+
+.relationship-dynamic-headline {
+  max-width: 92%;
+
+  font-size: 22px !important;
+
+  line-height: 1.25 !important;
+}
+
+.relationship-dynamic-summary {
+  color: #94a3b8 !important;
+
+  font-size: 12px !important;
+
+  line-height: 1.55 !important;
+}
+
+
+/* ----------------------------------------------------------
+   SCORE
+---------------------------------------------------------- */
+
+.relationship-score-row {
+  padding: 12px 13px !important;
+
+  border-radius: 17px !important;
+
+  background:
+    rgba(2,6,23,.44) !important;
+
+  border:
+    1px solid rgba(167,139,250,.10) !important;
+}
+
+.relationship-score-number {
+  font-size: 34px !important;
+}
+
+.relationship-score-verdict {
+  color: #e2e8f0 !important;
+
+  font-size: 13px !important;
+}
+
+
+/* ----------------------------------------------------------
+   3 AXES
+---------------------------------------------------------- */
+
+.relationship-dynamic-axes {
+  gap: 6px !important;
+
+  margin-top: 13px !important;
+}
+
+.relationship-dynamic-axis {
+  padding: 11px 7px !important;
+
+  border-radius: 15px !important;
+
+  background:
+    rgba(2,6,23,.34) !important;
+
+  border:
+    1px solid rgba(255,255,255,.05) !important;
+}
+
+.relationship-dynamic-axis-icon {
+  font-size: 17px !important;
+}
+
+.relationship-dynamic-axis-label {
+  color: #64748b !important;
+
+  font-size: 8px !important;
+}
+
+.relationship-dynamic-axis-value {
+  min-height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #e2e8f0 !important;
+
+  font-size: 10px !important;
+
+  line-height: 1.32 !important;
+}
+
+
+/* ----------------------------------------------------------
+   CARTES DE CONTENU
+---------------------------------------------------------- */
+
+#astromatchComparisonArea > section.glass {
+  border-radius: 21px !important;
+
+  padding: 16px !important;
+
+  background:
+    rgba(15,23,42,.66) !important;
+
+  border:
+    1px solid rgba(255,255,255,.065) !important;
+
+  box-shadow: none !important;
+}
+
+#astromatchComparisonArea
+section.grid > .glass {
+  border-radius: 21px !important;
+
+  padding: 16px !important;
+
+  background:
+    rgba(15,23,42,.66) !important;
+
+  border:
+    1px solid rgba(255,255,255,.065) !important;
+}
+
+
+/* ----------------------------------------------------------
+   ITEMS
+---------------------------------------------------------- */
+
+.relationship-item {
+  padding: 13px !important;
+
+  border-radius: 16px !important;
+
+  background:
+    rgba(2,6,23,.34) !important;
+
+  border:
+    1px solid rgba(255,255,255,.05) !important;
+}
+
+.relationship-item-title {
+  color: #f1f5f9;
+
+  font-size: 12px !important;
+
+  line-height: 1.4;
+}
+
+.relationship-item-text {
+  margin-top: 5px;
+
+  color: #94a3b8 !important;
+
+  font-size: 11px !important;
+
+  line-height: 1.55 !important;
+}
+
+
+/* ----------------------------------------------------------
+   POURQUOI
+---------------------------------------------------------- */
+
+.astro-evidence {
+  margin-top: 10px !important;
+
+  padding-top: 9px !important;
+}
+
+.astro-evidence-summary {
+  color: #8b5cf6 !important;
+
+  font-size: 10px !important;
+}
+
+.astro-evidence-content {
+  padding: 11px !important;
+
+  border-radius: 14px !important;
+
+  background:
+    rgba(2,6,23,.42) !important;
+}
+
+.astro-evidence-aspect {
+  gap: 5px !important;
+}
+
+.astro-evidence-body {
+  font-size: 9px !important;
+}
+
+.astro-evidence-planet {
+  font-size: 18px !important;
+}
+
+.astro-evidence-meta span {
+  font-size: 7px !important;
+}
+
+
+/* ----------------------------------------------------------
+   DO / DON'T
+---------------------------------------------------------- */
+
+#doList > div,
+#dontList > div {
+  padding: 9px 10px;
+
+  border-radius: 13px;
+
+  background:
+    rgba(2,6,23,.32);
+
+  border:
+    1px solid rgba(255,255,255,.04);
+
+  line-height: 1.45;
+}
+
+
+/* ----------------------------------------------------------
+   DETAIL TECHNIQUE
+---------------------------------------------------------- */
+
+#relationshipTechnicalScore {
+  color: #475569 !important;
+
+  font-size: 9px !important;
+}
+
+#astromatchComparisonArea details > summary {
+  color: #64748b !important;
+
+  font-size: 11px !important;
+}
+
+</style>
+
 </head>
 
 <body class="min-h-screen text-white">
@@ -2645,14 +3764,15 @@ window.scoreProgressClass = scoreProgressClass;
 
         <div class="flex items-center justify-between mb-5">
           <div>
-            <div class="text-xs uppercase tracking-widest text-violet-300">
-              AstroMatch
+            <div class="astromatch-moi-kicker">
+              👤 MOI
             </div>
+
             <h2
               id="natalProfileTitle"
-              class="text-2xl font-black mt-1"
+              class="astromatch-moi-title"
             >
-              🌌 Mon thème astral
+              Mon profil astral
             </h2>
             <div
               id="natalProfileName"
@@ -2690,7 +3810,7 @@ window.scoreProgressClass = scoreProgressClass;
 
           <section class="rounded-3xl border border-white/10 bg-slate-900 p-4">
             <div class="text-xs uppercase tracking-widest text-slate-500 mb-3">
-              Les 3 piliers
+              ✦ Mes 3 piliers
             </div>
 
             <div class="grid grid-cols-3 gap-3">
@@ -2717,7 +3837,7 @@ window.scoreProgressClass = scoreProgressClass;
 
           <section class="rounded-3xl border border-violet-400/20 bg-slate-900 p-4">
             <div class="text-xs uppercase tracking-widest text-violet-300 mb-3">
-              🧭 Synthèse globale
+              🧭 Mon équilibre général
             </div>
 
             <div
@@ -2728,7 +3848,7 @@ window.scoreProgressClass = scoreProgressClass;
 
 <section class="rounded-3xl border border-violet-400/10 bg-slate-900 p-4">
             <div class="text-xs uppercase tracking-widest text-violet-300 mb-3">
-              ✨ Ta lecture
+              ✨ Ma personnalité
             </div>
 
             <div
@@ -2746,7 +3866,7 @@ window.scoreProgressClass = scoreProgressClass;
 
           <section class="rounded-3xl border border-pink-400/15 bg-slate-900 p-4">
             <div class="text-xs uppercase tracking-widest text-pink-300 mb-3">
-              💘 Ton profil amoureux
+              💘 Ma façon d’aimer
             </div>
 
             <div
@@ -2757,7 +3877,7 @@ window.scoreProgressClass = scoreProgressClass;
 
 <section class="rounded-3xl border border-white/10 bg-slate-900 p-4">
             <div class="text-xs uppercase tracking-widest text-slate-500 mb-3">
-              Maisons
+              🏠 Mes maisons astrologiques
             </div>
 
             <div
@@ -2768,7 +3888,7 @@ window.scoreProgressClass = scoreProgressClass;
 
 <section class="rounded-3xl border border-white/10 bg-slate-900 p-4">
             <div class="text-xs uppercase tracking-widest text-violet-300 mb-3">
-              ⚡ Tes dominantes
+              ⚡ Mes dominantes
             </div>
 
             <div
@@ -2795,7 +3915,7 @@ window.scoreProgressClass = scoreProgressClass;
             ></div>
 
             <div class="text-xs uppercase tracking-widest text-slate-500 mt-5 mb-2">
-              Planètes dominantes
+              🪐 Mes planètes dominantes
             </div>
 
             <div
@@ -2827,7 +3947,7 @@ window.scoreProgressClass = scoreProgressClass;
 
           <section class="rounded-3xl border border-white/10 bg-slate-900 p-4">
             <div class="text-xs uppercase tracking-widest text-slate-500 mb-3">
-              Aspects principaux
+              ✦ Mes aspects principaux
             </div>
 
             <div
@@ -2847,33 +3967,323 @@ window.scoreProgressClass = scoreProgressClass;
   </div>
 
   <!-- PROFILS CIBLES -->
-  <section class="mb-4">
 
-    <div class="flex items-end justify-between gap-3 mb-3 px-1">
+<!-- ASTROMATCH_TODAY_POINT3_START -->
 
-      <div>
-        <div class="text-xs uppercase tracking-widest text-slate-500">
+<section id="astromatchTodayView" class="astromatch-today-view hidden">
 
-        </div>
+  <div class="today-head">
 
-        <div class="text-sm text-slate-300 mt-1">
-
-        </div>
+    <div>
+      <div class="today-kicker">
+        ☀️ AUJOURD’HUI
       </div>
 
-      <div
-        id="targetCalculationState"
-        class="text-xs text-slate-500 whitespace-nowrap"
-      >
-        Prêt
+      <h1 class="today-title">
+        Ton ciel du jour
+      </h1>
+
+      <div id="todayDate" class="today-date"></div>
+    </div>
+
+  </div>
+
+  <div class="today-hero">
+    <div class="today-hero-label">
+      TON ÉNERGIE DU JOUR
+    </div>
+
+    <div id="todayPhrase" class="today-phrase">
+      Calcul du ciel du jour…
+    </div>
+
+    <div id="todayMeta" class="today-meta"></div>
+  </div>
+
+  <div id="todayDomains" class="today-domains"></div>
+
+  <div class="today-panel">
+    <div class="today-panel-title">
+      ✨ Ce que ça change pour toi
+    </div>
+
+    <div id="todaySummary" class="today-summary">
+      Calcul en cours…
+    </div>
+  </div>
+
+  <div class="today-panel">
+    <div class="today-panel-title">
+      🔎 Ce qui influence ta journée
+    </div>
+
+    <div id="todayWhy" class="today-why"></div>
+  </div>
+
+</section>
+
+<style id="ASTROMATCH_TODAY_POINT3_STYLE">
+
+.astromatch-today-view {
+  padding-bottom: 24px;
+}
+
+.astromatch-today-view.hidden {
+  display: none !important;
+}
+
+.today-kicker {
+  margin-top: 2px;
+  color: #a78bfa;
+  font-size: 12px;
+  font-weight: 900;
+  letter-spacing: .16em;
+}
+
+.today-date {
+  margin-top: 5px;
+  margin-bottom: 18px;
+  color: #94a3b8;
+  font-size: 14px;
+  text-transform: capitalize;
+}
+
+.today-hero,
+.today-panel {
+  border: 1px solid rgba(255,255,255,.09);
+  border-radius: 24px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(30,41,59,.88),
+      rgba(2,6,23,.94)
+    );
+  box-shadow: 0 18px 45px rgba(0,0,0,.20);
+}
+
+.today-hero {
+  padding: 22px;
+}
+
+.today-hero-label {
+  color: #c4b5fd;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.today-phrase {
+  margin-top: 10px;
+  color: white;
+  font-size: 22px;
+  line-height: 1.35;
+  font-weight: 850;
+}
+
+.today-meta {
+  margin-top: 14px;
+  color: #64748b;
+  font-size: 11px;
+}
+
+.today-domains {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.today-domain {
+  padding: 14px 8px;
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,.07);
+  background: rgba(15,23,42,.82);
+  text-align: center;
+}
+
+.today-domain-icon {
+  font-size: 21px;
+}
+
+.today-domain-score {
+  margin-top: 5px;
+  color: white;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.today-domain-name {
+  margin-top: 2px;
+  color: #cbd5e1;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.today-domain-label {
+  margin-top: 4px;
+  color: #64748b;
+  font-size: 10px;
+}
+
+.today-panel {
+  margin-top: 12px;
+  padding: 18px;
+}
+
+.today-panel-title {
+  color: white;
+  font-size: 15px;
+  font-weight: 900;
+}
+
+.today-summary {
+  margin-top: 10px;
+  color: #cbd5e1;
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.today-why {
+  margin-top: 10px;
+  display: grid;
+  gap: 9px;
+}
+
+.today-influence {
+  padding: 13px;
+  border-radius: 16px;
+  background: rgba(255,255,255,.035);
+  border: 1px solid rgba(255,255,255,.055);
+}
+
+.today-influence strong {
+  display: block;
+  color: #e2e8f0;
+  font-size: 13px;
+}
+
+.today-influence p {
+  margin-top: 8px;
+  color: #cbd5e1;
+  font-size: 13px;
+  line-height: 1.58;
+}
+
+.today-influence summary {
+  list-style: none;
+}
+
+.today-influence summary::-webkit-details-marker {
+  display: none;
+}
+
+.today-influence-summary {
+  cursor: pointer;
+  outline: none;
+}
+
+.today-influence-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.today-influence-chevron {
+  color: #a78bfa;
+  font-size: 20px;
+  line-height: 1;
+  transition: transform .2s ease;
+}
+
+.today-influence[open]
+.today-influence-chevron {
+  transform: rotate(180deg);
+}
+
+.today-influence-more {
+  margin-top: 11px;
+  color: #8b5cf6;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.today-influence[open]
+.today-influence-more {
+  display: none;
+}
+
+.today-influence-details {
+  margin-top: 14px;
+  padding-top: 13px;
+  border-top: 1px solid rgba(255,255,255,.07);
+  display: grid;
+  gap: 9px;
+}
+
+.today-detail-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 12px;
+}
+
+.today-detail-row span {
+  color: #64748b;
+}
+
+.today-detail-row strong {
+  color: #e2e8f0;
+  text-align: right;
+}
+
+.today-influence-badge {
+  display: inline-flex;
+  margin-top: 7px;
+  padding: 5px 8px;
+  border-radius: 999px;
+  background: rgba(139,92,246,.10);
+  border: 1px solid rgba(167,139,250,.14);
+  color: #a78bfa;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.today-influence small {
+  display: block;
+  margin-top: 5px;
+  color: #64748b;
+  font-size: 10px;
+}
+
+</style>
+
+<!-- ASTROMATCH_TODAY_POINT3_VIEW_END -->
+
+
+<section class="mb-4 astromatch-relations-section">
+
+  <div class="astromatch-relations-head">
+
+    <div>
+      <div class="astromatch-relations-kicker">
+        ❤️ RELATIONS
       </div>
 
+      <h1 class="astromatch-relations-title">
+        Mes relations
+      </h1>
+
+      <div class="astromatch-relations-subtitle">
+        Choisis une personne pour découvrir votre dynamique.
+      </div>
     </div>
 
+    <div
+      id="targetCalculationState"
+      class="astromatch-relations-status"
+    ></div>
 
-    <div class="flex justify-end mb-3">
-
-    </div>
+  </div>
 
 <div
       id="targetSelector"
@@ -2887,12 +4297,14 @@ window.scoreProgressClass = scoreProgressClass;
       class="hidden"
     ></div>
 
+
 <div
-      id="targetSelectionHint"
-      class="mt-3 px-1 text-xs text-slate-500"
-    >
-      La sélection recalcule automatiquement la compatibilité.
-    </div>
+  id="targetSelectionHint"
+  class="astromatch-relations-hint"
+>
+  Appuie sur un profil pour ouvrir la comparaison.
+</div>
+
 
   </section>
 
@@ -3063,7 +4475,7 @@ window.scoreProgressClass = scoreProgressClass;
 <div id="astromatchComparisonHome"></div>
 <div
   id="astromatchComparisonArea"
-  class="hidden"
+  class="hidden astromatch-comparison-area"
 >
 
 
@@ -3100,36 +4512,84 @@ window.scoreProgressClass = scoreProgressClass;
     </div>
   </section>
 
-  <!-- MODE TITLE -->
-  <section class="glass rounded-3xl p-6 mb-4 text-center">
+  <!-- DYNAMIQUE RELATIONNELLE -->
+  <section
+    class="glass rounded-3xl p-5 mb-4"
+    id="relationshipDynamicCard"
+  >
 
-    <div id="relationshipIcon" class="text-4xl mb-2">❤️</div>
-
-    <div id="relationshipTitle"
-         class="text-2xl font-black">
-      Amour
-    </div>
-
-    <div id="relationshipSubtitle"
-         class="text-sm text-slate-400 mt-1">
-      Potentiel amoureux et construction du couple
-    </div>
-
-    <div class="mt-5">
-      <div id="relationshipScore"
-           class="text-6xl font-black leading-none">
-        —
+    <div class="relationship-dynamic-head">
+      <div
+        id="relationshipIcon"
+        class="relationship-dynamic-icon"
+      >
+        ❤️
       </div>
 
-      <div class="text-slate-400 mt-1">
-        / 100
+      <div class="min-w-0">
+        <div
+          id="relationshipTitle"
+          class="text-xl font-black"
+        >
+          Amour
+        </div>
+
+        <div
+          id="relationshipSubtitle"
+          class="text-xs text-slate-400 mt-1"
+        >
+          Affection, proximité et construction du couple
+        </div>
       </div>
     </div>
 
-    <div id="relationshipLevel"
-         class="inline-flex mt-4 px-4 py-2 rounded-full bg-slate-800 text-sm font-semibold">
+
+    <div class="relationship-dynamic-kicker">
+      DYNAMIQUE RELATIONNELLE
+    </div>
+
+    <div
+      id="relationshipDynamicHeadline"
+      class="relationship-dynamic-headline"
+    >
+      Analyse de votre dynamique…
+    </div>
+
+    <div
+      id="relationshipDynamicSummary"
+      class="relationship-dynamic-summary"
+    ></div>
+
+    <div
+      id="relationshipDynamicAxes"
+      class="relationship-dynamic-axes"
+    ></div>
+
+
+    <div class="relationship-score-row">
+
+      <div class="relationship-score-number">
+        <span id="relationshipScore">—</span>
+        <small>/100</small>
+      </div>
+
+      <div class="relationship-score-reading">
+
+        <div
+          id="relationshipDynamicVerdict"
+          class="relationship-score-verdict"
+        >
+          Analyse de la relation…
+        </div>
+
+
+      </div>
+
+    </div>
+
+    <span id="relationshipLevel" class="hidden">
       Analyse…
-    </div>
+    </span>
 
   </section>
 
@@ -3139,7 +4599,7 @@ window.scoreProgressClass = scoreProgressClass;
     <div class="flex items-center gap-3 mb-3">
       <div class="text-2xl">💚</div>
       <div>
-        <h2 class="font-bold text-lg">Ce qui rapproche</h2>
+        <h2 class="font-bold text-lg">Vos points d’appui</h2>
       </div>
     </div>
 
@@ -3155,7 +4615,7 @@ window.scoreProgressClass = scoreProgressClass;
     <div class="flex items-center gap-3 mb-3">
       <div class="text-2xl">⚠️</div>
       <div>
-        <h2 class="font-bold text-lg">Ce qui demande de l’attention</h2>
+        <h2 class="font-bold text-lg">Vos points sensibles</h2>
       </div>
     </div>
 
@@ -3171,7 +4631,7 @@ window.scoreProgressClass = scoreProgressClass;
     <div class="flex items-center gap-3 mb-3">
       <div class="text-2xl">🎯</div>
       <div>
-        <h2 class="font-bold text-lg">Comment t'y prendre</h2>
+        <h2 class="font-bold text-lg">Comment faire fonctionner ce lien</h2>
       </div>
     </div>
 
@@ -3187,7 +4647,7 @@ window.scoreProgressClass = scoreProgressClass;
     <div class="glass rounded-3xl p-5">
       <div class="flex items-center gap-2 mb-3">
         <span class="text-xl">✅</span>
-        <h2 class="font-bold">À faire</h2>
+        <h2 class="font-bold">À favoriser</h2>
       </div>
 
       <div id="doList" class="space-y-2 text-sm">
@@ -3214,7 +4674,7 @@ window.scoreProgressClass = scoreProgressClass;
     <div class="flex items-center gap-3 mb-3">
       <div class="text-2xl">✨</div>
       <div>
-        <h2 class="font-bold text-lg">Ce qui influence cette relation</h2>
+        <h2 class="font-bold text-lg">Les facteurs clés</h2>
       </div>
     </div>
 
@@ -3229,8 +4689,13 @@ window.scoreProgressClass = scoreProgressClass;
 
     <details>
       <summary class="cursor-pointer font-semibold text-sm text-slate-300">
-        📊 Voir le détail des scores astrologiques
+        📊 Voir les scores par domaine
       </summary>
+
+      <div
+        id="relationshipTechnicalScore"
+        class="mt-4 mb-3 text-xs text-slate-500"
+      ></div>
 
       <div id="domains" class="mt-4"></div>
 
@@ -3766,7 +5231,7 @@ const RELATIONSHIP_META = {
   friendship: {
     icon: "🤝",
     title: "Amitié",
-    subtitle: "Complicité, confiance et qualité des échanges"
+    subtitle: "Complicité, communication, confiance et projets partagés"
   },
   flirt: {
     icon: "🔥",
@@ -3776,11 +5241,17 @@ const RELATIONSHIP_META = {
   family: {
     icon: "👨‍👩‍👧‍👦",
     title: "Famille",
-    subtitle: "Liens familiaux, compréhension et équilibre"
+    subtitle: "Sécurité émotionnelle, compréhension et vie quotidienne"
   }
 };
 
 const RELATIONSHIP_WEIGHTS = {
+
+  /*
+   * AMOUR
+   * Priorité :
+   * affection + émotions + attraction.
+   */
   love: {
     love: 0.30,
     emotions: 0.20,
@@ -3791,16 +5262,28 @@ const RELATIONSHIP_WEIGHTS = {
     frictions: 0.20
   },
 
+  /*
+   * AMITIÉ
+   * Priorité :
+   * communication + complicité émotionnelle
+   * + quotidien + projets partagés.
+   *
+   * La passion devient volontairement marginale.
+   */
   friendship: {
     love: 0.05,
     emotions: 0.25,
     communication: 0.30,
-    passion: 0.05,
+    passion: 0.02,
     daily: 0.20,
-    projects: 0.15,
+    projects: 0.18,
     frictions: 0.15
   },
 
+  /*
+   * FLIRT
+   * Conservé pour les profils romantiques.
+   */
   flirt: {
     love: 0.35,
     emotions: 0.10,
@@ -3812,19 +5295,23 @@ const RELATIONSHIP_WEIGHTS = {
   },
 
   /*
-   * Famille = présentation relationnelle.
-   * On réutilise volontairement la pondération
-   * de l'amitié tant qu'aucune doctrine familiale
-   * spécifique n'est définie.
+   * FAMILLE
+   * AUCUNE pondération romantique ou sexuelle.
+   *
+   * On évalue surtout :
+   * - sécurité émotionnelle
+   * - compréhension
+   * - fonctionnement quotidien
+   * - capacité à avancer ensemble
    */
   family: {
-    love: 0.05,
-    emotions: 0.25,
-    communication: 0.30,
-    passion: 0.05,
-    daily: 0.20,
+    love: 0.00,
+    emotions: 0.35,
+    communication: 0.25,
+    passion: 0.00,
+    daily: 0.25,
     projects: 0.15,
-    frictions: 0.15
+    frictions: 0.22
   }
 };
 
@@ -4018,15 +5505,55 @@ function getAllFactors(result) {
 
 
 function modeRelevantDomains(mode) {
+
+  /*
+   * Ici on décide quels facteurs astrologiques
+   * ont réellement du sens pour le contexte choisi.
+   */
+
   if (mode === "love") {
-    return ["love", "emotions", "communication", "passion", "daily", "projects"];
+    return [
+      "love",
+      "emotions",
+      "passion",
+      "communication",
+      "daily",
+      "projects"
+    ];
   }
 
   if (mode === "friendship") {
-    return ["communication", "emotions", "daily", "projects", "love"];
+    return [
+      "communication",
+      "emotions",
+      "projects",
+      "daily",
+      "love"
+    ];
   }
 
-  return ["passion", "love", "communication", "emotions"];
+  if (mode === "family") {
+    return [
+      "emotions",
+      "communication",
+      "daily",
+      "projects"
+    ];
+  }
+
+  if (mode === "flirt") {
+    return [
+      "passion",
+      "love",
+      "communication",
+      "emotions"
+    ];
+  }
+
+  return [
+    "communication",
+    "emotions"
+  ];
 }
 
 
@@ -4129,14 +5656,323 @@ function modeFactors(mode, result) {
   };
 }
 
-function itemHtml(title, text, badge = "") {
+const ASTROMATCH_EVIDENCE_PLANETS = {
+  sun: ["☉", "Soleil"],
+  moon: ["☽", "Lune"],
+  mercury: ["☿", "Mercure"],
+  venus: ["♀", "Vénus"],
+  mars: ["♂", "Mars"],
+  jupiter: ["♃", "Jupiter"],
+  saturn: ["♄", "Saturne"],
+  uranus: ["♅", "Uranus"],
+  neptune: ["♆", "Neptune"],
+  pluto: ["♇", "Pluton"]
+};
+
+const ASTROMATCH_EVIDENCE_ASPECTS = {
+  conjunction: ["☌", "conjonction"],
+  sextile: ["⚹", "sextile"],
+  square: ["□", "carré"],
+  trine: ["△", "trigone"],
+  opposition: ["☍", "opposition"]
+};
+
+const ASTROMATCH_EVIDENCE_DOMAINS = {
+  love: "Amour",
+  emotions: "Émotions",
+  communication: "Communication",
+  passion: "Passion",
+  daily: "Quotidien",
+  projects: "Projets",
+  frictions: "Frictions"
+};
+
+
+function astroEvidenceProfileName(
+  profile,
+  fallback
+) {
+  return (
+    profile?.identity?.first_name ||
+    profile?.first_name ||
+    fallback
+  );
+}
+
+
+function astroEvidenceHtml(factor) {
+
+  const item =
+    factor?.item ??
+    factor;
+
+  if (!item || typeof item !== "object") {
+    return "";
+  }
+
+  const planetA =
+    ASTROMATCH_EVIDENCE_PLANETS[
+      String(item.planet_a || "").toLowerCase()
+    ];
+
+  const planetB =
+    ASTROMATCH_EVIDENCE_PLANETS[
+      String(item.planet_b || "").toLowerCase()
+    ];
+
+  const aspect =
+    ASTROMATCH_EVIDENCE_ASPECTS[
+      String(item.aspect_type || "").toLowerCase()
+    ];
+
+  /*
+   * Sans paire planétaire + aspect réel,
+   * on n'affiche aucune "preuve" artificielle.
+   */
+  if (!planetA || !planetB || !aspect) {
+    return "";
+  }
+
+  const primary =
+    typeof ASTROMATCH_PRIMARY_PROFILE !== "undefined"
+      ? ASTROMATCH_PRIMARY_PROFILE
+      : null;
+
+  const target =
+    typeof ASTROMATCH_SELECTED_TARGET !== "undefined"
+      ? ASTROMATCH_SELECTED_TARGET
+      : null;
+
+  const primaryName =
+    astroEvidenceProfileName(
+      primary,
+      "Profil principal"
+    );
+
+  const targetName =
+    astroEvidenceProfileName(
+      target,
+      "Profil cible"
+    );
+
+  const domain =
+    ASTROMATCH_EVIDENCE_DOMAINS[
+      String(item.domain || "").toLowerCase()
+    ] ||
+    String(item.domain || "");
+
+  const hasOrb =
+    item.orb !== null &&
+    item.orb !== undefined &&
+    Number.isFinite(Number(item.orb));
+
+  const hasOrbMax =
+    item.orb_max !== null &&
+    item.orb_max !== undefined &&
+    Number.isFinite(Number(item.orb_max));
+
+  const hasPoints =
+    item.final_points !== null &&
+    item.final_points !== undefined &&
+    Number.isFinite(Number(item.final_points));
+
+  const hasStrength =
+    item.orb_strength !== null &&
+    item.orb_strength !== undefined &&
+    Number.isFinite(Number(item.orb_strength));
+
+  const houseWeight =
+    Number(item.house_weight);
+
+  const ruleId =
+    String(
+      item.rule_id ||
+      item.ruleId ||
+      ""
+    ).trim();
+
+  const meta = [];
+
+  if (hasOrb) {
+    meta.push(
+      `Orbe ${Number(item.orb).toFixed(2)}°` +
+      (
+        hasOrbMax
+          ? ` / ${Number(item.orb_max).toFixed(2)}° max`
+          : ""
+      )
+    );
+  }
+
+  if (domain) {
+    meta.push(domain);
+  }
+
+  if (hasStrength) {
+    meta.push(
+      `Précision ${Math.round(
+        Number(item.orb_strength) * 100
+      )}%`
+    );
+  }
+
+  if (hasPoints) {
+    const n =
+      Number(item.final_points);
+
+    meta.push(
+      `Impact ${n > 0 ? "+" : ""}${n.toFixed(1)}`
+    );
+  }
+
+  return `
+    <details class="astro-evidence">
+
+      <summary class="astro-evidence-summary">
+
+        <span>
+          🔎 Pourquoi ?
+        </span>
+
+        <span class="astro-evidence-chevron">
+          ⌄
+        </span>
+
+      </summary>
+
+      <div class="astro-evidence-content">
+
+        <div class="astro-evidence-label">
+          BASE ASTROLOGIQUE
+        </div>
+
+        <div class="astro-evidence-aspect">
+
+          <div class="astro-evidence-body">
+
+            <span class="astro-evidence-planet">
+              ${relationshipEscapeHtml(planetA[0])}
+            </span>
+
+            <span>
+              <strong>
+                ${relationshipEscapeHtml(primaryName)}
+              </strong>
+              ·
+              ${relationshipEscapeHtml(planetA[1])}
+            </span>
+
+          </div>
+
+          <div class="astro-evidence-aspect-center">
+
+            <span class="astro-evidence-aspect-symbol">
+              ${relationshipEscapeHtml(aspect[0])}
+            </span>
+
+            <small>
+              ${relationshipEscapeHtml(aspect[1])}
+            </small>
+
+          </div>
+
+          <div class="astro-evidence-body astro-evidence-body-right">
+
+            <span>
+              <strong>
+                ${relationshipEscapeHtml(targetName)}
+              </strong>
+              ·
+              ${relationshipEscapeHtml(planetB[1])}
+            </span>
+
+            <span class="astro-evidence-planet">
+              ${relationshipEscapeHtml(planetB[0])}
+            </span>
+
+          </div>
+
+        </div>
+
+        ${
+          meta.length
+            ? `
+              <div class="astro-evidence-meta">
+                ${meta.map(value => `
+                  <span>
+                    ${relationshipEscapeHtml(value)}
+                  </span>
+                `).join("")}
+              </div>
+            `
+            : ""
+        }
+
+        ${
+          Number.isFinite(houseWeight) &&
+          houseWeight > 1.0001
+            ? `
+              <div class="astro-evidence-house">
+                🏠 Ce facteur est renforcé par un contact de maison.
+              </div>
+            `
+            : ""
+        }
+
+        ${
+          ruleId
+            ? `
+
+            `
+            : ""
+        }
+
+      </div>
+
+    </details>
+  `;
+}
+
+
+function itemHtml(
+  title,
+  text,
+  badge = "",
+  factor = null
+) {
+
+  const evidence =
+    factor
+      ? astroEvidenceHtml(factor)
+      : "";
+
   return `
     <div class="relationship-item">
+
       <div class="flex items-start justify-between gap-3">
-        <div class="relationship-item-title">${relationshipEscapeHtml(title)}</div>
-        ${badge ? `<span class="relationship-badge">${relationshipEscapeHtml(badge)}</span>` : ""}
+
+        <div class="relationship-item-title">
+          ${relationshipEscapeHtml(title)}
+        </div>
+
+        ${
+          badge
+            ? `
+              <span class="relationship-badge">
+                ${relationshipEscapeHtml(badge)}
+              </span>
+            `
+            : ""
+        }
+
       </div>
-      <div class="relationship-item-text">${relationshipEscapeHtml(text)}</div>
+
+      <div class="relationship-item-text">
+        ${relationshipEscapeHtml(text)}
+      </div>
+
+      ${evidence}
+
     </div>
   `;
 }
@@ -4163,11 +5999,11 @@ function buildPositiveExplanation(mode, factor, score) {
   }
 
   if (mode === "friendship") {
-    return "Cette dynamique peut soutenir la complicité, la confiance et une relation naturelle.";
+    return "Cette dynamique peut favoriser une amitié stimulante : échanges faciles, confiance, entraide et plaisir de partager des activités ou des projets.";
   }
 
   if (mode === "family") {
-    return "Cette dynamique peut favoriser la compréhension, la solidarité et une relation familiale plus naturelle.";
+    return "Cette dynamique peut renforcer le sentiment de sécurité, la compréhension mutuelle et la capacité à fonctionner ensemble au quotidien.";
   }
 
   return "Cette dynamique peut faciliter la connexion et les échanges dans une dynamique de séduction.";
@@ -4187,11 +6023,11 @@ function buildNegativeExplanation(mode, factor) {
   }
 
   if (mode === "friendship") {
-    return "Cette dynamique demande surtout de respecter le rythme et la façon de communiquer de chacun.";
+    return "Cette dynamique peut provoquer des décalages dans la communication ou dans les attentes de disponibilité. L'amitié fonctionne mieux quand chacun garde son espace.";
   }
 
   if (mode === "family") {
-    return "Cette dynamique demande surtout de respecter les différences de rythme, de sensibilité et de communication au sein de la famille.";
+    return "Cette dynamique peut créer des tensions répétitives dans la vie quotidienne ou dans la manière d'exprimer les émotions. Le lien familial demande ici davantage d'écoute et de souplesse.";
   }
 
   return "Cette dynamique peut créer de la tension dans la séduction si elle devient un rapport de force.";
@@ -4567,6 +6403,763 @@ if (typeof window !== "undefined") {
   window.selectRelationshipMode = selectRelationshipMode;
 }
 
+
+const RELATIONSHIP_DYNAMIC_AXES = {
+
+  love: [
+    {
+      domain: "love",
+      icon: "💗",
+      label: "Lien affectif"
+    },
+    {
+      domain: "passion",
+      icon: "🔥",
+      label: "Élan"
+    },
+    {
+      domain: "communication",
+      icon: "💬",
+      label: "Dialogue"
+    }
+  ],
+
+  friendship: [
+    {
+      domain: "communication",
+      icon: "💬",
+      label: "Échanges"
+    },
+    {
+      domain: "projects",
+      icon: "🧭",
+      label: "Complicité"
+    },
+    {
+      domain: "emotions",
+      icon: "🤝",
+      label: "Confiance"
+    }
+  ],
+
+  family: [
+    {
+      domain: "emotions",
+      icon: "🫶",
+      label: "Sécurité"
+    },
+    {
+      domain: "communication",
+      icon: "💬",
+      label: "Compréhension"
+    },
+    {
+      domain: "daily",
+      icon: "🏠",
+      label: "Quotidien"
+    }
+  ],
+
+  flirt: [
+    {
+      domain: "passion",
+      icon: "🔥",
+      label: "Alchimie"
+    },
+    {
+      domain: "love",
+      icon: "✨",
+      label: "Attirance"
+    },
+    {
+      domain: "communication",
+      icon: "💬",
+      label: "Connexion"
+    }
+  ]
+};
+
+
+function relationshipPhraseHash(value) {
+  let hash = 2166136261;
+
+  for (const char of String(value || "")) {
+    hash ^= char.charCodeAt(0);
+    hash = Math.imul(hash, 16777619);
+  }
+
+  return Math.abs(hash >>> 0);
+}
+
+
+function relationshipPhraseSeed() {
+  const primary =
+    typeof ASTROMATCH_PRIMARY_PROFILE !== "undefined"
+      ? ASTROMATCH_PRIMARY_PROFILE
+      : null;
+
+  const target =
+    typeof ASTROMATCH_SELECTED_TARGET !== "undefined"
+      ? ASTROMATCH_SELECTED_TARGET
+      : null;
+
+  const profileSignature = profile => [
+    profile?.identity?.first_name || "",
+    profile?.identity?.last_name || "",
+    profile?.birth_data?.date || "",
+    profile?.birth_data?.time?.value || "",
+    profile?.birth_data?.place?.resolved?.latitude || "",
+    profile?.birth_data?.place?.resolved?.longitude || ""
+  ].join("|");
+
+  return (
+    profileSignature(primary) +
+    "::" +
+    profileSignature(target)
+  );
+}
+
+
+function relationshipPhraseBand(score) {
+  const n = Number(score);
+
+  if (n >= 70) return "high";
+  if (n >= 55) return "good";
+  if (n >= 40) return "mixed";
+  return "low";
+}
+
+
+const RELATIONSHIP_AXIS_PHRASES = {
+
+  love: {
+    love: {
+      high: [
+        "L’affection circule naturellement",
+        "Vous exprimez facilement votre attachement",
+        "Le lien affectif trouve vite sa place"
+      ],
+      good: [
+        "L’affection a de bonnes bases",
+        "Le rapprochement se fait assez naturellement",
+        "Vous pouvez facilement nourrir la proximité"
+      ],
+      mixed: [
+        "Vos façons d’aimer ne sont pas toujours les mêmes",
+        "La proximité demande parfois quelques ajustements",
+        "L’affection existe, mais ne s’exprime pas toujours pareil"
+      ],
+      low: [
+        "Le lien affectif demande davantage d’efforts",
+        "Vos besoins de proximité peuvent être assez différents",
+        "L’affection peut être plus difficile à exprimer entre vous"
+      ]
+    },
+
+    passion: {
+      high: [
+        "L’attirance s’installe facilement",
+        "L’élan entre vous est spontané",
+        "La chimie peut se déclencher rapidement"
+      ],
+      good: [
+        "L’attirance trouve assez facilement son rythme",
+        "Il existe un vrai potentiel d’élan entre vous",
+        "La chimie peut se développer naturellement"
+      ],
+      mixed: [
+        "L’attirance peut fonctionner par vagues",
+        "L’élan est présent mais pas toujours au même rythme",
+        "La chimie peut alterner entre rapprochement et distance"
+      ],
+      low: [
+        "L’attirance demande davantage à être nourrie",
+        "Vous ne réagissez pas toujours au même rythme",
+        "L’élan entre vous peut être plus difficile à maintenir"
+      ]
+    },
+
+    communication: {
+      high: [
+        "Vous vous comprenez facilement",
+        "Les échanges viennent naturellement",
+        "Vous trouvez vite un terrain d’entente"
+      ],
+      good: [
+        "Le dialogue fonctionne plutôt bien",
+        "Vous arrivez généralement à vous faire comprendre",
+        "Les échanges ont de bonnes bases"
+      ],
+      mixed: [
+        "Certains sujets peuvent vite créer des malentendus",
+        "Vous ne formulez pas toujours les choses de la même façon",
+        "Le dialogue demande parfois de reformuler"
+      ],
+      low: [
+        "Les incompréhensions peuvent s’installer rapidement",
+        "Vos façons de communiquer peuvent souvent se heurter",
+        "Le dialogue demande une vraie attention"
+      ]
+    }
+  },
+
+
+  friendship: {
+    communication: {
+      high: [
+        "Vous échangez très naturellement",
+        "La conversation peut devenir un vrai point fort",
+        "Vous vous comprenez facilement entre amis"
+      ],
+      good: [
+        "Les échanges sont globalement faciles",
+        "Vous trouvez assez vite des sujets communs",
+        "Le dialogue soutient bien votre complicité"
+      ],
+      mixed: [
+        "Vous n’avez pas toujours la même façon d’échanger",
+        "Certains malentendus peuvent casser le rythme",
+        "La complicité demande parfois de clarifier les choses"
+      ],
+      low: [
+        "Vos façons de communiquer peuvent être assez différentes",
+        "Les échanges peuvent facilement manquer de naturel",
+        "Il faut parfois faire un effort pour bien vous comprendre"
+      ]
+    },
+
+    projects: {
+      high: [
+        "Faire des choses ensemble vous rapproche",
+        "Les projets communs renforcent facilement la complicité",
+        "Vous pouvez former une bonne équipe"
+      ],
+      good: [
+        "Les activités communes peuvent vraiment vous rapprocher",
+        "Vous trouvez facilement des choses à partager",
+        "Les projets sont un bon moteur pour votre amitié"
+      ],
+      mixed: [
+        "Vous n’avez pas toujours les mêmes envies",
+        "Les projets communs demandent parfois de trouver un compromis",
+        "Votre complicité fonctionne mieux sur certains terrains que d’autres"
+      ],
+      low: [
+        "Vos envies peuvent souvent partir dans des directions différentes",
+        "Trouver des projets communs peut demander un effort",
+        "Vous ne cherchez pas toujours les mêmes expériences"
+      ]
+    },
+
+    emotions: {
+      high: [
+        "La confiance peut s’installer facilement",
+        "Vous pouvez vous sentir rapidement à l’aise ensemble",
+        "Le soutien mutuel vient assez naturellement"
+      ],
+      good: [
+        "La confiance dispose de bonnes bases",
+        "Vous pouvez compter assez facilement l’un sur l’autre",
+        "Le lien peut devenir rassurant avec le temps"
+      ],
+      mixed: [
+        "La confiance demande parfois un peu de temps",
+        "Vous ne montrez pas toujours vos émotions de la même manière",
+        "Le soutien existe mais ne se manifeste pas toujours pareil"
+      ],
+      low: [
+        "La confiance peut être plus longue à construire",
+        "Vous pouvez avoir du mal à sentir ce que l’autre traverse",
+        "Le soutien émotionnel demande davantage d’attention"
+      ]
+    }
+  },
+
+
+  family: {
+    emotions: {
+      high: [
+        "Vous pouvez facilement vous rassurer mutuellement",
+        "Le lien offre une vraie sensation de soutien",
+        "Vous captez assez naturellement les besoins de l’autre"
+      ],
+      good: [
+        "La sécurité émotionnelle a de bonnes bases",
+        "Vous pouvez généralement compter l’un sur l’autre",
+        "Le lien familial peut devenir un vrai point d’appui"
+      ],
+      mixed: [
+        "Vous ne réagissez pas toujours pareil émotionnellement",
+        "Les sensibilités différentes demandent parfois de l’adaptation",
+        "Vous ne ressentez pas toujours les situations de la même façon"
+      ],
+      low: [
+        "Les besoins émotionnels peuvent être difficiles à accorder",
+        "Vous pouvez parfois avoir du mal à vous rassurer mutuellement",
+        "Les différences de sensibilité peuvent peser sur le lien"
+      ]
+    },
+
+    communication: {
+      high: [
+        "Vous arrivez facilement à vous comprendre",
+        "Les discussions peuvent rester simples et directes",
+        "Vous trouvez assez naturellement une façon de vous parler"
+      ],
+      good: [
+        "La compréhension mutuelle fonctionne plutôt bien",
+        "Vous arrivez généralement à désamorcer les incompréhensions",
+        "Le dialogue familial possède de bonnes bases"
+      ],
+      mixed: [
+        "Les mêmes sujets peuvent revenir régulièrement",
+        "Vous ne vous exprimez pas toujours sur le même registre",
+        "Certains échanges demandent plus de patience"
+      ],
+      low: [
+        "Les incompréhensions peuvent facilement se répéter",
+        "Le dialogue peut vite devenir source de tension",
+        "Il faut souvent davantage d’efforts pour vous entendre"
+      ]
+    },
+
+    daily: {
+      high: [
+        "Le quotidien fonctionne naturellement entre vous",
+        "Vous trouvez facilement vos repères ensemble",
+        "Vos rythmes s’accordent plutôt bien"
+      ],
+      good: [
+        "La vie quotidienne trouve assez facilement son équilibre",
+        "Vous pouvez bien fonctionner ensemble au jour le jour",
+        "Vos habitudes sont globalement compatibles"
+      ],
+      mixed: [
+        "Vos habitudes ne vont pas toujours dans le même sens",
+        "Le quotidien demande quelques ajustements",
+        "Vos rythmes peuvent parfois se télescoper"
+      ],
+      low: [
+        "Le quotidien peut devenir une vraie source de friction",
+        "Vos habitudes sont assez difficiles à accorder",
+        "Trouver un rythme commun peut demander beaucoup d’adaptation"
+      ]
+    }
+  },
+
+
+  flirt: {
+    passion: {
+      high: [
+        "L’alchimie peut être immédiate",
+        "La tension entre vous se crée très naturellement",
+        "L’attirance peut monter très vite"
+      ],
+      good: [
+        "L’alchimie a de bonnes chances de s’installer",
+        "L’attirance se développe assez facilement",
+        "Il existe une vraie énergie de séduction"
+      ],
+      mixed: [
+        "L’attirance peut être intense puis retomber",
+        "La chimie fonctionne de façon assez irrégulière",
+        "Le désir peut alterner entre rapprochement et hésitation"
+      ],
+      low: [
+        "L’alchimie peut être plus difficile à déclencher",
+        "La séduction demande davantage d’efforts",
+        "L’attirance n’est pas forcément immédiate"
+      ]
+    },
+
+    love: {
+      high: [
+        "Vous vous attirez facilement",
+        "Le rapprochement paraît naturel",
+        "L’intérêt mutuel peut être évident rapidement"
+      ],
+      good: [
+        "Le potentiel d’attirance est bien présent",
+        "Le rapprochement peut se faire assez naturellement",
+        "L’intérêt peut grandir facilement"
+      ],
+      mixed: [
+        "L’intérêt peut être fort mais changeant",
+        "Vous ne montrez pas toujours votre attirance de la même façon",
+        "Le rapprochement peut avancer par à-coups"
+      ],
+      low: [
+        "Le rapprochement peut prendre davantage de temps",
+        "L’intérêt n’est pas toujours facile à lire",
+        "L’attirance demande plus de contexte pour se développer"
+      ]
+    },
+
+    communication: {
+      high: [
+        "Le jeu de séduction passe facilement par les échanges",
+        "La conversation nourrit naturellement l’attirance",
+        "Vous trouvez facilement le ton juste"
+      ],
+      good: [
+        "Les échanges peuvent bien soutenir la séduction",
+        "La conversation crée facilement de la proximité",
+        "Vous trouvez assez naturellement une complicité verbale"
+      ],
+      mixed: [
+        "Les signaux peuvent parfois être mal interprétés",
+        "Vous ne jouez pas toujours sur le même registre",
+        "Le flirt peut être perturbé par quelques malentendus"
+      ],
+      low: [
+        "Les signaux sont parfois difficiles à décoder",
+        "La communication peut freiner le rapprochement",
+        "Vous pouvez facilement mal interpréter les intentions de l’autre"
+      ]
+    }
+  }
+};
+
+
+function relationshipAxisText(
+  mode,
+  domain,
+  score
+) {
+
+  const band =
+    relationshipPhraseBand(score);
+
+  const pool =
+    RELATIONSHIP_AXIS_PHRASES?.[mode]?.[domain]?.[band];
+
+  if (!Array.isArray(pool) || !pool.length) {
+    return "Cette dimension mérite d’être observée";
+  }
+
+  /*
+   * Même duo + même contexte + même axe
+   * => toujours la même formulation.
+   *
+   * Duo différent
+   * => variation possible.
+   */
+  const seed = [
+    relationshipPhraseSeed(),
+    mode,
+    domain,
+    band
+  ].join("::");
+
+  const index =
+    relationshipPhraseHash(seed) %
+    pool.length;
+
+  return pool[index];
+}
+
+
+
+function relationshipDynamicVerdict(score) {
+
+  const n = Number(score);
+
+  if (n >= 78) {
+    return "Très forte dynamique entre vous";
+  }
+
+  if (n >= 66) {
+    return "Une dynamique naturellement favorable";
+  }
+
+  if (n >= 54) {
+    return "Bonne base, avec quelques nuances";
+  }
+
+  if (n >= 42) {
+    return "Une dynamique assez contrastée";
+  }
+
+  if (n >= 30) {
+    return "Plusieurs ajustements seront nécessaires";
+  }
+
+  return "Une dynamique particulièrement exigeante";
+}
+
+
+function relationshipDynamicHeadline(
+  mode,
+  score
+) {
+
+  const n = Number(score);
+
+  const level =
+    n >= 70
+      ? "strong"
+      : n >= 56
+        ? "good"
+        : n >= 43
+          ? "mixed"
+          : "delicate";
+
+
+  const texts = {
+
+    love: {
+      strong:
+        "Un lien qui se nourrit naturellement",
+      good:
+        "Un lien avec un vrai potentiel d’équilibre",
+      mixed:
+        "Une attirance réelle, avec des ajustements à trouver",
+      delicate:
+        "Un lien intense qui demande de la compréhension"
+    },
+
+    friendship: {
+      strong:
+        "Une complicité qui peut s’installer naturellement",
+      good:
+        "Une amitié qui trouve facilement son rythme",
+      mixed:
+        "Une amitié riche mais parfois contrastée",
+      delicate:
+        "Une amitié qui demande de respecter les différences"
+    },
+
+    family: {
+      strong:
+        "Un lien familial qui peut offrir un vrai appui",
+      good:
+        "Un lien familial plutôt équilibré",
+      mixed:
+        "Un lien solide, mais avec des sensibilités différentes",
+      delicate:
+        "Un lien familial qui demande davantage d’ajustements"
+    },
+
+    flirt: {
+      strong:
+        "Une alchimie qui peut monter très vite",
+      good:
+        "Une attirance qui se développe naturellement",
+      mixed:
+        "Une attraction présente mais irrégulière",
+      delicate:
+        "Une dynamique de séduction assez contrastée"
+    }
+  };
+
+
+  return (
+    texts[mode]?.[level] ||
+    "Une dynamique relationnelle à explorer"
+  );
+}
+
+
+function relationshipDynamicSummary(
+  mode,
+  result
+) {
+
+  const definitions =
+    RELATIONSHIP_DYNAMIC_AXES[mode] ||
+    RELATIONSHIP_DYNAMIC_AXES.friendship;
+
+  const domains =
+    relationshipDomainMap(result);
+
+
+  const values =
+    definitions.map(axis => ({
+      ...axis,
+      score:
+        numericScore(
+          domains[axis.domain]
+        )
+    }));
+
+
+  const sorted =
+    [...values].sort(
+      (a, b) =>
+        b.score - a.score
+    );
+
+
+  const strongest =
+    sorted[0];
+
+  const sensitive =
+    sorted[sorted.length - 1];
+
+
+  if (
+    strongest &&
+    sensitive &&
+    strongest.domain !== sensitive.domain &&
+    Math.abs(
+      strongest.score -
+      sensitive.score
+    ) >= 8
+  ) {
+    return (
+      `${strongest.label} ressort comme votre point d’appui. ` +
+      `${sensitive.label} demande davantage d’attention ou d’ajustements.`
+    );
+  }
+
+
+  if (mode === "love") {
+    return (
+      "La relation est assez homogène : affection, attraction et échanges " +
+      "se répondent sans qu’un seul domaine domine complètement."
+    );
+  }
+
+
+  if (mode === "friendship") {
+    return (
+      "La dynamique est assez équilibrée entre échanges, confiance " +
+      "et capacité à partager des expériences."
+    );
+  }
+
+
+  if (mode === "family") {
+    return (
+      "Le lien familial repose sur un équilibre assez proche entre " +
+      "sécurité émotionnelle, compréhension et fonctionnement quotidien."
+    );
+  }
+
+
+  return (
+    "L’attirance, l’alchimie et la connexion sont relativement équilibrées."
+  );
+}
+
+
+function renderRelationshipDynamics(
+  mode,
+  result,
+  score
+) {
+
+  const headline =
+    document.getElementById(
+      "relationshipDynamicHeadline"
+    );
+
+  const summary =
+    document.getElementById(
+      "relationshipDynamicSummary"
+    );
+
+  const axesBox =
+    document.getElementById(
+      "relationshipDynamicAxes"
+    );
+
+  const technical =
+    document.getElementById(
+      "relationshipTechnicalScore"
+    );
+
+  const verdict =
+    document.getElementById(
+      "relationshipDynamicVerdict"
+    );
+
+
+  if (headline) {
+    headline.textContent =
+      relationshipDynamicHeadline(
+        mode,
+        score
+      );
+  }
+
+  if (verdict) {
+    verdict.textContent =
+      relationshipDynamicVerdict(
+        score
+      );
+  }
+
+
+  if (summary) {
+    summary.textContent =
+      relationshipDynamicSummary(
+        mode,
+        result
+      );
+  }
+
+
+  if (axesBox) {
+
+    const domains =
+      relationshipDomainMap(result);
+
+    const axes =
+      RELATIONSHIP_DYNAMIC_AXES[mode] ||
+      RELATIONSHIP_DYNAMIC_AXES.friendship;
+
+
+    axesBox.innerHTML =
+      axes.map(axis => {
+
+        const domainScore =
+          numericScore(
+            domains[axis.domain]
+          );
+
+        return `
+          <div class="relationship-dynamic-axis">
+
+            <div
+              class="relationship-dynamic-axis-icon"
+            >
+              ${relationshipEscapeHtml(axis.icon)}
+            </div>
+
+            <div
+              class="relationship-dynamic-axis-label"
+            >
+              ${relationshipEscapeHtml(axis.label)}
+            </div>
+
+            <div
+              class="relationship-dynamic-axis-value"
+            >
+              ${relationshipEscapeHtml(
+                relationshipAxisText(
+                  mode,
+                  axis.domain,
+                  domainScore
+                )
+              )}
+            </div>
+
+          </div>
+        `;
+
+      }).join("");
+  }
+
+
+  if (technical) {
+    technical.textContent =
+      `Indice contextuel interne : ${Math.round(score)}/100 — ` +
+      `conservé comme donnée technique, pas comme verdict sur la relation.`;
+  }
+}
+
+
 function renderRelationshipMode() {
   const result = ASTROMATCH_RESULT;
 
@@ -4604,6 +7197,12 @@ function renderRelationshipMode() {
     levelEl.textContent = relationshipLevel(score);
   }
 
+  renderRelationshipDynamics(
+    CURRENT_RELATIONSHIP_MODE,
+    result,
+    score
+  );
+
   for (const id of ["love", "friendship", "flirt", "family"]) {
     const tab = document.getElementById(`tab-${id}`);
 
@@ -4638,7 +7237,8 @@ function renderRelationshipMode() {
               f,
               score
             ),
-            null
+            null,
+            f
           )
         )
         .join("");
@@ -4660,7 +7260,8 @@ function renderRelationshipMode() {
               CURRENT_RELATIONSHIP_MODE,
               f
             ),
-            null
+            null,
+            f
           )
         )
         .join("");
@@ -4882,6 +7483,35 @@ async function start() {
 
     const selectedTarget =
       ASTROMATCH_SELECTED_TARGET;
+
+    /*
+     * Le premier lancement ne crée que le profil principal.
+     * Sans cible, l'accueil reste utilisable et propose les boutons +
+     * des groupes Amour, Amitié et Famille.
+     */
+    if (!selectedTarget) {
+      setAstroMatchComparisonVisible(false);
+
+      window.__astromatchStatus(
+        targets.length
+          ? "Choisis une relation pour lancer la comparaison."
+          : "Profil prêt — ajoute une relation quand tu le souhaites."
+      );
+
+      const primaryName =
+        primary.identity?.first_name ||
+        primary.first_name ||
+        "Profil principal";
+
+      const primaryElement =
+        document.getElementById("primaryName");
+
+      if (primaryElement) {
+        primaryElement.textContent = primaryName;
+      }
+
+      return;
+    }
 
     const primaryName =
       primary.identity?.first_name ||
@@ -9667,31 +12297,24 @@ async function resolveTargetBirthPlace(place) {
     throw new Error("Indique un lieu de naissance.");
   }
 
-  const response = await fetch(
-    window.AstroMatchApi.geocodeUrl("/api/geocode/search"),
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        query
-      })
-    }
-  );
-
-  const payload = await response.json();
-
-  if (!response.ok || !payload?.ok) {
+  if (
+    !window.AstroMatchApi ||
+    typeof window.AstroMatchApi.searchLocalPlaces !== "function"
+  ) {
     throw new Error(
-      payload?.error ||
-      `Lieu introuvable : ${query}`
+      "Recherche locale des villes indisponible."
     );
   }
 
+  const localResults =
+    await window.AstroMatchApi.searchLocalPlaces(
+      query,
+      5
+    );
+
   const places = dedupeBirthPlaces(
-    Array.isArray(payload.results)
-      ? payload.results
+    Array.isArray(localResults)
+      ? localResults
       : []
   );
 
@@ -9830,6 +12453,11 @@ async function saveTargetEditor() {
 
     sessionStorage.setItem(
       "astromatch:selectedTargetId",
+      createdProfile.profile_id
+    );
+
+    sessionStorage.setItem(
+      "astromatch:openTargetAfterCreate",
       createdProfile.profile_id
     );
     }
@@ -14800,24 +17428,22 @@ document.addEventListener(
         controller = new AbortController();
 
         try {
-          const response = await fetch(API, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-              query,
-              limit: 5
-            }),
-            signal: controller.signal
-          });
-
-          const payload = await response.json();
-
-          if (!response.ok || !payload?.ok) {
+          if (
+            !window.AstroMatchApi ||
+            typeof window.AstroMatchApi.searchLocalPlaces !== "function"
+          ) {
             hide();
             return;
           }
+
+          const payload = {
+            ok: true,
+            results:
+              await window.AstroMatchApi.searchLocalPlaces(
+                query,
+                5
+              )
+          };
 
           if (clean(input.value) !== query) return;
 
@@ -14931,5 +17557,994 @@ document.addEventListener(
 })();
 </script>
 
+
+<!-- ASTROMATCH_NAV_POINT2_START -->
+
+<style id="ASTROMATCH_NAV_POINT2_STYLE">
+body {
+  padding-bottom: 105px !important;
+}
+
+/* Le thème astral possède son propre scroll :
+   on réserve donc aussi la place de la navigation dedans. */
+#natalProfileView > div {
+  padding-bottom: 125px !important;
+}
+
+#astromatchMainNav {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transform: none;
+  z-index: 999;
+
+  width: 100%;
+  max-width: none;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+
+  padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
+
+  border-top: 1px solid rgba(255,255,255,.12);
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 0;
+  border-radius: 20px 20px 0 0;
+
+  background: rgba(9, 14, 32, .98);
+  backdrop-filter: blur(18px);
+
+  box-shadow: 0 16px 45px rgba(0,0,0,.45);
+}
+
+.astromatch-main-nav-button {
+  min-height: 58px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  gap: 3px;
+
+  border: 0;
+  border-radius: 18px;
+
+  background: transparent;
+  color: #94a3b8;
+
+  font: inherit;
+  font-size: 11px;
+  font-weight: 800;
+}
+
+.astromatch-main-nav-button .nav-icon {
+  font-size: 21px;
+  line-height: 1;
+}
+
+.astromatch-main-nav-button.active {
+  color: white;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(124,58,237,.36),
+      rgba(168,85,247,.18)
+    );
+}
+</style>
+
+<nav
+  id="astromatchMainNav"
+  aria-label="Navigation principale"
+>
+  <button
+    type="button"
+    class="astromatch-main-nav-button active"
+    data-main-tab="today"
+  >
+    <span class="nav-icon">☀️</span>
+    <span>Aujourd’hui</span>
+  </button>
+
+  <button
+    type="button"
+    class="astromatch-main-nav-button"
+    data-main-tab="relations"
+  >
+    <span class="nav-icon">❤️</span>
+    <span>Relations</span>
+  </button>
+
+  <button
+    type="button"
+    class="astromatch-main-nav-button"
+    data-main-tab="me"
+  >
+    <span class="nav-icon">👤</span>
+    <span>Moi</span>
+  </button>
+</nav>
+
+<script id="ASTROMATCH_NAV_POINT2_SCRIPT">
+(() => {
+  document
+    .querySelectorAll("[data-main-tab]")
+    .forEach(button => {
+      button.addEventListener("click", () => {
+        document
+          .querySelectorAll("[data-main-tab]")
+          .forEach(item =>
+            item.classList.toggle(
+              "active",
+              item === button
+            )
+          );
+
+        if (button.dataset.mainTab === "today") {
+
+          if (
+            typeof closeNatalProfile ===
+            "function"
+          ) {
+            closeNatalProfile();
+          }
+
+          document
+            .getElementById("astromatchHeaderLogo")
+            ?.click();
+        }
+
+        if (button.dataset.mainTab === "me") {
+          if (
+            typeof openNatalProfile ===
+            "function"
+          ) {
+            openNatalProfile();
+          } else {
+            document
+              .getElementById("openNatalProfile")
+              ?.click();
+          }
+        }
+
+        if (button.dataset.mainTab === "relations") {
+
+          if (
+            typeof closeNatalProfile ===
+            "function"
+          ) {
+            closeNatalProfile();
+          }
+
+          if (
+            typeof ASTROMATCH_CALCULATION_TOKEN !==
+            "undefined"
+          ) {
+            ASTROMATCH_CALCULATION_TOKEN++;
+          }
+
+          if (
+            typeof ASTROMATCH_SELECTED_TARGET !==
+            "undefined"
+          ) {
+            ASTROMATCH_SELECTED_TARGET = null;
+          }
+
+          if (
+            typeof ASTROMATCH_RESULT !==
+            "undefined"
+          ) {
+            ASTROMATCH_RESULT = null;
+          }
+
+          window.__astromatchLastResult = null;
+
+          sessionStorage.removeItem(
+            "astromatch:selectedTargetId"
+          );
+
+          document
+            .getElementById("astromatchComparisonArea")
+            ?.classList.add("hidden");
+
+          document.body.classList.remove(
+            "astromatch-comparison-open"
+          );
+
+          if (
+            typeof ASTROMATCH_OPEN_TARGET_GROUPS !==
+            "undefined"
+          ) {
+            ASTROMATCH_OPEN_TARGET_GROUPS.clear();
+            ASTROMATCH_OPEN_TARGET_GROUPS.add("romantic");
+            ASTROMATCH_OPEN_TARGET_GROUPS.add("friendship");
+            ASTROMATCH_OPEN_TARGET_GROUPS.add("family");
+          }
+
+          if (
+            typeof renderTargetSelector ===
+              "function" &&
+            typeof ASTROMATCH_TARGET_PROFILES !==
+              "undefined"
+          ) {
+            renderTargetSelector(
+              ASTROMATCH_TARGET_PROFILES,
+              null
+            );
+          }
+
+          setTimeout(() => {
+            document
+              .getElementById("targetSelector")
+              ?.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+              });
+          }, 50);
+        }
+      });
+    });
+
+  console.log(
+    "ASTROMATCH POINT 2 NAV — READY"
+  );
+})();
+</script>
+
+<!-- ASTROMATCH_NAV_POINT2_END -->
+
+
+<script id="ASTROMATCH_TODAY_POINT3_SCRIPT">
+(() => {
+
+  const escapeHtml = value =>
+    String(value ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+
+
+  function getPrimary() {
+
+    if (
+      typeof ASTROMATCH_PRIMARY_PROFILE !==
+        "undefined" &&
+      ASTROMATCH_PRIMARY_PROFILE
+    ) {
+      return ASTROMATCH_PRIMARY_PROFILE;
+    }
+
+    if (
+      window.AstroMatchProfiles &&
+      typeof window.AstroMatchProfiles
+        .getPrimaryProfile === "function"
+    ) {
+      return window.AstroMatchProfiles
+        .getPrimaryProfile();
+    }
+
+    return null;
+  }
+
+
+  function relationSection() {
+
+    const state =
+      document.getElementById(
+        "targetCalculationState"
+      );
+
+    return state?.closest("section") || null;
+  }
+
+
+  function setTodayVisible(visible) {
+
+    document
+      .getElementById("astromatchTodayView")
+      ?.classList.toggle(
+        "hidden",
+        !visible
+      );
+
+    relationSection()
+      ?.classList.toggle(
+        "hidden",
+        visible
+      );
+
+    document
+      .getElementById(
+        "astromatchComparisonHome"
+      )
+      ?.classList.toggle(
+        "hidden",
+        visible
+      );
+
+    if (visible) {
+      document
+        .getElementById(
+          "astromatchComparisonArea"
+        )
+        ?.classList.add("hidden");
+    }
+  }
+
+
+  function astroPlanetName(body) {
+    return ({
+      sun: "Soleil",
+      moon: "Lune",
+      mercury: "Mercure",
+      venus: "Vénus",
+      mars: "Mars",
+      jupiter: "Jupiter",
+      saturn: "Saturne",
+      uranus: "Uranus",
+      neptune: "Neptune",
+      pluto: "Pluton"
+    })[body] || body || "—";
+  }
+
+
+  function astroAspectName(aspect) {
+    return ({
+      conjunction: "Conjonction",
+      sextile: "Sextile",
+      square: "Carré",
+      trine: "Trigone",
+      opposition: "Opposition"
+    })[aspect] || aspect || "—";
+  }
+
+
+  function humanizeInfluence(item) {
+
+    const domain = item?.domain;
+    const tense =
+      item?.impact === "tense" ||
+      Number(item?.value) < 0;
+
+    const labels = {
+      heart: {
+        icon: "💗",
+        name: "Vie affective"
+      },
+      communication: {
+        icon: "💬",
+        name: "Échanges"
+      },
+      energy: {
+        icon: "⚡",
+        name: "Énergie"
+      }
+    };
+
+    const meta =
+      labels[domain] || {
+        icon: "✨",
+        name: "Climat du jour"
+      };
+
+    const texts = {
+      heart: {
+        tense:
+          "Tes émotions ou tes attentes peuvent prendre plus de place aujourd’hui. Évite de tirer des conclusions trop vite et privilégie les gestes simples, sincères et sans pression.",
+        supportive:
+          "Le climat affectif favorise davantage de naturel et de proximité. C’est un bon moment pour exprimer ce que tu ressens sans chercher à tout contrôler."
+      },
+
+      communication: {
+        tense:
+          "Les échanges peuvent être plus nerveux, imprévisibles ou faciles à mal interpréter. Prends quelques secondes avant de répondre et vérifie ce que l’autre voulait vraiment dire.",
+        supportive:
+          "Les mots circulent plus facilement aujourd’hui. Profite-en pour clarifier une situation, dire les choses simplement ou relancer une conversation importante."
+      },
+
+      energy: {
+        tense:
+          "Ton énergie peut être plus irrégulière ou dispersée. Évite de tout faire en même temps et concentre-toi sur ce qui mérite vraiment ton attention.",
+        supportive:
+          "Tu disposes d’un élan plus naturel pour agir et avancer. Oriente cette énergie vers une décision ou une tâche concrète plutôt que de la laisser se disperser."
+      }
+    };
+
+    const tone =
+      tense ? "tension" : "soutien";
+
+    const text =
+      texts[domain]?.[
+        tense ? "tense" : "supportive"
+      ] ||
+      (
+        tense
+          ? "Cette influence demande davantage de recul aujourd’hui."
+          : "Cette influence apporte un courant plutôt favorable aujourd’hui."
+      );
+
+    return {
+      badge:
+        `${meta.icon} ${meta.name} • ${tone}`,
+      text
+    };
+  }
+
+
+  function domainCard(
+    icon,
+    name,
+    domain
+  ) {
+
+    const score =
+      Number.isFinite(
+        Number(domain?.score)
+      )
+        ? Math.round(
+            Number(domain.score)
+          )
+        : 50;
+
+    return `
+      <div class="today-domain">
+        <div class="today-domain-icon">
+          ${icon}
+        </div>
+
+        <div class="today-domain-score">
+          ${score}
+        </div>
+
+        <div class="today-domain-name">
+          ${name}
+        </div>
+
+        <div class="today-domain-label">
+          ${escapeHtml(
+            domain?.label || ""
+          )}
+        </div>
+      </div>
+    `;
+  }
+
+
+  async function hydrateToday() {
+
+    const phrase =
+      document.getElementById(
+        "todayPhrase"
+      );
+
+    const summary =
+      document.getElementById(
+        "todaySummary"
+      );
+
+    const why =
+      document.getElementById(
+        "todayWhy"
+      );
+
+    try {
+
+      const primary = getPrimary();
+
+      if (!primary) {
+        throw new Error(
+          "Profil principal introuvable"
+        );
+      }
+
+      if (
+        !window.AstroMatchRuntime ||
+        typeof window.AstroMatchRuntime
+          .daily !== "function"
+      ) {
+        throw new Error(
+          "Moteur Daily indisponible"
+        );
+      }
+
+      const payload =
+        await window.AstroMatchRuntime.daily({
+          profile:
+            typeof profileToApiInput === "function"
+              ? profileToApiInput(primary)
+              : primary
+        });
+
+      const result =
+        payload?.result;
+
+      const interpretation =
+        result?.interpretation;
+
+      if (!result || !interpretation) {
+        throw new Error(
+          "Résultat Daily invalide"
+        );
+      }
+
+      const date =
+        new Date(
+          `${result.date}T12:00:00`
+        );
+
+      document.getElementById(
+        "todayDate"
+      ).textContent =
+        date.toLocaleDateString(
+          "fr-FR",
+          {
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+          }
+        );
+
+      phrase.textContent =
+        interpretation.phrase ||
+        "Ton ciel du jour est prêt.";
+
+      summary.textContent =
+        interpretation.summary || "";
+
+      document.getElementById(
+        "todayMeta"
+      ).textContent = "";
+
+      const domains =
+        interpretation.domains || {};
+
+      document.getElementById(
+        "todayDomains"
+      ).innerHTML =
+        domainCard(
+          "❤️",
+          "Cœur",
+          domains.heart
+        ) +
+        domainCard(
+          "💬",
+          "Échanges",
+          domains.communication
+        ) +
+        domainCard(
+          "⚡",
+          "Énergie",
+          domains.energy
+        );
+
+      const influences =
+        Array.isArray(
+          interpretation.why_today
+        )
+          ? interpretation.why_today
+          : [];
+
+      why.innerHTML =
+        influences.length
+          ? influences
+              .slice(0, 3)
+              .map(item => {
+                const human =
+                  humanizeInfluence(item);
+
+                const strength =
+                  Number.isFinite(
+                    Number(item.orb_strength)
+                  )
+                    ? Math.round(
+                        Number(
+                          item.orb_strength
+                        ) * 100
+                      )
+                    : null;
+
+                const orb =
+                  Number.isFinite(
+                    Number(item.orb)
+                  )
+                    ? Number(
+                        item.orb
+                      ).toFixed(1) + "°"
+                    : "—";
+
+                const house =
+                  item.house_number
+                    ? `Maison ${item.house_number}`
+                    : null;
+
+                return `
+                  <details class="today-influence">
+
+                    <summary class="today-influence-summary">
+
+                      <div class="today-influence-head">
+
+                        <div class="today-influence-badge">
+                          ${escapeHtml(
+                            human.badge
+                          )}
+                        </div>
+
+                        <span class="today-influence-chevron">
+                          ⌄
+                        </span>
+
+                      </div>
+
+                      <p>
+                        ${escapeHtml(
+                          human.text
+                        )}
+                      </p>
+
+                      <div class="today-influence-more">
+                        Voir les détails astrologiques
+                      </div>
+
+                    </summary>
+
+                    <div class="today-influence-details">
+
+                      <div class="today-detail-row">
+                        <span>🪐 Transit</span>
+                        <strong>
+                          ${escapeHtml(
+                            astroPlanetName(
+                              item.transiting_body
+                            )
+                          )}
+                        </strong>
+                      </div>
+
+                      ${
+                        item.natal_body
+                          ? `
+                            <div class="today-detail-row">
+                              <span>🎯 Cible natale</span>
+                              <strong>
+                                ${escapeHtml(
+                                  astroPlanetName(
+                                    item.natal_body
+                                  )
+                                )}
+                              </strong>
+                            </div>
+                          `
+                          : ""
+                      }
+
+                      <div class="today-detail-row">
+                        <span>📐 Aspect</span>
+                        <strong>
+                          ${escapeHtml(
+                            astroAspectName(
+                              item.aspect_type
+                            )
+                          )}
+                        </strong>
+                      </div>
+
+                      <div class="today-detail-row">
+                        <span>📏 Orbe</span>
+                        <strong>
+                          ${escapeHtml(orb)}
+                        </strong>
+                      </div>
+
+                      ${
+                        strength !== null
+                          ? `
+                            <div class="today-detail-row">
+                              <span>✨ Intensité</span>
+                              <strong>
+                                ${strength} %
+                              </strong>
+                            </div>
+                          `
+                          : ""
+                      }
+
+                      ${
+                        house
+                          ? `
+                            <div class="today-detail-row">
+                              <span>🏠 Zone activée</span>
+                              <strong>
+                                ${escapeHtml(
+                                  house
+                                )}
+                              </strong>
+                            </div>
+                          `
+                          : ""
+                      }
+
+                    </div>
+
+                  </details>
+                `;
+              })
+              .join("")
+          : `
+              <div class="today-influence">
+                <p>
+                  Aucun transit dominant
+                  n’est isolé aujourd’hui.
+                </p>
+              </div>
+            `;
+
+    } catch (error) {
+
+      console.error(
+        "ASTROMATCH TODAY ERROR",
+        error
+      );
+
+      phrase.textContent =
+        "Impossible de calculer ton ciel du jour.";
+
+      summary.textContent =
+        error?.message ||
+        "Erreur Daily.";
+
+      why.innerHTML = "";
+    }
+  }
+
+
+  function openToday() {
+
+    setTodayVisible(true);
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth"
+    });
+
+    hydrateToday();
+  }
+
+
+  function leaveToday() {
+    setTodayVisible(false);
+  }
+
+
+  document
+    .querySelectorAll(
+      "[data-main-tab]"
+    )
+    .forEach(button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+
+          const tab =
+            button.dataset.mainTab;
+
+          if (tab === "today") {
+            setTimeout(
+              openToday,
+              20
+            );
+          } else {
+            leaveToday();
+          }
+        }
+      );
+    });
+
+
+  function boot() {
+
+    setTimeout(() => {
+
+      const active =
+        document.querySelector(
+          '[data-main-tab="today"]'
+        );
+
+      if (
+        active?.classList
+          .contains("active")
+      ) {
+        openToday();
+      }
+
+    }, 250);
+  }
+
+
+  if (
+    document.readyState ===
+    "loading"
+  ) {
+    document.addEventListener(
+      "DOMContentLoaded",
+      boot,
+      { once: true }
+    );
+  } else {
+    boot();
+  }
+
+  console.log(
+    "ASTROMATCH POINT 3 TODAY — READY"
+  );
+
+})();
+</script>
+
+<!-- ASTROMATCH_TODAY_POINT3_END -->
+
+
+
+
+
+<!-- ASTROMATCH_OPEN_CREATED_TARGET_V2_START -->
+
+<script id="ASTROMATCH_OPEN_CREATED_TARGET_V2">
+(() => {
+
+  const STORAGE_KEY =
+    "astromatch:openTargetAfterCreate";
+
+
+  function tryOpenCreatedTarget() {
+
+    const targetId =
+      sessionStorage.getItem(
+        STORAGE_KEY
+      );
+
+    if (!targetId) {
+      return;
+    }
+
+
+    let attempts = 0;
+
+    const timer =
+      setInterval(
+        () => {
+
+          attempts++;
+
+          const ready =
+            typeof selectTargetProfile ===
+              "function" &&
+            typeof ASTROMATCH_TARGET_PROFILES !==
+              "undefined" &&
+            Array.isArray(
+              ASTROMATCH_TARGET_PROFILES
+            ) &&
+            ASTROMATCH_TARGET_PROFILES.some(
+              profile =>
+                String(
+                  profile?.profile_id
+                ) ===
+                String(targetId)
+            );
+
+
+          if (!ready) {
+
+            if (attempts >= 80) {
+              clearInterval(timer);
+
+              console.error(
+                "ASTROMATCH AUTO OPEN — cible introuvable",
+                targetId
+              );
+            }
+
+            return;
+          }
+
+
+          clearInterval(timer);
+
+
+          /*
+           * Passe d'abord dans l'onglet Relations.
+           */
+          const relationsButton =
+            document.querySelector(
+              '[data-main-tab="relations"]'
+            );
+
+          relationsButton?.click();
+
+
+          /*
+           * Le clic Relations réinitialise
+           * volontairement la sélection.
+           * On ouvre donc le nouveau profil juste après.
+           */
+          setTimeout(
+            () => {
+
+              selectTargetProfile(
+                targetId
+              );
+
+              sessionStorage.removeItem(
+                STORAGE_KEY
+              );
+
+
+              /*
+               * Ramène l'utilisateur au début
+               * de la fiche de comparaison.
+               */
+              setTimeout(
+                () => {
+
+                  const comparison =
+                    document.getElementById(
+                      "astromatchComparisonArea"
+                    );
+
+                  comparison?.scrollIntoView({
+                    behavior: "smooth",
+                    block: "start"
+                  });
+
+                },
+                250
+              );
+
+            },
+            120
+          );
+
+        },
+        50
+      );
+  }
+
+
+  if (
+    document.readyState === "loading"
+  ) {
+    document.addEventListener(
+      "DOMContentLoaded",
+      () =>
+        setTimeout(
+          tryOpenCreatedTarget,
+          150
+        ),
+      { once: true }
+    );
+  } else {
+    setTimeout(
+      tryOpenCreatedTarget,
+      150
+    );
+  }
+
+})();
+</script>
+
+<!-- ASTROMATCH_OPEN_CREATED_TARGET_V2_END -->
+
+<!-- ASTROMATCH_RELATION_CONTEXT_V2 -->
+<!-- ASTROMATCH_POINT6_DYNAMIC_V1 -->
+<!-- ASTROMATCH_POINT7_WHY_V1 -->
 </body>
 </html>

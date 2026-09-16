@@ -5,6 +5,8 @@ on:
   push:
     branches:
       - main
+      - astromatch-roadmap-v2
+      - test/onboarding-point-1
 
 permissions:
   contents: read
@@ -44,6 +46,17 @@ jobs:
 
       - name: Sync Capacitor Android
         run: npx cap sync android
+
+      - name: Configure isolated test app
+        if: github.ref == 'refs/heads/test/onboarding-point-1'
+        run: |
+          python3 - <<'PYTEST'
+          from pathlib import Path
+          p = Path('android/app/build.gradle')
+          p.write_text(p.read_text().replace('applicationId "com.astromatch.app"', 'applicationId "com.astromatch.app.onboarding"'))
+          p = Path('android/app/src/main/res/values/strings.xml')
+          p.write_text(p.read_text().replace('>AstroMatch<', '>AstroMatch Test<'))
+          PYTEST
 
       - name: Build debug APK
         working-directory: android
