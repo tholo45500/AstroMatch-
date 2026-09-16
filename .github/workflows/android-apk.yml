@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - main
+      - astromatch-roadmap-v2
       - test/onboarding-point-1
 
 permissions:
