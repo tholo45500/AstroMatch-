@@ -2317,6 +2317,192 @@ body::after {
 
 <script src="./astromatch_api.js?v=offline-v4"></script>
 <script src="./astromatch_runtime.bundle.js"></script>
+
+<style id="ASTROMATCH_RELATIONSHIP_DYNAMIC_V1">
+
+.relationship-dynamic-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.relationship-dynamic-icon {
+  width: 52px;
+  height: 52px;
+  flex: 0 0 52px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 17px;
+
+  background:
+    linear-gradient(
+      145deg,
+      rgba(139,92,246,.18),
+      rgba(15,23,42,.78)
+    );
+
+  border:
+    1px solid rgba(167,139,250,.17);
+
+  font-size: 27px;
+}
+
+.relationship-dynamic-kicker {
+  margin-top: 22px;
+
+  color: #8b5cf6;
+
+  font-size: 10px;
+  font-weight: 950;
+  letter-spacing: .16em;
+}
+
+.relationship-dynamic-headline {
+  margin-top: 7px;
+
+  color: #f8fafc;
+
+  font-size: 24px;
+  line-height: 1.22;
+  font-weight: 950;
+
+  letter-spacing: -.025em;
+}
+
+.relationship-dynamic-summary {
+  margin-top: 9px;
+
+  color: #cbd5e1;
+
+  font-size: 13px;
+  line-height: 1.58;
+}
+
+
+.relationship-score-row {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  margin-top: 17px;
+  padding: 13px 14px;
+
+  border-radius: 18px;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(124,58,237,.12),
+      rgba(2,6,23,.48)
+    );
+
+  border:
+    1px solid rgba(167,139,250,.14);
+}
+
+.relationship-score-number {
+  flex: 0 0 auto;
+
+  color: #f8fafc;
+
+  font-size: 36px;
+  line-height: 1;
+  font-weight: 950;
+
+  letter-spacing: -.045em;
+}
+
+.relationship-score-number small {
+  margin-left: 2px;
+
+  color: #64748b;
+
+  font-size: 12px;
+  font-weight: 800;
+
+  letter-spacing: 0;
+}
+
+.relationship-score-reading {
+  min-width: 0;
+}
+
+.relationship-score-verdict {
+  color: #e2e8f0;
+
+  font-size: 14px;
+  line-height: 1.3;
+
+  font-weight: 900;
+}
+
+.relationship-score-note {
+  margin-top: 4px;
+
+  color: #64748b;
+
+  font-size: 9px;
+  line-height: 1.35;
+}
+
+.relationship-dynamic-axes {
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, minmax(0,1fr));
+
+  gap: 7px;
+
+  margin-top: 17px;
+}
+
+.relationship-dynamic-axis {
+  min-width: 0;
+
+  padding: 12px 8px;
+
+  border-radius: 16px;
+
+  background:
+    rgba(2,6,23,.40);
+
+  border:
+    1px solid rgba(255,255,255,.065);
+
+  text-align: center;
+}
+
+.relationship-dynamic-axis-icon {
+  font-size: 18px;
+}
+
+.relationship-dynamic-axis-label {
+  margin-top: 5px;
+
+  color: #94a3b8;
+
+  font-size: 9px;
+  line-height: 1.2;
+
+  text-transform: uppercase;
+  letter-spacing: .055em;
+}
+
+.relationship-dynamic-axis-value {
+  margin-top: 5px;
+
+  color: #f1f5f9;
+
+  font-size: 11px;
+  line-height: 1.25;
+
+  font-weight: 900;
+}
+
+</style>
+
 </head>
 
 <body class="min-h-screen text-white">
@@ -3383,36 +3569,84 @@ window.scoreProgressClass = scoreProgressClass;
     </div>
   </section>
 
-  <!-- MODE TITLE -->
-  <section class="glass rounded-3xl p-6 mb-4 text-center">
+  <!-- DYNAMIQUE RELATIONNELLE -->
+  <section
+    class="glass rounded-3xl p-5 mb-4"
+    id="relationshipDynamicCard"
+  >
 
-    <div id="relationshipIcon" class="text-4xl mb-2">❤️</div>
-
-    <div id="relationshipTitle"
-         class="text-2xl font-black">
-      Amour
-    </div>
-
-    <div id="relationshipSubtitle"
-         class="text-sm text-slate-400 mt-1">
-      Potentiel amoureux et construction du couple
-    </div>
-
-    <div class="mt-5">
-      <div id="relationshipScore"
-           class="text-6xl font-black leading-none">
-        —
+    <div class="relationship-dynamic-head">
+      <div
+        id="relationshipIcon"
+        class="relationship-dynamic-icon"
+      >
+        ❤️
       </div>
 
-      <div class="text-slate-400 mt-1">
-        / 100
+      <div class="min-w-0">
+        <div
+          id="relationshipTitle"
+          class="text-xl font-black"
+        >
+          Amour
+        </div>
+
+        <div
+          id="relationshipSubtitle"
+          class="text-xs text-slate-400 mt-1"
+        >
+          Affection, proximité et construction du couple
+        </div>
       </div>
     </div>
 
-    <div id="relationshipLevel"
-         class="inline-flex mt-4 px-4 py-2 rounded-full bg-slate-800 text-sm font-semibold">
+
+    <div class="relationship-dynamic-kicker">
+      DYNAMIQUE RELATIONNELLE
+    </div>
+
+    <div
+      id="relationshipDynamicHeadline"
+      class="relationship-dynamic-headline"
+    >
+      Analyse de votre dynamique…
+    </div>
+
+    <div
+      id="relationshipDynamicSummary"
+      class="relationship-dynamic-summary"
+    ></div>
+
+    <div
+      id="relationshipDynamicAxes"
+      class="relationship-dynamic-axes"
+    ></div>
+
+
+    <div class="relationship-score-row">
+
+      <div class="relationship-score-number">
+        <span id="relationshipScore">—</span>
+        <small>/100</small>
+      </div>
+
+      <div class="relationship-score-reading">
+
+        <div
+          id="relationshipDynamicVerdict"
+          class="relationship-score-verdict"
+        >
+          Analyse de la relation…
+        </div>
+
+
+      </div>
+
+    </div>
+
+    <span id="relationshipLevel" class="hidden">
       Analyse…
-    </div>
+    </span>
 
   </section>
 
@@ -3514,6 +3748,11 @@ window.scoreProgressClass = scoreProgressClass;
       <summary class="cursor-pointer font-semibold text-sm text-slate-300">
         📊 Voir le détail des scores astrologiques
       </summary>
+
+      <div
+        id="relationshipTechnicalScore"
+        class="mt-4 mb-3 text-xs text-slate-500"
+      ></div>
 
       <div id="domains" class="mt-4"></div>
 
@@ -4912,6 +5151,763 @@ if (typeof window !== "undefined") {
   window.selectRelationshipMode = selectRelationshipMode;
 }
 
+
+const RELATIONSHIP_DYNAMIC_AXES = {
+
+  love: [
+    {
+      domain: "love",
+      icon: "💗",
+      label: "Lien affectif"
+    },
+    {
+      domain: "passion",
+      icon: "🔥",
+      label: "Élan"
+    },
+    {
+      domain: "communication",
+      icon: "💬",
+      label: "Dialogue"
+    }
+  ],
+
+  friendship: [
+    {
+      domain: "communication",
+      icon: "💬",
+      label: "Échanges"
+    },
+    {
+      domain: "projects",
+      icon: "🧭",
+      label: "Complicité"
+    },
+    {
+      domain: "emotions",
+      icon: "🤝",
+      label: "Confiance"
+    }
+  ],
+
+  family: [
+    {
+      domain: "emotions",
+      icon: "🫶",
+      label: "Sécurité"
+    },
+    {
+      domain: "communication",
+      icon: "💬",
+      label: "Compréhension"
+    },
+    {
+      domain: "daily",
+      icon: "🏠",
+      label: "Quotidien"
+    }
+  ],
+
+  flirt: [
+    {
+      domain: "passion",
+      icon: "🔥",
+      label: "Alchimie"
+    },
+    {
+      domain: "love",
+      icon: "✨",
+      label: "Attirance"
+    },
+    {
+      domain: "communication",
+      icon: "💬",
+      label: "Connexion"
+    }
+  ]
+};
+
+
+function relationshipPhraseHash(value) {
+  let hash = 2166136261;
+
+  for (const char of String(value || "")) {
+    hash ^= char.charCodeAt(0);
+    hash = Math.imul(hash, 16777619);
+  }
+
+  return Math.abs(hash >>> 0);
+}
+
+
+function relationshipPhraseSeed() {
+  const primary =
+    typeof ASTROMATCH_PRIMARY_PROFILE !== "undefined"
+      ? ASTROMATCH_PRIMARY_PROFILE
+      : null;
+
+  const target =
+    typeof ASTROMATCH_SELECTED_TARGET !== "undefined"
+      ? ASTROMATCH_SELECTED_TARGET
+      : null;
+
+  const profileSignature = profile => [
+    profile?.identity?.first_name || "",
+    profile?.identity?.last_name || "",
+    profile?.birth_data?.date || "",
+    profile?.birth_data?.time?.value || "",
+    profile?.birth_data?.place?.resolved?.latitude || "",
+    profile?.birth_data?.place?.resolved?.longitude || ""
+  ].join("|");
+
+  return (
+    profileSignature(primary) +
+    "::" +
+    profileSignature(target)
+  );
+}
+
+
+function relationshipPhraseBand(score) {
+  const n = Number(score);
+
+  if (n >= 70) return "high";
+  if (n >= 55) return "good";
+  if (n >= 40) return "mixed";
+  return "low";
+}
+
+
+const RELATIONSHIP_AXIS_PHRASES = {
+
+  love: {
+    love: {
+      high: [
+        "L’affection circule naturellement",
+        "Vous exprimez facilement votre attachement",
+        "Le lien affectif trouve vite sa place"
+      ],
+      good: [
+        "L’affection a de bonnes bases",
+        "Le rapprochement se fait assez naturellement",
+        "Vous pouvez facilement nourrir la proximité"
+      ],
+      mixed: [
+        "Vos façons d’aimer ne sont pas toujours les mêmes",
+        "La proximité demande parfois quelques ajustements",
+        "L’affection existe, mais ne s’exprime pas toujours pareil"
+      ],
+      low: [
+        "Le lien affectif demande davantage d’efforts",
+        "Vos besoins de proximité peuvent être assez différents",
+        "L’affection peut être plus difficile à exprimer entre vous"
+      ]
+    },
+
+    passion: {
+      high: [
+        "L’attirance s’installe facilement",
+        "L’élan entre vous est spontané",
+        "La chimie peut se déclencher rapidement"
+      ],
+      good: [
+        "L’attirance trouve assez facilement son rythme",
+        "Il existe un vrai potentiel d’élan entre vous",
+        "La chimie peut se développer naturellement"
+      ],
+      mixed: [
+        "L’attirance peut fonctionner par vagues",
+        "L’élan est présent mais pas toujours au même rythme",
+        "La chimie peut alterner entre rapprochement et distance"
+      ],
+      low: [
+        "L’attirance demande davantage à être nourrie",
+        "Vous ne réagissez pas toujours au même rythme",
+        "L’élan entre vous peut être plus difficile à maintenir"
+      ]
+    },
+
+    communication: {
+      high: [
+        "Vous vous comprenez facilement",
+        "Les échanges viennent naturellement",
+        "Vous trouvez vite un terrain d’entente"
+      ],
+      good: [
+        "Le dialogue fonctionne plutôt bien",
+        "Vous arrivez généralement à vous faire comprendre",
+        "Les échanges ont de bonnes bases"
+      ],
+      mixed: [
+        "Certains sujets peuvent vite créer des malentendus",
+        "Vous ne formulez pas toujours les choses de la même façon",
+        "Le dialogue demande parfois de reformuler"
+      ],
+      low: [
+        "Les incompréhensions peuvent s’installer rapidement",
+        "Vos façons de communiquer peuvent souvent se heurter",
+        "Le dialogue demande une vraie attention"
+      ]
+    }
+  },
+
+
+  friendship: {
+    communication: {
+      high: [
+        "Vous échangez très naturellement",
+        "La conversation peut devenir un vrai point fort",
+        "Vous vous comprenez facilement entre amis"
+      ],
+      good: [
+        "Les échanges sont globalement faciles",
+        "Vous trouvez assez vite des sujets communs",
+        "Le dialogue soutient bien votre complicité"
+      ],
+      mixed: [
+        "Vous n’avez pas toujours la même façon d’échanger",
+        "Certains malentendus peuvent casser le rythme",
+        "La complicité demande parfois de clarifier les choses"
+      ],
+      low: [
+        "Vos façons de communiquer peuvent être assez différentes",
+        "Les échanges peuvent facilement manquer de naturel",
+        "Il faut parfois faire un effort pour bien vous comprendre"
+      ]
+    },
+
+    projects: {
+      high: [
+        "Faire des choses ensemble vous rapproche",
+        "Les projets communs renforcent facilement la complicité",
+        "Vous pouvez former une bonne équipe"
+      ],
+      good: [
+        "Les activités communes peuvent vraiment vous rapprocher",
+        "Vous trouvez facilement des choses à partager",
+        "Les projets sont un bon moteur pour votre amitié"
+      ],
+      mixed: [
+        "Vous n’avez pas toujours les mêmes envies",
+        "Les projets communs demandent parfois de trouver un compromis",
+        "Votre complicité fonctionne mieux sur certains terrains que d’autres"
+      ],
+      low: [
+        "Vos envies peuvent souvent partir dans des directions différentes",
+        "Trouver des projets communs peut demander un effort",
+        "Vous ne cherchez pas toujours les mêmes expériences"
+      ]
+    },
+
+    emotions: {
+      high: [
+        "La confiance peut s’installer facilement",
+        "Vous pouvez vous sentir rapidement à l’aise ensemble",
+        "Le soutien mutuel vient assez naturellement"
+      ],
+      good: [
+        "La confiance dispose de bonnes bases",
+        "Vous pouvez compter assez facilement l’un sur l’autre",
+        "Le lien peut devenir rassurant avec le temps"
+      ],
+      mixed: [
+        "La confiance demande parfois un peu de temps",
+        "Vous ne montrez pas toujours vos émotions de la même manière",
+        "Le soutien existe mais ne se manifeste pas toujours pareil"
+      ],
+      low: [
+        "La confiance peut être plus longue à construire",
+        "Vous pouvez avoir du mal à sentir ce que l’autre traverse",
+        "Le soutien émotionnel demande davantage d’attention"
+      ]
+    }
+  },
+
+
+  family: {
+    emotions: {
+      high: [
+        "Vous pouvez facilement vous rassurer mutuellement",
+        "Le lien offre une vraie sensation de soutien",
+        "Vous captez assez naturellement les besoins de l’autre"
+      ],
+      good: [
+        "La sécurité émotionnelle a de bonnes bases",
+        "Vous pouvez généralement compter l’un sur l’autre",
+        "Le lien familial peut devenir un vrai point d’appui"
+      ],
+      mixed: [
+        "Vous ne réagissez pas toujours pareil émotionnellement",
+        "Les sensibilités différentes demandent parfois de l’adaptation",
+        "Vous ne ressentez pas toujours les situations de la même façon"
+      ],
+      low: [
+        "Les besoins émotionnels peuvent être difficiles à accorder",
+        "Vous pouvez parfois avoir du mal à vous rassurer mutuellement",
+        "Les différences de sensibilité peuvent peser sur le lien"
+      ]
+    },
+
+    communication: {
+      high: [
+        "Vous arrivez facilement à vous comprendre",
+        "Les discussions peuvent rester simples et directes",
+        "Vous trouvez assez naturellement une façon de vous parler"
+      ],
+      good: [
+        "La compréhension mutuelle fonctionne plutôt bien",
+        "Vous arrivez généralement à désamorcer les incompréhensions",
+        "Le dialogue familial possède de bonnes bases"
+      ],
+      mixed: [
+        "Les mêmes sujets peuvent revenir régulièrement",
+        "Vous ne vous exprimez pas toujours sur le même registre",
+        "Certains échanges demandent plus de patience"
+      ],
+      low: [
+        "Les incompréhensions peuvent facilement se répéter",
+        "Le dialogue peut vite devenir source de tension",
+        "Il faut souvent davantage d’efforts pour vous entendre"
+      ]
+    },
+
+    daily: {
+      high: [
+        "Le quotidien fonctionne naturellement entre vous",
+        "Vous trouvez facilement vos repères ensemble",
+        "Vos rythmes s’accordent plutôt bien"
+      ],
+      good: [
+        "La vie quotidienne trouve assez facilement son équilibre",
+        "Vous pouvez bien fonctionner ensemble au jour le jour",
+        "Vos habitudes sont globalement compatibles"
+      ],
+      mixed: [
+        "Vos habitudes ne vont pas toujours dans le même sens",
+        "Le quotidien demande quelques ajustements",
+        "Vos rythmes peuvent parfois se télescoper"
+      ],
+      low: [
+        "Le quotidien peut devenir une vraie source de friction",
+        "Vos habitudes sont assez difficiles à accorder",
+        "Trouver un rythme commun peut demander beaucoup d’adaptation"
+      ]
+    }
+  },
+
+
+  flirt: {
+    passion: {
+      high: [
+        "L’alchimie peut être immédiate",
+        "La tension entre vous se crée très naturellement",
+        "L’attirance peut monter très vite"
+      ],
+      good: [
+        "L’alchimie a de bonnes chances de s’installer",
+        "L’attirance se développe assez facilement",
+        "Il existe une vraie énergie de séduction"
+      ],
+      mixed: [
+        "L’attirance peut être intense puis retomber",
+        "La chimie fonctionne de façon assez irrégulière",
+        "Le désir peut alterner entre rapprochement et hésitation"
+      ],
+      low: [
+        "L’alchimie peut être plus difficile à déclencher",
+        "La séduction demande davantage d’efforts",
+        "L’attirance n’est pas forcément immédiate"
+      ]
+    },
+
+    love: {
+      high: [
+        "Vous vous attirez facilement",
+        "Le rapprochement paraît naturel",
+        "L’intérêt mutuel peut être évident rapidement"
+      ],
+      good: [
+        "Le potentiel d’attirance est bien présent",
+        "Le rapprochement peut se faire assez naturellement",
+        "L’intérêt peut grandir facilement"
+      ],
+      mixed: [
+        "L’intérêt peut être fort mais changeant",
+        "Vous ne montrez pas toujours votre attirance de la même façon",
+        "Le rapprochement peut avancer par à-coups"
+      ],
+      low: [
+        "Le rapprochement peut prendre davantage de temps",
+        "L’intérêt n’est pas toujours facile à lire",
+        "L’attirance demande plus de contexte pour se développer"
+      ]
+    },
+
+    communication: {
+      high: [
+        "Le jeu de séduction passe facilement par les échanges",
+        "La conversation nourrit naturellement l’attirance",
+        "Vous trouvez facilement le ton juste"
+      ],
+      good: [
+        "Les échanges peuvent bien soutenir la séduction",
+        "La conversation crée facilement de la proximité",
+        "Vous trouvez assez naturellement une complicité verbale"
+      ],
+      mixed: [
+        "Les signaux peuvent parfois être mal interprétés",
+        "Vous ne jouez pas toujours sur le même registre",
+        "Le flirt peut être perturbé par quelques malentendus"
+      ],
+      low: [
+        "Les signaux sont parfois difficiles à décoder",
+        "La communication peut freiner le rapprochement",
+        "Vous pouvez facilement mal interpréter les intentions de l’autre"
+      ]
+    }
+  }
+};
+
+
+function relationshipAxisText(
+  mode,
+  domain,
+  score
+) {
+
+  const band =
+    relationshipPhraseBand(score);
+
+  const pool =
+    RELATIONSHIP_AXIS_PHRASES?.[mode]?.[domain]?.[band];
+
+  if (!Array.isArray(pool) || !pool.length) {
+    return "Cette dimension mérite d’être observée";
+  }
+
+  /*
+   * Même duo + même contexte + même axe
+   * => toujours la même formulation.
+   *
+   * Duo différent
+   * => variation possible.
+   */
+  const seed = [
+    relationshipPhraseSeed(),
+    mode,
+    domain,
+    band
+  ].join("::");
+
+  const index =
+    relationshipPhraseHash(seed) %
+    pool.length;
+
+  return pool[index];
+}
+
+
+
+function relationshipDynamicVerdict(score) {
+
+  const n = Number(score);
+
+  if (n >= 78) {
+    return "Très forte dynamique entre vous";
+  }
+
+  if (n >= 66) {
+    return "Une dynamique naturellement favorable";
+  }
+
+  if (n >= 54) {
+    return "Bonne base, avec quelques nuances";
+  }
+
+  if (n >= 42) {
+    return "Une dynamique assez contrastée";
+  }
+
+  if (n >= 30) {
+    return "Plusieurs ajustements seront nécessaires";
+  }
+
+  return "Une dynamique particulièrement exigeante";
+}
+
+
+function relationshipDynamicHeadline(
+  mode,
+  score
+) {
+
+  const n = Number(score);
+
+  const level =
+    n >= 70
+      ? "strong"
+      : n >= 56
+        ? "good"
+        : n >= 43
+          ? "mixed"
+          : "delicate";
+
+
+  const texts = {
+
+    love: {
+      strong:
+        "Un lien qui se nourrit naturellement",
+      good:
+        "Un lien avec un vrai potentiel d’équilibre",
+      mixed:
+        "Une attirance réelle, avec des ajustements à trouver",
+      delicate:
+        "Un lien intense qui demande de la compréhension"
+    },
+
+    friendship: {
+      strong:
+        "Une complicité qui peut s’installer naturellement",
+      good:
+        "Une amitié qui trouve facilement son rythme",
+      mixed:
+        "Une amitié riche mais parfois contrastée",
+      delicate:
+        "Une amitié qui demande de respecter les différences"
+    },
+
+    family: {
+      strong:
+        "Un lien familial qui peut offrir un vrai appui",
+      good:
+        "Un lien familial plutôt équilibré",
+      mixed:
+        "Un lien solide, mais avec des sensibilités différentes",
+      delicate:
+        "Un lien familial qui demande davantage d’ajustements"
+    },
+
+    flirt: {
+      strong:
+        "Une alchimie qui peut monter très vite",
+      good:
+        "Une attirance qui se développe naturellement",
+      mixed:
+        "Une attraction présente mais irrégulière",
+      delicate:
+        "Une dynamique de séduction assez contrastée"
+    }
+  };
+
+
+  return (
+    texts[mode]?.[level] ||
+    "Une dynamique relationnelle à explorer"
+  );
+}
+
+
+function relationshipDynamicSummary(
+  mode,
+  result
+) {
+
+  const definitions =
+    RELATIONSHIP_DYNAMIC_AXES[mode] ||
+    RELATIONSHIP_DYNAMIC_AXES.friendship;
+
+  const domains =
+    relationshipDomainMap(result);
+
+
+  const values =
+    definitions.map(axis => ({
+      ...axis,
+      score:
+        numericScore(
+          domains[axis.domain]
+        )
+    }));
+
+
+  const sorted =
+    [...values].sort(
+      (a, b) =>
+        b.score - a.score
+    );
+
+
+  const strongest =
+    sorted[0];
+
+  const sensitive =
+    sorted[sorted.length - 1];
+
+
+  if (
+    strongest &&
+    sensitive &&
+    strongest.domain !== sensitive.domain &&
+    Math.abs(
+      strongest.score -
+      sensitive.score
+    ) >= 8
+  ) {
+    return (
+      `${strongest.label} ressort comme votre point d’appui. ` +
+      `${sensitive.label} demande davantage d’attention ou d’ajustements.`
+    );
+  }
+
+
+  if (mode === "love") {
+    return (
+      "La relation est assez homogène : affection, attraction et échanges " +
+      "se répondent sans qu’un seul domaine domine complètement."
+    );
+  }
+
+
+  if (mode === "friendship") {
+    return (
+      "La dynamique est assez équilibrée entre échanges, confiance " +
+      "et capacité à partager des expériences."
+    );
+  }
+
+
+  if (mode === "family") {
+    return (
+      "Le lien familial repose sur un équilibre assez proche entre " +
+      "sécurité émotionnelle, compréhension et fonctionnement quotidien."
+    );
+  }
+
+
+  return (
+    "L’attirance, l’alchimie et la connexion sont relativement équilibrées."
+  );
+}
+
+
+function renderRelationshipDynamics(
+  mode,
+  result,
+  score
+) {
+
+  const headline =
+    document.getElementById(
+      "relationshipDynamicHeadline"
+    );
+
+  const summary =
+    document.getElementById(
+      "relationshipDynamicSummary"
+    );
+
+  const axesBox =
+    document.getElementById(
+      "relationshipDynamicAxes"
+    );
+
+  const technical =
+    document.getElementById(
+      "relationshipTechnicalScore"
+    );
+
+  const verdict =
+    document.getElementById(
+      "relationshipDynamicVerdict"
+    );
+
+
+  if (headline) {
+    headline.textContent =
+      relationshipDynamicHeadline(
+        mode,
+        score
+      );
+  }
+
+  if (verdict) {
+    verdict.textContent =
+      relationshipDynamicVerdict(
+        score
+      );
+  }
+
+
+  if (summary) {
+    summary.textContent =
+      relationshipDynamicSummary(
+        mode,
+        result
+      );
+  }
+
+
+  if (axesBox) {
+
+    const domains =
+      relationshipDomainMap(result);
+
+    const axes =
+      RELATIONSHIP_DYNAMIC_AXES[mode] ||
+      RELATIONSHIP_DYNAMIC_AXES.friendship;
+
+
+    axesBox.innerHTML =
+      axes.map(axis => {
+
+        const domainScore =
+          numericScore(
+            domains[axis.domain]
+          );
+
+        return `
+          <div class="relationship-dynamic-axis">
+
+            <div
+              class="relationship-dynamic-axis-icon"
+            >
+              ${relationshipEscapeHtml(axis.icon)}
+            </div>
+
+            <div
+              class="relationship-dynamic-axis-label"
+            >
+              ${relationshipEscapeHtml(axis.label)}
+            </div>
+
+            <div
+              class="relationship-dynamic-axis-value"
+            >
+              ${relationshipEscapeHtml(
+                relationshipAxisText(
+                  mode,
+                  axis.domain,
+                  domainScore
+                )
+              )}
+            </div>
+
+          </div>
+        `;
+
+      }).join("");
+  }
+
+
+  if (technical) {
+    technical.textContent =
+      `Indice contextuel interne : ${Math.round(score)}/100 — ` +
+      `conservé comme donnée technique, pas comme verdict sur la relation.`;
+  }
+}
+
+
 function renderRelationshipMode() {
   const result = ASTROMATCH_RESULT;
 
@@ -4948,6 +5944,12 @@ function renderRelationshipMode() {
   if (levelEl) {
     levelEl.textContent = relationshipLevel(score);
   }
+
+  renderRelationshipDynamics(
+    CURRENT_RELATIONSHIP_MODE,
+    result,
+    score
+  );
 
   for (const id of ["love", "friendship", "flirt", "family"]) {
     const tab = document.getElementById(`tab-${id}`);
@@ -16288,5 +17290,6 @@ body {
 <!-- ASTROMATCH_OPEN_CREATED_TARGET_V2_END -->
 
 <!-- ASTROMATCH_RELATION_CONTEXT_V2 -->
+<!-- ASTROMATCH_POINT6_DYNAMIC_V1 -->
 </body>
 </html>
