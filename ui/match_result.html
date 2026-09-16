@@ -3433,6 +3433,161 @@ section.grid > .glass {
 
 </style>
 
+
+<style id="ASTROMATCH_V3_NATIVE_RELATIONS_STYLE">
+
+.v3-relation-tools {
+  margin-bottom: 12px;
+}
+
+.v3-relation-search-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.v3-relation-search {
+  width: 100%;
+  height: 44px;
+  padding: 0 40px 0 38px;
+
+  border-radius: 15px;
+  border: 1px solid rgba(255,255,255,.08);
+
+  outline: none;
+
+  background: rgba(15,23,42,.76);
+  color: #f8fafc;
+
+  font-size: 13px;
+}
+
+.v3-relation-search:focus {
+  border-color: rgba(139,92,246,.42);
+}
+
+.v3-relation-search-icon {
+  position: absolute;
+  left: 13px;
+
+  color: #64748b;
+  font-size: 18px;
+
+  pointer-events: none;
+}
+
+.v3-relation-clear {
+  position: absolute;
+  right: 8px;
+
+  width: 30px;
+  height: 30px;
+
+  color: #64748b;
+  font-size: 18px;
+}
+
+.v3-relation-filters {
+  display: flex;
+  gap: 6px;
+  margin-top: 7px;
+}
+
+.v3-relation-filter {
+  min-height: 32px;
+  padding: 0 12px;
+
+  border-radius: 11px;
+
+  border: 1px solid rgba(255,255,255,.06);
+
+  background: rgba(15,23,42,.55);
+  color: #64748b;
+
+  font-size: 10px;
+  font-weight: 850;
+}
+
+.v3-relation-filter.active {
+  color: #e9d5ff;
+  border-color: rgba(139,92,246,.20);
+  background: rgba(124,58,237,.16);
+}
+
+.v3-profile-favorite {
+  width: 32px;
+  height: 32px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  border-radius: 8px;
+
+  border: 1px solid rgba(255,255,255,.10);
+
+  background: rgba(255,255,255,.05);
+  color: #64748b;
+
+  font-size: 17px;
+}
+
+.v3-profile-favorite.active {
+  color: #facc15;
+  border-color: rgba(250,204,21,.22);
+  background: rgba(250,204,21,.08);
+}
+
+</style>
+
+
+<style id="ASTROMATCH_V3_SEARCH_SUGGESTIONS">
+
+.v3-relation-suggestions {
+  margin-top:5px;
+  overflow:hidden;
+  border-radius:14px;
+  border:1px solid rgba(139,92,246,.18);
+  background:rgba(15,23,42,.98);
+  box-shadow:0 16px 35px rgba(0,0,0,.30);
+}
+
+.v3-relation-suggestions.hidden {
+  display:none;
+}
+
+.v3-relation-suggestion {
+  width:100%;
+  display:flex;
+  flex-direction:column;
+  align-items:flex-start;
+  padding:10px 12px;
+  border-bottom:1px solid rgba(255,255,255,.05);
+  text-align:left;
+}
+
+.v3-relation-suggestion:last-child {
+  border-bottom:0;
+}
+
+.v3-relation-suggestion:active {
+  background:rgba(124,58,237,.16);
+}
+
+.v3-relation-suggestion-name {
+  color:#f8fafc;
+  font-size:12px;
+  font-weight:900;
+}
+
+.v3-relation-suggestion-meta {
+  margin-top:2px;
+  color:#94a3b8;
+  font-size:10px;
+}
+
+</style>
+
 </head>
 
 <body class="min-h-screen text-white">
@@ -7787,10 +7942,59 @@ function renderAstroMatchHomeDashboard(
 
   if (!box) return;
 
-  const safeTargets =
+  const allSafeTargets =
     Array.isArray(targets)
       ? targets
       : [];
+
+  ASTROMATCH_RELATION_LAST_TARGETS =
+    allSafeTargets;
+
+  ASTROMATCH_RELATION_LAST_SELECTED =
+    selectedTarget;
+
+  const searchQuery =
+    astromatchRelationNormalize(
+      ASTROMATCH_RELATION_QUERY
+    );
+
+  const favoriteIds =
+    new Set(
+      astromatchFavoriteIds()
+    );
+
+  const safeTargets =
+    allSafeTargets.filter(target => {
+
+      const id =
+        String(
+          target?.profile_id || ""
+        );
+
+      if (
+        ASTROMATCH_RELATION_EXACT_TARGET_ID &&
+        id !== ASTROMATCH_RELATION_EXACT_TARGET_ID
+      ) {
+        return false;
+      }
+
+      if (
+        ASTROMATCH_RELATION_MODE ===
+          "favorites" &&
+        !favoriteIds.has(id)
+      ) {
+        return false;
+      }
+
+      if (!searchQuery) {
+        return true;
+      }
+
+      return astromatchRelationNormalize(
+        astromatchRelationName(target)
+      ).includes(searchQuery);
+
+    });
 
   const anyGroupOpen =
     typeof ASTROMATCH_OPEN_TARGET_GROUPS !==
@@ -8846,6 +9050,8 @@ function renderTargetSelector(targets, selectedTarget) {
   };
 
   container.innerHTML = `
+    ${renderAstroMatchRelationTools()}
+
     ${groupHtml("❤️", "Amour", men)}
 
     ${groupHtml("🤝", "Amitié", women)}
@@ -12558,6 +12764,539 @@ async function deleteTargetProfile(profileId) {
   }
 }
 
+
+/* ASTROMATCH_V3_NATIVE_RELATIONS */
+
+const ASTROMATCH_RELATION_FAVORITES_KEY =
+  "astromatch:favoriteTargets";
+
+let ASTROMATCH_RELATION_QUERY = "";
+let ASTROMATCH_RELATION_MODE = "all";
+let ASTROMATCH_RELATION_EXACT_TARGET_ID = "";
+let ASTROMATCH_RELATION_LAST_TARGETS = [];
+let ASTROMATCH_RELATION_LAST_SELECTED = null;
+
+function astromatchRelationNormalize(value) {
+  return String(value || "")
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .trim();
+}
+
+function astromatchRelationName(target) {
+  return [
+    target?.identity?.first_name,
+    target?.identity?.last_name
+  ]
+    .filter(Boolean)
+    .join(" ")
+    .trim();
+}
+
+function astromatchFavoriteIds() {
+  try {
+    const ids = JSON.parse(
+      localStorage.getItem(
+        ASTROMATCH_RELATION_FAVORITES_KEY
+      ) || "[]"
+    );
+
+    return Array.isArray(ids)
+      ? ids.map(String)
+      : [];
+  } catch {
+    return [];
+  }
+}
+
+function astromatchIsFavorite(id) {
+  return astromatchFavoriteIds()
+    .includes(String(id));
+}
+
+function astromatchToggleFavorite(id) {
+  const key = String(id || "");
+  if (!key) return;
+
+  let ids = astromatchFavoriteIds();
+
+  ids = ids.includes(key)
+    ? ids.filter(value => value !== key)
+    : [...ids, key];
+
+  localStorage.setItem(
+    ASTROMATCH_RELATION_FAVORITES_KEY,
+    JSON.stringify(ids)
+  );
+}
+
+function renderAstroMatchRelationTools() {
+  return `
+    <div class="v3-relation-tools">
+
+      <div class="v3-relation-search-wrap">
+        <span class="v3-relation-search-icon">⌕</span>
+
+        <input
+          id="relationSearch"
+          type="search"
+          value="${escapeHtml(ASTROMATCH_RELATION_QUERY)}"
+          autocomplete="off"
+          placeholder="Rechercher une personne…"
+          class="v3-relation-search"
+        >
+
+        <button
+          type="button"
+          data-relation-search-clear
+          class="v3-relation-clear"
+        >
+          ×
+        </button>
+      </div>
+
+      <div
+        id="relationSearchSuggestions"
+        class="v3-relation-suggestions hidden"
+      ></div>
+
+      <div class="v3-relation-filters">
+
+        <button
+          type="button"
+          data-relation-mode="all"
+          class="v3-relation-filter ${
+            ASTROMATCH_RELATION_MODE === "all"
+              ? "active"
+              : ""
+          }"
+        >
+          Tous
+        </button>
+
+        <button
+          type="button"
+          data-relation-mode="favorites"
+          class="v3-relation-filter ${
+            ASTROMATCH_RELATION_MODE === "favorites"
+              ? "active"
+              : ""
+          }"
+        >
+          ⭐ Favoris
+        </button>
+
+      </div>
+
+    </div>
+  `;
+}
+
+
+function astromatchRelationSuggestions() {
+  const q =
+    astromatchRelationNormalize(
+      ASTROMATCH_RELATION_QUERY
+    );
+
+  if (!q) return [];
+
+  return ASTROMATCH_RELATION_LAST_TARGETS
+    .filter(target =>
+      astromatchRelationNormalize(
+        astromatchRelationName(target)
+      ).includes(q)
+    )
+    .sort((a,b) => {
+      const A =
+        astromatchRelationNormalize(
+          astromatchRelationName(a)
+        );
+
+      const B =
+        astromatchRelationNormalize(
+          astromatchRelationName(b)
+        );
+
+      if (A.startsWith(q) !== B.startsWith(q)) {
+        return A.startsWith(q) ? -1 : 1;
+      }
+
+      return A.localeCompare(B,"fr");
+    })
+    .slice(0,6);
+}
+
+function renderAstroMatchRelationSuggestions() {
+  const box =
+    document.getElementById(
+      "relationSearchSuggestions"
+    );
+
+  if (!box) return;
+
+  const matches =
+    astromatchRelationSuggestions();
+
+  if (
+    !ASTROMATCH_RELATION_QUERY.trim() ||
+    !matches.length
+  ) {
+    box.innerHTML = "";
+    box.classList.add("hidden");
+    return;
+  }
+
+  box.innerHTML =
+    matches.map(target => {
+      const id =
+        String(target?.profile_id || "");
+
+      const age =
+        calculateAge(target);
+
+      const zodiac =
+        zodiacFromDate(
+          target?.birth_data?.date
+        );
+
+      return `
+        <button
+          type="button"
+          data-relation-suggestion-id="${escapeHtml(id)}"
+          class="v3-relation-suggestion"
+        >
+          <span class="v3-relation-suggestion-name">
+            ${escapeHtml(astromatchRelationName(target))}
+          </span>
+
+          <span class="v3-relation-suggestion-meta">
+            ${
+              age === null
+                ? ""
+                : `${age} ans · `
+            }${escapeHtml(
+              zodiac?.symbol || "✦"
+            )} ${escapeHtml(
+              zodiac?.name || "Signe inconnu"
+            )}
+          </span>
+        </button>
+      `;
+    }).join("");
+
+  box.classList.remove("hidden");
+}
+
+function astromatchApplyRelationDomFilter() {
+
+  const favorites =
+    new Set(
+      astromatchFavoriteIds()
+    );
+
+  const query =
+    astromatchRelationNormalize(
+      ASTROMATCH_RELATION_QUERY
+    );
+
+  document
+    .querySelectorAll(
+      "#targetSelector .target-profile-wrapper"
+    )
+    .forEach(wrapper => {
+
+      const button =
+        wrapper.querySelector(
+          "[data-target-id]"
+        );
+
+      if (!button) return;
+
+      const id =
+        String(
+          button.dataset.targetId || ""
+        );
+
+      const target =
+        ASTROMATCH_RELATION_LAST_TARGETS
+          .find(item =>
+            String(
+              item?.profile_id || ""
+            ) === id
+          );
+
+      let visible = true;
+
+      if (
+        ASTROMATCH_RELATION_MODE ===
+          "favorites"
+      ) {
+        visible =
+          visible &&
+          favorites.has(id);
+      }
+
+      if (
+        ASTROMATCH_RELATION_EXACT_TARGET_ID
+      ) {
+        visible =
+          visible &&
+          id ===
+            ASTROMATCH_RELATION_EXACT_TARGET_ID;
+      } else if (query) {
+        visible =
+          visible &&
+          astromatchRelationNormalize(
+            astromatchRelationName(target)
+          ).includes(query);
+      }
+
+      wrapper.classList.toggle(
+        "hidden",
+        !visible
+      );
+
+    });
+
+
+  document
+    .querySelectorAll(
+      "#targetSelector [data-target-group-body]"
+    )
+    .forEach(body => {
+
+      const visibleCount =
+        [...body.querySelectorAll(
+          ".target-profile-wrapper"
+        )]
+          .filter(card =>
+            !card.classList.contains(
+              "hidden"
+            )
+          )
+          .length;
+
+      const relation =
+        body.dataset.targetGroupBody;
+
+      const toggle =
+        document.querySelector(
+          `[data-target-group-toggle="${relation}"]`
+        );
+
+      const title =
+        toggle?.closest(
+          ".target-group-title"
+        );
+
+      const counter =
+        title?.querySelector(
+          ".target-group-count"
+        );
+
+      if (counter) {
+        counter.textContent =
+          String(visibleCount);
+      }
+
+    });
+}
+
+
+function rerenderAstroMatchRelations() {
+
+  renderTargetSelector(
+    ASTROMATCH_RELATION_LAST_TARGETS,
+    ASTROMATCH_RELATION_LAST_SELECTED
+  );
+
+  requestAnimationFrame(
+    astromatchApplyRelationDomFilter
+  );
+}
+
+if (!window.__ASTROMATCH_V3_RELATION_EVENTS__) {
+
+  window.__ASTROMATCH_V3_RELATION_EVENTS__ = true;
+
+  document.addEventListener(
+    "click",
+    event => {
+
+      const suggestion =
+        event.target.closest(
+          "[data-relation-suggestion-id]"
+        );
+
+      if (suggestion) {
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+
+        const wantedId =
+          String(
+            suggestion.dataset
+              .relationSuggestionId || ""
+          );
+
+        const target =
+          ASTROMATCH_RELATION_LAST_TARGETS
+            .find(item =>
+              String(
+                item?.profile_id || ""
+              ) === wantedId
+            );
+
+        if (target) {
+
+          ASTROMATCH_RELATION_QUERY =
+            astromatchRelationName(target);
+
+          ASTROMATCH_RELATION_EXACT_TARGET_ID =
+            wantedId;
+
+          const relation =
+            target?.relationship?.context ||
+            "romantic";
+
+          try {
+            ASTROMATCH_OPEN_TARGET_GROUPS
+              .add(relation);
+          } catch {}
+
+          rerenderAstroMatchRelations();
+
+          requestAnimationFrame(() => {
+
+            const profileButton =
+              [...document.querySelectorAll(
+                "#targetSelector [data-target-id]"
+              )]
+                .find(button =>
+                  String(
+                    button.dataset.targetId
+                  ) === wantedId
+                );
+
+            if (profileButton) {
+
+              profileButton.click();
+
+              setTimeout(() => {
+                profileButton.scrollIntoView({
+                  behavior: "smooth",
+                  block: "center"
+                });
+              }, 80);
+
+            } else if (
+              typeof selectTargetProfile ===
+              "function"
+            ) {
+
+              selectTargetProfile(
+                wantedId
+              );
+
+            }
+
+          });
+
+        }
+
+        return;
+      }
+
+      const favorite =
+        event.target.closest(
+          "[data-favorite-target]"
+        );
+
+      if (favorite) {
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+
+        astromatchToggleFavorite(
+          favorite.dataset.favoriteTarget
+        );
+
+        rerenderAstroMatchRelations();
+        return;
+      }
+
+      const mode =
+        event.target.closest(
+          "[data-relation-mode]"
+        );
+
+      if (mode) {
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+
+        ASTROMATCH_RELATION_MODE =
+          mode.dataset.relationMode;
+
+        ASTROMATCH_RELATION_EXACT_TARGET_ID = "";
+
+        rerenderAstroMatchRelations();
+        return;
+      }
+
+      if (
+        event.target.closest(
+          "[data-relation-search-clear]"
+        )
+      ) {
+        ASTROMATCH_RELATION_QUERY = "";
+        ASTROMATCH_RELATION_EXACT_TARGET_ID = "";
+
+        rerenderAstroMatchRelations();
+
+        requestAnimationFrame(() => {
+          document
+            .getElementById("relationSearch")
+            ?.focus();
+        });
+      }
+
+    },
+    true
+  );
+
+  document.addEventListener(
+    "input",
+    event => {
+
+      if (
+        event.target?.id !==
+        "relationSearch"
+      ) {
+        return;
+      }
+
+      ASTROMATCH_RELATION_EXACT_TARGET_ID = "";
+
+      ASTROMATCH_RELATION_QUERY =
+        String(event.target.value || "");
+
+      /*
+       * Ne surtout pas reconstruire targetSelector ici :
+       * sinon Android perd le focus clavier à chaque lettre.
+       */
+      astromatchApplyRelationDomFilter();
+
+      renderAstroMatchRelationSuggestions();
+
+    }
+  );
+
+}
+
+
 function renderProfileCard(target, selectedTarget) {
   const customTargetAvatar =
     targetAvatarStored(target);
@@ -12701,7 +13440,7 @@ function renderProfileCard(target, selectedTarget) {
 
     </button>
 
-      <div class="absolute top-3 right-3 z-10 flex items-center gap-1">
+      <div class="absolute top-3 right-3 z-10 flex items-start gap-1">
 
         <button
           type="button"
@@ -12711,13 +13450,38 @@ function renderProfileCard(target, selectedTarget) {
           ✏️
         </button>
 
-        <button
-          type="button"
-          data-delete-target="${escapeHtml(id)}"
-          class="w-8 h-8 flex items-center justify-center rounded-lg bg-red-500/10 border border-red-500/20 text-sm active:scale-95"
-        >
-          🗑️
-        </button>
+        <div class="flex flex-col gap-1">
+
+          <button
+            type="button"
+            data-delete-target="${escapeHtml(id)}"
+            class="w-8 h-8 flex items-center justify-center rounded-lg bg-red-500/10 border border-red-500/20 text-sm active:scale-95"
+          >
+            🗑️
+          </button>
+
+          <button
+            type="button"
+            data-favorite-target="${escapeHtml(id)}"
+            title="${
+              astromatchIsFavorite(id)
+                ? "Retirer des favoris"
+                : "Ajouter aux favoris"
+            }"
+            class="v3-profile-favorite ${
+              astromatchIsFavorite(id)
+                ? "active"
+                : ""
+            }"
+          >
+            ${
+              astromatchIsFavorite(id)
+                ? "★"
+                : "☆"
+            }
+          </button>
+
+        </div>
       </div>
     </div>
   `;
