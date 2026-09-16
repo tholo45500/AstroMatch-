@@ -2677,6 +2677,762 @@ body::after {
 
 </style>
 
+
+<style id="ASTROMATCH_POLISH_RELATIONS_V1">
+
+.astromatch-relations-section {
+  padding-bottom: 10px;
+}
+
+.astromatch-relations-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+
+  margin-bottom: 15px;
+  padding: 2px 3px 0;
+}
+
+.astromatch-relations-kicker {
+  color: #a78bfa;
+
+  font-size: 10px;
+  font-weight: 950;
+
+  letter-spacing: .15em;
+}
+
+.astromatch-relations-title {
+  margin-top: 4px;
+
+  color: #f8fafc;
+
+  font-size: 24px;
+  line-height: 1.15;
+
+  font-weight: 950;
+
+  letter-spacing: -.025em;
+}
+
+.astromatch-relations-subtitle {
+  margin-top: 6px;
+
+  max-width: 300px;
+
+  color: #94a3b8;
+
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.astromatch-relations-status {
+  min-width: 0;
+
+  color: #8b5cf6;
+
+  font-size: 10px;
+  font-weight: 800;
+
+  text-align: right;
+}
+
+.astromatch-relations-status:empty {
+  display: none;
+}
+
+#targetSelector {
+  max-height:
+    calc(100dvh - 280px) !important;
+
+  scrollbar-width: thin;
+}
+
+.astromatch-relations-hint {
+  margin-top: 11px;
+  padding: 0 3px;
+
+  color: #475569;
+
+  font-size: 10px;
+  line-height: 1.4;
+
+  text-align: center;
+}
+
+</style>
+
+
+<style id="ASTROMATCH_POLISH_TODAY_V1">
+
+.today-head {
+  margin-bottom: 17px;
+  padding: 2px 3px 0;
+}
+
+.today-title {
+  margin-top: 4px;
+
+  color: #f8fafc;
+
+  font-size: 24px;
+  line-height: 1.15;
+
+  font-weight: 950;
+
+  letter-spacing: -.025em;
+}
+
+.today-date {
+  margin-top: 6px !important;
+  margin-bottom: 0 !important;
+
+  color: #64748b !important;
+
+  font-size: 11px !important;
+
+  font-weight: 700;
+}
+
+.today-hero {
+  position: relative;
+  overflow: hidden;
+
+  padding: 21px !important;
+
+  border-radius: 26px !important;
+
+  background:
+    radial-gradient(
+      circle at 90% 0%,
+      rgba(139,92,246,.18),
+      transparent 38%
+    ),
+    linear-gradient(
+      145deg,
+      rgba(30,41,59,.88),
+      rgba(2,6,23,.96)
+    ) !important;
+}
+
+.today-hero::after {
+  content: "✦";
+
+  position: absolute;
+  top: 12px;
+  right: 17px;
+
+  color: rgba(196,181,253,.22);
+
+  font-size: 34px;
+
+  pointer-events: none;
+}
+
+.today-hero-label {
+  color: #a78bfa !important;
+
+  font-size: 9px !important;
+  font-weight: 950 !important;
+
+  letter-spacing: .14em;
+}
+
+.today-phrase {
+  max-width: 92%;
+
+  margin-top: 11px !important;
+
+  font-size: 21px !important;
+  line-height: 1.32 !important;
+
+  letter-spacing: -.018em;
+}
+
+.today-meta {
+  margin-top: 11px !important;
+
+  color: #475569 !important;
+
+  font-size: 9px !important;
+}
+
+.today-domains {
+  gap: 7px !important;
+
+  margin-top: 10px !important;
+}
+
+.today-domain {
+  min-width: 0;
+
+  padding: 12px 6px !important;
+
+  border-radius: 17px !important;
+
+  background:
+    rgba(15,23,42,.68) !important;
+}
+
+.today-domain-icon {
+  font-size: 19px !important;
+}
+
+.today-domain-score {
+  margin-top: 4px !important;
+
+  font-size: 21px !important;
+}
+
+.today-domain-name {
+  margin-top: 3px !important;
+
+  font-size: 10px !important;
+}
+
+.today-domain-label {
+  margin-top: 3px !important;
+
+  color: #64748b !important;
+
+  font-size: 8px !important;
+}
+
+.today-panel {
+  margin-top: 10px !important;
+  padding: 16px !important;
+
+  border-radius: 21px !important;
+
+  background:
+    rgba(15,23,42,.66) !important;
+
+  box-shadow: none !important;
+}
+
+.today-panel-title {
+  font-size: 14px !important;
+}
+
+.today-summary {
+  margin-top: 9px !important;
+
+  color: #cbd5e1 !important;
+
+  font-size: 13px !important;
+  line-height: 1.6 !important;
+}
+
+.today-why {
+  gap: 7px !important;
+}
+
+.today-influence {
+  padding: 12px !important;
+
+  border-radius: 15px !important;
+
+  background:
+    rgba(2,6,23,.38) !important;
+}
+
+.today-influence strong {
+  font-size: 12px !important;
+}
+
+.today-influence p {
+  font-size: 12px !important;
+  line-height: 1.55 !important;
+}
+
+</style>
+
+
+<style id="ASTROMATCH_POLISH_MOI_V1">
+
+#natalProfileView {
+  background:
+    radial-gradient(
+      circle at 50% -10%,
+      rgba(124,58,237,.13),
+      transparent 35%
+    ),
+    #020617 !important;
+}
+
+#natalProfileView > div {
+  padding-bottom: 30px;
+}
+
+.astromatch-moi-kicker {
+  color: #a78bfa;
+
+  font-size: 10px;
+  font-weight: 950;
+
+  letter-spacing: .15em;
+}
+
+.astromatch-moi-title {
+  margin-top: 4px;
+
+  color: #f8fafc;
+
+  font-size: 24px;
+  line-height: 1.15;
+
+  font-weight: 950;
+
+  letter-spacing: -.025em;
+}
+
+#natalProfileName {
+  margin-top: 6px !important;
+
+  color: #64748b !important;
+
+  font-size: 11px !important;
+
+  font-weight: 700;
+}
+
+#natalProfileClose {
+  width: 40px !important;
+  height: 40px !important;
+
+  border-radius: 14px !important;
+
+  background:
+    rgba(255,255,255,.045) !important;
+
+  color: #cbd5e1;
+
+  border:
+    1px solid rgba(255,255,255,.07) !important;
+}
+
+#natalContent > section {
+  border-radius: 22px !important;
+
+  background:
+    rgba(15,23,42,.70) !important;
+
+  border:
+    1px solid rgba(255,255,255,.07) !important;
+
+  box-shadow: none !important;
+}
+
+#natalContent > section:first-child {
+  background:
+    linear-gradient(
+      145deg,
+      rgba(30,41,59,.88),
+      rgba(2,6,23,.90)
+    ) !important;
+
+  border:
+    1px solid rgba(167,139,250,.13) !important;
+}
+
+#natalContent .grid.grid-cols-3 > div {
+  border-radius: 16px !important;
+
+  background:
+    rgba(2,6,23,.50) !important;
+
+  border:
+    1px solid rgba(255,255,255,.045);
+}
+
+#natalSun,
+#natalMoon,
+#natalAsc {
+  color: #f8fafc;
+
+  font-size: 13px;
+}
+
+#natalGlobalSynthesis,
+#natalSummary,
+#natalLoveProfile,
+#natalDominantSummary {
+  line-height: 1.6;
+}
+
+#natalInterpretations > *,
+#natalLoveProfile > *,
+#natalElements > *,
+#natalModalities > *,
+#natalPlanetDominants > *,
+#natalPlanets > *,
+#natalHouses > *,
+#natalAspects > * {
+  border-radius: 14px !important;
+}
+
+#natalLoading {
+  border-radius: 18px !important;
+
+  background:
+    rgba(15,23,42,.70) !important;
+}
+
+</style>
+
+
+<style id="ASTROMATCH_POLISH_COMPARISON_V1">
+
+.astromatch-comparison-area {
+  padding-bottom: 20px;
+}
+
+
+/* ----------------------------------------------------------
+   TABS
+---------------------------------------------------------- */
+
+#relationshipTabsContainer {
+  position: relative;
+
+  gap: 4px !important;
+
+  padding: 4px !important;
+
+  border-radius: 18px !important;
+
+  background:
+    rgba(15,23,42,.72) !important;
+
+  border:
+    1px solid rgba(255,255,255,.055);
+
+  overflow: hidden;
+}
+
+.relationship-tab {
+  min-height: 54px;
+
+  border-radius: 14px !important;
+
+  color: #64748b;
+
+  transition:
+    background .15s ease,
+    color .15s ease,
+    transform .12s ease;
+}
+
+.relationship-tab:active {
+  transform: scale(.97);
+}
+
+.relationship-tab.active {
+  color: #f8fafc !important;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(124,58,237,.28),
+      rgba(139,92,246,.14)
+    ) !important;
+
+  border:
+    1px solid rgba(167,139,250,.16);
+}
+
+.relationship-tab span:last-child {
+  font-size: 10px;
+  font-weight: 850;
+}
+
+
+/* ----------------------------------------------------------
+   HERO DYNAMIQUE
+---------------------------------------------------------- */
+
+#relationshipDynamicCard {
+  position: relative;
+
+  overflow: hidden;
+
+  border-radius: 26px !important;
+
+  padding: 19px !important;
+
+  background:
+    radial-gradient(
+      circle at 95% 0%,
+      rgba(139,92,246,.16),
+      transparent 38%
+    ),
+    linear-gradient(
+      150deg,
+      rgba(30,41,59,.82),
+      rgba(2,6,23,.94)
+    ) !important;
+
+  border:
+    1px solid rgba(167,139,250,.12) !important;
+
+  box-shadow:
+    0 16px 42px rgba(0,0,0,.18);
+}
+
+#relationshipDynamicCard::after {
+  content: "✦";
+
+  position: absolute;
+  top: 14px;
+  right: 17px;
+
+  color:
+    rgba(196,181,253,.13);
+
+  font-size: 37px;
+
+  pointer-events: none;
+}
+
+.relationship-dynamic-headline {
+  max-width: 92%;
+
+  font-size: 22px !important;
+
+  line-height: 1.25 !important;
+}
+
+.relationship-dynamic-summary {
+  color: #94a3b8 !important;
+
+  font-size: 12px !important;
+
+  line-height: 1.55 !important;
+}
+
+
+/* ----------------------------------------------------------
+   SCORE
+---------------------------------------------------------- */
+
+.relationship-score-row {
+  padding: 12px 13px !important;
+
+  border-radius: 17px !important;
+
+  background:
+    rgba(2,6,23,.44) !important;
+
+  border:
+    1px solid rgba(167,139,250,.10) !important;
+}
+
+.relationship-score-number {
+  font-size: 34px !important;
+}
+
+.relationship-score-verdict {
+  color: #e2e8f0 !important;
+
+  font-size: 13px !important;
+}
+
+
+/* ----------------------------------------------------------
+   3 AXES
+---------------------------------------------------------- */
+
+.relationship-dynamic-axes {
+  gap: 6px !important;
+
+  margin-top: 13px !important;
+}
+
+.relationship-dynamic-axis {
+  padding: 11px 7px !important;
+
+  border-radius: 15px !important;
+
+  background:
+    rgba(2,6,23,.34) !important;
+
+  border:
+    1px solid rgba(255,255,255,.05) !important;
+}
+
+.relationship-dynamic-axis-icon {
+  font-size: 17px !important;
+}
+
+.relationship-dynamic-axis-label {
+  color: #64748b !important;
+
+  font-size: 8px !important;
+}
+
+.relationship-dynamic-axis-value {
+  min-height: 30px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: #e2e8f0 !important;
+
+  font-size: 10px !important;
+
+  line-height: 1.32 !important;
+}
+
+
+/* ----------------------------------------------------------
+   CARTES DE CONTENU
+---------------------------------------------------------- */
+
+#astromatchComparisonArea > section.glass {
+  border-radius: 21px !important;
+
+  padding: 16px !important;
+
+  background:
+    rgba(15,23,42,.66) !important;
+
+  border:
+    1px solid rgba(255,255,255,.065) !important;
+
+  box-shadow: none !important;
+}
+
+#astromatchComparisonArea
+section.grid > .glass {
+  border-radius: 21px !important;
+
+  padding: 16px !important;
+
+  background:
+    rgba(15,23,42,.66) !important;
+
+  border:
+    1px solid rgba(255,255,255,.065) !important;
+}
+
+
+/* ----------------------------------------------------------
+   ITEMS
+---------------------------------------------------------- */
+
+.relationship-item {
+  padding: 13px !important;
+
+  border-radius: 16px !important;
+
+  background:
+    rgba(2,6,23,.34) !important;
+
+  border:
+    1px solid rgba(255,255,255,.05) !important;
+}
+
+.relationship-item-title {
+  color: #f1f5f9;
+
+  font-size: 12px !important;
+
+  line-height: 1.4;
+}
+
+.relationship-item-text {
+  margin-top: 5px;
+
+  color: #94a3b8 !important;
+
+  font-size: 11px !important;
+
+  line-height: 1.55 !important;
+}
+
+
+/* ----------------------------------------------------------
+   POURQUOI
+---------------------------------------------------------- */
+
+.astro-evidence {
+  margin-top: 10px !important;
+
+  padding-top: 9px !important;
+}
+
+.astro-evidence-summary {
+  color: #8b5cf6 !important;
+
+  font-size: 10px !important;
+}
+
+.astro-evidence-content {
+  padding: 11px !important;
+
+  border-radius: 14px !important;
+
+  background:
+    rgba(2,6,23,.42) !important;
+}
+
+.astro-evidence-aspect {
+  gap: 5px !important;
+}
+
+.astro-evidence-body {
+  font-size: 9px !important;
+}
+
+.astro-evidence-planet {
+  font-size: 18px !important;
+}
+
+.astro-evidence-meta span {
+  font-size: 7px !important;
+}
+
+
+/* ----------------------------------------------------------
+   DO / DON'T
+---------------------------------------------------------- */
+
+#doList > div,
+#dontList > div {
+  padding: 9px 10px;
+
+  border-radius: 13px;
+
+  background:
+    rgba(2,6,23,.32);
+
+  border:
+    1px solid rgba(255,255,255,.04);
+
+  line-height: 1.45;
+}
+
+
+/* ----------------------------------------------------------
+   DETAIL TECHNIQUE
+---------------------------------------------------------- */
+
+#relationshipTechnicalScore {
+  color: #475569 !important;
+
+  font-size: 9px !important;
+}
+
+#astromatchComparisonArea details > summary {
+  color: #64748b !important;
+
+  font-size: 11px !important;
+}
+
+</style>
+
 </head>
 
 <body class="min-h-screen text-white">
@@ -3008,14 +3764,15 @@ window.scoreProgressClass = scoreProgressClass;
 
         <div class="flex items-center justify-between mb-5">
           <div>
-            <div class="text-xs uppercase tracking-widest text-violet-300">
-              AstroMatch
+            <div class="astromatch-moi-kicker">
+              👤 MOI
             </div>
+
             <h2
               id="natalProfileTitle"
-              class="text-2xl font-black mt-1"
+              class="astromatch-moi-title"
             >
-              🌌 Mon thème astral
+              Mon profil astral
             </h2>
             <div
               id="natalProfileName"
@@ -3053,7 +3810,7 @@ window.scoreProgressClass = scoreProgressClass;
 
           <section class="rounded-3xl border border-white/10 bg-slate-900 p-4">
             <div class="text-xs uppercase tracking-widest text-slate-500 mb-3">
-              Les 3 piliers
+              ✦ Mes 3 piliers
             </div>
 
             <div class="grid grid-cols-3 gap-3">
@@ -3080,7 +3837,7 @@ window.scoreProgressClass = scoreProgressClass;
 
           <section class="rounded-3xl border border-violet-400/20 bg-slate-900 p-4">
             <div class="text-xs uppercase tracking-widest text-violet-300 mb-3">
-              🧭 Synthèse globale
+              🧭 Mon équilibre général
             </div>
 
             <div
@@ -3091,7 +3848,7 @@ window.scoreProgressClass = scoreProgressClass;
 
 <section class="rounded-3xl border border-violet-400/10 bg-slate-900 p-4">
             <div class="text-xs uppercase tracking-widest text-violet-300 mb-3">
-              ✨ Ta lecture
+              ✨ Ma personnalité
             </div>
 
             <div
@@ -3109,7 +3866,7 @@ window.scoreProgressClass = scoreProgressClass;
 
           <section class="rounded-3xl border border-pink-400/15 bg-slate-900 p-4">
             <div class="text-xs uppercase tracking-widest text-pink-300 mb-3">
-              💘 Ton profil amoureux
+              💘 Ma façon d’aimer
             </div>
 
             <div
@@ -3120,7 +3877,7 @@ window.scoreProgressClass = scoreProgressClass;
 
 <section class="rounded-3xl border border-white/10 bg-slate-900 p-4">
             <div class="text-xs uppercase tracking-widest text-slate-500 mb-3">
-              Maisons
+              🏠 Mes maisons astrologiques
             </div>
 
             <div
@@ -3131,7 +3888,7 @@ window.scoreProgressClass = scoreProgressClass;
 
 <section class="rounded-3xl border border-white/10 bg-slate-900 p-4">
             <div class="text-xs uppercase tracking-widest text-violet-300 mb-3">
-              ⚡ Tes dominantes
+              ⚡ Mes dominantes
             </div>
 
             <div
@@ -3158,7 +3915,7 @@ window.scoreProgressClass = scoreProgressClass;
             ></div>
 
             <div class="text-xs uppercase tracking-widest text-slate-500 mt-5 mb-2">
-              Planètes dominantes
+              🪐 Mes planètes dominantes
             </div>
 
             <div
@@ -3190,7 +3947,7 @@ window.scoreProgressClass = scoreProgressClass;
 
           <section class="rounded-3xl border border-white/10 bg-slate-900 p-4">
             <div class="text-xs uppercase tracking-widest text-slate-500 mb-3">
-              Aspects principaux
+              ✦ Mes aspects principaux
             </div>
 
             <div
@@ -3215,13 +3972,25 @@ window.scoreProgressClass = scoreProgressClass;
 
 <section id="astromatchTodayView" class="astromatch-today-view hidden">
 
-  <div class="today-kicker">☀️ AUJOURD’HUI</div>
+  <div class="today-head">
 
-  <div id="todayDate" class="today-date"></div>
+    <div>
+      <div class="today-kicker">
+        ☀️ AUJOURD’HUI
+      </div>
+
+      <h1 class="today-title">
+        Ton ciel du jour
+      </h1>
+
+      <div id="todayDate" class="today-date"></div>
+    </div>
+
+  </div>
 
   <div class="today-hero">
     <div class="today-hero-label">
-      Ton climat astrologique
+      TON ÉNERGIE DU JOUR
     </div>
 
     <div id="todayPhrase" class="today-phrase">
@@ -3235,7 +4004,7 @@ window.scoreProgressClass = scoreProgressClass;
 
   <div class="today-panel">
     <div class="today-panel-title">
-      ✨ Ta lecture du jour
+      ✨ Ce que ça change pour toi
     </div>
 
     <div id="todaySummary" class="today-summary">
@@ -3245,7 +4014,7 @@ window.scoreProgressClass = scoreProgressClass;
 
   <div class="today-panel">
     <div class="today-panel-title">
-      🔎 Pourquoi aujourd’hui ?
+      🔎 Ce qui influence ta journée
     </div>
 
     <div id="todayWhy" class="today-why"></div>
@@ -3490,33 +4259,31 @@ window.scoreProgressClass = scoreProgressClass;
 
 <!-- ASTROMATCH_TODAY_POINT3_VIEW_END -->
 
-<section class="mb-4">
 
-    <div class="flex items-end justify-between gap-3 mb-3 px-1">
+<section class="mb-4 astromatch-relations-section">
 
-      <div>
-        <div class="text-xs uppercase tracking-widest text-slate-500">
+  <div class="astromatch-relations-head">
 
-        </div>
-
-        <div class="text-sm text-slate-300 mt-1">
-
-        </div>
+    <div>
+      <div class="astromatch-relations-kicker">
+        ❤️ RELATIONS
       </div>
 
-      <div
-        id="targetCalculationState"
-        class="text-xs text-slate-500 whitespace-nowrap"
-      >
-        Prêt
+      <h1 class="astromatch-relations-title">
+        Mes relations
+      </h1>
+
+      <div class="astromatch-relations-subtitle">
+        Choisis une personne pour découvrir votre dynamique.
       </div>
-
     </div>
 
+    <div
+      id="targetCalculationState"
+      class="astromatch-relations-status"
+    ></div>
 
-    <div class="flex justify-end mb-3">
-
-    </div>
+  </div>
 
 <div
       id="targetSelector"
@@ -3530,12 +4297,14 @@ window.scoreProgressClass = scoreProgressClass;
       class="hidden"
     ></div>
 
+
 <div
-      id="targetSelectionHint"
-      class="mt-3 px-1 text-xs text-slate-500"
-    >
-      La sélection recalcule automatiquement la compatibilité.
-    </div>
+  id="targetSelectionHint"
+  class="astromatch-relations-hint"
+>
+  Appuie sur un profil pour ouvrir la comparaison.
+</div>
+
 
   </section>
 
@@ -3706,7 +4475,7 @@ window.scoreProgressClass = scoreProgressClass;
 <div id="astromatchComparisonHome"></div>
 <div
   id="astromatchComparisonArea"
-  class="hidden"
+  class="hidden astromatch-comparison-area"
 >
 
 
@@ -3830,7 +4599,7 @@ window.scoreProgressClass = scoreProgressClass;
     <div class="flex items-center gap-3 mb-3">
       <div class="text-2xl">💚</div>
       <div>
-        <h2 class="font-bold text-lg">Ce qui rapproche</h2>
+        <h2 class="font-bold text-lg">Vos points d’appui</h2>
       </div>
     </div>
 
@@ -3846,7 +4615,7 @@ window.scoreProgressClass = scoreProgressClass;
     <div class="flex items-center gap-3 mb-3">
       <div class="text-2xl">⚠️</div>
       <div>
-        <h2 class="font-bold text-lg">Ce qui demande de l’attention</h2>
+        <h2 class="font-bold text-lg">Vos points sensibles</h2>
       </div>
     </div>
 
@@ -3862,7 +4631,7 @@ window.scoreProgressClass = scoreProgressClass;
     <div class="flex items-center gap-3 mb-3">
       <div class="text-2xl">🎯</div>
       <div>
-        <h2 class="font-bold text-lg">Comment t'y prendre</h2>
+        <h2 class="font-bold text-lg">Comment faire fonctionner ce lien</h2>
       </div>
     </div>
 
@@ -3878,7 +4647,7 @@ window.scoreProgressClass = scoreProgressClass;
     <div class="glass rounded-3xl p-5">
       <div class="flex items-center gap-2 mb-3">
         <span class="text-xl">✅</span>
-        <h2 class="font-bold">À faire</h2>
+        <h2 class="font-bold">À favoriser</h2>
       </div>
 
       <div id="doList" class="space-y-2 text-sm">
@@ -3905,7 +4674,7 @@ window.scoreProgressClass = scoreProgressClass;
     <div class="flex items-center gap-3 mb-3">
       <div class="text-2xl">✨</div>
       <div>
-        <h2 class="font-bold text-lg">Ce qui influence cette relation</h2>
+        <h2 class="font-bold text-lg">Les facteurs clés</h2>
       </div>
     </div>
 
@@ -3920,7 +4689,7 @@ window.scoreProgressClass = scoreProgressClass;
 
     <details>
       <summary class="cursor-pointer font-semibold text-sm text-slate-300">
-        📊 Voir le détail des scores astrologiques
+        📊 Voir les scores par domaine
       </summary>
 
       <div
