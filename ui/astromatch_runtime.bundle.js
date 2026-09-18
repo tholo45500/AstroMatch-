@@ -976,7 +976,7 @@
         gender: input.gender === "male" || input.gender === "female" ? input.gender : null
       },
       relationship: {
-        context: ["romantic", "friendship", "family"].includes(
+        context: ["romantic", "friendship", "family", "professional"].includes(
           input.relationship_context
         ) ? input.relationship_context : "romantic"
       },
@@ -8191,6 +8191,17 @@
       result: {
         ...matchResult,
         narrative: null,
+        /*
+         * ASTROMATCH_MUTUAL_IMPACT_V1
+         * Données directionnelles déjà calculées
+         * par le moteur de synastrie.
+         */
+        synastry_context: {
+          reliability: synastry.reliability,
+          aspects: synastry.aspects,
+          house_overlays: synastry.house_overlays,
+          angle_contacts: synastry.angle_contacts
+        },
         profiles: {
           primary: {
             id: primary.profile_id,

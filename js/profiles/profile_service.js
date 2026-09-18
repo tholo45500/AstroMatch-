@@ -127,7 +127,7 @@ export function buildProfile(input) {
 
     relationship: {
       context:
-        ["romantic", "friendship", "family"].includes(
+        ["romantic", "friendship", "family", "professional"].includes(
           input.relationship_context
         )
           ? input.relationship_context
@@ -221,7 +221,7 @@ export function applyProfileUpdate(existingProfile, patchInput) {
     relationship: {
       context:
         patchInput.relationship_context !== undefined
-          ? (["romantic", "friendship", "family"].includes(patchInput.relationship_context)
+          ? (["romantic", "friendship", "family", "professional"].includes(patchInput.relationship_context)
               ? patchInput.relationship_context
               : "romantic")
           : existingProfile.relationship?.context ?? "romantic"
