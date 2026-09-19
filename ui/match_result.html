@@ -14449,54 +14449,6 @@ function initializeTargetSelector(targets) {
 
   return;
 
-
-  ASTROMATCH_TARGET_PROFILES = Array.isArray(targets)
-    ? targets
-    : [];
-
-  if (!ASTROMATCH_TARGET_PROFILES.length) {
-    ASTROMATCH_SELECTED_TARGET = null;
-    renderTargetSelector([], null);
-    return;
-  }
-
-  const requestedId =
-    sessionStorage.getItem("astromatch:selectedTargetId") || "";
-
-  const previousId =
-    requestedId ||
-    (
-      typeof ASTROMATCH_SELECTED_TARGET !== "undefined"
-        ? String(ASTROMATCH_SELECTED_TARGET?.profile_id || "")
-        : ""
-    );
-
-  const preservedTarget =
-    ASTROMATCH_TARGET_PROFILES.find(
-      target =>
-        String(target?.profile_id || "") === previousId
-    );
-
-  ASTROMATCH_SELECTED_TARGET =
-    preservedTarget ||
-    ASTROMATCH_TARGET_PROFILES[0];
-
-  sessionStorage.removeItem("astromatch:selectedTargetId");
-
-  normalizeRelationshipModeForTarget(
-    ASTROMATCH_SELECTED_TARGET
-  );
-
-  renderContextualRelationshipTabs(
-    ASTROMATCH_SELECTED_TARGET
-  );
-
-  renderTargetSelector(
-    ASTROMATCH_TARGET_PROFILES,
-    ASTROMATCH_SELECTED_TARGET
-  );
-
-
 }
 
 async function calculateSelectedTarget() {
