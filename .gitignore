@@ -4,3 +4,19 @@ node_modules/
 Thumbs.db
 
 dist-mobile/
+
+# AstroMatch — sauvegardes locales temporaires
+*.before-*
+*.before_*
+*.backup-*
+*.bak
+*.bak_*
+/.termux-localstorage
+
+# AstroMatch temporary local backups
+*.before-*
+*.before_*
+*.backup-*
+*.bak
+*.bak_*
+.termux-localstorage
