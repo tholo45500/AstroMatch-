@@ -27994,14 +27994,8 @@ body {
             );
           }
 
-          setTimeout(() => {
-            document
-              .getElementById("targetSelector")
-              ?.scrollIntoView({
-                behavior: "smooth",
-                block: "start"
-              });
-          }, 50);
+          /* ASTROMATCH_NO_RELATIONS_AUTOSCROLL_V3 */
+
         }
       });
     });
@@ -28526,9 +28520,15 @@ body {
 
     setTodayVisible(true);
 
+    /*
+     * ASTROMATCH_SWIPE_VERTICAL_SYNC_V9
+     *
+     * Le carrousel gère déjà visuellement
+     * la transition. Aucun scroll animé ici.
+     */
     window.scrollTo({
       top: 0,
-      behavior: "smooth"
+      behavior: "auto"
     });
 
     hydrateToday();
@@ -40117,13 +40117,1894 @@ span {
 
 </script>
 
+<!-- ASTROMATCH_CLEAN_MAIN_NAV_V14 -->
+
+<style id="ASTROMATCH_CLEAN_MAIN_NAV_V14_STYLE">
+
+/* ==========================================================
+   ASTROMATCH — NAVIGATION PRINCIPALE PROPRE V14
+
+   ARCHITECTURE :
+
+   BODY
+   ├── fond cosmique UNIQUE
+   ├── header global fixe
+   ├── contenu actuel
+   ├── rail swipe temporaire
+   └── navigation basse fixe
+
+   AUCUN FOND DE PAGE SUPERPOSÉ.
+   ========================================================== */
 
 
+/* ==========================================================
+   1 — HEADER GLOBAL
+   ========================================================== */
+
+#astromatchGlobalHeader {
+
+  position:fixed;
+
+  top:0;
+  left:0;
+  right:0;
+
+  z-index:9500;
+
+  display:flex;
+  justify-content:center;
+
+  padding:
+    15px
+    16px
+    11px;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(3,6,23,.94),
+      rgba(3,6,23,.72) 78%,
+      rgba(3,6,23,0)
+    );
+
+  pointer-events:none;
+}
 
 
+#astromatchGlobalHeader > header {
+
+  width:min(
+    100%,
+    576px
+  );
+
+  margin:0 !important;
+
+  pointer-events:auto;
+}
 
 
+#astromatchGlobalHeader
+header > div:first-child {
 
+  width:100% !important;
+
+  min-height:58px !important;
+
+  display:grid !important;
+
+  grid-template-columns:
+    138px
+    minmax(0,1fr)
+    44px
+    !important;
+
+  gap:8px !important;
+
+  align-items:center !important;
+
+  position:relative !important;
+}
+
+
+/* profil */
+#astromatchGlobalHeader
+#primaryCompactSection {
+
+  grid-column:1 !important;
+
+  width:138px !important;
+  max-width:138px !important;
+
+  min-width:0 !important;
+
+  margin:0 !important;
+
+  justify-self:start !important;
+
+  position:relative !important;
+
+  z-index:3 !important;
+}
+
+
+#astromatchGlobalHeader
+#primaryCompactBubble {
+
+  width:138px !important;
+  max-width:138px !important;
+}
+
+
+/* logo :
+   centré DANS L'ESPACE entre profil et paramètres */
+#astromatchGlobalHeader
+#astromatchHeaderLogo {
+
+  grid-column:2 !important;
+
+  position:static !important;
+
+  left:auto !important;
+  top:auto !important;
+
+  transform:none !important;
+
+  width:auto !important;
+
+  margin:0 !important;
+
+  justify-self:center !important;
+
+  white-space:nowrap !important;
+
+  text-align:center !important;
+
+  font-size:
+    clamp(
+      16px,
+      4.6vw,
+      22px
+    ) !important;
+
+  z-index:2 !important;
+}
+
+
+/* paramètres */
+#astromatchGlobalHeader
+#appSettingsButton {
+
+  grid-column:3 !important;
+
+  position:relative !important;
+
+  width:44px !important;
+  height:44px !important;
+
+  margin:0 !important;
+
+  justify-self:end !important;
+
+  z-index:3 !important;
+}
+
+
+/* Le contenu réel passe sous le header. */
+body > main {
+
+  padding-top:
+    108px !important;
+}
+
+
+/* ==========================================================
+   2 — RELATIONS
+   ========================================================== */
+
+/* On garde ton choix :
+   pas de gros "❤️ Mes Relations 🤝". */
+.astromatch-relations-section
+.astromatch-relations-head {
+
+  display:none !important;
+}
+
+
+/* ==========================================================
+   3 — MOI / THÈME ASTRAL
+   ========================================================== */
+
+/*
+ * Moi ne possède AUCUN fond.
+ * Il laisse voir le SEUL fond cosmique du body.
+ */
+#natalProfileView {
+
+  background:
+    transparent !important;
+
+  background-color:
+    transparent !important;
+
+  background-image:
+    none !important;
+
+  backdrop-filter:
+    none !important;
+
+  -webkit-backdrop-filter:
+    none !important;
+}
+
+
+#natalProfileView > div {
+
+  padding-top:
+    108px !important;
+
+  padding-bottom:
+    125px !important;
+
+  background:
+    transparent !important;
+}
+
+
+/*
+ * Le thème astral est transparent,
+ * MAIS les pages Aujourd'hui / Relations derrière
+ * sont rendues invisibles.
+
+ * Résultat :
+ * ciel visible,
+ * aucune Relation visible par transparence.
+ */
+body:has(#natalProfileView:not(.hidden))
+> main
+> :not(#natalProfileView) {
+
+  visibility:hidden !important;
+}
+
+
+/* Le header est hors du main donc reste visible. */
+
+
+/* vieux éléments de navigation Moi */
+#natalProfileClose,
+#natalProfileView .astromatch-moi-kicker,
+#astromatchMoiUnifiedHeader {
+
+  display:none !important;
+}
+
+
+#natalProfileTitle {
+
+  font-size:24px !important;
+
+  line-height:1.15 !important;
+
+  font-weight:950 !important;
+}
+
+
+/* ==========================================================
+   4 — RAIL DE SWIPE
+
+   Il ne contient QUE deux pages côte à côte.
+
+   PAS :
+   - une vraie page dessous
+   - une copie dessus
+   - une copie de Moi cachée dans Relations
+
+   Donc aucun mélange visuel possible.
+   ========================================================== */
+
+#astromatchMainSwipeOverlay {
+
+  position:fixed;
+
+  left:0;
+  right:0;
+
+  z-index:9000;
+
+  overflow:hidden;
+
+  pointer-events:none;
+
+  background:
+    transparent !important;
+}
+
+
+.astromatch-main-track {
+
+  height:100%;
+
+  display:flex;
+
+  will-change:transform;
+
+  transition:none;
+}
+
+
+.astromatch-main-track.animating {
+
+  transition:
+    transform
+    .23s
+    cubic-bezier(.22,.76,.25,1);
+}
+
+
+.astromatch-main-panel {
+
+  width:100vw;
+  min-width:100vw;
+
+  height:100%;
+
+  overflow:hidden;
+
+  flex:0 0 100vw;
+
+  background:
+    transparent !important;
+}
+
+
+.astromatch-main-snapshot {
+
+  width:100%;
+
+  min-height:100%;
+
+  background:
+    transparent !important;
+}
+
+
+/*
+ * Dans le rail,
+ * le clone du MAIN ne doit pas réserver
+ * la place du header une deuxième fois.
+ */
+.astromatch-main-snapshot > main,
+.astromatch-main-snapshot main {
+
+  /*
+   * ASTROMATCH_PERFECT_PAGE_ALIGNMENT_V16
+   *
+   * Même valeur que body > main réel.
+   */
+  padding-top:
+    108px !important;
+
+  background:
+    transparent !important;
+}
+
+
+/*
+ * Clone de Moi :
+ * plus un écran fixed/modal.
+ */
+.astromatch-main-panel
+#natalProfileView {
+
+  position:relative !important;
+
+  inset:auto !important;
+
+  display:block !important;
+
+  width:100% !important;
+
+  height:auto !important;
+
+  min-height:100% !important;
+
+  overflow:visible !important;
+
+  z-index:auto !important;
+
+  background:
+    transparent !important;
+}
+
+
+.astromatch-main-panel
+#natalProfileView > div {
+
+  /*
+   * Même valeur que le vrai thème astral.
+   */
+  padding-top:
+    108px !important;
+
+  padding-bottom:
+    125px !important;
+}
+
+
+/*
+ * Pendant le swipe :
+ * on cache la VRAIE page.
+ *
+ * Le rail contient déjà sa copie exacte.
+ *
+ * Donc aucun texte/carte ne peut se superposer.
+ */
+body.astromatch-main-swiping
+> main {
+
+  visibility:hidden !important;
+}
+
+
+/*
+ * ASTROMATCH_MOI_RAIL_FIX_V15
+ *
+ * IMPORTANT :
+ * on cache UNIQUEMENT le vrai thème astral,
+ * celui qui vit directement dans le vrai <main>.
+ *
+ * La copie de Moi dans le rail de swipe reste visible.
+ */
+body.astromatch-main-swiping
+> main
+> #natalProfileView {
+
+  visibility:hidden !important;
+}
+
+
+/* ==========================================================
+   5 — NAVIGATION BASSE
+   ========================================================== */
+
+#astromatchMainNav {
+
+  z-index:9999 !important;
+}
+
+
+/* ==========================================================
+   6 — PETITS ÉCRANS
+   ========================================================== */
+
+@media (max-width:380px) {
+
+  #astromatchGlobalHeader
+  header > div:first-child {
+
+    grid-template-columns:
+      130px
+      minmax(0,1fr)
+      44px
+      !important;
+
+    gap:6px !important;
+  }
+
+
+  #astromatchGlobalHeader
+  #primaryCompactSection,
+  #astromatchGlobalHeader
+  #primaryCompactBubble {
+
+    width:130px !important;
+    max-width:130px !important;
+  }
+
+
+  #astromatchGlobalHeader
+  #astromatchHeaderLogo {
+
+    font-size:
+      16px !important;
+  }
+
+}
+
+
+/* aucun scroll horizontal parasite */
+html,
+body {
+
+  overflow-x:hidden !important;
+}
+
+</style>
+
+
+<script id="ASTROMATCH_CLEAN_MAIN_NAV_V14_SCRIPT">
+
+(() => {
+
+  if (
+    window.__ASTROMATCH_CLEAN_MAIN_NAV_V14__
+  ) {
+    return;
+  }
+
+
+  window.__ASTROMATCH_CLEAN_MAIN_NAV_V14__ =
+    true;
+
+
+  const ORDER = [
+    "today",
+    "relations",
+    "me"
+  ];
+
+
+  let gesture =
+    null;
+
+
+  let overlay =
+    null;
+
+
+  let animating =
+    false;
+
+
+  /* ========================================================
+     HEADER
+     ======================================================== */
+
+  function installHeader() {
+
+    const main =
+      document.querySelector(
+        "body > main"
+      );
+
+
+    const header =
+      main?.querySelector(
+        ":scope > header"
+      );
+
+
+    if (
+      !main ||
+      !header
+    ) {
+      return;
+    }
+
+
+    let host =
+      document.getElementById(
+        "astromatchGlobalHeader"
+      );
+
+
+    if (!host) {
+
+      host =
+        document.createElement(
+          "div"
+        );
+
+
+      host.id =
+        "astromatchGlobalHeader";
+
+
+      document.body.insertBefore(
+        host,
+        main
+      );
+
+    }
+
+
+    host.appendChild(
+      header
+    );
+
+  }
+
+
+  /* ========================================================
+     ONGLET ACTUEL
+     ======================================================== */
+
+  function activeTab() {
+
+    const natal =
+      document.getElementById(
+        "natalProfileView"
+      );
+
+
+    if (
+      natal &&
+      !natal.classList.contains(
+        "hidden"
+      )
+    ) {
+      return "me";
+    }
+
+
+    return (
+      document.querySelector(
+        '#astromatchMainNav [data-main-tab].active'
+      )
+      ?.dataset.mainTab ||
+      "today"
+    );
+
+  }
+
+
+  function buttonFor(
+    tab
+  ) {
+
+    return document.querySelector(
+      `#astromatchMainNav [data-main-tab="${tab}"]`
+    );
+
+  }
+
+
+  function destination(
+    current,
+    dx
+  ) {
+
+    const index =
+      ORDER.indexOf(
+        current
+      );
+
+
+    if (index < 0) {
+      return null;
+    }
+
+
+    const next =
+      dx < 0
+        ? index + 1
+        : index - 1;
+
+
+    if (
+      next < 0 ||
+      next >= ORDER.length
+    ) {
+      return null;
+    }
+
+
+    return ORDER[next];
+
+  }
+
+
+  /* ========================================================
+     ZONES OÙ LE SWIPE PRINCIPAL NE PREND PAS LA MAIN
+     ======================================================== */
+
+  function blocked(
+    target
+  ) {
+
+    if (!(target instanceof Element)) {
+      return true;
+    }
+
+
+    /*
+     * Le carrousel scénario garde la priorité.
+     */
+    if (
+      target.closest(
+        "#astromatchComparisonArea"
+      )
+    ) {
+      return true;
+    }
+
+
+    /*
+     * On ne démarre pas le menu principal
+     * directement sur une carte profil.
+     */
+    if (
+      target.closest(
+        "[data-target-id], .target-profile-card"
+      )
+    ) {
+      return true;
+    }
+
+
+    if (
+      target.closest(
+        `
+        #astromatchMainNav,
+        input,
+        textarea,
+        select,
+        [contenteditable="true"]
+        `
+      )
+    ) {
+      return true;
+    }
+
+
+    const targetEditor =
+      document.getElementById(
+        "targetProfileEditor"
+      );
+
+
+    if (
+      targetEditor &&
+      !targetEditor.classList.contains(
+        "hidden"
+      )
+    ) {
+      return true;
+    }
+
+
+    const primaryEditor =
+      document.getElementById(
+        "primaryProfileEditor"
+      );
+
+
+    if (
+      primaryEditor &&
+      !primaryEditor.classList.contains(
+        "hidden"
+      )
+    ) {
+      return true;
+    }
+
+
+    const settings =
+      document.getElementById(
+        "astromatchSettingsPanel"
+      );
+
+
+    if (
+      settings &&
+      !settings.classList.contains(
+        "hidden"
+      )
+    ) {
+      return true;
+    }
+
+
+    return false;
+
+  }
+
+
+  /* ========================================================
+     RELATION SECTION
+     ======================================================== */
+
+  function relationSection(
+    root
+  ) {
+
+    const state =
+      root.querySelector(
+        "#targetCalculationState"
+      );
+
+
+    return (
+      state?.closest(
+        "section"
+      ) ||
+      null
+    );
+
+  }
+
+
+  /* ========================================================
+     COPIE VISUELLE TODAY / RELATIONS
+     ======================================================== */
+
+  function mainSnapshot(
+    tab,
+    current = false
+  ) {
+
+    const source =
+      document.querySelector(
+        "body > main"
+      );
+
+
+    if (!source) {
+      return null;
+    }
+
+
+    const clone =
+      source.cloneNode(
+        true
+      );
+
+
+    /*
+     * Aucun modal ne voyage avec Today/Relations.
+     */
+    clone
+      .querySelector(
+        "#natalProfileView"
+      )
+      ?.remove();
+
+
+    clone
+      .querySelector(
+        "#primaryProfileEditor"
+      )
+      ?.remove();
+
+
+    clone
+      .querySelector(
+        "#targetProfileEditor"
+      )
+      ?.remove();
+
+
+    clone
+      .querySelector(
+        "#astromatchSettingsPanel"
+      )
+      ?.remove();
+
+
+    const today =
+      clone.querySelector(
+        "#astromatchTodayView"
+      );
+
+
+    const relations =
+      relationSection(
+        clone
+      );
+
+
+    const comparison =
+      clone.querySelector(
+        "#astromatchComparisonArea"
+      );
+
+
+    const comparisonHome =
+      clone.querySelector(
+        "#astromatchComparisonHome"
+      );
+
+
+    if (tab === "today") {
+
+      today
+        ?.classList.remove(
+          "hidden"
+        );
+
+
+      relations
+        ?.classList.add(
+          "hidden"
+        );
+
+
+      comparison
+        ?.classList.add(
+          "hidden"
+        );
+
+
+      comparisonHome
+        ?.classList.add(
+          "hidden"
+        );
+
+    }
+
+
+    if (tab === "relations") {
+
+      today
+        ?.classList.add(
+          "hidden"
+        );
+
+
+      relations
+        ?.classList.remove(
+          "hidden"
+        );
+
+
+      /*
+       * Destination Relations :
+       * accueil propre.
+       *
+       * Page Relations actuelle :
+       * on conserve son état exact.
+       */
+      if (!current) {
+
+        comparison
+          ?.classList.add(
+            "hidden"
+          );
+
+      }
+
+    }
+
+
+    clone.style.transform =
+      "";
+
+
+    clone.style.opacity =
+      "1";
+
+
+    const wrapper =
+      document.createElement(
+        "div"
+      );
+
+
+    wrapper.className =
+      "astromatch-main-snapshot";
+
+
+    wrapper.appendChild(
+      clone
+    );
+
+
+    /*
+     * Si la page actuelle était scrollée,
+     * sa copie apparaît exactement au même endroit.
+     */
+    if (
+      current &&
+      window.scrollY > 0
+    ) {
+
+      clone.style.transform =
+        `translateY(-${window.scrollY}px)`;
+
+    }
+
+
+    return wrapper;
+
+  }
+
+
+  /* ========================================================
+     COPIE VISUELLE MOI
+     ======================================================== */
+
+  function moiSnapshot(
+    current = false
+  ) {
+
+    const source =
+      document.getElementById(
+        "natalProfileView"
+      );
+
+
+    if (!source) {
+      return null;
+    }
+
+
+    const clone =
+      source.cloneNode(
+        true
+      );
+
+
+    clone.classList.remove(
+      "hidden"
+    );
+
+
+    clone.style.transform =
+      "";
+
+
+    clone.style.opacity =
+      "1";
+
+
+    /*
+     * Aucune deuxième copie de l'ancien header.
+     */
+    clone
+      .querySelector(
+        "#astromatchMoiUnifiedHeader"
+      )
+      ?.remove();
+
+
+    const wrapper =
+      document.createElement(
+        "div"
+      );
+
+
+    wrapper.className =
+      "astromatch-main-snapshot";
+
+
+    wrapper.appendChild(
+      clone
+    );
+
+
+    if (current) {
+
+      const scroll =
+        Number(
+          source.scrollTop || 0
+        );
+
+
+      if (scroll > 0) {
+
+        clone
+          .firstElementChild
+          ?.style
+          ?.setProperty(
+            "transform",
+            `translateY(-${scroll}px)`
+          );
+
+      }
+
+    }
+
+
+    return wrapper;
+
+  }
+
+
+  function snapshot(
+    tab,
+    current = false
+  ) {
+
+    if (tab === "me") {
+
+      return moiSnapshot(
+        current
+      );
+
+    }
+
+
+    return mainSnapshot(
+      tab,
+      current
+    );
+
+  }
+
+
+  /* ========================================================
+     OVERLAY / RAIL
+     ======================================================== */
+
+  function removeOverlay() {
+
+    overlay
+      ?.root
+      ?.remove();
+
+
+    overlay =
+      null;
+
+
+    document.body.classList.remove(
+      "astromatch-main-swiping"
+    );
+
+  }
+
+
+  function createOverlay(
+    currentTab,
+    targetTab,
+    direction
+  ) {
+
+    removeOverlay();
+
+
+    const current =
+      snapshot(
+        currentTab,
+        true
+      );
+
+
+    const target =
+      snapshot(
+        targetTab,
+        false
+      );
+
+
+    if (
+      !current ||
+      !target
+    ) {
+      return null;
+    }
+
+
+    const root =
+      document.createElement(
+        "div"
+      );
+
+
+    root.id =
+      "astromatchMainSwipeOverlay";
+
+
+    /*
+     * ASTROMATCH_PERFECT_PAGE_ALIGNMENT_V16
+     *
+     * Le rail démarre exactement en haut du viewport,
+     * comme les vraies pages.
+     *
+     * Le header reste devant grâce à son z-index.
+     *
+     * Plus aucun calcul approximatif basé sur
+     * header.getBoundingClientRect().bottom.
+     */
+    const nav =
+      document.getElementById(
+        "astromatchMainNav"
+      );
+
+
+    const navTop =
+      nav
+        ?.getBoundingClientRect()
+        ?.top || window.innerHeight;
+
+
+    root.style.top =
+      "0px";
+
+
+    root.style.height =
+      `${Math.max(
+        100,
+        navTop
+      )}px`;
+
+
+    const track =
+      document.createElement(
+        "div"
+      );
+
+
+    track.className =
+      "astromatch-main-track";
+
+
+    const first =
+      document.createElement(
+        "div"
+      );
+
+
+    const second =
+      document.createElement(
+        "div"
+      );
+
+
+    first.className =
+      "astromatch-main-panel";
+
+
+    second.className =
+      "astromatch-main-panel";
+
+
+    /*
+     * Swipe vers la gauche :
+     *
+     * CURRENT | TARGET
+     *
+     * Swipe vers la droite :
+     *
+     * TARGET | CURRENT
+     */
+    if (direction > 0) {
+
+      first.appendChild(
+        current
+      );
+
+
+      second.appendChild(
+        target
+      );
+
+    } else {
+
+      first.appendChild(
+        target
+      );
+
+
+      second.appendChild(
+        current
+      );
+
+    }
+
+
+    track.append(
+      first,
+      second
+    );
+
+
+    root.appendChild(
+      track
+    );
+
+
+    document.body.appendChild(
+      root
+    );
+
+
+    const base =
+      direction > 0
+        ? 0
+        : -window.innerWidth;
+
+
+    track.style.transform =
+      `translate3d(${base}px,0,0)`;
+
+
+    overlay = {
+
+      root,
+      track,
+      base,
+      direction,
+      targetTab
+
+    };
+
+
+    /*
+     * À partir de maintenant,
+     * seule la paire de copies est visible.
+     *
+     * Pas la vraie page dessous.
+     */
+    document.body.classList.add(
+      "astromatch-main-swiping"
+    );
+
+
+    return overlay;
+
+  }
+
+
+  function moveOverlay(
+    dx
+  ) {
+
+    if (!overlay) {
+      return;
+    }
+
+
+    overlay.track.style.transform =
+      `translate3d(${
+        overlay.base + dx
+      }px,0,0)`;
+
+  }
+
+
+  /* ========================================================
+     ANNULATION
+     ======================================================== */
+
+  function cancelSwipe() {
+
+    if (!overlay) {
+      return;
+    }
+
+
+    const track =
+      overlay.track;
+
+
+    track.classList.add(
+      "animating"
+    );
+
+
+    track.style.transform =
+      `translate3d(${
+        overlay.base
+      }px,0,0)`;
+
+
+    setTimeout(
+      removeOverlay,
+      240
+    );
+
+  }
+
+
+  /* ========================================================
+     VALIDATION
+     ======================================================== */
+
+  function setNavVisual(
+    tab
+  ) {
+
+    document
+      .querySelectorAll(
+        "#astromatchMainNav [data-main-tab]"
+      )
+      .forEach(
+        button => {
+
+          button.classList.toggle(
+            "active",
+            button.dataset.mainTab === tab
+          );
+
+        }
+      );
+
+  }
+
+
+  function completeSwipe(
+    targetTab
+  ) {
+
+    if (
+      !overlay ||
+      animating
+    ) {
+      return;
+    }
+
+
+    animating =
+      true;
+
+
+    /*
+     * Le bouton s'allume immédiatement
+     * avec le mouvement de page.
+     */
+    setNavVisual(
+      targetTab
+    );
+
+
+    const finalX =
+      overlay.direction > 0
+        ? -window.innerWidth
+        : 0;
+
+
+    overlay.track.classList.add(
+      "animating"
+    );
+
+
+    overlay.track.style.transform =
+      `translate3d(${finalX}px,0,0)`;
+
+
+    setTimeout(
+      () => {
+
+        const button =
+          buttonFor(
+            targetTab
+          );
+
+
+        /*
+         * On utilise le vrai système existant
+         * pour changer l'état réel de l'application.
+         */
+        button?.click();
+
+
+        if (targetTab === "me") {
+
+          const natal =
+            document.getElementById(
+              "natalProfileView"
+            );
+
+
+          if (natal) {
+
+            natal.scrollTop =
+              0;
+
+          }
+
+        } else {
+
+          window.scrollTo(
+            0,
+            0
+          );
+
+        }
+
+
+        /*
+         * Pendant que le rail est encore devant,
+         * on laisse le DOM réel finir sa mise à jour.
+         */
+        requestAnimationFrame(
+          () => {
+
+            requestAnimationFrame(
+              () => {
+
+                setTimeout(
+                  () => {
+
+                    removeOverlay();
+
+                    animating =
+                      false;
+
+                  },
+                  40
+                );
+
+              }
+            );
+
+          }
+        );
+
+      },
+      230
+    );
+
+  }
+
+
+  /* ========================================================
+     TOUCH
+     ======================================================== */
+
+  document.addEventListener(
+    "touchstart",
+    event => {
+
+      if (
+        animating ||
+        event.touches.length !== 1 ||
+        blocked(
+          event.target
+        )
+      ) {
+
+        gesture =
+          null;
+
+        return;
+      }
+
+
+      const touch =
+        event.touches[0];
+
+
+      gesture = {
+
+        current:
+          activeTab(),
+
+        x:
+          touch.clientX,
+
+        y:
+          touch.clientY,
+
+        dx:0,
+
+        locked:null,
+
+        target:null,
+
+        direction:0
+
+      };
+
+    },
+    {
+      passive:true
+    }
+  );
+
+
+  document.addEventListener(
+    "touchmove",
+    event => {
+
+      if (
+        !gesture ||
+        event.touches.length !== 1
+      ) {
+        return;
+      }
+
+
+      const touch =
+        event.touches[0];
+
+
+      const dx =
+        touch.clientX -
+        gesture.x;
+
+
+      const dy =
+        touch.clientY -
+        gesture.y;
+
+
+      const ax =
+        Math.abs(
+          dx
+        );
+
+
+      const ay =
+        Math.abs(
+          dy
+        );
+
+
+      /*
+       * On attend une intention claire.
+       */
+      if (!gesture.locked) {
+
+        if (
+          ay > 13 &&
+          ay > ax * 1.15
+        ) {
+
+          gesture.locked =
+            "vertical";
+
+          gesture =
+            null;
+
+          return;
+
+        }
+
+
+        if (
+          ax > 16 &&
+          ax > ay * 1.30
+        ) {
+
+          const target =
+            destination(
+              gesture.current,
+              dx
+            );
+
+
+          if (!target) {
+
+            gesture.locked =
+              "edge";
+
+            return;
+
+          }
+
+
+          gesture.locked =
+            "horizontal";
+
+
+          gesture.target =
+            target;
+
+
+          gesture.direction =
+            dx < 0
+              ? 1
+              : -1;
+
+
+          createOverlay(
+            gesture.current,
+            target,
+            gesture.direction
+          );
+
+        }
+
+      }
+
+
+      if (
+        gesture?.locked !==
+        "horizontal"
+      ) {
+        return;
+      }
+
+
+      event.preventDefault();
+
+
+      gesture.dx =
+        dx;
+
+
+      moveOverlay(
+        dx
+      );
+
+    },
+    {
+      passive:false
+    }
+  );
+
+
+  document.addEventListener(
+    "touchend",
+    () => {
+
+      if (!gesture) {
+        return;
+      }
+
+
+      const {
+        locked,
+        dx,
+        target
+      } = gesture;
+
+
+      gesture =
+        null;
+
+
+      if (
+        locked !==
+        "horizontal"
+      ) {
+
+        removeOverlay();
+
+        return;
+      }
+
+
+      if (
+        Math.abs(dx) <
+        58
+      ) {
+
+        cancelSwipe();
+
+        return;
+      }
+
+
+      completeSwipe(
+        target
+      );
+
+    },
+    {
+      passive:true
+    }
+  );
+
+
+  document.addEventListener(
+    "touchcancel",
+    () => {
+
+      gesture =
+        null;
+
+
+      removeOverlay();
+
+    },
+    {
+      passive:true
+    }
+  );
+
+
+  /* ========================================================
+     BOOT
+     ======================================================== */
+
+  function boot() {
+
+    installHeader();
+
+
+    console.log(
+      "✅ AstroMatch Clean Main Navigation V14"
+    );
+
+  }
+
+
+  if (
+    document.readyState ===
+    "loading"
+  ) {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      boot,
+      {
+        once:true
+      }
+    );
+
+  } else {
+
+    boot();
+
+  }
+
+})();
+
+</script>
+
+
+<!-- ASTROMATCH_MOI_RAIL_FIX_V15 -->
+<style id="ASTROMATCH_MOI_RAIL_FIX_V15_STYLE">
+
+/*
+ * Sécurité :
+ * le Moi contenu dans le rail DOIT rester visible.
+ */
+#astromatchMainSwipeOverlay
+#natalProfileView {
+
+  visibility:visible !important;
+
+  opacity:1 !important;
+}
+
+
+/*
+ * Même principe pour tout son contenu.
+ */
+#astromatchMainSwipeOverlay
+#natalProfileView > div {
+
+  visibility:visible !important;
+}
+
+</style>
+
+
+<!-- ASTROMATCH_PERFECT_PAGE_ALIGNMENT_V16 -->
+
+<style id="ASTROMATCH_PERFECT_PAGE_ALIGNMENT_V16_STYLE">
+
+/*
+ * Le rail occupe le même système de coordonnées
+ * que les vraies pages.
+ *
+ * Header et navigation restent devant.
+ */
+
+#astromatchMainSwipeOverlay {
+
+  top:0 !important;
+
+  background:
+    transparent !important;
+}
+
+
+/*
+ * Aucun arrondi vertical entre copie et vraie page.
+ */
+.astromatch-main-panel,
+.astromatch-main-snapshot {
+
+  margin-top:0 !important;
+
+  padding-top:0 !important;
+}
+
+
+/*
+ * Le header reste toujours au-dessus du rail.
+ */
+#astromatchGlobalHeader {
+
+  z-index:9500 !important;
+}
+
+
+/*
+ * La navigation basse reste au-dessus également.
+ */
+#astromatchMainNav {
+
+  z-index:9999 !important;
+}
+
+</style>
 
 </body>
 </html>
