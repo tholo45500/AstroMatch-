@@ -813,291 +813,16 @@ header > div:first-child {
 </style>
 
 
-<style id="ASTROMATCH_HOME_DASHBOARD_V1">
+<style id="ASTROMATCH_RELATIONS_LAYOUT_BASE">
 
-/*
- * Avec les accordéons, plus besoin
- * d'une liste à hauteur forcée.
- */
 #targetSelector {
   height: auto !important;
   max-height: none !important;
-
   overflow: visible !important;
 }
 
 main {
   padding-bottom: 24px !important;
-}
-
-#astromatchHomeDashboard {
-  margin-top: 18px;
-}
-
-.home-dashboard-card {
-  position: relative;
-  overflow: hidden;
-
-  border-radius: 28px;
-
-  padding: 20px;
-
-  border:
-    1px solid rgb(74 63 130);
-
-  background:
-    linear-gradient(
-      145deg,
-      rgb(19 27 50),
-      rgb(12 19 36)
-    );
-
-  box-shadow:
-    0 20px 45px rgb(0 0 0 / .30);
-}
-
-.home-dashboard-glow {
-  position: absolute;
-
-  width: 220px;
-  height: 220px;
-
-  top: -120px;
-  right: -80px;
-
-  border-radius: 999px;
-
-  background:
-    rgb(109 40 217 / .24);
-
-  filter: blur(45px);
-}
-
-.home-dashboard-kicker {
-  text-align: center;
-
-  color: rgb(196 181 253);
-
-  font-size: 12px;
-  font-weight: 900;
-
-  letter-spacing: .12em;
-  text-transform: uppercase;
-}
-
-.home-dashboard-primary {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  gap: 12px;
-
-  margin-top: 17px;
-}
-
-.home-dashboard-zodiac {
-  width: 54px;
-  height: 54px;
-
-  border-radius: 18px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background: rgb(39 31 77);
-
-  border:
-    1px solid rgb(89 69 150);
-
-  font-size: 30px;
-}
-
-.home-dashboard-name {
-  color: white;
-
-  font-size: 20px;
-  font-weight: 900;
-}
-
-.home-dashboard-sub {
-  margin-top: 2px;
-
-  color: rgb(148 163 184);
-
-  font-size: 12px;
-}
-
-.home-dashboard-counts {
-  display: grid;
-
-  grid-template-columns:
-    repeat(3, minmax(0,1fr));
-
-  gap: 8px;
-
-  margin-top: 20px;
-}
-
-.home-dashboard-stat {
-  padding: 12px 5px;
-
-  border-radius: 18px;
-
-  background:
-    rgb(22 31 53);
-
-  border:
-    1px solid rgb(46 57 82);
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  transition:
-    transform .15s ease,
-    border-color .15s ease;
-}
-
-.home-dashboard-stat:active {
-  transform: scale(.96);
-}
-
-.home-dashboard-stat span {
-  font-size: 20px;
-}
-
-.home-dashboard-stat strong {
-  margin-top: 4px;
-
-  color: white;
-
-  font-size: 18px;
-}
-
-.home-dashboard-stat small {
-  margin-top: 1px;
-
-  color: rgb(148 163 184);
-
-  font-size: 10px;
-}
-
-.home-dashboard-section-title {
-  margin-top: 20px;
-  margin-bottom: 9px;
-
-  color: rgb(148 163 184);
-
-  font-size: 11px;
-  font-weight: 900;
-
-  text-transform: uppercase;
-  letter-spacing: .10em;
-}
-
-.home-dashboard-recents {
-  display: flex;
-  flex-direction: column;
-
-  gap: 7px;
-}
-
-.home-dashboard-person {
-  width: 100%;
-
-  display: flex;
-  align-items: center;
-
-  gap: 10px;
-
-  padding: 10px;
-
-  border-radius: 16px;
-
-  background:
-    rgb(17 25 44);
-
-  border:
-    1px solid rgb(38 49 71);
-
-  text-align: left;
-}
-
-.home-dashboard-person-zodiac {
-  width: 38px;
-  height: 38px;
-
-  flex: 0 0 38px;
-
-  border-radius: 13px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background:
-    rgb(35 30 68);
-
-  font-size: 22px;
-}
-
-.home-dashboard-person strong {
-  display: block;
-
-  color: white;
-
-  font-size: 13px;
-
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.home-dashboard-person small {
-  display: block;
-
-  margin-top: 2px;
-
-  color: rgb(148 163 184);
-
-  font-size: 10px;
-}
-
-.home-dashboard-arrow {
-  margin-left: auto;
-
-  color: rgb(167 139 250);
-
-  font-size: 22px;
-}
-
-.home-dashboard-hint {
-  margin-top: 16px;
-
-  text-align: center;
-
-  color: rgb(100 116 139);
-
-  font-size: 11px;
-  line-height: 1.5;
-}
-
-.home-dashboard-empty {
-  margin-top: 18px;
-
-  padding: 18px;
-
-  border-radius: 18px;
-
-  border:
-    1px dashed rgb(61 72 97);
-
-  text-align: center;
-
-  color: rgb(100 116 139);
-
-  font-size: 12px;
 }
 
 </style>
@@ -7651,11 +7376,6 @@ window.scoreProgressClass = scoreProgressClass;
     ></div>
 
 
-    <div
-      id="astromatchHomeDashboard"
-      class="hidden"
-    ></div>
-
 
 <div
   id="targetSelectionHint"
@@ -11302,45 +11022,6 @@ function dashboardRelationshipMeta(profile) {
   };
 }
 
-function syncAstroMatchRelationsState(
-  targets,
-  selectedTarget
-) {
-  const home =
-    document.getElementById(
-      "astromatchHomeDashboard"
-    );
-
-  if (!home) return;
-
-  ASTROMATCH_RELATION_LAST_TARGETS =
-    Array.isArray(targets)
-      ? targets
-      : [];
-
-  ASTROMATCH_RELATION_LAST_SELECTED =
-    selectedTarget;
-
-  /*
-   * Relations est désormais la vue canonique.
-   * L'ancien Home n'est plus rendu.
-   */
-  home.classList.add("hidden");
-
-  document
-    .getElementById("targetSelector")
-    ?.classList.remove("hidden");
-
-  document
-    .getElementById("targetSelectionHint")
-    ?.classList.remove("hidden");
-
-  document
-    .getElementById("targetCalculationState")
-    ?.classList.remove("hidden");
-}
-
-
 function parkAstroMatchComparison() {
   const home =
     document.getElementById(
@@ -12272,6 +11953,32 @@ function renderTargetSelector(targets, selectedTarget) {
       ? targets
       : [];
 
+  ASTROMATCH_RELATION_LAST_TARGETS =
+    safeTargets;
+
+  ASTROMATCH_RELATION_LAST_SELECTED =
+    selectedTarget;
+
+  container.classList.remove(
+    "hidden"
+  );
+
+  document
+    .getElementById(
+      "targetSelectionHint"
+    )
+    ?.classList.remove(
+      "hidden"
+    );
+
+  document
+    .getElementById(
+      "targetCalculationState"
+    )
+    ?.classList.remove(
+      "hidden"
+    );
+
   const men =
     safeTargets.filter(
       target =>
@@ -12637,11 +12344,6 @@ function renderTargetSelector(targets, selectedTarget) {
         deleteTargetProfile(button.dataset.deleteTarget);
       });
     });
-  syncAstroMatchRelationsState(
-    safeTargets,
-    selectedTarget
-  );
-
   updateTargetSelectionVisual(
     selectedTarget
   );
