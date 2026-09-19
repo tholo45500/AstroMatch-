@@ -7204,6 +7204,20 @@ summary {
 
 
 <!-- ASTROMATCH_RELATIONS_FINAL_FIX_V24 -->
+
+<style id="ASTROMATCH_STABLE_RELATION_SCROLL_V4_STYLE">
+/* ASTROMATCH_STABLE_RELATION_SCROLL_V4 */
+
+#targetSelector,
+#astromatchComparisonArea,
+#astromatchRelationshipDaily,
+#relationshipTabsContainer,
+#relationshipDynamicCard {
+  overflow-anchor: none;
+}
+
+</style>
+
 </head>
 
 <body class="min-h-screen text-white">
@@ -10239,6 +10253,10 @@ function renderContextualRelationshipTabs(target) {
 }
 
 function selectRelationshipMode(mode) {
+
+  const viewport =
+    astromatchPreserveViewport();
+
   const nextMode = String(mode || "").trim();
 
   if (
@@ -10260,6 +10278,12 @@ function selectRelationshipMode(mode) {
   );
 
   renderRelationshipMode();
+
+  /*
+   * Même comportement au clic et au swipe :
+   * le contenu change sans déplacer l'écran.
+   */
+  viewport.restore();
 }
 
 if (typeof window !== "undefined") {
@@ -13677,26 +13701,8 @@ function renderTargetSelector(targets, selectedTarget) {
             button.dataset.targetId
           );
 
-          /*
-           * Une fois la cible choisie,
-           * on amène immédiatement l'utilisateur
-           * vers la comparaison.
-           */
-          setTimeout(() => {
-            const score =
-              document.getElementById(
-                "relationshipScore"
-              );
+          /* ASTROMATCH_REMOVE_PROFILE_AUTOSCROLL_V12 */
 
-            const comparison =
-              score?.closest("section") ||
-              score;
-
-            comparison?.scrollIntoView({
-              behavior: "smooth",
-              block: "start"
-            });
-          }, 180);
         }
       );
 
@@ -13956,7 +13962,135 @@ function setAstroMatchComparisonVisible(visible) {
 }
 
 
+function astromatchPreserveViewport() {
+
+  const top =
+    window.scrollY;
+
+  const left =
+    window.scrollX;
+
+  let cancelled =
+    false;
+
+
+  function cleanup() {
+
+    window.removeEventListener(
+      "touchmove",
+      cancel
+    );
+
+    window.removeEventListener(
+      "wheel",
+      cancel
+    );
+
+  }
+
+
+  function cancel() {
+
+    cancelled =
+      true;
+
+    cleanup();
+
+  }
+
+
+  function restore() {
+
+    if (cancelled) {
+      return;
+    }
+
+    if (
+      Math.abs(
+        window.scrollY - top
+      ) > 1 ||
+      Math.abs(
+        window.scrollX - left
+      ) > 1
+    ) {
+      window.scrollTo(
+        left,
+        top
+      );
+    }
+
+  }
+
+
+  /*
+   * Si l'utilisateur recommence à scroller
+   * lui-même, on arrête immédiatement.
+   */
+  window.addEventListener(
+    "touchmove",
+    cancel,
+    {
+      passive:true
+    }
+  );
+
+  window.addEventListener(
+    "wheel",
+    cancel,
+    {
+      passive:true
+    }
+  );
+
+
+  /*
+   * Couvre :
+   * - déplacement du comparateur
+   * - rendu relationnel
+   * - rendu du climat du jour
+   */
+  queueMicrotask(
+    restore
+  );
+
+  requestAnimationFrame(() => {
+
+    restore();
+
+    requestAnimationFrame(
+      restore
+    );
+
+  });
+
+
+  [60,140,280,450].forEach(
+    delay =>
+      setTimeout(
+        restore,
+        delay
+      )
+  );
+
+
+  setTimeout(
+    cleanup,
+    520
+  );
+
+
+  return {
+    restore,
+    cancel
+  };
+}
+
+
+
 function selectTargetProfile(profileId) {
+
+  const viewport =
+    astromatchPreserveViewport();
 
   const requestedTargetId =
     String(profileId || "");
@@ -14095,17 +14229,35 @@ function selectTargetProfile(profileId) {
 
 
 
-  calculateSelectedTarget().catch(error => {
-    console.error(
-      "AstroMatch target calculation error:",
-      error
-    );
-    setTargetCalculationState("error");
+  calculateSelectedTarget()
+    .catch(error => {
 
-    window.__astromatchStatus(
-      `Erreur calcul : ${error.message || error}`
-    );
-  });
+      console.error(
+        "AstroMatch target calculation error:",
+        error
+      );
+
+      setTargetCalculationState(
+        "error"
+      );
+
+      window.__astromatchStatus(
+        `Erreur calcul : ${error.message || error}`
+      );
+
+    })
+    .finally(() => {
+
+      /*
+       * Le calcul peut déplacer/reconstruire
+       * plusieurs blocs.
+       *
+       * On garde le téléphone exactement
+       * à la position où l'utilisateur était.
+       */
+      viewport.restore();
+
+    });
 }
 
 let ASTROMATCH_CALCULATION_TOKEN = 0;
@@ -36108,6 +36260,3870 @@ document.addEventListener(
 })();
 
 </script>
+
+
+<!-- ASTROMATCH_RELATIONSHIP_DAILY_V1 -->
+
+<style id="ASTROMATCH_RELATIONSHIP_DAILY_V1_STYLE">
+
+.astromatch-relationship-daily {
+  margin-bottom:16px;
+  padding:16px;
+  border-radius:22px;
+  border:1px solid rgba(167,139,250,.14);
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(99,102,241,.12),
+      transparent 35%
+    ),
+    rgba(15,23,42,.72);
+}
+
+.relationship-daily-kicker {
+  color:#a78bfa;
+  font-size:9px;
+  font-weight:950;
+  letter-spacing:.14em;
+}
+
+.relationship-daily-title {
+  margin-top:5px;
+  color:#f8fafc;
+  font-size:18px;
+  font-weight:950;
+  line-height:1.3;
+}
+
+.relationship-daily-summary {
+  margin-top:7px;
+  color:#94a3b8;
+  font-size:11.5px;
+  line-height:1.55;
+}
+
+.relationship-daily-axes {
+  display:grid;
+  grid-template-columns:
+    repeat(3,minmax(0,1fr));
+  gap:7px;
+  margin-top:14px;
+}
+
+/* ASTROMATCH_RELATIONSHIP_DAILY_V2 */
+
+.relationship-daily-axis {
+  width:100%;
+  padding:11px 8px;
+  border-radius:15px;
+  text-align:center;
+  background:rgba(2,6,23,.42);
+  border:1px solid rgba(255,255,255,.055);
+  transition:
+    border-color .18s ease,
+    background .18s ease,
+    transform .18s ease;
+}
+
+button.relationship-daily-axis {
+  cursor:pointer;
+}
+
+button.relationship-daily-axis:active {
+  transform:scale(.98);
+}
+
+.relationship-daily-axis.open {
+  border-color:rgba(167,139,250,.30);
+  background:rgba(139,92,246,.10);
+}
+
+.relationship-daily-axis-detail {
+  display:none;
+  grid-column:1 / -1;
+  padding:11px 12px;
+  border-radius:14px;
+  background:rgba(2,6,23,.38);
+  border:1px solid rgba(167,139,250,.08);
+  color:#94a3b8;
+  font-size:10.5px;
+  line-height:1.55;
+  text-align:left;
+}
+
+.relationship-daily-axis-detail.open {
+  display:block;
+}
+
+.relationship-daily-axis-icon {
+  font-size:19px;
+}
+
+.relationship-daily-axis-name {
+  margin-top:5px;
+  color:#cbd5e1;
+  font-size:9px;
+  font-weight:850;
+}
+
+.relationship-daily-axis-state {
+  margin-top:3px;
+  color:#a78bfa;
+  font-size:9.5px;
+  font-weight:900;
+}
+
+.relationship-daily-shared {
+  margin-top:12px;
+  padding:10px 11px;
+  border-radius:13px;
+  background:rgba(139,92,246,.07);
+  color:#c4b5fd;
+  font-size:10.5px;
+  line-height:1.45;
+}
+
+.relationship-daily-details {
+  margin-top:11px;
+  border-top:1px solid rgba(255,255,255,.06);
+  padding-top:10px;
+}
+
+.relationship-daily-details summary {
+  cursor:pointer;
+  list-style:none;
+  color:#94a3b8;
+  font-size:10px;
+  font-weight:850;
+}
+
+.relationship-daily-details summary::-webkit-details-marker {
+  display:none;
+}
+
+.relationship-daily-influences {
+  display:grid;
+  gap:6px;
+  margin-top:9px;
+}
+
+.relationship-daily-influence {
+  padding:9px 10px;
+  border-radius:12px;
+  background:rgba(2,6,23,.38);
+}
+
+.relationship-daily-influence strong {
+  display:block;
+  color:#e2e8f0;
+  font-size:10px;
+}
+
+.relationship-daily-influence span {
+  display:block;
+  margin-top:3px;
+  color:#64748b;
+  font-size:9.5px;
+  line-height:1.4;
+}
+
+.relationship-daily-meta {
+  margin-top:10px;
+  color:#475569;
+  font-size:8.5px;
+  text-align:center;
+}
+
+.relationship-daily-loading {
+  color:#94a3b8;
+  font-size:11px;
+  padding:5px 0;
+}
+
+</style>
+
+
+<script id="ASTROMATCH_RELATIONSHIP_DAILY_V1_SCRIPT">
+
+(() => {
+
+  const DAILY_CACHE =
+    new Map();
+
+  let renderToken = 0;
+
+  const PLANET_FR = {
+    sun:"Soleil",
+    moon:"Lune",
+    mercury:"Mercure",
+    venus:"Vénus",
+    mars:"Mars",
+    jupiter:"Jupiter",
+    saturn:"Saturne",
+    uranus:"Uranus",
+    neptune:"Neptune",
+    pluto:"Pluton"
+  };
+
+
+  function esc(value) {
+    return String(value ?? "")
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#039;");
+  }
+
+
+  function profileName(
+    profile,
+    fallback
+  ) {
+    return (
+      profile?.identity?.first_name ||
+      fallback
+    );
+  }
+
+
+  function currentDate(profile) {
+
+    const timezone =
+      profile?.birth_data
+        ?.place?.resolved
+        ?.timezone_id ||
+      Intl.DateTimeFormat()
+        .resolvedOptions()
+        .timeZone ||
+      "UTC";
+
+    const parts =
+      new Intl.DateTimeFormat(
+        "en-CA",
+        {
+          timeZone:timezone,
+          year:"numeric",
+          month:"2-digit",
+          day:"2-digit"
+        }
+      ).formatToParts(
+        new Date()
+      );
+
+    const get = type =>
+      parts.find(
+        part =>
+          part.type === type
+      )?.value;
+
+    return (
+      `${get("year")}-` +
+      `${get("month")}-` +
+      `${get("day")}`
+    );
+  }
+
+
+  function ensureSection() {
+
+    let section =
+      document.getElementById(
+        "astromatchRelationshipDaily"
+      );
+
+    if (section) {
+      return section;
+    }
+
+    const tabs =
+      document.getElementById(
+        "relationshipTabsContainer"
+      );
+
+    const tabSection =
+      tabs?.closest("section");
+
+    if (!tabSection) {
+      return null;
+    }
+
+    section =
+      document.createElement(
+        "section"
+      );
+
+    section.id =
+      "astromatchRelationshipDaily";
+
+    section.className =
+      "astromatch-relationship-daily";
+
+    /*
+     * Le climat du jour devient la première
+     * information après la fiche du profil.
+     *
+     * Profil
+     * → climat aujourd'hui
+     * → Amour / Amitié / Flirt
+     * → analyse complète
+     */
+    tabSection.insertAdjacentElement(
+      "beforebegin",
+      section
+    );
+
+    return section;
+  }
+
+
+  async function loadDaily(
+    profile,
+    date
+  ) {
+
+    const id =
+      String(
+        profile?.profile_id ||
+        profile?.identity?.first_name ||
+        ""
+      );
+
+    const key =
+      `${id}|${date}`;
+
+    if (DAILY_CACHE.has(key)) {
+      return DAILY_CACHE.get(key);
+    }
+
+    if (
+      !window.AstroMatchRuntime ||
+      typeof window.AstroMatchRuntime
+        .daily !== "function"
+    ) {
+      throw new Error(
+        "DAILY_RUNTIME_UNAVAILABLE"
+      );
+    }
+
+    const input =
+      typeof profileToApiInput ===
+        "function"
+        ? profileToApiInput(
+            profile
+          )
+        : profile;
+
+    const promise =
+      window.AstroMatchRuntime.daily({
+        profile:input,
+        date
+      }).then(payload => {
+
+        if (
+          !payload?.ok ||
+          !payload?.result
+        ) {
+          throw new Error(
+            "DAILY_RESULT_INVALID"
+          );
+        }
+
+        return payload.result;
+      });
+
+    DAILY_CACHE.set(
+      key,
+      promise
+    );
+
+    return promise;
+  }
+
+
+  function sharedHtml(
+    bodies,
+    primaryName,
+    targetName
+  ) {
+
+    if (!bodies?.length) {
+      return "";
+    }
+
+    const labels =
+      bodies
+        .map(body =>
+          PLANET_FR[body] ||
+          body
+        )
+        .join(" · ");
+
+    return `
+      <div class="relationship-daily-shared">
+        ✦
+        <strong>${esc(labels)}</strong>
+        active aujourd'hui des zones sensibles
+        dans vos deux thèmes.
+      </div>
+    `;
+  }
+
+
+  function axisDetailText(
+    axis,
+    mode,
+    primaryName,
+    targetName
+  ) {
+
+    const alignment =
+      Number(axis?.alignment);
+
+    let rhythm;
+
+    if (alignment >= 82) {
+      rhythm =
+        "Vous êtes très synchronisés aujourd'hui sur ce terrain.";
+    } else if (alignment >= 65) {
+      rhythm =
+        "Vos dispositions du jour vont assez facilement dans le même sens.";
+    } else if (alignment >= 45) {
+      rhythm =
+        "Vous ne vivez pas exactement ce terrain au même rythme aujourd'hui.";
+    } else {
+      rhythm =
+        "Le décalage de rythme est plus marqué aujourd'hui : mieux vaut laisser de la marge à l'autre.";
+    }
+
+    const texts = {
+
+      love: {
+        connection:
+          "Cela concerne surtout votre disponibilité affective, votre sensibilité et la facilité à vous rapprocher.",
+        communication:
+          "Cela concerne la facilité à vous parler, vous comprendre et choisir le bon moment pour les sujets importants.",
+        momentum:
+          "Cela concerne l'envie d'aller vers l'autre, l'intensité et le rythme du rapprochement."
+      },
+
+      friendship: {
+        connection:
+          "Cela concerne votre complicité, votre disponibilité émotionnelle et la facilité à être simplement bien ensemble.",
+        communication:
+          "Cela concerne vos échanges, votre compréhension mutuelle et la fluidité des discussions.",
+        momentum:
+          "Cela concerne votre énergie disponible pour partager quelque chose, sortir ou avancer ensemble."
+      },
+
+      family: {
+        connection:
+          "Cela concerne le soutien, la patience et la capacité à être disponible émotionnellement l'un pour l'autre.",
+        communication:
+          "Cela concerne la manière de vous parler et de gérer les petits décalages ou incompréhensions.",
+        momentum:
+          "Cela concerne votre rythme commun, les responsabilités et le fonctionnement concret de la journée."
+      },
+
+      flirt: {
+        connection:
+          "Cela concerne l'attirance, la sensibilité aux signaux de l'autre et la facilité à créer de la proximité.",
+        communication:
+          "Cela concerne le ton, les messages, les signaux et la complicité verbale aujourd'hui.",
+        momentum:
+          "Cela concerne l'élan, l'audace et l'intensité avec laquelle chacun a envie d'avancer."
+      },
+
+      professional: {
+        connection:
+          "Cela concerne l'ambiance entre vous, la confiance et la facilité à fonctionner comme une équipe.",
+        communication:
+          "Cela concerne la circulation des idées, les explications et la facilité à se comprendre dans le travail.",
+        momentum:
+          "Cela concerne votre rythme de travail, la coordination et la capacité à avancer efficacement ensemble."
+      }
+
+    };
+
+    const context =
+      texts?.[mode]?.[axis?.key] ||
+      "Cela montre comment vos climats personnels du jour se rencontrent sur ce terrain.";
+
+    return (
+      context +
+      " " +
+      rhythm
+    );
+  }
+
+
+  function influenceHtml(
+    item,
+    primaryName,
+    targetName
+  ) {
+
+    const owner =
+      item.owner === "primary"
+        ? primaryName
+        : targetName;
+
+    return `
+      <div class="relationship-daily-influence">
+
+        <strong>
+          ${
+            item.impact === "tense"
+              ? "⚡"
+              : "✨"
+          }
+          ${esc(owner)}
+          ·
+          ${esc(item.label)}
+        </strong>
+
+        <span>
+          ${esc(item.text)}
+        </span>
+
+      </div>
+    `;
+  }
+
+
+  async function renderClimate() {
+
+    const token =
+      ++renderToken;
+
+    const section =
+      ensureSection();
+
+    if (!section) {
+      return;
+    }
+
+    const primary =
+      typeof ASTROMATCH_PRIMARY_PROFILE !==
+        "undefined"
+        ? ASTROMATCH_PRIMARY_PROFILE
+        : null;
+
+    const target =
+      typeof ASTROMATCH_SELECTED_TARGET !==
+        "undefined"
+        ? ASTROMATCH_SELECTED_TARGET
+        : null;
+
+    const result =
+      typeof ASTROMATCH_RESULT !==
+        "undefined"
+        ? ASTROMATCH_RESULT
+        : null;
+
+    if (
+      !primary ||
+      !target ||
+      !result
+    ) {
+      section.classList.add(
+        "hidden"
+      );
+      return;
+    }
+
+    section.classList.remove(
+      "hidden"
+    );
+
+    const mode =
+      typeof CURRENT_RELATIONSHIP_MODE !==
+        "undefined"
+        ? CURRENT_RELATIONSHIP_MODE
+        : "love";
+
+    const date =
+      currentDate(primary);
+
+    const primaryName =
+      profileName(
+        primary,
+        "Toi"
+      );
+
+    const targetName =
+      profileName(
+        target,
+        "L'autre"
+      );
+
+    section.innerHTML = `
+      <div class="relationship-daily-loading">
+        ✨ Calcul du climat entre
+        ${esc(primaryName)}
+        et
+        ${esc(targetName)}
+        aujourd'hui…
+      </div>
+    `;
+
+    try {
+
+      const [
+        primaryDaily,
+        targetDaily,
+        module
+      ] =
+        await Promise.all([
+          loadDaily(
+            primary,
+            date
+          ),
+          loadDaily(
+            target,
+            date
+          ),
+          import(
+            "../js/daily/relationship_daily.js?v=relationship-daily-v1"
+          )
+        ]);
+
+      if (
+        token !== renderToken
+      ) {
+        return;
+      }
+
+      const climate =
+        module
+          .buildRelationshipDailyClimate({
+            primaryDaily,
+            targetDaily,
+            matchResult:result,
+            mode,
+            primaryName,
+            targetName
+          });
+
+      section.innerHTML = `
+
+        <div class="relationship-daily-kicker">
+          ☀️ AUJOURD'HUI ENTRE VOUS
+        </div>
+
+        <div class="relationship-daily-title">
+          ${esc(climate.headline)}
+        </div>
+
+        <div class="relationship-daily-summary">
+          ${esc(climate.summary)}
+        </div>
+
+        <div class="relationship-daily-axes">
+
+          ${climate.axes.map((axis,index) => `
+
+            <button
+              type="button"
+              class="relationship-daily-axis"
+              data-relationship-daily-axis="${index}"
+              aria-expanded="false"
+            >
+
+              <div class="relationship-daily-axis-icon">
+                ${esc(axis.icon)}
+              </div>
+
+              <div class="relationship-daily-axis-name">
+                ${esc(axis.label)}
+              </div>
+
+              <div class="relationship-daily-axis-state">
+                ${esc(axis.state.label)}
+              </div>
+
+            </button>
+
+            <div
+              class="relationship-daily-axis-detail"
+              data-relationship-daily-detail="${index}"
+            >
+              ${esc(
+                axisDetailText(
+                  axis,
+                  climate.mode,
+                  primaryName,
+                  targetName
+                )
+              )}
+            </div>
+
+          `).join("")}
+
+        </div>
+
+        ${sharedHtml(
+          climate.shared_activations,
+          primaryName,
+          targetName
+        )}
+
+        ${
+          climate.influences.length
+            ? `
+              <details class="relationship-daily-details">
+
+                <summary>
+                  🔎 Pourquoi aujourd'hui ?
+                  ⌄
+                </summary>
+
+                <div class="relationship-daily-influences">
+
+                  ${climate.influences
+                    .slice(0,4)
+                    .map(item =>
+                      influenceHtml(
+                        item,
+                        primaryName,
+                        targetName
+                      )
+                    )
+                    .join("")}
+
+                </div>
+
+              </details>
+            `
+            : ""
+        }
+
+        <div class="relationship-daily-meta">
+          Transits astronomiques du jour
+          + dynamique de synastrie ·
+          ${esc(climate.date || "")}
+        </div>
+
+      `;
+
+      section
+        .querySelectorAll(
+          "[data-relationship-daily-axis]"
+        )
+        .forEach(button => {
+
+          button.addEventListener(
+            "click",
+            () => {
+
+              const index =
+                button.dataset
+                  .relationshipDailyAxis;
+
+              const detail =
+                section.querySelector(
+                  `[data-relationship-daily-detail="${index}"]`
+                );
+
+              const opening =
+                !button.classList
+                  .contains("open");
+
+              section
+                .querySelectorAll(
+                  "[data-relationship-daily-axis]"
+                )
+                .forEach(item => {
+                  item.classList.remove(
+                    "open"
+                  );
+
+                  item.setAttribute(
+                    "aria-expanded",
+                    "false"
+                  );
+                });
+
+              section
+                .querySelectorAll(
+                  "[data-relationship-daily-detail]"
+                )
+                .forEach(item =>
+                  item.classList.remove(
+                    "open"
+                  )
+                );
+
+              if (opening) {
+
+                button.classList.add(
+                  "open"
+                );
+
+                button.setAttribute(
+                  "aria-expanded",
+                  "true"
+                );
+
+                detail?.classList.add(
+                  "open"
+                );
+              }
+
+            }
+          );
+
+        });
+
+    } catch (error) {
+
+      console.error(
+        "ASTROMATCH RELATIONSHIP DAILY",
+        error
+      );
+
+      if (
+        token !== renderToken
+      ) {
+        return;
+      }
+
+      section.innerHTML = `
+        <div class="relationship-daily-loading">
+          Climat relationnel du jour indisponible.
+        </div>
+      `;
+    }
+
+  }
+
+
+  let scheduled = false;
+
+  function schedule() {
+
+    if (scheduled) {
+      return;
+    }
+
+    scheduled = true;
+
+    queueMicrotask(() => {
+      scheduled = false;
+      renderClimate();
+    });
+
+  }
+
+
+  /*
+   * Le rendu relationnel est notre point
+   * d'entrée fiable :
+   *
+   * - changement de profil
+   * - changement Amour/Amitié/etc.
+   * - nouveau résultat
+   */
+  if (
+    typeof renderRelationshipMode ===
+      "function"
+  ) {
+
+    const original =
+      renderRelationshipMode;
+
+    renderRelationshipMode =
+      function(...args) {
+
+        const output =
+          original.apply(
+            this,
+            args
+          );
+
+        schedule();
+
+        return output;
+      };
+
+    window.renderRelationshipMode =
+      renderRelationshipMode;
+  }
+
+
+  schedule();
+
+})();
+
+</script>
+
+
+
+
+
+
+<!-- ASTROMATCH_SCENARIO_CACHE_V7 -->
+
+<style id="ASTROMATCH_SCENARIO_CACHE_V7_STYLE">
+
+/* ASTROMATCH_SCENARIO_CACHE_V7 */
+
+
+/* ----------------------------------------------------------
+   L'ANCIENNE GROSSE BARRE RESTE TECHNIQUEMENT DANS LE DOM
+   MAIS ELLE N'EST PLUS AFFICHÉE.
+---------------------------------------------------------- */
+
+#relationshipTabsContainer {
+  display:none !important;
+}
+
+#relationshipTabsContainer
+  .relationship-tab {
+  display:none !important;
+}
+
+
+/* ----------------------------------------------------------
+   MINI SÉLECTEUR
+---------------------------------------------------------- */
+
+.astromatch-scenario-switcher {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  gap:6px;
+
+  margin:
+    -5px 0 15px;
+}
+
+.astromatch-scenario-pill {
+  padding:
+    6px 9px;
+
+  border-radius:999px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.055);
+
+  background:
+    rgba(2,6,23,.38);
+
+  color:#64748b;
+
+  font-size:9px;
+  font-weight:850;
+
+  white-space:nowrap;
+
+  transition:
+    background .18s ease,
+    color .18s ease,
+    border-color .18s ease,
+    transform .12s ease;
+}
+
+.astromatch-scenario-pill:active {
+  transform:
+    scale(.95);
+}
+
+.astromatch-scenario-pill.active {
+  color:#f8fafc;
+
+  background:
+    rgba(124,58,237,.21);
+
+  border-color:
+    rgba(167,139,250,.25);
+}
+
+
+/* ----------------------------------------------------------
+   INDICATION DE SWIPE
+---------------------------------------------------------- */
+
+.astromatch-scenario-dots {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  gap:6px;
+
+  margin-top:7px;
+}
+
+.astromatch-scenario-dot {
+  width:6px;
+  height:6px;
+
+  border-radius:999px;
+
+  background:#334155;
+
+  transition:
+    width .18s ease,
+    background .18s ease;
+}
+
+.astromatch-scenario-dot.active {
+  width:17px;
+
+  background:#a78bfa;
+}
+
+
+/* ----------------------------------------------------------
+   LE BLOC ENTIER PEUT BOUGER AVEC LE DOIGT
+---------------------------------------------------------- */
+
+#astromatchComparisonArea {
+  overflow-anchor:none;
+
+  will-change:transform;
+
+  touch-action:pan-y;
+}
+
+#astromatchComparisonArea
+  .astromatch-relationship-daily,
+#astromatchComparisonArea
+  #relationshipDynamicCard,
+#astromatchComparisonArea
+  .astromatch-deep-relation,
+#astromatchComparisonArea
+  .astromatch-mutual-impact,
+#astromatchComparisonArea
+  > section {
+  overflow-anchor:none;
+}
+
+
+/* ----------------------------------------------------------
+   VIEW TRANSITION :
+   ON NE VOIT JAMAIS UN ÉCRAN VIDE ENTRE 2 SCÉNARIOS
+---------------------------------------------------------- */
+
+#astromatchComparisonArea {
+  view-transition-name:
+    astromatch-scenario;
+}
+
+::view-transition-group(astromatch-scenario) {
+  animation-duration:
+    .24s;
+}
+
+html.astromatch-scenario-forward
+::view-transition-old(astromatch-scenario) {
+  animation:
+    .24s ease both
+    astromatchScenarioOutLeft;
+}
+
+html.astromatch-scenario-forward
+::view-transition-new(astromatch-scenario) {
+  animation:
+    .24s ease both
+    astromatchScenarioInRight;
+}
+
+html.astromatch-scenario-backward
+::view-transition-old(astromatch-scenario) {
+  animation:
+    .24s ease both
+    astromatchScenarioOutRight;
+}
+
+html.astromatch-scenario-backward
+::view-transition-new(astromatch-scenario) {
+  animation:
+    .24s ease both
+    astromatchScenarioInLeft;
+}
+
+
+@keyframes astromatchScenarioOutLeft {
+
+  from {
+    transform:
+      translateX(0);
+    opacity:1;
+  }
+
+  to {
+    transform:
+      translateX(-14%);
+    opacity:.35;
+  }
+
+}
+
+
+@keyframes astromatchScenarioInRight {
+
+  from {
+    transform:
+      translateX(14%);
+    opacity:.35;
+  }
+
+  to {
+    transform:
+      translateX(0);
+    opacity:1;
+  }
+
+}
+
+
+@keyframes astromatchScenarioOutRight {
+
+  from {
+    transform:
+      translateX(0);
+    opacity:1;
+  }
+
+  to {
+    transform:
+      translateX(14%);
+    opacity:.35;
+  }
+
+}
+
+
+@keyframes astromatchScenarioInLeft {
+
+  from {
+    transform:
+      translateX(-14%);
+    opacity:.35;
+  }
+
+  to {
+    transform:
+      translateX(0);
+    opacity:1;
+  }
+
+}
+
+
+/*
+ * Le clone temporaire pendant la préparation
+ * empêche de voir AstroMatch construire
+ * Amour / Amitié / Flirt.
+ */
+.astromatch-scenario-build-shield {
+  position:fixed !important;
+
+  z-index:9998;
+
+  pointer-events:none;
+
+  overflow:hidden;
+
+  margin:0 !important;
+
+  background:#020617;
+}
+
+html,
+body {
+  overflow-x:hidden;
+}
+
+
+
+/* ASTROMATCH_FULL_SCENARIO_CAROUSEL_V9 */
+
+.astromatch-full-scenario-carousel {
+  position:relative;
+  width:100%;
+  margin-bottom:8px;
+}
+
+
+.astromatch-full-scenario-viewport {
+  position:relative;
+
+  width:100%;
+
+  overflow:hidden;
+
+  /*
+   * Scroll vertical normal.
+   * Le JS prend uniquement les vrais gestes horizontaux.
+   */
+  touch-action:pan-y;
+}
+
+
+.astromatch-full-scenario-track {
+  display:flex;
+
+  align-items:flex-start;
+
+  gap:12px;
+
+  will-change:transform;
+
+  transition:
+    transform .28s
+    cubic-bezier(.22,.76,.24,1);
+}
+
+
+.astromatch-full-scenario-live,
+.astromatch-full-scenario-preview {
+  flex:0 0 auto;
+
+  min-width:0;
+}
+
+
+/*
+ * Les pages voisines sont de vrais snapshots
+ * déjà calculés, uniquement visuels.
+ */
+.astromatch-full-scenario-preview {
+  position:relative;
+
+  overflow:hidden;
+
+  opacity:.78;
+
+  transform:scale(.987);
+
+  transform-origin:top center;
+
+  pointer-events:none;
+
+  transition:
+    opacity .22s ease,
+    transform .22s ease;
+}
+
+
+.astromatch-full-scenario-preview.incoming {
+  opacity:1;
+
+  transform:scale(1);
+}
+
+
+/*
+ * La première grosse carte des snapshots
+ * perd son ID pour éviter tout conflit DOM.
+ * On reproduit donc son look ici.
+ */
+.astromatch-full-scenario-preview
+[data-preview-id="relationshipDynamicCard"] {
+  position:relative;
+
+  overflow:hidden;
+
+  border-radius:26px !important;
+
+  padding:19px !important;
+
+  background:
+    radial-gradient(
+      circle at 95% 0%,
+      rgba(139,92,246,.16),
+      transparent 38%
+    ),
+    linear-gradient(
+      150deg,
+      rgba(30,41,59,.82),
+      rgba(2,6,23,.94)
+    ) !important;
+
+  border:
+    1px solid
+    rgba(167,139,250,.12) !important;
+
+  box-shadow:
+    0 16px 42px
+    rgba(0,0,0,.18);
+}
+
+
+.astromatch-full-scenario-preview
+[data-preview-id="relationshipDynamicCard"]::after {
+  content:"✦";
+
+  position:absolute;
+
+  top:14px;
+  right:17px;
+
+  color:
+    rgba(196,181,253,.13);
+
+  font-size:37px;
+}
+
+
+/*
+ * Toute la page voisine est légèrement atténuée,
+ * mais reste réellement visible pendant le geste.
+ */
+.astromatch-full-scenario-preview::after {
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  pointer-events:none;
+
+  border-radius:24px;
+
+  box-shadow:
+    inset 0 0 0 1px
+    rgba(167,139,250,.035);
+}
+
+
+/*
+ * Petit aperçu latéral.
+ */
+.astromatch-full-scenario-carousel-hint {
+  display:flex;
+
+  justify-content:center;
+  align-items:center;
+
+  gap:9px;
+
+  margin-top:7px;
+
+  color:#475569;
+
+  font-size:9px;
+  font-weight:750;
+}
+
+
+.astromatch-full-scenario-carousel-hint
+span {
+  color:#64748b;
+
+  font-size:17px;
+}
+
+
+/*
+ * Le mini sélecteur V7 reste au-dessus
+ * des grandes pages.
+ */
+.astromatch-scenario-switcher {
+  margin:
+    2px 0 11px !important;
+}
+
+
+/*
+ * L'ancien conteneur des onglets ne doit
+ * laisser aucun espace vide.
+ */
+.astromatch-hidden-relationship-tabs {
+  display:none !important;
+}
+
+</style>
+
+
+<script id="ASTROMATCH_SCENARIO_CACHE_V7_SCRIPT">
+
+(() => {
+
+  if (
+    window
+      .__ASTROMATCH_SCENARIO_CACHE_V7__
+  ) {
+    return;
+  }
+
+  window
+    .__ASTROMATCH_SCENARIO_CACHE_V7__ =
+    true;
+
+
+  /*
+   * ========================================================
+   * PRINCIPE
+   * ========================================================
+   *
+   * La synastrie réelle ASTROMATCH_RESULT
+   * est calculée UNE SEULE FOIS.
+   *
+   * Ensuite on prépare :
+   *
+   * ❤️ Amour
+   * 🤝 Amitié
+   * 🔥 Flirt
+   *
+   * et on stocke le HTML déjà rendu.
+   *
+   * Pendant un swipe :
+   * ZERO recalcul.
+   * ZERO nouvel appel moteur.
+   * ZERO attente Daily.
+   */
+
+
+  const CACHE =
+    new Map();
+
+
+  let cachedResult =
+    null;
+
+  let building =
+    false;
+
+  let scheduled =
+    false;
+
+  let switcher =
+    null;
+
+  let gesture =
+    null;
+
+
+  /* ASTROMATCH_FULL_SCENARIO_CAROUSEL_V9 */
+
+  let scenarioCarousel =
+    null;
+
+  let scenarioBlock =
+    null;
+
+  let scenarioAnimating =
+    false;
+
+
+  /*
+   * Fonction relationnelle complète actuelle :
+   *
+   * elle contient déjà tous les wrappers :
+   * - analyse approfondie
+   * - synastrie
+   * - impact mutuel
+   * - climat du jour
+   *
+   * Elle ne sera utilisée que pour PRÉPARER le cache.
+   */
+  if (
+    typeof renderRelationshipMode !==
+      "function"
+  ) {
+    console.error(
+      "Scenario Cache V7 : renderRelationshipMode introuvable"
+    );
+
+    return;
+  }
+
+
+  const renderFullScenario =
+    renderRelationshipMode;
+
+
+  function sleep(ms) {
+
+    return new Promise(
+      resolve =>
+        setTimeout(
+          resolve,
+          ms
+        )
+    );
+
+  }
+
+
+  function nextFrame() {
+
+    return new Promise(
+      resolve =>
+        requestAnimationFrame(
+          () => resolve()
+        )
+    );
+
+  }
+
+
+  function availableModes() {
+
+    const container =
+      document.getElementById(
+        "relationshipTabsContainer"
+      );
+
+    if (!container) {
+      return [];
+    }
+
+    return Array
+      .from(
+        container.querySelectorAll(
+          ".relationship-tab"
+        )
+      )
+      .map(button =>
+        String(
+          button.id || ""
+        ).replace(
+          /^tab-/,
+          ""
+        )
+      )
+      .filter(Boolean);
+
+  }
+
+
+  function modeMeta(mode) {
+
+    const fallback = {
+
+      love:{
+        icon:"❤️",
+        title:"Amour"
+      },
+
+      friendship:{
+        icon:"🤝",
+        title:"Amitié"
+      },
+
+      flirt:{
+        icon:"🔥",
+        title:"Flirt"
+      },
+
+      family:{
+        icon:"👨‍👩‍👧‍👦",
+        title:"Famille"
+      },
+
+      professional:{
+        icon:"💼",
+        title:"Pro"
+      }
+
+    };
+
+    const item =
+      typeof RELATIONSHIP_META !==
+        "undefined"
+        ? RELATIONSHIP_META[mode]
+        : null;
+
+    return {
+      icon:
+        item?.icon ||
+        fallback?.[mode]?.icon ||
+        "✦",
+
+      title:
+        item?.title ||
+        item?.label ||
+        fallback?.[mode]?.title ||
+        mode
+    };
+
+  }
+
+
+  /*
+   * ========================================================
+   * ATTEND QUE LE CLIMAT DU JOUR SOIT PRÊT
+   * ========================================================
+   */
+
+  async function waitForDailyClimate() {
+
+    for (
+      let attempt = 0;
+      attempt < 45;
+      attempt++
+    ) {
+
+      await nextFrame();
+
+      const section =
+        document.getElementById(
+          "astromatchRelationshipDaily"
+        );
+
+      if (!section) {
+        await sleep(15);
+        continue;
+      }
+
+      const loading =
+        section.querySelector(
+          ".relationship-daily-loading"
+        );
+
+      if (!loading) {
+        return;
+      }
+
+      await sleep(20);
+
+    }
+
+  }
+
+
+  /*
+   * ========================================================
+   * CE QUI CHANGE ENTRE LES SCÉNARIOS
+   * ========================================================
+   */
+
+  function captureElement(id) {
+
+    const element =
+      document.getElementById(id);
+
+    if (!element) {
+      return null;
+    }
+
+    return {
+      html:
+        element.innerHTML,
+
+      className:
+        element.className
+    };
+
+  }
+
+
+  function captureScenario(mode) {
+
+    const deep =
+      document.getElementById(
+        "astromatchDeepRelation"
+      );
+
+    const synastry =
+      document.getElementById(
+        "astromatchSynastryExplorer"
+      );
+
+    return {
+
+      mode,
+
+      relationshipDynamicCard:
+        captureElement(
+          "relationshipDynamicCard"
+        ),
+
+      whyMatch:
+        captureElement(
+          "whyMatch"
+        ),
+
+      whyNot:
+        captureElement(
+          "whyNot"
+        ),
+
+      advice:
+        captureElement(
+          "advice"
+        ),
+
+      doList:
+        captureElement(
+          "doList"
+        ),
+
+      dontList:
+        captureElement(
+          "dontList"
+        ),
+
+      relationshipFactors:
+        captureElement(
+          "relationshipFactors"
+        ),
+
+      mutualImpact:
+        captureElement(
+          "astromatchMutualImpact"
+        ),
+
+      daily:
+        captureElement(
+          "astromatchRelationshipDaily"
+        ),
+
+      deepHeader:
+        deep
+          ?.querySelector(
+            ".deep-relation-header-row"
+          )
+          ?.innerHTML || "",
+
+      deepList:
+        deep
+          ?.querySelector(
+            ".deep-relation-list"
+          )
+          ?.innerHTML || "",
+
+      synastry:
+        synastry
+          ? {
+              html:
+                synastry.innerHTML,
+
+              className:
+                synastry.className
+            }
+          : null,
+
+      /*
+       * Snapshot visuel COMPLET :
+       * climat → facteurs clés.
+       */
+      pageHtml:
+        snapshotScenarioPage()
+
+    };
+
+  }
+
+
+  function restoreElement(
+    id,
+    snapshot
+  ) {
+
+    if (!snapshot) {
+      return;
+    }
+
+    const element =
+      document.getElementById(id);
+
+    if (!element) {
+      return;
+    }
+
+    element.innerHTML =
+      snapshot.html;
+
+    element.className =
+      snapshot.className;
+
+  }
+
+
+  /*
+   * ========================================================
+   * DAILY : LISTENER DÉLÉGUÉ
+   *
+   * Les boutons du climat sont recréés depuis le cache,
+   * donc on gère leur clic depuis la section elle-même.
+   * ========================================================
+   */
+
+  function bindDailyDelegate() {
+
+    const section =
+      document.getElementById(
+        "astromatchRelationshipDaily"
+      );
+
+    if (
+      !section ||
+      section.dataset
+        .scenarioDelegate === "1"
+    ) {
+      return;
+    }
+
+    section.dataset
+      .scenarioDelegate =
+        "1";
+
+
+    section.addEventListener(
+      "click",
+      event => {
+
+        const button =
+          event.target.closest(
+            "[data-relationship-daily-axis]"
+          );
+
+        if (!button) {
+          return;
+        }
+
+
+        const index =
+          button.dataset
+            .relationshipDailyAxis;
+
+
+        const detail =
+          section.querySelector(
+            `[data-relationship-daily-detail="${index}"]`
+          );
+
+
+        const opening =
+          !button.classList
+            .contains("open");
+
+
+        section
+          .querySelectorAll(
+            "[data-relationship-daily-axis]"
+          )
+          .forEach(item => {
+
+            item.classList.remove(
+              "open"
+            );
+
+            item.setAttribute(
+              "aria-expanded",
+              "false"
+            );
+
+          });
+
+
+        section
+          .querySelectorAll(
+            "[data-relationship-daily-detail]"
+          )
+          .forEach(item =>
+            item.classList.remove(
+              "open"
+            )
+          );
+
+
+        if (opening) {
+
+          button.classList.add(
+            "open"
+          );
+
+          button.setAttribute(
+            "aria-expanded",
+            "true"
+          );
+
+          detail?.classList.add(
+            "open"
+          );
+
+        }
+
+      }
+    );
+
+  }
+
+
+  /*
+   * ========================================================
+   * APPLIQUER UN SCÉNARIO DÉJÀ PRÊT
+   * ========================================================
+   */
+
+  function applyScenario(
+    state
+  ) {
+
+    if (!state) {
+      return;
+    }
+
+
+    CURRENT_RELATIONSHIP_MODE =
+      state.mode;
+
+
+    restoreElement(
+      "relationshipDynamicCard",
+      state.relationshipDynamicCard
+    );
+
+    restoreElement(
+      "whyMatch",
+      state.whyMatch
+    );
+
+    restoreElement(
+      "whyNot",
+      state.whyNot
+    );
+
+    restoreElement(
+      "advice",
+      state.advice
+    );
+
+    restoreElement(
+      "doList",
+      state.doList
+    );
+
+    restoreElement(
+      "dontList",
+      state.dontList
+    );
+
+    restoreElement(
+      "relationshipFactors",
+      state.relationshipFactors
+    );
+
+    restoreElement(
+      "astromatchMutualImpact",
+      state.mutualImpact
+    );
+
+    restoreElement(
+      "astromatchRelationshipDaily",
+      state.daily
+    );
+
+
+    const deep =
+      document.getElementById(
+        "astromatchDeepRelation"
+      );
+
+
+    if (deep) {
+
+      const header =
+        deep.querySelector(
+          ".deep-relation-header-row"
+        );
+
+      const list =
+        deep.querySelector(
+          ".deep-relation-list"
+        );
+
+
+      if (header) {
+        header.innerHTML =
+          state.deepHeader;
+      }
+
+
+      if (list) {
+        list.innerHTML =
+          state.deepList;
+      }
+
+    }
+
+
+    const synastry =
+      document.getElementById(
+        "astromatchSynastryExplorer"
+      );
+
+
+    if (
+      synastry &&
+      state.synastry
+    ) {
+
+      synastry.innerHTML =
+        state.synastry.html;
+
+      synastry.className =
+        state.synastry.className;
+
+      /*
+       * On referme l'explorateur au changement
+       * de scénario.
+       */
+      synastry.classList.remove(
+        "open"
+      );
+
+    }
+
+
+    bindDailyDelegate();
+
+    updateSwitcher();
+
+  }
+
+
+
+  /*
+   * ========================================================
+   * V9 — GRANDE PAGE DE SCÉNARIO
+   * ========================================================
+   */
+
+
+  function ensureScenarioBlock() {
+
+    if (
+      scenarioBlock &&
+      document.body.contains(
+        scenarioBlock
+      )
+    ) {
+      return scenarioBlock;
+    }
+
+
+    /*
+     * On commence par le climat du jour :
+     * c'est la première info sous le profil.
+     */
+    const first =
+      document.getElementById(
+        "astromatchRelationshipDaily"
+      );
+
+
+    /*
+     * Et on termine exactement aux
+     * "Facteurs clés", comme demandé.
+     */
+    const factors =
+      document.getElementById(
+        "relationshipFactors"
+      );
+
+
+    const last =
+      factors?.closest(
+        "section"
+      );
+
+
+    if (!first || !last) {
+      return null;
+    }
+
+
+    const wrapper =
+      document.createElement(
+        "div"
+      );
+
+
+    wrapper.className =
+      "astromatch-full-scenario-live";
+
+
+    first.insertAdjacentElement(
+      "beforebegin",
+      wrapper
+    );
+
+
+    /*
+     * Déplace tous les frères DOM depuis
+     * le climat jusqu'aux facteurs clés inclus.
+     */
+    let node =
+      first;
+
+
+    while (node) {
+
+      const next =
+        node.nextSibling;
+
+
+      wrapper.appendChild(
+        node
+      );
+
+
+      if (node === last) {
+        break;
+      }
+
+
+      node =
+        next;
+    }
+
+
+    scenarioBlock =
+      wrapper;
+
+
+    return wrapper;
+
+  }
+
+
+  /*
+   * Version uniquement visuelle d'une page.
+   *
+   * Aucun ID dupliqué.
+   * Aucun bouton actif.
+   */
+  function snapshotScenarioPage() {
+
+    const live =
+      ensureScenarioBlock();
+
+
+    if (!live) {
+      return "";
+    }
+
+
+    const clone =
+      live.cloneNode(
+        true
+      );
+
+
+    /*
+     * L'ancien bloc d'onglets caché
+     * ne sert à rien dans les aperçus.
+     */
+    clone
+      .querySelector(
+        "#relationshipTabsContainer"
+      )
+      ?.closest("section")
+      ?.remove();
+
+
+    clone
+      .querySelectorAll(
+        "[id]"
+      )
+      .forEach(element => {
+
+        const id =
+          element.id;
+
+
+        if (id) {
+
+          element.setAttribute(
+            "data-preview-id",
+            id
+          );
+
+        }
+
+
+        element.removeAttribute(
+          "id"
+        );
+
+      });
+
+
+    clone
+      .querySelectorAll(
+        "[onclick]"
+      )
+      .forEach(element =>
+        element.removeAttribute(
+          "onclick"
+        )
+      );
+
+
+    clone
+      .querySelectorAll(
+        "button,input,select,textarea"
+      )
+      .forEach(element => {
+
+        element.disabled =
+          true;
+
+        element.tabIndex =
+          -1;
+
+      });
+
+
+    clone
+      .querySelectorAll(
+        "details"
+      )
+      .forEach(element =>
+        element.removeAttribute(
+          "open"
+        )
+      );
+
+
+    return clone.innerHTML;
+
+  }
+
+
+  /*
+   * ========================================================
+   * GRAND CARROUSEL
+   * ========================================================
+   */
+
+
+  function ensureScenarioCarousel() {
+
+    if (
+      scenarioCarousel &&
+      document.body.contains(
+        scenarioCarousel.shell
+      )
+    ) {
+      return scenarioCarousel;
+    }
+
+
+    const live =
+      ensureScenarioBlock();
+
+
+    if (!live) {
+      return null;
+    }
+
+
+    const shell =
+      document.createElement(
+        "div"
+      );
+
+
+    shell.className =
+      "astromatch-full-scenario-carousel";
+
+
+    const viewport =
+      document.createElement(
+        "div"
+      );
+
+
+    viewport.className =
+      "astromatch-full-scenario-viewport";
+
+
+    const track =
+      document.createElement(
+        "div"
+      );
+
+
+    track.className =
+      "astromatch-full-scenario-track";
+
+
+    const left =
+      document.createElement(
+        "div"
+      );
+
+
+    left.className =
+      "astromatch-full-scenario-preview";
+
+
+    const right =
+      document.createElement(
+        "div"
+      );
+
+
+    right.className =
+      "astromatch-full-scenario-preview";
+
+
+    /*
+     * Le carrousel prend la place
+     * du bloc entier.
+     */
+    live.insertAdjacentElement(
+      "beforebegin",
+      shell
+    );
+
+
+    shell.appendChild(
+      viewport
+    );
+
+
+    viewport.appendChild(
+      track
+    );
+
+
+    /*
+     * DOM :
+     * gauche / vraie page / droite
+     */
+    track.appendChild(
+      left
+    );
+
+
+    track.appendChild(
+      live
+    );
+
+
+    track.appendChild(
+      right
+    );
+
+
+    const hint =
+      document.createElement(
+        "div"
+      );
+
+
+    hint.className =
+      "astromatch-full-scenario-carousel-hint";
+
+
+    hint.innerHTML = `
+      <span>‹</span>
+      Glisse pour changer toute la lecture
+      <span>›</span>
+    `;
+
+
+    shell.appendChild(
+      hint
+    );
+
+
+    scenarioCarousel = {
+
+      shell,
+      viewport,
+      track,
+
+      live,
+      left,
+      right,
+
+      width:0,
+      step:0,
+      base:0
+
+    };
+
+
+    installScenarioSwipe();
+
+
+    window.addEventListener(
+      "resize",
+      () =>
+        layoutScenarioCarousel(
+          false
+        )
+    );
+
+
+    return scenarioCarousel;
+
+  }
+
+
+  function layoutScenarioCarousel(
+    animate = false
+  ) {
+
+    const c =
+      ensureScenarioCarousel();
+
+
+    if (!c) {
+      return;
+    }
+
+
+    const viewportWidth =
+      c.viewport.clientWidth;
+
+
+    if (!viewportWidth) {
+      return;
+    }
+
+
+    /*
+     * On laisse 20px de page voisine
+     * dépasser de chaque côté.
+     */
+    const peek =
+      availableModes().length > 1
+        ? 20
+        : 0;
+
+
+    const width =
+      Math.max(
+        230,
+        viewportWidth -
+        peek * 2
+      );
+
+
+    const gap =
+      12;
+
+
+    const step =
+      width +
+      gap;
+
+
+    const base =
+      -step +
+      peek;
+
+
+    c.width =
+      width;
+
+    c.step =
+      step;
+
+    c.base =
+      base;
+
+
+    [
+      c.left,
+      c.live,
+      c.right
+    ].forEach(item => {
+
+      item.style.width =
+        `${width}px`;
+
+      item.style.flexBasis =
+        `${width}px`;
+
+    });
+
+
+    /*
+     * Les pages latérales prennent
+     * exactement la hauteur de la vraie.
+     */
+    requestAnimationFrame(() => {
+
+      const height =
+        c.live.offsetHeight;
+
+
+      if (height > 0) {
+
+        c.left.style.height =
+          `${height}px`;
+
+        c.right.style.height =
+          `${height}px`;
+
+      }
+
+    });
+
+
+    c.track.style.transition =
+      animate
+        ? ""
+        : "none";
+
+
+    c.track.style.transform =
+      `translate3d(${base}px,0,0)`;
+
+
+    if (!animate) {
+
+      requestAnimationFrame(() => {
+
+        if (scenarioCarousel) {
+
+          scenarioCarousel
+            .track
+            .style
+            .transition =
+              "";
+
+        }
+
+      });
+
+    }
+
+  }
+
+
+  function scenarioTrackX(
+    value,
+    animate = false
+  ) {
+
+    if (!scenarioCarousel) {
+      return;
+    }
+
+
+    scenarioCarousel
+      .track
+      .style
+      .transition =
+        animate
+          ? ""
+          : "none";
+
+
+    scenarioCarousel
+      .track
+      .style
+      .transform =
+        `translate3d(${value}px,0,0)`;
+
+  }
+
+
+  function refreshScenarioNeighbours(
+    animate = false
+  ) {
+
+    const c =
+      ensureScenarioCarousel();
+
+
+    if (!c) {
+      return;
+    }
+
+
+    const modes =
+      availableModes();
+
+
+    const index =
+      modes.indexOf(
+        CURRENT_RELATIONSHIP_MODE
+      );
+
+
+    const previous =
+      index > 0
+        ? modes[index - 1]
+        : null;
+
+
+    const next =
+      index >= 0 &&
+      index <
+        modes.length - 1
+        ? modes[index + 1]
+        : null;
+
+
+    const previousState =
+      previous
+        ? CACHE.get(previous)
+        : null;
+
+
+    const nextState =
+      next
+        ? CACHE.get(next)
+        : null;
+
+
+    c.left.innerHTML =
+      previousState?.pageHtml ||
+      "";
+
+
+    c.right.innerHTML =
+      nextState?.pageHtml ||
+      "";
+
+
+    c.left.style.visibility =
+      previousState
+        ? "visible"
+        : "hidden";
+
+
+    c.right.style.visibility =
+      nextState
+        ? "visible"
+        : "hidden";
+
+
+    c.left.classList.remove(
+      "incoming"
+    );
+
+
+    c.right.classList.remove(
+      "incoming"
+    );
+
+
+    layoutScenarioCarousel(
+      animate
+    );
+
+
+    /*
+     * Le petit sélecteur reste
+     * juste au-dessus des pages.
+     */
+    if (
+      switcher &&
+      c.shell.previousElementSibling !==
+        switcher
+    ) {
+
+      c.shell.insertAdjacentElement(
+        "beforebegin",
+        switcher
+      );
+
+    }
+
+  }
+
+
+  function scenarioDrag(
+    dx
+  ) {
+
+    const c =
+      scenarioCarousel;
+
+
+    if (!c) {
+      return;
+    }
+
+
+    const modes =
+      availableModes();
+
+
+    const index =
+      modes.indexOf(
+        CURRENT_RELATIONSHIP_MODE
+      );
+
+
+    let movement =
+      dx;
+
+
+    if (
+      dx > 0 &&
+      index <= 0
+    ) {
+
+      movement *=
+        .18;
+
+    }
+
+
+    if (
+      dx < 0 &&
+      index >=
+        modes.length - 1
+    ) {
+
+      movement *=
+        .18;
+
+    }
+
+
+    /*
+     * La page entière suit le doigt.
+     */
+    scenarioTrackX(
+      c.base +
+      movement,
+      false
+    );
+
+
+    /*
+     * La page qui arrive devient progressivement
+     * aussi nette que la page centrale.
+     */
+    const progress =
+      Math.min(
+        1,
+        Math.abs(movement) /
+          Math.max(
+            1,
+            c.step
+          )
+      );
+
+
+    const incoming =
+      dx < 0
+        ? c.right
+        : c.left;
+
+
+    if (
+      incoming &&
+      incoming.style.visibility !==
+        "hidden"
+    ) {
+
+      incoming.style.opacity =
+        String(
+          .78 +
+          .22 * progress
+        );
+
+
+      incoming.style.transform =
+        `scale(${
+          .987 +
+          .013 * progress
+        })`;
+
+    }
+
+  }
+
+
+  function scenarioSnapBack() {
+
+    const c =
+      scenarioCarousel;
+
+
+    if (!c) {
+      return;
+    }
+
+
+    c.left.style.opacity =
+      "";
+
+    c.right.style.opacity =
+      "";
+
+    c.left.style.transform =
+      "";
+
+    c.right.style.transform =
+      "";
+
+
+    scenarioTrackX(
+      c.base,
+      true
+    );
+
+  }
+
+
+  function animateScenarioTo(
+    mode,
+    direction
+  ) {
+
+    const c =
+      scenarioCarousel;
+
+
+    const state =
+      CACHE.get(
+        mode
+      );
+
+
+    if (
+      !c ||
+      !state ||
+      scenarioAnimating
+    ) {
+      return false;
+    }
+
+
+    scenarioAnimating =
+      true;
+
+
+    const incoming =
+      direction > 0
+        ? c.right
+        : c.left;
+
+
+    incoming?.classList.add(
+      "incoming"
+    );
+
+
+    /*
+     * Toute la page suivante arrive
+     * jusqu'au centre.
+     */
+    scenarioTrackX(
+      c.base -
+      direction *
+      c.step,
+      true
+    );
+
+
+    setTimeout(() => {
+
+      /*
+       * À cet instant le snapshot entier
+       * est exactement au milieu.
+       *
+       * On remplace derrière lui la vraie page
+       * avec les données DÉJÀ en cache.
+       */
+      applyScenario(
+        state
+      );
+
+
+      requestAnimationFrame(() => {
+
+        refreshScenarioNeighbours(
+          false
+        );
+
+
+        scenarioAnimating =
+          false;
+
+      });
+
+    }, 275);
+
+
+    return true;
+
+  }
+
+
+  /*
+   * ========================================================
+   * GESTE SUR TOUTE LA GRANDE PAGE
+   * ========================================================
+   */
+
+
+  function installScenarioSwipe() {
+
+    const c =
+      scenarioCarousel;
+
+
+    if (
+      !c ||
+      c.viewport.dataset
+        .fullScenarioSwipe === "1"
+    ) {
+      return;
+    }
+
+
+    c.viewport.dataset
+      .fullScenarioSwipe =
+        "1";
+
+
+    c.viewport.addEventListener(
+      "touchstart",
+      event => {
+
+        if (
+          building ||
+          scenarioAnimating ||
+          event.touches.length !== 1 ||
+          availableModes().length < 2
+        ) {
+
+          gesture =
+            null;
+
+          return;
+        }
+
+
+        const touch =
+          event.touches[0];
+
+
+        gesture = {
+
+          x:
+            touch.clientX,
+
+          y:
+            touch.clientY,
+
+          dx:0,
+
+          horizontal:false
+
+        };
+
+
+        c.track.style.transition =
+          "none";
+
+      },
+      {
+        passive:true
+      }
+    );
+
+
+    c.viewport.addEventListener(
+      "touchmove",
+      event => {
+
+        if (
+          !gesture ||
+          event.touches.length !== 1
+        ) {
+          return;
+        }
+
+
+        const touch =
+          event.touches[0];
+
+
+        const dx =
+          touch.clientX -
+          gesture.x;
+
+
+        const dy =
+          touch.clientY -
+          gesture.y;
+
+
+        /*
+         * Geste vertical :
+         * le scroll de la longue page reste normal.
+         */
+        if (
+          !gesture.horizontal &&
+          Math.abs(dy) >
+            Math.abs(dx) &&
+          Math.abs(dy) > 8
+        ) {
+
+          gesture =
+            null;
+
+          scenarioSnapBack();
+
+          return;
+        }
+
+
+        if (
+          !gesture.horizontal &&
+          Math.abs(dx) > 8
+        ) {
+
+          gesture.horizontal =
+            true;
+
+        }
+
+
+        if (
+          !gesture.horizontal
+        ) {
+          return;
+        }
+
+
+        event.preventDefault();
+
+
+        gesture.dx =
+          dx;
+
+
+        scenarioDrag(
+          dx
+        );
+
+      },
+      {
+        passive:false
+      }
+    );
+
+
+    c.viewport.addEventListener(
+      "touchend",
+      () => {
+
+        if (!gesture) {
+
+          scenarioSnapBack();
+
+          return;
+        }
+
+
+        const dx =
+          gesture.dx;
+
+
+        const horizontal =
+          gesture.horizontal;
+
+
+        gesture =
+          null;
+
+
+        if (
+          !horizontal ||
+          Math.abs(dx) < 52
+        ) {
+
+          scenarioSnapBack();
+
+          return;
+        }
+
+
+        const modes =
+          availableModes();
+
+
+        const index =
+          modes.indexOf(
+            CURRENT_RELATIONSHIP_MODE
+          );
+
+
+        const nextIndex =
+          dx < 0
+            ? index + 1
+            : index - 1;
+
+
+        if (
+          nextIndex < 0 ||
+          nextIndex >=
+            modes.length
+        ) {
+
+          scenarioSnapBack();
+
+          return;
+        }
+
+
+        /*
+         * Toujours ZERO recalcul.
+         */
+        switchTo(
+          modes[nextIndex]
+        );
+
+      },
+      {
+        passive:true
+      }
+    );
+
+
+    c.viewport.addEventListener(
+      "touchcancel",
+      () => {
+
+        gesture =
+          null;
+
+        scenarioSnapBack();
+
+      },
+      {
+        passive:true
+      }
+    );
+
+  }
+
+
+  /*
+   * ========================================================
+   * PETIT SÉLECTEUR
+   * ========================================================
+   */
+
+  function ensureSwitcher() {
+
+    if (
+      switcher &&
+      document.body.contains(
+        switcher
+      )
+    ) {
+      return switcher;
+    }
+
+
+    const tabContainer =
+      document.getElementById(
+        "relationshipTabsContainer"
+      );
+
+    const tabSection =
+      tabContainer?.closest(
+        "section"
+      );
+
+
+    if (!tabSection) {
+      return null;
+    }
+
+
+    switcher =
+      document.createElement(
+        "div"
+      );
+
+    switcher.className =
+      "astromatch-scenario-switcher";
+
+
+    /*
+     * Le climat du jour doit rester
+     * juste au-dessus.
+     */
+    const climate =
+      document.getElementById(
+        "astromatchRelationshipDaily"
+      );
+
+
+    /*
+     * Plus de grosse barre.
+     * Le petit sélecteur reste fixe
+     * juste avant toute la page relationnelle.
+     */
+    if (climate) {
+
+      climate.insertAdjacentElement(
+        "beforebegin",
+        switcher
+      );
+
+    } else {
+
+      tabSection.insertAdjacentElement(
+        "beforebegin",
+        switcher
+      );
+
+    }
+
+
+    /*
+     * L'ancienne section Amour/Amitié/Flirt
+     * ne doit même plus laisser sa marge.
+     */
+    tabSection.classList.add(
+      "astromatch-hidden-relationship-tabs"
+    );
+
+
+    switcher.addEventListener(
+      "click",
+      event => {
+
+        const button =
+          event.target.closest(
+            "[data-scenario-mode]"
+          );
+
+        if (!button) {
+          return;
+        }
+
+        switchTo(
+          button.dataset
+            .scenarioMode
+        );
+
+      }
+    );
+
+
+    return switcher;
+
+  }
+
+
+  function updateSwitcher() {
+
+    const bar =
+      ensureSwitcher();
+
+    if (!bar) {
+      return;
+    }
+
+
+    const modes =
+      availableModes();
+
+
+    /*
+     * Le climat peut avoir été recréé :
+     * on replace toujours le mini sélecteur juste dessous.
+     */
+    const climate =
+      document.getElementById(
+        "astromatchRelationshipDaily"
+      );
+
+    const carousel =
+      scenarioCarousel
+        ?.shell;
+
+
+    if (
+      carousel &&
+      carousel.previousElementSibling !==
+        bar
+    ) {
+
+      carousel.insertAdjacentElement(
+        "beforebegin",
+        bar
+      );
+
+    } else if (
+      !carousel &&
+      climate &&
+      climate.previousElementSibling !==
+        bar
+    ) {
+
+      climate.insertAdjacentElement(
+        "beforebegin",
+        bar
+      );
+
+    }
+
+
+    bar.innerHTML = `
+
+      ${modes.map(mode => {
+
+        const item =
+          modeMeta(mode);
+
+        return `
+          <button
+            type="button"
+            class="
+              astromatch-scenario-pill
+              ${
+                mode ===
+                  CURRENT_RELATIONSHIP_MODE
+                  ? "active"
+                  : ""
+              }
+            "
+            data-scenario-mode="${mode}"
+          >
+            ${item.icon}
+            ${item.title}
+          </button>
+        `;
+
+      }).join("")}
+
+    `;
+
+
+    const area =
+      document.getElementById(
+        "astromatchComparisonArea"
+      );
+
+
+    let dots =
+      area?.querySelector(
+        ".astromatch-scenario-dots"
+      );
+
+
+    if (
+      area &&
+      !dots
+    ) {
+
+      dots =
+        document.createElement(
+          "div"
+        );
+
+      dots.className =
+        "astromatch-scenario-dots";
+
+      bar.insertAdjacentElement(
+        "afterend",
+        dots
+      );
+
+    }
+
+
+    if (dots) {
+
+      dots.innerHTML =
+        modes.map(
+          mode => `
+            <span
+              class="
+                astromatch-scenario-dot
+                ${
+                  mode ===
+                    CURRENT_RELATIONSHIP_MODE
+                    ? "active"
+                    : ""
+                }
+              "
+            ></span>
+          `
+        ).join("");
+
+    }
+
+  }
+
+
+  /*
+   * ========================================================
+   * CACHE DES 3 LECTURES
+   * ========================================================
+   */
+
+  function makeBuildShield() {
+
+    const area =
+      document.getElementById(
+        "astromatchComparisonArea"
+      );
+
+    if (!area) {
+      return null;
+    }
+
+
+    const rect =
+      area.getBoundingClientRect();
+
+
+    const clone =
+      area.cloneNode(true);
+
+
+    clone.removeAttribute(
+      "id"
+    );
+
+    clone.classList.add(
+      "astromatch-scenario-build-shield"
+    );
+
+
+    Object.assign(
+      clone.style,
+      {
+        left:
+          `${rect.left}px`,
+
+        top:
+          `${rect.top}px`,
+
+        width:
+          `${rect.width}px`,
+
+        height:
+          `${rect.height}px`
+      }
+    );
+
+
+    document.body.appendChild(
+      clone
+    );
+
+
+    area.style.visibility =
+      "hidden";
+
+
+    return {
+      clone,
+      area
+    };
+
+  }
+
+
+  function removeBuildShield(
+    shield
+  ) {
+
+    if (!shield) {
+      return;
+    }
+
+
+    shield.area.style.visibility =
+      "";
+
+
+    requestAnimationFrame(() =>
+      shield.clone.remove()
+    );
+
+  }
+
+
+  async function buildCache() {
+
+    if (
+      building ||
+      !ASTROMATCH_RESULT
+    ) {
+      return;
+    }
+
+
+    const modes =
+      availableModes();
+
+
+    if (!modes.length) {
+      return;
+    }
+
+
+    /*
+     * Déjà préparé pour CE résultat.
+     */
+    if (
+      cachedResult ===
+        ASTROMATCH_RESULT &&
+      modes.every(
+        mode =>
+          CACHE.has(mode)
+      )
+    ) {
+
+      updateSwitcher();
+
+      return;
+    }
+
+
+    building =
+      true;
+
+    CACHE.clear();
+
+
+    const originalMode =
+      modes.includes(
+        CURRENT_RELATIONSHIP_MODE
+      )
+        ? CURRENT_RELATIONSHIP_MODE
+        : modes[0];
+
+
+    /*
+     * L'utilisateur continue de voir son écran actuel
+     * pendant qu'AstroMatch prépare les autres lectures
+     * derrière.
+     */
+    const shield =
+      makeBuildShield();
+
+
+    try {
+
+      for (
+        const mode of modes
+      ) {
+
+        CURRENT_RELATIONSHIP_MODE =
+          mode;
+
+
+        /*
+         * Ici seulement on rend réellement le mode.
+         * Cela arrive UNE FOIS à l'ouverture du profil.
+         */
+        renderFullScenario();
+
+
+        await Promise.resolve();
+
+        await nextFrame();
+
+        await waitForDailyClimate();
+
+        await nextFrame();
+
+
+        /*
+         * Dès le premier scénario rendu,
+         * on transforme toute la lecture
+         * en un seul grand bloc.
+         */
+        ensureScenarioBlock();
+
+
+        CACHE.set(
+          mode,
+          captureScenario(
+            mode
+          )
+        );
+
+      }
+
+
+      cachedResult =
+        ASTROMATCH_RESULT;
+
+
+      /*
+       * On restaure le mode que l'utilisateur
+       * regardait avant la préparation.
+       */
+      applyScenario(
+        CACHE.get(
+          originalMode
+        )
+      );
+
+
+      ensureScenarioBlock();
+
+      ensureScenarioCarousel();
+
+      refreshScenarioNeighbours(
+        false
+      );
+
+
+    } finally {
+
+      building =
+        false;
+
+      removeBuildShield(
+        shield
+      );
+
+      updateSwitcher();
+
+    }
+
+  }
+
+
+  function scheduleBuild() {
+
+    if (
+      building ||
+      scheduled
+    ) {
+      return;
+    }
+
+
+    scheduled =
+      true;
+
+
+    setTimeout(
+      async () => {
+
+        scheduled =
+          false;
+
+        await buildCache();
+
+      },
+      0
+    );
+
+  }
+
+
+  /*
+   * ========================================================
+   * CHANGEMENT DE PAGE :
+   *
+   * AUCUN renderRelationshipMode()
+   * AUCUN calcul
+   * AUCUN Daily
+   *
+   * On applique uniquement le snapshot déjà prêt.
+   * ========================================================
+   */
+
+  function switchTo(mode) {
+
+    const modes =
+      availableModes();
+
+
+    if (
+      !modes.includes(mode) ||
+      mode ===
+        CURRENT_RELATIONSHIP_MODE
+    ) {
+      return;
+    }
+
+
+    /*
+     * Aucun recalcul autorisé ici.
+     */
+    if (!CACHE.has(mode)) {
+
+      scheduleBuild();
+
+      return;
+    }
+
+
+    const oldIndex =
+      modes.indexOf(
+        CURRENT_RELATIONSHIP_MODE
+      );
+
+
+    const newIndex =
+      modes.indexOf(
+        mode
+      );
+
+
+    const distance =
+      newIndex -
+      oldIndex;
+
+
+    /*
+     * Amour ↔ Amitié ↔ Flirt :
+     * LA PAGE ENTIÈRE glisse.
+     */
+    if (
+      Math.abs(distance) === 1 &&
+      scenarioCarousel
+    ) {
+
+      if (
+        animateScenarioTo(
+          mode,
+          distance > 0
+            ? 1
+            : -1
+        )
+      ) {
+        return;
+      }
+
+    }
+
+
+    /*
+     * Clic direct Amour → Flirt :
+     * toujours instantané et sans calcul.
+     */
+    applyScenario(
+      CACHE.get(mode)
+    );
+
+
+    refreshScenarioNeighbours(
+      false
+    );
+
+  }
+
+
+  /*
+   * ========================================================
+   * SWIPE SUR TOUTE LA COMPARAISON
+   * ========================================================
+   */
+
+  function installSwipe() {
+
+    /*
+     * V9 :
+     * le geste appartient maintenant
+     * directement au grand viewport contenant
+     * toute la lecture.
+     */
+    ensureScenarioBlock();
+
+    ensureScenarioCarousel();
+
+  }
+
+
+  /*
+   * ========================================================
+   * BRANCHEMENT SUR LE PIPELINE EXISTANT
+   * ========================================================
+   *
+   * renderRelationshipMode continue d'exister
+   * pour le PREMIER affichage / nouveau profil.
+   *
+   * Après ça :
+   * les swipes utilisent CACHE uniquement.
+   */
+
+  renderRelationshipMode =
+    function(...args) {
+
+      const result =
+        renderFullScenario.apply(
+          this,
+          args
+        );
+
+
+      /*
+       * Nouveau profil / nouveau résultat :
+       * invalide le vieux cache.
+       */
+      if (
+        cachedResult !==
+          ASTROMATCH_RESULT
+      ) {
+
+        CACHE.clear();
+
+      }
+
+
+      queueMicrotask(() => {
+
+        ensureSwitcher();
+
+        installSwipe();
+
+        scheduleBuild();
+
+      });
+
+
+      return result;
+
+    };
+
+
+  window.renderRelationshipMode =
+    renderRelationshipMode;
+
+
+  /*
+   * Cas où le résultat existe déjà
+   * au chargement.
+   */
+  queueMicrotask(() => {
+
+    ensureSwitcher();
+
+    installSwipe();
+
+    if (
+      typeof ASTROMATCH_RESULT !==
+        "undefined" &&
+      ASTROMATCH_RESULT
+    ) {
+
+      scheduleBuild();
+
+    }
+
+  });
+
+
+})();
+
+</script>
+
+
+
+
+
+
+
+
 
 </body>
 </html>
