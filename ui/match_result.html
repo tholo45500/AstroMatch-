@@ -11400,44 +11400,6 @@ function astromatchRelationVisibleList(
   return first;
 }
 
-document.addEventListener(
-  "click",
-  event => {
-
-    const more =
-      event.target.closest(
-        "[data-relation-show-more]"
-      );
-
-    if (!more) return;
-
-    event.preventDefault();
-    event.stopPropagation();
-
-    const relation =
-      String(
-        more.dataset.relationShowMore || ""
-      );
-
-    if (
-      ASTROMATCH_RELATION_EXPANDED_GROUPS.has(
-        relation
-      )
-    ) {
-      ASTROMATCH_RELATION_EXPANDED_GROUPS.delete(
-        relation
-      );
-    } else {
-      ASTROMATCH_RELATION_EXPANDED_GROUPS.add(
-        relation
-      );
-    }
-
-    rerenderAstroMatchRelations();
-  }
-);
-
-
 
 
 
@@ -21253,6 +21215,48 @@ if (!window.__ASTROMATCH_V3_RELATION_EVENTS__) {
   document.addEventListener(
     "click",
     event => {
+
+      const showMore =
+        event.target.closest(
+          "[data-relation-show-more]"
+        );
+
+      if (showMore) {
+
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+
+        const relation =
+          String(
+            showMore.dataset
+              .relationShowMore || ""
+          );
+
+        if (!relation) return;
+
+
+        if (
+          ASTROMATCH_RELATION_EXPANDED_GROUPS
+            .has(relation)
+        ) {
+
+          ASTROMATCH_RELATION_EXPANDED_GROUPS
+            .delete(relation);
+
+        } else {
+
+          ASTROMATCH_RELATION_EXPANDED_GROUPS
+            .add(relation);
+
+        }
+
+
+        rerenderAstroMatchRelations();
+
+        return;
+      }
+
 
       const quickProfile =
         event.target.closest(
