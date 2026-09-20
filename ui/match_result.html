@@ -11605,12 +11605,10 @@ if (!window.__ASTROMATCH_V3_FILTERED_GROUP_TOGGLE__) {
        * Pas de nouvelle logique parallèle.
        */
       if (
-        ASTROMATCH_OPEN_TARGET_GROUPS.size === 0 &&
-        typeof window.astromatchRelationsHomeV19 ===
-          "function"
+        ASTROMATCH_OPEN_TARGET_GROUPS.size === 0
       ) {
 
-        window.astromatchRelationsHomeV19();
+        openAstroMatchRelationsHome();
 
         return;
       }
@@ -12349,6 +12347,108 @@ function renderTargetSelector(targets, selectedTarget) {
   );
 
 }
+
+
+function openAstroMatchRelationsHome() {
+
+  if (
+    typeof ASTROMATCH_CALCULATION_TOKEN !==
+      "undefined"
+  ) {
+    ASTROMATCH_CALCULATION_TOKEN++;
+  }
+
+  if (
+    typeof ASTROMATCH_SELECTED_TARGET !==
+      "undefined"
+  ) {
+    ASTROMATCH_SELECTED_TARGET =
+      null;
+  }
+
+  if (
+    typeof ASTROMATCH_RESULT !==
+      "undefined"
+  ) {
+    ASTROMATCH_RESULT =
+      null;
+  }
+
+  window.__astromatchLastResult =
+    null;
+
+  sessionStorage.removeItem(
+    "astromatch:selectedTargetId"
+  );
+
+  document
+    .getElementById(
+      "astromatchComparisonArea"
+    )
+    ?.classList.add(
+      "hidden"
+    );
+
+  document.body.classList.remove(
+    "astromatch-comparison-open"
+  );
+
+  if (
+    typeof setTargetCalculationState ===
+      "function"
+  ) {
+    setTargetCalculationState(
+      "idle"
+    );
+  }
+
+  ASTROMATCH_OPEN_TARGET_GROUPS
+    .clear();
+
+  if (
+    typeof ASTROMATCH_RELATION_MODE !==
+      "undefined"
+  ) {
+    ASTROMATCH_RELATION_MODE =
+      "all";
+  }
+
+  if (
+    typeof ASTROMATCH_RELATION_QUERY !==
+      "undefined"
+  ) {
+    ASTROMATCH_RELATION_QUERY =
+      "";
+  }
+
+  if (
+    typeof ASTROMATCH_RELATION_EXACT_TARGET_ID !==
+      "undefined"
+  ) {
+    ASTROMATCH_RELATION_EXACT_TARGET_ID =
+      "";
+  }
+
+  if (
+    typeof ASTROMATCH_RELATION_SEARCH_OPEN !==
+      "undefined"
+  ) {
+    ASTROMATCH_RELATION_SEARCH_OPEN =
+      false;
+  }
+
+  if (
+    Array.isArray(
+      ASTROMATCH_TARGET_PROFILES
+    )
+  ) {
+    renderTargetSelector(
+      ASTROMATCH_TARGET_PROFILES,
+      null
+    );
+  }
+}
+
 
 function updateTargetSelectionVisual(target) {
   const hint =
@@ -22436,98 +22536,10 @@ window.addEventListener("DOMContentLoaded", function () {
 
 
 
-<script id="ASTROMATCH_LOGO_HOME_V1">
-(function () {
+<script id="ASTROMATCH_LOGO_MAIN_NAV">
+(() => {
 
-  function goAstroMatchHome() {
-
-    /*
-     * Annule un éventuel calcul en cours.
-     */
-    if (
-      typeof ASTROMATCH_CALCULATION_TOKEN !==
-      "undefined"
-    ) {
-      ASTROMATCH_CALCULATION_TOKEN++;
-    }
-
-    /*
-     * Plus aucune cible sélectionnée.
-     */
-    if (
-      typeof ASTROMATCH_SELECTED_TARGET !==
-      "undefined"
-    ) {
-      ASTROMATCH_SELECTED_TARGET = null;
-    }
-
-    if (
-      typeof ASTROMATCH_RESULT !==
-      "undefined"
-    ) {
-      ASTROMATCH_RESULT = null;
-    }
-
-    window.__astromatchLastResult = null;
-
-    sessionStorage.removeItem(
-      "astromatch:selectedTargetId"
-    );
-
-    /*
-     * Referme Amour / Amitié / Famille.
-     */
-    if (
-      typeof ASTROMATCH_OPEN_TARGET_GROUPS !==
-      "undefined"
-    ) {
-      ASTROMATCH_OPEN_TARGET_GROUPS.clear();
-    }
-
-    /*
-     * Cache le comparateur.
-     */
-    document
-      .getElementById(
-        "astromatchComparisonArea"
-      )
-      ?.classList.add("hidden");
-
-    document.body.classList.remove(
-      "astromatch-comparison-open"
-    );
-
-    if (
-      typeof setTargetCalculationState ===
-      "function"
-    ) {
-      setTargetCalculationState("idle");
-    }
-
-    /*
-     * Le rendu sans cible + sans groupe
-     * affiche automatiquement HOME V2.
-     */
-    if (
-      typeof renderTargetSelector ===
-        "function" &&
-      typeof ASTROMATCH_TARGET_PROFILES !==
-        "undefined"
-    ) {
-      renderTargetSelector(
-        ASTROMATCH_TARGET_PROFILES,
-        null
-      );
-    }
-
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
-  }
-
-
-  function installLogoHome() {
+  function install() {
 
     const logo =
       document.getElementById(
@@ -22536,7 +22548,8 @@ window.addEventListener("DOMContentLoaded", function () {
 
     if (!logo) return;
 
-    logo.style.cursor = "pointer";
+    logo.style.cursor =
+      "pointer";
 
     logo.setAttribute(
       "role",
@@ -22553,36 +22566,62 @@ window.addEventListener("DOMContentLoaded", function () {
       "Retour à l’accueil"
     );
 
+
+    const goHome = () => {
+
+      window
+        .AstroMatchMainNav
+        ?.go(
+          "today"
+        );
+
+    };
+
+
     logo.addEventListener(
       "click",
-      goAstroMatchHome
+      goHome
     );
+
 
     logo.addEventListener(
       "keydown",
       event => {
+
         if (
           event.key === "Enter" ||
           event.key === " "
         ) {
+
           event.preventDefault();
-          goAstroMatchHome();
+
+          goHome();
+
         }
+
       }
     );
+
   }
 
 
   if (
-    document.readyState === "loading"
+    document.readyState ===
+      "loading"
   ) {
+
     document.addEventListener(
       "DOMContentLoaded",
-      installLogoHome,
-      { once: true }
+      install,
+      {
+        once: true
+      }
     );
+
   } else {
-    installLogoHome();
+
+    install();
+
   }
 
 })();
@@ -25810,123 +25849,218 @@ body {
   </button>
 </nav>
 
-<script id="ASTROMATCH_NAV_POINT2_SCRIPT">
+<script id="ASTROMATCH_MAIN_NAV_CONTROLLER">
 (() => {
-  document
-    .querySelectorAll("[data-main-tab]")
-    .forEach(button => {
-      button.addEventListener("click", () => {
-        document
-          .querySelectorAll("[data-main-tab]")
-          .forEach(item =>
-            item.classList.toggle(
-              "active",
-              item === button
-            )
-          );
 
-        if (button.dataset.mainTab === "today") {
+  const VALID_TABS =
+    new Set([
+      "today",
+      "relations",
+      "me"
+    ]);
 
-          if (
-            typeof closeNatalProfile ===
-            "function"
-          ) {
-            closeNatalProfile();
-          }
 
-          document
-            .getElementById("astromatchHeaderLogo")
-            ?.click();
-        }
+  function setActive(tab) {
 
-        if (button.dataset.mainTab === "me") {
-          if (
-            typeof openNatalProfile ===
-            "function"
-          ) {
-            openNatalProfile();
-          } else {
-            document
-              .getElementById("openNatalProfile")
-              ?.click();
-          }
-        }
+    document
+      .querySelectorAll(
+        "#astromatchMainNav [data-main-tab]"
+      )
+      .forEach(button => {
 
-        if (button.dataset.mainTab === "relations") {
+        button.classList.toggle(
+          "active",
+          button.dataset.mainTab === tab
+        );
 
-          if (
-            typeof closeNatalProfile ===
-            "function"
-          ) {
-            closeNatalProfile();
-          }
-
-          if (
-            typeof ASTROMATCH_CALCULATION_TOKEN !==
-            "undefined"
-          ) {
-            ASTROMATCH_CALCULATION_TOKEN++;
-          }
-
-          if (
-            typeof ASTROMATCH_SELECTED_TARGET !==
-            "undefined"
-          ) {
-            ASTROMATCH_SELECTED_TARGET = null;
-          }
-
-          if (
-            typeof ASTROMATCH_RESULT !==
-            "undefined"
-          ) {
-            ASTROMATCH_RESULT = null;
-          }
-
-          window.__astromatchLastResult = null;
-
-          sessionStorage.removeItem(
-            "astromatch:selectedTargetId"
-          );
-
-          document
-            .getElementById("astromatchComparisonArea")
-            ?.classList.add("hidden");
-
-          document.body.classList.remove(
-            "astromatch-comparison-open"
-          );
-
-          if (
-            typeof ASTROMATCH_OPEN_TARGET_GROUPS !==
-            "undefined"
-          ) {
-            ASTROMATCH_OPEN_TARGET_GROUPS.clear();
-            ASTROMATCH_OPEN_TARGET_GROUPS.add("romantic");
-            ASTROMATCH_OPEN_TARGET_GROUPS.add("friendship");
-            ASTROMATCH_OPEN_TARGET_GROUPS.add("family");
-          }
-
-          if (
-            typeof renderTargetSelector ===
-              "function" &&
-            typeof ASTROMATCH_TARGET_PROFILES !==
-              "undefined"
-          ) {
-            renderTargetSelector(
-              ASTROMATCH_TARGET_PROFILES,
-              null
-            );
-          }
-
-          /* ASTROMATCH_NO_RELATIONS_AUTOSCROLL_V3 */
-
-        }
       });
+
+  }
+
+
+  function closeNatal() {
+
+    if (
+      typeof closeNatalProfile ===
+        "function"
+    ) {
+      closeNatalProfile();
+    }
+
+  }
+
+
+  function openToday() {
+
+    closeNatal();
+
+    openAstroMatchRelationsHome();
+
+    window.AstroMatchTodayView
+      ?.open();
+
+  }
+
+
+  function openRelations() {
+
+    window.AstroMatchTodayView
+      ?.close();
+
+    closeNatal();
+
+    openAstroMatchRelationsHome();
+
+    window.scrollTo({
+      top: 0,
+      behavior: "auto"
     });
 
+  }
+
+
+  function openMe() {
+
+    window.AstroMatchTodayView
+      ?.close();
+
+    if (
+      typeof openNatalProfile ===
+        "function"
+    ) {
+
+      openNatalProfile();
+
+    } else {
+
+      document
+        .getElementById(
+          "openNatalProfile"
+        )
+        ?.click();
+
+    }
+
+  }
+
+
+  function go(tab) {
+
+    if (
+      !VALID_TABS.has(tab)
+    ) {
+      return;
+    }
+
+    setActive(tab);
+
+    if (tab === "today") {
+      openToday();
+      return;
+    }
+
+    if (tab === "relations") {
+      openRelations();
+      return;
+    }
+
+    openMe();
+
+  }
+
+
+  function current() {
+
+    const natal =
+      document.getElementById(
+        "natalProfileView"
+      );
+
+    if (
+      natal &&
+      !natal.classList.contains(
+        "hidden"
+      )
+    ) {
+      return "me";
+    }
+
+    return (
+      document.querySelector(
+        "#astromatchMainNav [data-main-tab].active"
+      )
+      ?.dataset.mainTab ||
+      "today"
+    );
+
+  }
+
+
+  document
+    .querySelectorAll(
+      "#astromatchMainNav [data-main-tab]"
+    )
+    .forEach(button => {
+
+      button.addEventListener(
+        "click",
+        () => {
+          go(
+            button.dataset.mainTab
+          );
+        }
+      );
+
+    });
+
+
+  window.AstroMatchMainNav =
+    Object.freeze({
+      go,
+      current
+    });
+
+
+  function boot() {
+
+    setTimeout(
+      () => {
+
+        go(
+          current()
+        );
+
+      },
+      250
+    );
+
+  }
+
+
+  if (
+    document.readyState ===
+      "loading"
+  ) {
+
+    document.addEventListener(
+      "DOMContentLoaded",
+      boot,
+      {
+        once: true
+      }
+    );
+
+  } else {
+
+    boot();
+
+  }
+
+
   console.log(
-    "ASTROMATCH POINT 2 NAV — READY"
+    "ASTROMATCH MAIN NAV — READY"
   );
+
 })();
 </script>
 
@@ -26464,64 +26598,16 @@ body {
   }
 
 
-  document
-    .querySelectorAll(
-      "[data-main-tab]"
-    )
-    .forEach(button => {
-
-      button.addEventListener(
-        "click",
-        () => {
-
-          const tab =
-            button.dataset.mainTab;
-
-          if (tab === "today") {
-            setTimeout(
-              openToday,
-              20
-            );
-          } else {
-            leaveToday();
-          }
-        }
-      );
+  /*
+   * API canonique de la vue Aujourd'hui.
+   * La navigation décide quand l'ouvrir/fermer.
+   */
+  window.AstroMatchTodayView =
+    Object.freeze({
+      open: openToday,
+      close: leaveToday
     });
 
-
-  function boot() {
-
-    setTimeout(() => {
-
-      const active =
-        document.querySelector(
-          '[data-main-tab="today"]'
-        );
-
-      if (
-        active?.classList
-          .contains("active")
-      ) {
-        openToday();
-      }
-
-    }, 250);
-  }
-
-
-  if (
-    document.readyState ===
-    "loading"
-  ) {
-    document.addEventListener(
-      "DOMContentLoaded",
-      boot,
-      { once: true }
-    );
-  } else {
-    boot();
-  }
 
   console.log(
     "ASTROMATCH POINT 3 TODAY — READY"
@@ -26603,12 +26689,11 @@ body {
           /*
            * Passe d'abord dans l'onglet Relations.
            */
-          const relationsButton =
-            document.querySelector(
-              '[data-main-tab="relations"]'
+          window
+            .AstroMatchMainNav
+            .go(
+              "relations"
             );
-
-          relationsButton?.click();
 
 
           /*
@@ -29188,259 +29273,7 @@ document.addEventListener(
 </script>
 
 
-<script id="ASTROMATCH_RELATIONS_HOME_V19">
 
-(() => {
-
-  function astromatchRelationsHomeV19() {
-
-    /*
-     * ==========================================
-     * ACCUEIL RELATIONS
-     * ==========================================
-     *
-     * État voulu :
-     *
-     * ❤️ Amour       fermé
-     * 🤝 Amitié      fermé
-     * 👨‍👩‍👧‍👦 Famille     fermé
-     *
-     * ⭐ Favoris
-     * 🕘 Ajouts récents
-     */
-
-
-    /* --------------------------
-       Désélection du profil
-       -------------------------- */
-
-    if (
-      typeof ASTROMATCH_SELECTED_TARGET !==
-        "undefined" &&
-      ASTROMATCH_SELECTED_TARGET
-    ) {
-
-      ASTROMATCH_SELECTED_TARGET =
-        null;
-
-      if (
-        typeof ASTROMATCH_RESULT !==
-        "undefined"
-      ) {
-        ASTROMATCH_RESULT =
-          null;
-      }
-
-      window.__astromatchLastResult =
-        null;
-
-      sessionStorage.removeItem(
-        "astromatch:selectedTargetId"
-      );
-
-    }
-
-
-    /* --------------------------
-       Ferme la comparaison
-       -------------------------- */
-
-    document
-      .getElementById(
-        "astromatchComparisonArea"
-      )
-      ?.classList.add(
-        "hidden"
-      );
-
-    document.body.classList.remove(
-      "astromatch-comparison-open"
-    );
-
-
-    /* --------------------------
-       Ferme les 3 groupes
-       -------------------------- */
-
-    if (
-      typeof ASTROMATCH_OPEN_TARGET_GROUPS !==
-        "undefined"
-    ) {
-
-      ASTROMATCH_OPEN_TARGET_GROUPS
-        .clear();
-
-    }
-
-
-    /* --------------------------
-       Sortie des filtres
-       -------------------------- */
-
-    if (
-      typeof ASTROMATCH_RELATION_MODE !==
-        "undefined"
-    ) {
-
-      ASTROMATCH_RELATION_MODE =
-        "all";
-
-    }
-
-
-    if (
-      typeof ASTROMATCH_RELATION_QUERY !==
-        "undefined"
-    ) {
-
-      ASTROMATCH_RELATION_QUERY =
-        "";
-
-    }
-
-
-    if (
-      typeof ASTROMATCH_RELATION_EXACT_TARGET_ID !==
-        "undefined"
-    ) {
-
-      ASTROMATCH_RELATION_EXACT_TARGET_ID =
-        "";
-
-    }
-
-
-    if (
-      typeof ASTROMATCH_RELATION_SEARCH_OPEN !==
-        "undefined"
-    ) {
-
-      ASTROMATCH_RELATION_SEARCH_OPEN =
-        false;
-
-    }
-
-
-    /* --------------------------
-       Affichage direct V3
-       -------------------------- */
-
-    if (
-      typeof renderTargetSelector ===
-        "function" &&
-      Array.isArray(
-        ASTROMATCH_TARGET_PROFILES
-      )
-    ) {
-
-      renderTargetSelector(
-        ASTROMATCH_TARGET_PROFILES,
-        null
-      );
-
-    }
-
-  }
-
-
-  /*
-   * Expose la fonction.
-   */
-  window.astromatchRelationsHomeV19 =
-    astromatchRelationsHomeV19;
-
-
-  /*
-   * ==========================================
-   * BOUTON ❤️ RELATIONS DU MENU DU BAS
-   * ==========================================
-   *
-   * On laisse d'abord le système normal
-   * changer d'onglet.
-   *
-   * Puis immédiatement après,
-   * on remet Relations sur son accueil.
-   */
-
-  document.addEventListener(
-    "click",
-    event => {
-
-      const button =
-        event.target.closest(
-          '[data-main-tab="relations"]'
-        );
-
-      if (!button) {
-        return;
-      }
-
-      setTimeout(
-        astromatchRelationsHomeV19,
-        0
-      );
-
-    },
-    true
-  );
-
-
-  /*
-   * ==========================================
-   * CORRIGE AUSSI LE DERNIER GROUPE FERMÉ
-   * ==========================================
-   */
-
-  if (
-    typeof rerenderAstroMatchRelations ===
-      "function"
-  ) {
-
-    const originalRerender =
-      rerenderAstroMatchRelations;
-
-
-    const wrappedRerender =
-      function(...args) {
-
-        if (
-          typeof ASTROMATCH_OPEN_TARGET_GROUPS !==
-            "undefined" &&
-          ASTROMATCH_OPEN_TARGET_GROUPS.size ===
-            0
-        ) {
-
-          astromatchRelationsHomeV19();
-
-          return;
-        }
-
-
-        return originalRerender.apply(
-          this,
-          args
-        );
-
-      };
-
-
-    try {
-
-      rerenderAstroMatchRelations =
-        wrappedRerender;
-
-    } catch (_) {
-
-      window.rerenderAstroMatchRelations =
-        wrappedRerender;
-
-    }
-
-  }
-
-})();
-
-</script>
 
 
 
@@ -38673,17 +38506,6 @@ body {
   }
 
 
-  function buttonFor(
-    tab
-  ) {
-
-    return document.querySelector(
-      `#astromatchMainNav [data-main-tab="${tab}"]`
-    );
-
-  }
-
-
   function destination(
     current,
     dx
@@ -39481,17 +39303,15 @@ body {
     setTimeout(
       () => {
 
-        const button =
-          buttonFor(
+        /*
+         * Changement d'état direct :
+         * aucun faux clic intermédiaire.
+         */
+        window
+          .AstroMatchMainNav
+          .go(
             targetTab
           );
-
-
-        /*
-         * On utilise le vrai système existant
-         * pour changer l'état réel de l'application.
-         */
-        button?.click();
 
 
         if (targetTab === "me") {
