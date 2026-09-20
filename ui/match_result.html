@@ -2704,7 +2704,6 @@ section.grid > .glass {
 
 
 <style id="ASTROMATCH_V3_COMPACT_NAV_STYLE">
-
 .v3-relation-topline {
   display:flex;
   align-items:center;
@@ -2712,7 +2711,8 @@ section.grid > .glass {
   gap:8px;
 }
 
-.v3-relation-topline .v3-relation-filters {
+.v3-relation-topline
+.v3-relation-filters {
   margin-top:0;
 }
 
@@ -2729,6 +2729,7 @@ section.grid > .glass {
   border:1px solid rgba(255,255,255,.07);
 
   background:rgba(15,23,42,.72);
+
   font-size:15px;
 }
 
@@ -2742,120 +2743,44 @@ section.grid > .glass {
 }
 
 .v3-relation-quicknav {
-  position:sticky;
-  top:8px;
-  z-index:35;
-
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:5px;
-
-  padding:6px;
-  margin:9px 0 12px;
-
-  border:1px solid rgba(255,255,255,.07);
-  border-radius:15px;
-
-  background:rgba(2,6,23,.94);
-  backdrop-filter:blur(14px);
-}
-
-.v3-relation-jump {
-  min-width:0;
-  min-height:40px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:4px;
-
-  padding:0 5px;
-
-  border-radius:10px;
-
-  color:#94a3b8;
-
-  font-size:10px;
-  font-weight:800;
-}
-
-.v3-relation-jump strong {
-  min-width:18px;
-  padding:2px 5px;
-
-  border-radius:999px;
-
-  background:rgba(255,255,255,.06);
-
-  color:#64748b;
-  font-size:9px;
-}
-
-.v3-relation-jump.active {
-  color:#ede9fe;
-  background:rgba(124,58,237,.16);
-}
-
-.v3-relation-jump.active strong {
-  color:#ddd6fe;
-  background:rgba(139,92,246,.18);
-}
-
-.target-group-title {
-  scroll-margin-top:72px;
-}
-
-</style>
-
-
-<style id="ASTROMATCH_V3_MINIPILLS_V2">
-
-/* La barre entière devient très légère */
-.v3-relation-quicknav {
-  position:relative;
-
   display:flex;
   align-items:center;
   justify-content:center;
 
-  gap:9px;
+  gap:6px;
 
   width:max-content;
   max-width:100%;
 
-  margin:8px auto 12px;
+  margin:0;
   padding:0;
 
   border:0;
   background:transparent;
-  backdrop-filter:none;
-
-  z-index:60;
 }
 
+.v3-relation-quicknav[hidden] {
+  display:none !important;
+}
 
-/* On masque Amour / Amitié / Famille :
-   on garde seulement icône + nombre */
-.v3-relation-jump > span:nth-child(2) {
+.v3-relation-jump
+> span:nth-child(2) {
   display:none;
 }
 
-
 .v3-relation-jump {
   width:auto;
-  min-width:64px;
-  min-height:36px;
+  min-width:52px;
+  min-height:39px;
 
   display:flex;
   align-items:center;
   justify-content:center;
 
-  gap:7px;
-
-  padding:0 11px;
+  gap:5px;
+  padding:0 6px;
 
   border-radius:999px;
-
   border:1px solid rgba(255,255,255,.08);
 
   background:rgba(15,23,42,.82);
@@ -2864,21 +2789,15 @@ section.grid > .glass {
   font-size:15px;
   font-weight:850;
 
-  box-shadow:none;
-
   transition:
     background .18s ease,
     border-color .18s ease,
     transform .18s ease;
 }
 
-
 .v3-relation-jump strong {
   min-width:0;
-
   padding:0;
-
-  border-radius:0;
 
   background:transparent;
 
@@ -2888,10 +2807,8 @@ section.grid > .glass {
   font-weight:900;
 }
 
-
 .v3-relation-jump.active {
   color:#f5f3ff;
-
   border-color:rgba(167,139,250,.55);
 
   background:
@@ -2900,96 +2817,56 @@ section.grid > .glass {
       rgba(124,58,237,.30),
       rgba(139,92,246,.16)
     );
-
-  box-shadow:
-    0 0 0 1px rgba(139,92,246,.08),
-    0 5px 18px rgba(76,29,149,.20);
 }
-
 
 .v3-relation-jump.active strong {
   color:#ddd6fe;
 }
 
-
 .v3-relation-jump:active {
   transform:scale(.96);
 }
 
-
-/* Quand on a dépassé le haut de Relations :
-   les 3 pastilles restent accessibles */
-.v3-relation-quicknav.v3-mini-floating {
-  position:fixed;
-
-  top:
-    calc(
-      env(safe-area-inset-top, 0px) + 7px
-    );
-
-  left:50%;
-
-  transform:translateX(-50%);
-
-  margin:0;
-
-  padding:5px 7px;
-
-  border-radius:999px;
-
-  border:1px solid rgba(255,255,255,.09);
-
-  background:rgba(2,6,23,.91);
-
-  backdrop-filter:blur(15px);
-  -webkit-backdrop-filter:blur(15px);
-
-  box-shadow:
-    0 10px 30px rgba(0,0,0,.32);
-}
-
-
-/* En mode flottant encore plus compact */
-.v3-relation-quicknav.v3-mini-floating
-.v3-relation-jump {
-  min-width:58px;
-  min-height:34px;
-
-  padding:0 9px;
-}
-
-
-/* Le titre d'un groupe ne passe pas dessous */
 .target-group-title {
   scroll-margin-top:62px;
 }
-
 </style>
 
 
 <style id="ASTROMATCH_V3_FLOATING_PORTAL">
+.v3-relation-quicknav.v3-relation-floating-portal {
+  position:fixed !important;
 
-.v3-relation-floating-portal {
-  position:fixed;
+  top:auto !important;
+  left:auto !important;
 
-  top:
+  right:8px !important;
+
+  bottom:
     calc(
-      env(safe-area-inset-top, 0px) + 7px
-    );
+      92px +
+      env(safe-area-inset-bottom, 0px)
+    ) !important;
 
-  left:50%;
-  transform:translateX(-50%);
+  transform:none !important;
 
-  z-index:9999;
+  z-index:9400;
 
-  display:flex;
+  display:flex !important;
+  flex-direction:column;
+
   align-items:center;
   justify-content:center;
-  gap:9px;
 
-  padding:5px 7px;
+  width:auto;
+  max-width:none;
 
-  border-radius:999px;
+  gap:5px;
+
+  margin:0;
+  padding:7px 6px;
+
+  border-radius:20px;
   border:1px solid rgba(255,255,255,.09);
 
   background:rgba(2,6,23,.94);
@@ -3000,28 +2877,10 @@ section.grid > .glass {
   box-shadow:
     0 10px 30px rgba(0,0,0,.35);
 }
-
-.v3-relation-floating-portal
-.v3-relation-jump {
-  min-width:58px;
-  min-height:34px;
-  padding:0 9px;
-}
-
-.v3-relation-floating-portal
-.v3-relation-jump > span:nth-child(2) {
-  display:none;
-}
-
 </style>
 
 
 <style id="ASTROMATCH_V3_RELATION_DOCK_V1_STYLE">
-
-.v3-relation-quicknav {
-  gap:6px;
-}
-
 .v3-relation-dock-separator {
   width:1px;
   height:22px;
@@ -3044,15 +2903,9 @@ section.grid > .glass {
   border-radius:999px;
 
   border:1px solid rgba(255,255,255,.08);
-
   background:rgba(15,23,42,.82);
 
   font-size:15px;
-
-  transition:
-    transform .15s ease,
-    background .15s ease,
-    border-color .15s ease;
 }
 
 .v3-relation-dock-action:active {
@@ -3075,40 +2928,27 @@ section.grid > .glass {
   background:rgba(250,204,21,.10);
 }
 
-
-/*
- * Quand les trois catégories sont repliées,
- * Relations garde suffisamment de hauteur.
- * Le navigateur ne peut plus compresser la page
- * jusqu'à Aujourd'hui.
- */
 #targetSelector.v3-all-relation-groups-closed {
-  min-height:
-    calc(
-      100svh - 190px
-    );
-}
-
-
-/* Barre flottante : tout reste compact */
-.v3-relation-floating-portal {
-  max-width:
-    calc(100vw - 16px);
+  min-height:calc(100svh - 190px);
 }
 
 .v3-relation-floating-portal
 .v3-relation-dock-separator {
-  width:1px;
-  height:20px;
+  width:28px;
+  height:1px;
+
+  flex:0 0 1px;
+
+  margin:2px 0;
 }
 
 .v3-relation-floating-portal
 .v3-relation-dock-action {
-  width:34px;
-  height:34px;
-  flex-basis:34px;
-}
+  width:39px;
+  height:39px;
 
+  flex:0 0 39px;
+}
 </style>
 
 
@@ -11919,6 +11759,18 @@ function renderTargetSelector(targets, selectedTarget) {
 function openAstroMatchRelationsHome() {
 
   if (
+    typeof astromatchFloatingRelationNav ===
+      "function"
+  ) {
+
+    astromatchFloatingRelationNav(
+      false
+    );
+
+  }
+
+
+  if (
     typeof ASTROMATCH_CALCULATION_TOKEN !==
       "undefined"
   ) {
@@ -20397,7 +20249,7 @@ function renderAstroMatchRelationTools(counts = {}) {
   return `
     <div class="v3-relation-tools">
 
-      <div class="v3-relation-quicknav">
+      <div class="v3-relation-quicknav" hidden>
 
         <button
           type="button"
@@ -20951,7 +20803,7 @@ function rerenderAstroMatchRelations() {
 
     if (
       typeof astromatchUpdateActiveRelationNav ===
-      "function"
+        "function"
     ) {
       astromatchUpdateActiveRelationNav();
     }
@@ -20965,104 +20817,215 @@ function rerenderAstroMatchRelations() {
 
 function astromatchFloatingRelationNav(show) {
 
-  let floating =
-    document.getElementById(
-      "astromatchRelationFloatingNav"
-    );
-
-  if (!show) {
-    floating?.remove();
-    return;
-  }
-
-  const source =
-    document.querySelector(
-      ".v3-relation-quicknav"
-    );
-
-  if (!source) return;
-
-  if (!floating) {
-    floating =
-      document.createElement("div");
-
-    floating.id =
-      "astromatchRelationFloatingNav";
-
-    floating.className =
-      "v3-relation-floating-portal";
-
-    document.body.appendChild(
-      floating
-    );
-  }
-
-  floating.innerHTML =
-    source.innerHTML;
-}
-
-
-function astromatchUpdateActiveRelationNav() {
-
-  const buttons =
-    [...document.querySelectorAll(
-      "[data-relation-jump]"
-    )];
-
-  if (!buttons.length) return;
-
-  const nav =
-    document.querySelector(
-      ".v3-relation-quicknav"
-    );
-
   const tools =
     document.querySelector(
       ".v3-relation-tools"
     );
+
+  let rail =
+    document.getElementById(
+      "astromatchRelationFloatingNav"
+    );
+
+  const source =
+    tools?.querySelector(
+      ".v3-relation-quicknav"
+    );
+
+
+  /*
+   * Après un rerender, une nouvelle source peut
+   * exister alors que l'ancien rail est encore
+   * temporairement dans body.
+   */
+  if (
+    rail &&
+    source &&
+    rail !== source
+  ) {
+
+    rail.remove();
+    rail = source;
+
+  }
+
+
+  if (!rail) {
+    rail = source;
+  }
+
+
+  if (!rail) {
+    return;
+  }
+
+
+  if (!show) {
+
+    rail.hidden = true;
+
+    rail.removeAttribute(
+      "id"
+    );
+
+    rail.classList.remove(
+      "v3-relation-floating-portal"
+    );
+
+
+    if (
+      tools &&
+      rail.parentElement !== tools
+    ) {
+
+      tools.prepend(
+        rail
+      );
+
+    }
+
+    return;
+  }
+
+
+  rail.hidden = false;
+
+  rail.id =
+    "astromatchRelationFloatingNav";
+
+  rail.classList.add(
+    "v3-relation-floating-portal"
+  );
+
+
+  if (
+    rail.parentElement !==
+      document.body
+  ) {
+
+    document.body.appendChild(
+      rail
+    );
+
+  }
+
+}
+
+
+function astromatchUpdateActiveRelationNav() {
 
   const selector =
     document.getElementById(
       "targetSelector"
     );
 
-  if (nav && tools && selector) {
 
-    const selectorRect =
-      selector.getBoundingClientRect();
+  const activeTab =
+    document.querySelector(
+      "#astromatchMainNav [data-main-tab].active"
+    )
+    ?.dataset.mainTab;
 
-    const toolsRect =
-      tools.getBoundingClientRect();
 
-    const relationsVisible =
-      selector.offsetParent !== null;
+  const hasOpenGroup =
+    typeof ASTROMATCH_OPEN_TARGET_GROUPS !==
+      "undefined" &&
+    ASTROMATCH_OPEN_TARGET_GROUPS.size > 0;
 
-    const shouldFloat =
-      relationsVisible &&
-      toolsRect.bottom < 8;
 
-    /*
-     * Le menu flottant est placé directement
-     * dans document.body pour ne jamais être
-     * coupé par les conteneurs/overflow/transform.
-     */
-    nav.classList.remove(
-      "v3-mini-floating"
-    );
+  /*
+   * Règle absolue :
+   *
+   * - accueil Relations = aucun rail ;
+   * - Aujourd'hui = aucun rail ;
+   * - Moi = aucun rail.
+   */
+  if (
+    activeTab !== "relations" ||
+    !selector ||
+    !hasOpenGroup
+  ) {
 
     astromatchFloatingRelationNav(
-      shouldFloat
+      false
     );
+
+    return;
   }
 
-  const groups =
-    [...document.querySelectorAll(
-      "#targetSelector .target-group-title"
-    )];
 
-  if (!groups.length) return;
+  const groups =
+    Array.from(
+      selector.querySelectorAll(
+        ".target-group-title"
+      )
+    );
+
+
+  if (!groups.length) {
+
+    astromatchFloatingRelationNav(
+      false
+    );
+
+    return;
+  }
+
+
+  const headerBottom =
+    Math.max(
+      0,
+      document
+        .getElementById(
+          "astromatchGlobalHeader"
+        )
+        ?.getBoundingClientRect()
+        ?.bottom || 0
+    );
+
+
+  const navTop =
+    document
+      .getElementById(
+        "astromatchMainNav"
+      )
+      ?.getBoundingClientRect()
+      ?.top ||
+    window.innerHeight;
+
+
+  /*
+   * Un groupe est ouvert.
+   *
+   * Le rail apparaît uniquement quand au moins
+   * un bandeau de catégorie n'est plus visible.
+   */
+  const needsRail =
+    groups.some(group => {
+
+      const rect =
+        group.getBoundingClientRect();
+
+      return (
+        rect.top < headerBottom ||
+        rect.bottom > navTop
+      );
+
+    });
+
+
+  astromatchFloatingRelationNav(
+    needsRail
+  );
+
+
+  if (!needsRail) {
+    return;
+  }
+
 
   let current = null;
+
 
   for (const group of groups) {
 
@@ -21071,51 +21034,53 @@ function astromatchUpdateActiveRelationNav() {
         "[data-target-group-toggle]"
       );
 
-    if (!toggle) continue;
-
-    const relation =
-      toggle.dataset.targetGroupToggle;
-
-    const top =
-      group.getBoundingClientRect().top;
-
-    if (top <= 155) {
-      current = relation;
+    if (!toggle) {
+      continue;
     }
+
+
+    if (
+      group.getBoundingClientRect().top <=
+        headerBottom + 40
+    ) {
+
+      current =
+        toggle.dataset.targetGroupToggle;
+
+    }
+
   }
 
+
   if (!current) {
+
     current =
+      Array.from(
+        ASTROMATCH_OPEN_TARGET_GROUPS
+      )[0] ||
       groups[0]
         ?.querySelector(
           "[data-target-group-toggle]"
         )
-        ?.dataset
-        ?.targetGroupToggle;
+        ?.dataset.targetGroupToggle;
+
   }
 
-  buttons.forEach(button => {
-    button.classList.toggle(
-      "active",
-      button.dataset.relationJump === current
-    );
-  });
 
-  const floating =
-    document.getElementById(
-      "astromatchRelationFloatingNav"
-    );
-
-  floating
-    ?.querySelectorAll(
+  document
+    .querySelectorAll(
       "[data-relation-jump]"
     )
     .forEach(button => {
+
       button.classList.toggle(
         "active",
-        button.dataset.relationJump === current
+        button.dataset.relationJump ===
+          current
       );
+
     });
+
 }
 
 
@@ -26799,17 +26764,38 @@ body {
       return;
     }
 
+
+    /*
+     * Le rail appartient uniquement à Relations.
+     * Couvre aussi le swipe principal.
+     */
+    if (
+      tab !== "relations" &&
+      typeof astromatchFloatingRelationNav ===
+        "function"
+    ) {
+
+      astromatchFloatingRelationNav(
+        false
+      );
+
+    }
+
+
     setActive(tab);
+
 
     if (tab === "today") {
       openToday();
       return;
     }
 
+
     if (tab === "relations") {
       openRelations();
       return;
     }
+
 
     openMe();
 
