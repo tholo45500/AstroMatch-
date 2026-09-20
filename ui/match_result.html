@@ -21036,14 +21036,44 @@ function astromatchUpdateActiveRelationNav() {
 }
 
 
-if (!window.__ASTROMATCH_V3_COMPACT_NAV_EVENTS__) {
+/* ASTROMATCH_RELATION_SCROLL_SYNC */
 
-  window.__ASTROMATCH_V3_COMPACT_NAV_EVENTS__ = true;
+window.addEventListener(
+  "scroll",
+  astromatchUpdateActiveRelationNav,
+  {
+    passive: true
+  }
+);
+
+
+/*
+ * Certains écrans AstroMatch scrollent dans
+ * un conteneur interne plutôt que window.
+ */
+document.addEventListener(
+  "scroll",
+  astromatchUpdateActiveRelationNav,
+  {
+    passive: true,
+    capture: true
+  }
+);
+
+
+if (!window.__ASTROMATCH_V3_RELATION_EVENTS__) {
+
+  window.__ASTROMATCH_V3_RELATION_EVENTS__ = true;
 
   document.addEventListener(
     "click",
     event => {
 
+      /*
+       * ==========================================
+       * FAVORIS — filtre rapide
+       * ==========================================
+       */
       const favoriteToggle =
         event.target.closest(
           "[data-relation-favorite-toggle]"
@@ -21055,11 +21085,13 @@ if (!window.__ASTROMATCH_V3_COMPACT_NAV_EVENTS__) {
         event.stopPropagation();
 
         ASTROMATCH_RELATION_MODE =
-          ASTROMATCH_RELATION_MODE === "favorites"
+          ASTROMATCH_RELATION_MODE ===
+            "favorites"
             ? "all"
             : "favorites";
 
-        ASTROMATCH_RELATION_EXACT_TARGET_ID = "";
+        ASTROMATCH_RELATION_EXACT_TARGET_ID =
+          "";
 
         rerenderAstroMatchRelations();
 
@@ -21067,6 +21099,11 @@ if (!window.__ASTROMATCH_V3_COMPACT_NAV_EVENTS__) {
       }
 
 
+      /*
+       * ==========================================
+       * RECHERCHE
+       * ==========================================
+       */
       const searchToggle =
         event.target.closest(
           "[data-relation-search-toggle]"
@@ -21087,14 +21124,24 @@ if (!window.__ASTROMATCH_V3_COMPACT_NAV_EVENTS__) {
         ASTROMATCH_RELATION_SEARCH_OPEN =
           !ASTROMATCH_RELATION_SEARCH_OPEN;
 
-        if (!ASTROMATCH_RELATION_SEARCH_OPEN) {
-          ASTROMATCH_RELATION_QUERY = "";
-          ASTROMATCH_RELATION_EXACT_TARGET_ID = "";
+        if (
+          !ASTROMATCH_RELATION_SEARCH_OPEN
+        ) {
+
+          ASTROMATCH_RELATION_QUERY =
+            "";
+
+          ASTROMATCH_RELATION_EXACT_TARGET_ID =
+            "";
+
         }
 
         rerenderAstroMatchRelations();
 
-        if (ASTROMATCH_RELATION_SEARCH_OPEN) {
+
+        if (
+          ASTROMATCH_RELATION_SEARCH_OPEN
+        ) {
 
           requestAnimationFrame(() => {
 
@@ -21111,110 +21158,95 @@ if (!window.__ASTROMATCH_V3_COMPACT_NAV_EVENTS__) {
               });
 
               setTimeout(() => {
+
                 document
-                  .getElementById("relationSearch")
+                  .getElementById(
+                    "relationSearch"
+                  )
                   ?.focus();
+
               }, 280);
 
             } else {
 
               document
-                .getElementById("relationSearch")
+                .getElementById(
+                  "relationSearch"
+                )
                 ?.focus();
 
             }
 
           });
+
         }
 
         return;
       }
 
 
+      /*
+       * ==========================================
+       * RACCOURCI VERS UN GROUPE
+       * ==========================================
+       */
       const jump =
         event.target.closest(
           "[data-relation-jump]"
         );
 
-      if (!jump) return;
+      if (jump) {
 
-      event.preventDefault();
-      event.stopPropagation();
+        event.preventDefault();
+        event.stopPropagation();
 
-      const relation =
-        String(
-          jump.dataset.relationJump || ""
-        );
-
-      if (!relation) return;
-
-      ASTROMATCH_OPEN_TARGET_GROUPS.clear();
-
-      ASTROMATCH_OPEN_TARGET_GROUPS.add(
-        relation
-      );
-
-      rerenderAstroMatchRelations();
-
-      requestAnimationFrame(() => {
-
-        const toggle =
-          document.querySelector(
-            `[data-target-group-toggle="${relation}"]`
+        const relation =
+          String(
+            jump.dataset
+              .relationJump || ""
           );
 
-        const title =
-          toggle?.closest(
-            ".target-group-title"
+        if (!relation) return;
+
+
+        ASTROMATCH_OPEN_TARGET_GROUPS
+          .clear();
+
+        ASTROMATCH_OPEN_TARGET_GROUPS
+          .add(
+            relation
           );
 
-        title?.scrollIntoView({
-          behavior: "smooth",
-          block: "start"
+        rerenderAstroMatchRelations();
+
+
+        requestAnimationFrame(() => {
+
+          const toggle =
+            document.querySelector(
+              `[data-target-group-toggle="${relation}"]`
+            );
+
+          const title =
+            toggle?.closest(
+              ".target-group-title"
+            );
+
+          title?.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+          });
+
+          setTimeout(
+            astromatchUpdateActiveRelationNav,
+            350
+          );
+
         });
 
-        setTimeout(
-          astromatchUpdateActiveRelationNav,
-          350
-        );
-      });
+        return;
+      }
 
-    },
-    true
-  );
-
-
-  window.addEventListener(
-    "scroll",
-    astromatchUpdateActiveRelationNav,
-    {
-      passive: true
-    }
-  );
-
-  /*
-   * Certains écrans AstroMatch scrollent dans
-   * un conteneur interne plutôt que window.
-   */
-  document.addEventListener(
-    "scroll",
-    astromatchUpdateActiveRelationNav,
-    {
-      passive: true,
-      capture: true
-    }
-  );
-
-}
-
-
-if (!window.__ASTROMATCH_V3_RELATION_EVENTS__) {
-
-  window.__ASTROMATCH_V3_RELATION_EVENTS__ = true;
-
-  document.addEventListener(
-    "click",
-    event => {
 
       const showMore =
         event.target.closest(
