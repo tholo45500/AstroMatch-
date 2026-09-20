@@ -174,72 +174,6 @@
 
 
 </style>
-<style id="ASTROMATCH_RELATIONSHIP_TABS">
-.relationship-tab {
-  min-height: 64px;
-  border-radius: 16px;
-  padding: 8px 4px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 2px;
-  font-size: 12px;
-  font-weight: 800;
-  color: rgb(148 163 184);
-  transition: all .2s ease;
-}
-
-.relationship-tab.active {
-  background: rgba(255,255,255,.10);
-  color: white;
-  box-shadow: 0 4px 18px rgba(0,0,0,.18);
-  transform: translateY(-1px);
-}
-
-.relationship-tab:active {
-  transform: scale(.97);
-}
-
-.relationship-item {
-  border-radius: 18px;
-  padding: 14px;
-  background: rgba(15,23,42,.42);
-  border: 1px solid rgba(255,255,255,.06);
-}
-
-.relationship-item-title {
-  font-weight: 800;
-  font-size: 14px;
-}
-
-.relationship-item-text {
-  margin-top: 4px;
-  color: rgb(203 213 225);
-  font-size: 13px;
-  line-height: 1.55;
-}
-
-.relationship-badge {
-  display: inline-flex;
-  align-items: center;
-  border-radius: 999px;
-  padding: 4px 9px;
-  background: rgba(255,255,255,.07);
-  color: rgb(148 163 184);
-  font-size: 11px;
-  font-weight: 700;
-}
-
-.relationship-empty {
-  border-radius: 18px;
-  padding: 16px;
-  background: rgba(15,23,42,.35);
-  color: rgb(148 163 184);
-  font-size: 13px;
-  line-height: 1.5;
-}
-</style>
 
 <style id="astromatch-factor-icons">
 .relationship-factor-item {
@@ -704,23 +638,15 @@ main {
   padding-bottom: 24px !important;
 }
 
-</style>
-
-
-
-
-
-<style id="ASTROMATCH_INLINE_RESULT_FINAL_V1">
-
 #astromatchComparisonHome {
-  display: none !important;
+  display:none !important;
 }
 
 #astromatchComparisonArea.astromatch-inline-result {
-  margin-top: 10px !important;
-  margin-bottom: 14px !important;
+  margin-top:10px !important;
+  margin-bottom:14px !important;
 
-  scroll-margin-top: 12px;
+  scroll-margin-top:12px;
 }
 
 </style>
@@ -2114,11 +2040,23 @@ header::after {
 }
 
 .relationship-tab {
-  min-height: 54px;
+  min-height:54px;
 
-  border-radius: 14px !important;
+  padding:8px 4px;
 
-  color: #64748b;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+
+  gap:2px;
+
+  border-radius:14px !important;
+
+  color:#64748b;
+
+  font-size:12px;
+  font-weight:800;
 
   transition:
     background .15s ease,
@@ -2131,7 +2069,12 @@ header::after {
 }
 
 .relationship-tab.active {
-  color: #f8fafc !important;
+  color:#f8fafc !important;
+
+  transform:translateY(-1px);
+
+  box-shadow:
+    0 4px 18px rgba(0,0,0,.18);
 
   background:
     linear-gradient(
@@ -2144,9 +2087,13 @@ header::after {
     1px solid rgba(167,139,250,.16);
 }
 
+.relationship-tab.active:active {
+  transform:scale(.97);
+}
+
 .relationship-tab span:last-child {
-  font-size: 10px;
-  font-weight: 850;
+  font-size:10px;
+  font-weight:850;
 }
 
 
@@ -2337,9 +2284,11 @@ section.grid > .glass {
 }
 
 .relationship-item-title {
-  color: #f1f5f9;
+  color:#f1f5f9;
 
-  font-size: 12px !important;
+  font-weight:800;
+
+  font-size:12px !important;
 
   line-height: 1.4;
 }
@@ -2352,6 +2301,41 @@ section.grid > .glass {
   font-size: 11px !important;
 
   line-height: 1.55 !important;
+}
+
+
+.relationship-badge {
+  display:inline-flex;
+  align-items:center;
+
+  padding:4px 9px;
+
+  border-radius:999px;
+
+  background:
+    rgba(255,255,255,.07);
+
+  color:
+    rgb(148 163 184);
+
+  font-size:11px;
+  font-weight:700;
+}
+
+
+.relationship-empty {
+  padding:16px;
+
+  border-radius:18px;
+
+  background:
+    rgba(15,23,42,.35);
+
+  color:
+    rgb(148 163 184);
+
+  font-size:13px;
+  line-height:1.5;
 }
 
 
