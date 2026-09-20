@@ -33660,6 +33660,17 @@ document.addEventListener(
     renderRelationshipMode;
 
 
+  /*
+   * API interne canonique :
+   * permet au bouton 🔭 de garantir que
+   * l'explorateur existe avant de l'ouvrir.
+   */
+  window.AstroMatchSynastryExplorer =
+    Object.freeze({
+      render: renderSynastryExplorer
+    });
+
+
   queueMicrotask(
     renderSynastryExplorer
   );
@@ -33793,12 +33804,42 @@ document.addEventListener(
       }
 
 
-      const explorer =
+      let explorer =
         document.getElementById(
           "astromatchSynastryExplorer"
         );
 
+
+      /*
+       * L'explorateur peut ne pas encore exister
+       * après restauration d'un scénario en cache.
+       *
+       * On le rend directement au lieu
+       * d'abandonner silencieusement le clic.
+       */
+      if (
+        !explorer &&
+        typeof window
+          .AstroMatchSynastryExplorer
+          ?.render === "function"
+      ) {
+
+        window
+          .AstroMatchSynastryExplorer
+          .render();
+
+        explorer =
+          document.getElementById(
+            "astromatchSynastryExplorer"
+          );
+
+      }
+
+
       if (!explorer) {
+        console.error(
+          "AstroMatch : explorateur synastrie indisponible"
+        );
         return;
       }
 
