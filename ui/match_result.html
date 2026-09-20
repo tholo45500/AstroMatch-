@@ -19073,12 +19073,298 @@ function astromatchNatalPutPillarsFirst() {
 }
 
 
-function closeNatalProfile() {
-  document
-    .getElementById("natalProfileView")
-    ?.classList.add("hidden");
+function resetNatalTargetSwipe() {
 
-  document.body.classList.remove("overflow-hidden");
+  const view =
+    document.getElementById(
+      "natalProfileView"
+    );
+
+  if (!view) {
+    return;
+  }
+
+  view.classList.remove(
+    "astromatch-natal-dragging"
+  );
+
+  view.style.transform =
+    "";
+
+}
+
+
+function installNatalTargetSwipe() {
+
+  const view =
+    document.getElementById(
+      "natalProfileView"
+    );
+
+  if (
+    !view ||
+    view.dataset.natalSwipeInstalled === "1"
+  ) {
+    return;
+  }
+
+  view.dataset.natalSwipeInstalled =
+    "1";
+
+
+  let tracking = false;
+  let dragging = false;
+
+  let startX = 0;
+  let startY = 0;
+  let dragY = 0;
+
+
+  view.addEventListener(
+    "touchstart",
+    event => {
+
+      if (
+        view.dataset.natalContext !== "target" ||
+        view.classList.contains("hidden") ||
+        event.touches.length !== 1
+      ) {
+        return;
+      }
+
+
+      /*
+       * Si l'utilisateur a déjà descendu la page,
+       * le mouvement reste un scroll normal.
+       */
+      if (view.scrollTop > 0) {
+        return;
+      }
+
+
+      /*
+       * Aucun swipe depuis un contrôle interactif.
+       */
+      if (
+        event.target.closest(
+          "button,a,input,select,textarea,summary"
+        )
+      ) {
+        return;
+      }
+
+
+      const touch =
+        event.touches[0];
+
+      startX =
+        touch.clientX;
+
+      startY =
+        touch.clientY;
+
+      dragY = 0;
+
+      tracking = true;
+      dragging = false;
+
+    },
+    {
+      passive:true
+    }
+  );
+
+
+  view.addEventListener(
+    "touchmove",
+    event => {
+
+      if (
+        !tracking ||
+        event.touches.length !== 1
+      ) {
+        return;
+      }
+
+
+      const touch =
+        event.touches[0];
+
+      const dx =
+        touch.clientX -
+        startX;
+
+      const dy =
+        touch.clientY -
+        startY;
+
+
+      /* Horizontal = ce n'est pas notre geste */
+      if (
+        !dragging &&
+        Math.abs(dx) > Math.abs(dy) &&
+        Math.abs(dx) > 8
+      ) {
+
+        tracking = false;
+        return;
+      }
+
+
+      /* Vers le haut = scroll normal */
+      if (
+        !dragging &&
+        dy < 0
+      ) {
+
+        tracking = false;
+        return;
+      }
+
+
+      if (
+        !dragging &&
+        dy > 10 &&
+        Math.abs(dy) > Math.abs(dx)
+      ) {
+
+        if (view.scrollTop > 0) {
+          tracking = false;
+          return;
+        }
+
+        dragging = true;
+
+        view.classList.add(
+          "astromatch-natal-dragging"
+        );
+
+      }
+
+
+      if (!dragging) {
+        return;
+      }
+
+
+      event.preventDefault();
+
+
+      dragY =
+        Math.max(
+          0,
+          Math.min(
+            dy,
+            window.innerHeight * .55
+          )
+        );
+
+
+      view.style.transform =
+        `translateY(${dragY}px)`;
+
+    },
+    {
+      passive:false
+    }
+  );
+
+
+  view.addEventListener(
+    "touchend",
+    () => {
+
+      if (!tracking) {
+        return;
+      }
+
+      tracking = false;
+
+
+      if (!dragging) {
+        return;
+      }
+
+      dragging = false;
+
+      view.classList.remove(
+        "astromatch-natal-dragging"
+      );
+
+
+      const threshold =
+        Math.min(
+          110,
+          window.innerHeight * .14
+        );
+
+
+      if (dragY >= threshold) {
+
+        view.style.transform =
+          "translateY(100vh)";
+
+
+        setTimeout(
+          () => {
+
+            closeNatalProfile();
+
+          },
+          190
+        );
+
+        return;
+      }
+
+
+      resetNatalTargetSwipe();
+
+    },
+    {
+      passive:true
+    }
+  );
+
+
+  view.addEventListener(
+    "touchcancel",
+    () => {
+
+      tracking = false;
+      dragging = false;
+
+      resetNatalTargetSwipe();
+
+    },
+    {
+      passive:true
+    }
+  );
+
+}
+
+
+function closeNatalProfile() {
+
+  const view =
+    document.getElementById(
+      "natalProfileView"
+    );
+
+  resetNatalTargetSwipe();
+
+  view?.classList.add(
+    "hidden"
+  );
+
+  view?.removeAttribute(
+    "data-natal-context"
+  );
+
+  document.body.classList.remove(
+    "overflow-hidden"
+  );
 }
 
 
@@ -19107,6 +19393,20 @@ async function openNatalProfileFor(profile) {
 
   const isPrimary =
     profile?.role === "primary";
+
+
+  view.dataset.natalContext =
+    isPrimary
+      ? "primary"
+      : "target";
+
+  view.scrollTop =
+    0;
+
+  resetNatalTargetSwipe();
+
+  installNatalTargetSwipe();
+
 
   const firstName =
     profile?.identity?.first_name ||
@@ -38361,11 +38661,49 @@ body:has(#natalProfileView:not(.hidden))
 
 
 /* vieux éléments de navigation Moi */
-#natalProfileClose,
 #natalProfileView .astromatch-moi-kicker,
 #astromatchMoiUnifiedHeader {
 
   display:none !important;
+}
+
+
+/* Moi reste une vraie page */
+#natalProfileClose {
+
+  display:none !important;
+}
+
+
+/* Une cible est une vue temporaire fermable */
+#natalProfileView[data-natal-context="target"]
+#natalProfileClose {
+
+  display:grid !important;
+
+  position:fixed !important;
+
+  top:116px !important;
+  right:16px !important;
+
+  z-index:200 !important;
+}
+
+
+/* La vue cible accompagne le doigt */
+#natalProfileView[data-natal-context="target"] {
+
+  will-change:transform;
+
+  transition:
+    transform .22s
+    cubic-bezier(.22,.76,.24,1);
+}
+
+
+#natalProfileView[data-natal-context="target"]
+.astromatch-natal-dragging {
+  transition:none !important;
 }
 
 
