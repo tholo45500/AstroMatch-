@@ -11134,20 +11134,35 @@ function mountAstroMatchComparisonUnderTarget(
   const card =
     Array.from(
       document.querySelectorAll(
-        "#targetSelector [data-target-id]"
+        "#targetSelector .target-profile-card[data-target-id]"
       )
     ).find(
       element =>
-        String(element.dataset.targetId) ===
+        String(
+          element.dataset.targetId
+        ) ===
         String(profileId)
     );
 
-  if (!card) {
+  const wrapper =
+    card?.closest(
+      ".target-profile-wrapper"
+    );
+
+  if (!wrapper) {
     parkAstroMatchComparison();
     return;
   }
 
-  card.insertAdjacentElement(
+  /*
+   * Le comparateur est un bloc frère de la carte complète.
+   *
+   * Il ne doit jamais devenir enfant :
+   * - d'une mini-carte Ajouts récents ;
+   * - d'un favori ;
+   * - du bouton principal de la carte.
+   */
+  wrapper.insertAdjacentElement(
     "afterend",
     area
   );
@@ -11585,14 +11600,70 @@ function renderAstroMatchCollapsedExtras(
 
 
   /*
-   * Même logique que l'ancien dashboard :
-   * les derniers profils enregistrés sont
-   * les derniers du tableau.
+   * "Ajouts récents" = date réelle de création.
+   *
+   * Ne jamais utiliser l'ordre physique du tableau :
+   * getRealProfiles() peut regrouper profils liés et
+   * anciens profils legacy, ce qui fausse cet ordre.
+   *
+   * updated_at n'est volontairement PAS utilisé :
+   * modifier un profil ne doit pas le faire remonter
+   * dans "Ajouts récents".
    */
   const recent =
-    safeTargets
-      .slice(-3)
-      .reverse();
+    [...safeTargets]
+      .map((profile, index) => ({
+        profile,
+        index,
+        createdAt:
+          Date.parse(
+            String(
+              profile?.created_at || ""
+            )
+          )
+      }))
+      .sort((a, b) => {
+
+        const aHasDate =
+          Number.isFinite(
+            a.createdAt
+          );
+
+        const bHasDate =
+          Number.isFinite(
+            b.createdAt
+          );
+
+        if (
+          aHasDate &&
+          bHasDate &&
+          a.createdAt !== b.createdAt
+        ) {
+          return (
+            b.createdAt -
+            a.createdAt
+          );
+        }
+
+        if (
+          aHasDate !== bHasDate
+        ) {
+          return aHasDate
+            ? -1
+            : 1;
+        }
+
+        /*
+         * Compatibilité anciens profils
+         * sans created_at.
+         */
+        return b.index - a.index;
+
+      })
+      .slice(0, 3)
+      .map(item =>
+        item.profile
+      );
 
 
   return `
@@ -12784,6 +12855,31 @@ function initializeTargetSelector(targets) {
       "astromatch:focusTargetAfterSave"
     );
 
+  /*
+   * Une ouverture normale de l'application
+   * reste volontairement sans cible sélectionnée.
+   *
+   * Exception :
+   * après sauvegarde d'une cible, on restaure
+   * explicitement CETTE cible pendant le boot.
+   *
+   * C'est le comportement historique validé
+   * d'AstroMatch, limité ici au flux post-save.
+   */
+  const targetAfterSave =
+    focusAfterSave
+      ? ASTROMATCH_TARGET_PROFILES.find(
+          profile =>
+            String(
+              profile?.profile_id || ""
+            ) ===
+            String(focusAfterSave)
+        ) || null
+      : null;
+
+  ASTROMATCH_SELECTED_TARGET =
+    targetAfterSave;
+
   if (relationAfterSave) {
 
     ASTROMATCH_OPEN_TARGET_GROUPS.clear();
@@ -12797,11 +12893,35 @@ function initializeTargetSelector(targets) {
     ASTROMATCH_RELATION_EXACT_TARGET_ID = "";
   }
 
+  if (targetAfterSave) {
+
+    normalizeRelationshipModeForTarget(
+      targetAfterSave
+    );
+
+    renderContextualRelationshipTabs(
+      targetAfterSave
+    );
+
+  }
+
   renderTargetSelector(
     ASTROMATCH_TARGET_PROFILES,
-    null
+    targetAfterSave
   );
 
+  if (targetAfterSave) {
+
+    mountAstroMatchComparisonUnderTarget(
+      targetAfterSave.profile_id
+    );
+
+  }
+
+  /*
+   * Le résultat reste masqué pendant
+   * le recalcul effectué ensuite par start().
+   */
   setAstroMatchComparisonVisible(
     false
   );
@@ -21825,11 +21945,76 @@ if (!window.__ASTROMATCH_RELATION_EVENTS__) {
         event.stopPropagation();
         event.stopImmediatePropagation();
 
+        const favoriteId =
+          String(
+            favorite.dataset.favoriteTarget || ""
+          );
+
         astromatchToggleFavorite(
-          favorite.dataset.favoriteTarget
+          favoriteId
         );
 
-        rerenderAstroMatchRelations();
+        /*
+         * Un changement de favori ne doit PAS
+         * reconstruire toute la page Relations.
+         *
+         * Le comparateur peut être monté sous une carte :
+         * un rerender complet déplacerait inutilement
+         * cette zone et pourrait aussi modifier le viewport.
+         */
+        const isFavorite =
+          astromatchIsFavorite(
+            favoriteId
+          );
+
+        document
+          .querySelectorAll(
+            `[data-favorite-target="${CSS.escape(
+              favoriteId
+            )}"]`
+          )
+          .forEach(button => {
+
+            button.classList.toggle(
+              "active",
+              isFavorite
+            );
+
+            button.textContent =
+              isFavorite
+                ? "★"
+                : "☆";
+
+            button.title =
+              isFavorite
+                ? "Retirer des favoris"
+                : "Ajouter aux favoris";
+
+          });
+
+        /*
+         * Exception :
+         * dans la vue filtrée "Favoris",
+         * le contenu doit réellement être recalculé
+         * si on retire un profil.
+         */
+        if (
+          ASTROMATCH_RELATION_MODE ===
+            "favorites" &&
+          !isFavorite
+        ) {
+
+          const viewport =
+            astromatchPreserveViewport();
+
+          rerenderAstroMatchRelations();
+
+          requestAnimationFrame(
+            viewport.restore
+          );
+
+        }
+
         return;
       }
 
@@ -26905,6 +27090,34 @@ body {
 
     setTimeout(
       () => {
+
+        const restoredTarget =
+          typeof ASTROMATCH_SELECTED_TARGET !==
+            "undefined"
+            ? ASTROMATCH_SELECTED_TARGET
+            : null;
+
+        if (restoredTarget) {
+
+          /*
+           * initializeTargetSelector() a déjà
+           * restauré exactement la cible sauvegardée.
+           *
+           * Ne surtout pas appeler go("relations")
+           * ici : openRelations() remettrait Relations
+           * à zéro et détruirait cette sélection.
+           */
+          setActive(
+            "relations"
+          );
+
+          window.AstroMatchTodayView
+            ?.close();
+
+          closeNatal();
+
+          return;
+        }
 
         go(
           current()
