@@ -241,9 +241,6 @@
 }
 </style>
 
-
-</style>
-
 <style id="astromatch-factor-icons">
 .relationship-factor-item {
   display: flex;
@@ -546,12 +543,6 @@
 
 </style>
 
-<style id="ASTROMATCH_SELECTION_CLEANUP">
-#targetSelectionHint {
-  display: none !important;
-}
-</style>
-
 
 
 
@@ -724,6 +715,7 @@ header > div:first-child {
   overflow: visible !important;
 }
 
+#targetSelectionHint,
 #targetCalculationState {
   display: none !important;
 }
@@ -867,24 +859,6 @@ header::after {
     0 0 22px rgba(139,92,246,.28);
 
   pointer-events: none;
-}
-
-</style>
-
-
-<style id="ASTROMATCH_LOGO_CLICK_FIX">
-
-#astromatchHeaderLogo {
-  pointer-events: auto !important;
-  cursor: pointer !important;
-  z-index: 80 !important;
-  user-select: none;
-  -webkit-tap-highlight-color: transparent;
-  touch-action: manipulation;
-}
-
-#astromatchHeaderLogo:active {
-  transform: scale(.96);
 }
 
 </style>
@@ -37845,6 +37819,13 @@ header > div:first-child {
    centré DANS L'ESPACE entre profil et paramètres */
 #astromatchGlobalHeader
 #astromatchHeaderLogo {
+
+  pointer-events:auto !important;
+  cursor:pointer !important;
+
+  user-select:none;
+  -webkit-tap-highlight-color:transparent;
+  touch-action:manipulation;
 
   grid-column:2 !important;
 
