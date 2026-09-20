@@ -1,0 +1,185 @@
+/*
+ * AstroMatch — Relations
+ *
+ * Premier bloc extrait du monolithe :
+ * Relationship Daily.
+ *
+ * L'ordre CSS est conservé grâce au <link>
+ * placé à l'emplacement exact de l'ancien <style>.
+ */
+
+.astromatch-relationship-daily {
+  margin-bottom:16px;
+  padding:16px;
+  border-radius:22px;
+  border:1px solid rgba(167,139,250,.14);
+  background:
+    radial-gradient(
+      circle at 100% 0%,
+      rgba(99,102,241,.12),
+      transparent 35%
+    ),
+    rgba(15,23,42,.72);
+}
+
+.relationship-daily-kicker {
+  color:#a78bfa;
+  font-size:9px;
+  font-weight:950;
+  letter-spacing:.14em;
+}
+
+.relationship-daily-title {
+  margin-top:5px;
+  color:#f8fafc;
+  font-size:18px;
+  font-weight:950;
+  line-height:1.3;
+}
+
+.relationship-daily-summary {
+  margin-top:7px;
+  color:#94a3b8;
+  font-size:11.5px;
+  line-height:1.55;
+}
+
+.relationship-daily-axes {
+  display:grid;
+  grid-template-columns:
+    repeat(3,minmax(0,1fr));
+  gap:7px;
+  margin-top:14px;
+}
+
+/* ASTROMATCH_RELATIONSHIP_DAILY_V2 */
+
+.relationship-daily-axis {
+  order:1;
+  width:100%;
+  padding:11px 8px;
+  border-radius:15px;
+  text-align:center;
+  background:rgba(2,6,23,.42);
+  border:1px solid rgba(255,255,255,.055);
+  transition:
+    border-color .18s ease,
+    background .18s ease,
+    transform .18s ease;
+}
+
+button.relationship-daily-axis {
+  cursor:pointer;
+}
+
+button.relationship-daily-axis:active {
+  transform:scale(.98);
+}
+
+.relationship-daily-axis.open {
+  border-color:rgba(167,139,250,.30);
+  background:rgba(139,92,246,.10);
+}
+
+.relationship-daily-axis-detail {
+  order:2;
+  display:none;
+  grid-column:1 / -1;
+  padding:11px 12px;
+  border-radius:14px;
+  background:rgba(2,6,23,.38);
+  border:1px solid rgba(167,139,250,.08);
+  color:#94a3b8;
+  font-size:10.5px;
+  line-height:1.55;
+  text-align:left;
+}
+
+.relationship-daily-axis-detail.open {
+  display:block;
+}
+
+.relationship-daily-axis-icon {
+  font-size:19px;
+}
+
+.relationship-daily-axis-name {
+  margin-top:5px;
+  color:#cbd5e1;
+  font-size:9px;
+  font-weight:850;
+}
+
+.relationship-daily-axis-state {
+  margin-top:3px;
+  color:#a78bfa;
+  font-size:9.5px;
+  font-weight:900;
+}
+
+.relationship-daily-shared {
+  margin-top:12px;
+  padding:10px 11px;
+  border-radius:13px;
+  background:rgba(139,92,246,.07);
+  color:#c4b5fd;
+  font-size:10.5px;
+  line-height:1.45;
+}
+
+.relationship-daily-details {
+  margin-top:11px;
+  border-top:1px solid rgba(255,255,255,.06);
+  padding-top:10px;
+}
+
+.relationship-daily-details summary {
+  cursor:pointer;
+  list-style:none;
+  color:#94a3b8;
+  font-size:10px;
+  font-weight:850;
+}
+
+.relationship-daily-details summary::-webkit-details-marker {
+  display:none;
+}
+
+.relationship-daily-influences {
+  display:grid;
+  gap:6px;
+  margin-top:9px;
+}
+
+.relationship-daily-influence {
+  padding:9px 10px;
+  border-radius:12px;
+  background:rgba(2,6,23,.38);
+}
+
+.relationship-daily-influence strong {
+  display:block;
+  color:#e2e8f0;
+  font-size:10px;
+}
+
+.relationship-daily-influence span {
+  display:block;
+  margin-top:3px;
+  color:#64748b;
+  font-size:9.5px;
+  line-height:1.4;
+}
+
+.relationship-daily-meta {
+  margin-top:10px;
+  color:#475569;
+  font-size:8.5px;
+  text-align:center;
+}
+
+.relationship-daily-loading {
+  color:#94a3b8;
+  font-size:11px;
+  padding:5px 0;
+}
