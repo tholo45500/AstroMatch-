@@ -899,164 +899,13 @@ main {
 <style id="ASTROMATCH_COSMIC_BACKGROUND_V1">
 
 html {
-  background: #020617;
+  background: #030617;
 }
 
 body {
   position: relative;
   min-height: 100vh;
   isolation: isolate;
-
-  background:
-    radial-gradient(
-      circle at 78% 8%,
-      rgba(168,85,247,.24),
-      transparent 30%
-    ),
-    radial-gradient(
-      circle at 18% 18%,
-      rgba(79,70,229,.22),
-      transparent 34%
-    ),
-    radial-gradient(
-      circle at 50% 55%,
-      rgba(30,64,175,.12),
-      transparent 45%
-    ),
-    linear-gradient(
-      180deg,
-      #050816 0%,
-      #090d24 32%,
-      #080b1d 68%,
-      #020617 100%
-    ) !important;
-
-  background-attachment: fixed !important;
-}
-
-/*
- * Champ d'étoiles léger.
- * Aucun clic bloqué.
- */
-body::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: -2;
-  pointer-events: none;
-
-  background-image:
-    radial-gradient(
-      circle,
-      rgba(255,255,255,.90) 0 1px,
-      transparent 1.4px
-    ),
-    radial-gradient(
-      circle,
-      rgba(196,181,253,.70) 0 1px,
-      transparent 1.3px
-    ),
-    radial-gradient(
-      circle,
-      rgba(255,255,255,.42) 0 .8px,
-      transparent 1.2px
-    );
-
-  background-size:
-    95px 95px,
-    145px 145px,
-    63px 63px;
-
-  background-position:
-    17px 11px,
-    70px 40px,
-    35px 85px;
-
-  opacity: .58;
-}
-
-/*
- * Halo violet/rose façon ciel AstroMatch.
- */
-body::after {
-  content: "";
-  position: fixed;
-  left: -20%;
-  right: -20%;
-  top: -12vh;
-  height: 62vh;
-  z-index: -1;
-  pointer-events: none;
-
-  background:
-    radial-gradient(
-      ellipse at 70% 25%,
-      rgba(236,72,153,.18),
-      transparent 28%
-    ),
-    radial-gradient(
-      ellipse at 35% 30%,
-      rgba(124,58,237,.22),
-      transparent 35%
-    ),
-    radial-gradient(
-      ellipse at 50% 75%,
-      rgba(59,130,246,.13),
-      transparent 42%
-    );
-
-  filter: blur(14px);
-}
-
-/*
- * Les contenus restent parfaitement au-dessus.
- */
-main {
-  position: relative;
-  z-index: 1;
-}
-
-/*
- * Petit éclat supplémentaire autour du haut de page.
- */
-header {
-  position: relative;
-}
-
-header::after {
-  content: "";
-  position: absolute;
-  left: 18%;
-  right: 18%;
-  bottom: -18px;
-  height: 1px;
-
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      rgba(168,85,247,.38),
-      rgba(236,72,153,.26),
-      transparent
-    );
-
-  box-shadow:
-    0 0 22px rgba(139,92,246,.28);
-
-  pointer-events: none;
-}
-
-</style>
-
-
-<style id="ASTROMATCH_COSMIC_BG_V2">
-
-html {
-  background: #030617;
-}
-
-body {
-  min-height: 100vh;
 
   background-image:
     linear-gradient(
@@ -1083,13 +932,39 @@ body {
     fixed !important;
 }
 
-/* Les anciens petits points CSS dégagent */
-body::before,
-body::after {
-  display: none !important;
+/* Les contenus restent au-dessus du fond cosmique. */
+main {
+  position: relative;
+  z-index: 1;
 }
 
+/* Éclat discret sous le header. */
+header {
+  position: relative;
+}
 
+header::after {
+  content: "";
+  position: absolute;
+  left: 18%;
+  right: 18%;
+  bottom: -18px;
+  height: 1px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(168,85,247,.38),
+      rgba(236,72,153,.26),
+      transparent
+    );
+
+  box-shadow:
+    0 0 22px rgba(139,92,246,.28);
+
+  pointer-events: none;
+}
 
 </style>
 
