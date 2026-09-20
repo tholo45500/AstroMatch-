@@ -310,8 +310,10 @@
   top: 0;
   z-index: 8;
 
+  min-height: 50px;
+
   margin: 12px 0 8px;
-  padding: 11px 13px;
+  padding: 10px 10px 10px 13px !important;
 
   border-radius: 16px;
   border: 1px solid rgba(255,255,255,.10);
@@ -396,6 +398,40 @@
     0 10px 30px rgba(0,0,0,.22);
 }
 
+.target-group-add {
+  width: 32px;
+  height: 32px;
+
+  flex: 0 0 32px;
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-left: 4px;
+
+  border-radius: 11px;
+
+  background:
+    rgba(139,92,246,.22);
+
+  border:
+    1px solid rgba(196,181,253,.32);
+
+  color: rgb(237 233 254);
+
+  font-size: 22px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.target-group-add:active {
+  transform: scale(.9);
+
+  background:
+    rgba(139,92,246,.38);
+}
+
 </style>
 
 
@@ -406,23 +442,34 @@
   align-items: center;
   gap: 9px;
 
-  max-width: 190px;
+  width: min(138px, 39vw);
+  max-width: 138px;
 
   padding: 6px 10px 6px 6px;
 
   border-radius: 18px;
 
-  border: 1px solid rgba(167,139,250,.35);
+  border:
+    1px solid rgb(109 91 160) !important;
 
   background:
-    linear-gradient(
-      135deg,
-      rgba(124,58,237,.13),
-      rgba(15,23,42,.92)
-    );
+    rgb(15 23 42) !important;
+
+  background-image:
+    none !important;
+
+  opacity: 1 !important;
+
+  backdrop-filter:
+    none !important;
+
+  -webkit-backdrop-filter:
+    none !important;
 
   box-shadow:
-    0 8px 24px rgba(0,0,0,.20);
+    0 8px 22px rgb(0 0 0 / .55),
+    inset 0 0 0 1px rgb(255 255 255 / .04)
+    !important;
 
   transition:
     transform .15s ease,
@@ -464,38 +511,8 @@
   font-size: 25px;
 }
 
-#primaryProfilePopover .astromatch-profile-card {
-  box-shadow:
-    0 25px 60px rgba(0,0,0,.48),
-    0 0 0 1px rgba(139,92,246,.10);
-}
-
-</style>
-
-
-<style id="ASTROMATCH_HEADER_V2">
-
-#primaryCompactBubble {
-  width: min(138px, 39vw);
-  max-width: 138px;
-
-  background:
-    linear-gradient(
-      135deg,
-      rgb(59 30 110),
-      rgb(15 23 42)
-    ) !important;
-
-  border-color:
-    rgba(196,181,253,.62) !important;
-
-  box-shadow:
-    0 8px 24px rgba(0,0,0,.48),
-    inset 0 0 0 1px rgba(255,255,255,.04);
-}
-
 #compactPrimaryName {
-  color: #fff !important;
+  color: white !important;
 }
 
 #compactPrimaryAge {
@@ -506,142 +523,28 @@
   text-align: left;
 }
 
-.target-group-title {
-  min-height: 50px;
-  padding: 10px 10px 10px 13px !important;
-}
-
-.target-group-count {
-  margin-left: auto;
-}
-
-.target-group-add {
-  width: 32px;
-  height: 32px;
-
-  flex: 0 0 32px;
-
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  margin-left: 4px;
-
-  border-radius: 11px;
-
-  background:
-    rgba(139,92,246,.22);
-
-  border:
-    1px solid rgba(196,181,253,.32);
-
-  color: rgb(237 233 254);
-
-  font-size: 22px;
-  font-weight: 800;
-  line-height: 1;
-}
-
-.target-group-add:active {
-  transform: scale(.9);
-  background:
-    rgba(139,92,246,.38);
-}
-
-</style>
-
-
-<style id="ASTROMATCH_HEADER_V3">
-
-/* Header : logo réellement centré dans l'écran */
-header > div:first-child {
-  position: relative !important;
-
-  display: flex !important;
-  align-items: center !important;
-
-  min-height: 52px;
-}
-
-#primaryCompactSection {
-  position: relative;
-  z-index: 70;
-
-  margin-right: auto;
-}
-
-#astromatchHeaderLogo {
-  position: absolute !important;
-
-  left: 50% !important;
-  top: 50% !important;
-
-  transform:
-    translate(-50%, -50%) !important;
-
-  margin: 0 !important;
-
-  z-index: 2;
-
-  text-align: center;
-
-  white-space: nowrap;
-  pointer-events: none;
-}
-
-#appSettingsButton {
-  margin-left: auto;
-  z-index: 3;
-}
-
-/* Bulle compacte : AUCUNE transparence */
-#primaryCompactBubble {
-  background: rgb(15 23 42) !important;
-
-  background-image: none !important;
-
-  opacity: 1 !important;
-
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-
-  border-color:
-    rgb(109 91 160) !important;
-
-  box-shadow:
-    0 8px 22px rgb(0 0 0 / .55),
-    inset 0 0 0 1px rgb(255 255 255 / .04)
-    !important;
-}
-
-/* Carte complète ouverte : opaque elle aussi */
 #primaryProfilePopover
 .astromatch-profile-card {
   background:
     rgb(15 23 42) !important;
 
-  background-image: none !important;
+  background-image:
+    none !important;
 
   opacity: 1 !important;
 
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
+  backdrop-filter:
+    none !important;
+
+  -webkit-backdrop-filter:
+    none !important;
 
   box-shadow:
     0 24px 60px rgb(0 0 0 / .70)
     !important;
 }
 
-#compactPrimaryName {
-  color: white !important;
-}
-
-#compactPrimaryAge {
-  color: rgb(203 213 225) !important;
-}
-
 </style>
-
 
 <style id="ASTROMATCH_SELECTION_CLEANUP">
 #targetSelectionHint {
