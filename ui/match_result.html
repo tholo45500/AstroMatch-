@@ -1378,7 +1378,13 @@ body::after {
 #astromatchSharePanel {
   position: fixed;
   inset: 0;
-  z-index: 260;
+
+  /*
+   * La feuille de partage appartient au premier plan.
+   * Elle doit passer devant header, docks, carrousel
+   * et navigation basse.
+   */
+  z-index: 50000;
 
   display: flex;
   align-items: flex-end;
@@ -1400,10 +1406,26 @@ body::after {
   display: none !important;
 }
 
+/*
+ * Ces deux éléments possèdent leur propre display.
+ * Leur état hidden doit donc avoir priorité.
+ */
+#astromatchShareLoading.hidden,
+#astromatchSharePreview.hidden {
+  display: none !important;
+}
+
 .astromatch-share-sheet {
   width: min(100%, 520px);
-  max-height: 94vh;
+
+  max-height:
+    calc(100dvh - 24px);
+
   overflow-y: auto;
+  overflow-x: hidden;
+
+  overscroll-behavior: contain;
+  touch-action: pan-y;
 
   border-radius:
     28px 28px 22px 22px;
@@ -1441,12 +1463,25 @@ body::after {
 }
 
 .astromatch-share-head {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
 
   padding:
     14px 16px 12px;
+
+  background:
+    rgba(11,17,39,.98);
+
+  backdrop-filter:
+    blur(12px);
+
+  -webkit-backdrop-filter:
+    blur(12px);
 
   border-bottom:
     1px solid rgba(255,255,255,.07);
@@ -25604,12 +25639,11 @@ document.addEventListener(
       "<span>📤</span><span>Partager ce match</span>";
 
 
-    button.addEventListener(
-      "click",
-      openSharePanel
-    );
-
-
+    /*
+     * Le clic est géré par délégation au niveau document.
+     * Ainsi le bouton reste fonctionnel même lorsqu'un
+     * scénario en cache reconstruit son DOM.
+     */
     card.appendChild(
       button
     );
@@ -25618,6 +25652,34 @@ document.addEventListener(
 
   function installShareFeature() {
     installShareButton();
+
+
+    /*
+     * Le bouton de partage peut être recréé par
+     * le cache des scénarios.
+     *
+     * Un listener délégué reste valide même si
+     * le nœud du bouton est remplacacé.
+     */
+    document.addEventListener(
+      "click",
+      event => {
+
+        const button =
+          event.target.closest(
+            "#astromatchShareMatchButton"
+          );
+
+        if (!button) {
+          return;
+        }
+
+        event.preventDefault();
+
+        openSharePanel();
+
+      }
+    );
 
 
     document
