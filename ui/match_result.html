@@ -1427,6 +1427,12 @@ body::after {
   overscroll-behavior: contain;
   touch-action: pan-y;
 
+  will-change: transform;
+
+  transition:
+    transform .22s
+    cubic-bezier(.22,.76,.24,1);
+
   border-radius:
     28px 28px 22px 22px;
 
@@ -1447,6 +1453,10 @@ body::after {
 
   box-shadow:
     0 -25px 70px rgba(0,0,0,.55);
+}
+
+.astromatch-share-sheet.astromatch-share-dragging {
+  transition: none;
 }
 
 .astromatch-share-handle {
@@ -25444,8 +25454,311 @@ document.addEventListener(
       "true"
     );
 
+    resetShareSheetPosition();
+
     document.body.style.overflow =
       "";
+  }
+
+
+  function resetShareSheetPosition() {
+
+    const sheet =
+      document.querySelector(
+        "#astromatchSharePanel .astromatch-share-sheet"
+      );
+
+    if (!sheet) {
+      return;
+    }
+
+    sheet.classList.remove(
+      "astromatch-share-dragging"
+    );
+
+    sheet.style.transform =
+      "";
+
+  }
+
+
+  function installShareSwipe() {
+
+    const panel =
+      document.getElementById(
+        "astromatchSharePanel"
+      );
+
+    const sheet =
+      panel?.querySelector(
+        ".astromatch-share-sheet"
+      );
+
+    if (
+      !panel ||
+      !sheet ||
+      sheet.dataset
+        .shareSwipeInstalled === "1"
+    ) {
+      return;
+    }
+
+    sheet.dataset
+      .shareSwipeInstalled =
+        "1";
+
+
+    let tracking = false;
+    let dragging = false;
+
+    let startX = 0;
+    let startY = 0;
+
+    let dragY = 0;
+
+
+    sheet.addEventListener(
+      "touchstart",
+      event => {
+
+        if (
+          panel.classList
+            .contains("hidden") ||
+          event.touches.length !== 1
+        ) {
+          return;
+        }
+
+
+        /*
+         * Ne transforme jamais un appui sur
+         * un bouton en geste de fermeture.
+         */
+        if (
+          event.target.closest(
+            "button,a,input,select,textarea"
+          )
+        ) {
+          return;
+        }
+
+
+        /*
+         * Si la feuille est déjà scrollée,
+         * le geste reste un scroll normal.
+         */
+        if (sheet.scrollTop > 0) {
+          return;
+        }
+
+
+        const touch =
+          event.touches[0];
+
+        startX =
+          touch.clientX;
+
+        startY =
+          touch.clientY;
+
+        dragY = 0;
+
+        tracking = true;
+        dragging = false;
+
+      },
+      {
+        passive:true
+      }
+    );
+
+
+    sheet.addEventListener(
+      "touchmove",
+      event => {
+
+        if (
+          !tracking ||
+          event.touches.length !== 1
+        ) {
+          return;
+        }
+
+
+        const touch =
+          event.touches[0];
+
+        const dx =
+          touch.clientX -
+          startX;
+
+        const dy =
+          touch.clientY -
+          startY;
+
+
+        /*
+         * Un geste horizontal reste ignoré.
+         */
+        if (
+          !dragging &&
+          Math.abs(dx) >
+            Math.abs(dy) &&
+          Math.abs(dx) > 8
+        ) {
+          tracking = false;
+          return;
+        }
+
+
+        /*
+         * Un geste vers le haut reste un scroll.
+         */
+        if (
+          !dragging &&
+          dy < 0
+        ) {
+          tracking = false;
+          return;
+        }
+
+
+        if (
+          !dragging &&
+          dy > 10 &&
+          Math.abs(dy) >
+            Math.abs(dx)
+        ) {
+
+          if (sheet.scrollTop > 0) {
+            tracking = false;
+            return;
+          }
+
+          dragging = true;
+
+          sheet.classList.add(
+            "astromatch-share-dragging"
+          );
+
+        }
+
+
+        if (!dragging) {
+          return;
+        }
+
+
+        event.preventDefault();
+
+
+        dragY =
+          Math.max(
+            0,
+            Math.min(
+              dy,
+              window.innerHeight * .55
+            )
+          );
+
+
+        /*
+         * La feuille suit réellement le doigt.
+         */
+        sheet.style.transform =
+          `translateY(${dragY}px)`;
+
+      },
+      {
+        passive:false
+      }
+    );
+
+
+    sheet.addEventListener(
+      "touchend",
+      () => {
+
+        if (!tracking) {
+          return;
+        }
+
+
+        tracking = false;
+
+
+        if (!dragging) {
+          return;
+        }
+
+
+        dragging = false;
+
+        sheet.classList.remove(
+          "astromatch-share-dragging"
+        );
+
+
+        const threshold =
+          Math.min(
+            110,
+            window.innerHeight * .14
+          );
+
+
+        if (dragY >= threshold) {
+
+          /*
+           * Petit départ naturel vers le bas
+           * avant disparition complète.
+           */
+          sheet.style.transform =
+            "translateY(100vh)";
+
+
+          setTimeout(
+            () => {
+
+              closeSharePanel();
+
+              resetShareSheetPosition();
+
+            },
+            190
+          );
+
+          return;
+        }
+
+
+        /*
+         * Geste trop court :
+         * la feuille revient à sa place.
+         */
+        resetShareSheetPosition();
+
+      },
+      {
+        passive:true
+      }
+    );
+
+
+    sheet.addEventListener(
+      "touchcancel",
+      () => {
+
+        tracking = false;
+        dragging = false;
+
+        resetShareSheetPosition();
+
+      },
+      {
+        passive:true
+      }
+    );
+
   }
 
 
@@ -25652,6 +25965,7 @@ document.addEventListener(
 
   function installShareFeature() {
     installShareButton();
+    installShareSwipe();
 
 
     /*
