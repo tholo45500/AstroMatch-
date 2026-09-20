@@ -21403,20 +21403,13 @@ if (!window.__ASTROMATCH_RELATION_EVENTS__) {
                   ) === wantedId
                 );
 
-            if (profileButton) {
-
-              profileButton.click();
-
-              setTimeout(() => {
-                profileButton.scrollIntoView({
-                  behavior: "smooth",
-                  block: "center"
-                });
-              }, 80);
-
-            } else if (
+            /*
+             * Sélection directe :
+             * plus besoin de simuler un clic DOM.
+             */
+            if (
               typeof selectTargetProfile ===
-              "function"
+                "function"
             ) {
 
               selectTargetProfile(
@@ -21424,6 +21417,21 @@ if (!window.__ASTROMATCH_RELATION_EVENTS__) {
               );
 
             }
+
+
+            if (profileButton) {
+
+              setTimeout(() => {
+
+                profileButton.scrollIntoView({
+                  behavior: "smooth",
+                  block: "center"
+                });
+
+              }, 80);
+
+            }
+
 
           });
 
