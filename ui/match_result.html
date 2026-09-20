@@ -6155,9 +6155,9 @@ summary {
 </style>
 
 
-<style id="ASTROMATCH_COLLAPSED_RELATIONS_EXTRAS_V17_STYLE">
+<style id="ASTROMATCH_COLLAPSED_RELATIONS_STYLE">
 
-.v17-collapsed-extras {
+.relation-collapsed-extras {
   margin-top:18px;
 
   display:flex;
@@ -6169,12 +6169,12 @@ summary {
 }
 
 
-.v17-extra-section {
+.relation-extra-section {
   padding-top:4px;
 }
 
 
-.v17-extra-head {
+.relation-extra-head {
   margin-bottom:11px;
 
   display:flex;
@@ -6185,7 +6185,7 @@ summary {
 }
 
 
-.v17-extra-head strong {
+.relation-extra-head strong {
   display:block;
 
   color:#fff;
@@ -6196,7 +6196,7 @@ summary {
 }
 
 
-.v17-extra-head small {
+.relation-extra-head small {
   display:block;
 
   margin-top:3px;
@@ -6207,7 +6207,7 @@ summary {
 }
 
 
-.v17-see-all {
+.relation-see-all {
   color:#a78bfa;
 
   font-size:10px;
@@ -6220,7 +6220,7 @@ summary {
    FAVORIS HORIZONTAL
    ============================ */
 
-.v17-favorites-strip {
+.relation-favorites-strip {
   display:flex;
 
   gap:9px;
@@ -6233,12 +6233,12 @@ summary {
   scrollbar-width:none;
 }
 
-.v17-favorites-strip::-webkit-scrollbar {
+.relation-favorites-strip::-webkit-scrollbar {
   display:none;
 }
 
 
-.v17-favorite-card {
+.relation-favorite-card {
   min-width:94px;
   width:94px;
 
@@ -6264,12 +6264,12 @@ summary {
 }
 
 
-.v17-favorite-card:active {
+.relation-favorite-card:active {
   transform:scale(.97);
 }
 
 
-.v17-favorite-avatar {
+.relation-favorite-avatar {
   width:53px;
   height:53px;
 
@@ -6291,7 +6291,7 @@ summary {
 }
 
 
-.v17-favorite-avatar img {
+.relation-favorite-avatar img {
   width:100%;
   height:100%;
 
@@ -6299,7 +6299,7 @@ summary {
 }
 
 
-.v17-favorite-card strong {
+.relation-favorite-card strong {
   width:100%;
 
   margin-top:7px;
@@ -6314,7 +6314,7 @@ summary {
 }
 
 
-.v17-favorite-card small {
+.relation-favorite-card small {
   margin-top:4px;
 
   color:#94a3b8;
@@ -6329,7 +6329,7 @@ summary {
    AJOUTS RÉCENTS
    ============================ */
 
-.v17-recent-grid {
+.relation-recent-grid {
   display:grid;
 
   grid-template-columns:
@@ -6339,7 +6339,7 @@ summary {
 }
 
 
-.v17-mini-profile {
+.relation-mini-profile {
   min-width:0;
 
   padding:9px 7px;
@@ -6360,12 +6360,12 @@ summary {
 }
 
 
-.v17-mini-profile:active {
+.relation-mini-profile:active {
   transform:scale(.97);
 }
 
 
-.v17-mini-avatar {
+.relation-mini-avatar {
   width:40px;
   height:40px;
 
@@ -6387,7 +6387,7 @@ summary {
 }
 
 
-.v17-mini-avatar img {
+.relation-mini-avatar img {
   width:100%;
   height:100%;
 
@@ -6395,7 +6395,7 @@ summary {
 }
 
 
-.v17-mini-copy {
+.relation-mini-copy {
   width:100%;
   min-width:0;
 
@@ -6403,7 +6403,7 @@ summary {
 }
 
 
-.v17-mini-copy strong {
+.relation-mini-copy strong {
   display:block;
 
   color:#f8fafc;
@@ -6416,7 +6416,7 @@ summary {
 }
 
 
-.v17-mini-copy small {
+.relation-mini-copy small {
   display:block;
 
   margin-top:2px;
@@ -6431,14 +6431,14 @@ summary {
 }
 
 
-.v17-mini-relation {
+.relation-mini-relation {
   margin-top:5px;
 
   font-size:11px;
 }
 
 
-.v17-empty {
+.relation-empty {
   padding:14px;
 
   border-radius:15px;
@@ -6456,7 +6456,7 @@ summary {
 
 @media (max-width:360px) {
 
-  .v17-recent-grid {
+  .relation-recent-grid {
     grid-template-columns:
       repeat(2,minmax(0,1fr));
   }
@@ -6466,10 +6466,10 @@ summary {
 </style>
 
 
-<!-- ASTROMATCH_RELATIONS_FINAL_FIX_V24 -->
+<!-- RELATIONS LAYOUT / FILTERING -->
 
-<style id="ASTROMATCH_STABLE_RELATION_SCROLL_V4_STYLE">
-/* ASTROMATCH_STABLE_RELATION_SCROLL_V4 */
+<style id="ASTROMATCH_RELATION_SCROLL_STYLE">
+/* RELATION SCROLL STABILITY */
 
 #targetSelector,
 #astromatchComparisonArea,
@@ -11433,10 +11433,10 @@ function astromatchCollapsedMiniProfile(profile) {
       type="button"
       data-target-id="${escapeHtml(id)}"
       data-relation-quick-profile="${escapeHtml(id)}"
-      class="v17-mini-profile"
+      class="relation-mini-profile"
     >
 
-      <span class="v17-mini-avatar">
+      <span class="relation-mini-avatar">
 
         ${
           avatar
@@ -11458,7 +11458,7 @@ function astromatchCollapsedMiniProfile(profile) {
       </span>
 
 
-      <span class="v17-mini-copy">
+      <span class="relation-mini-copy">
 
         <strong>
           ${escapeHtml(name)}
@@ -11480,7 +11480,7 @@ function astromatchCollapsedMiniProfile(profile) {
       </span>
 
 
-      <span class="v17-mini-relation">
+      <span class="relation-mini-relation">
         ${relation.icon}
       </span>
 
@@ -11521,16 +11521,16 @@ function renderAstroMatchCollapsedExtras(
 
 
   return `
-    <div class="v17-collapsed-extras">
+    <div class="relation-collapsed-extras">
 
 
       <!-- ==============================
            FAVORIS
            ============================== -->
 
-      <section class="v17-extra-section">
+      <section class="relation-extra-section">
 
-        <div class="v17-extra-head">
+        <div class="relation-extra-head">
 
           <div>
             <strong>
@@ -11548,7 +11548,7 @@ function renderAstroMatchCollapsedExtras(
                 <button
                   type="button"
                   data-relation-show-favorites
-                  class="v17-see-all"
+                  class="relation-see-all"
                 >
                   Voir tout ›
                 </button>
@@ -11562,7 +11562,7 @@ function renderAstroMatchCollapsedExtras(
         ${
           favorites.length
             ? `
-              <div class="v17-favorites-strip">
+              <div class="relation-favorites-strip">
 
                 ${favorites
                   .map(profile => {
@@ -11594,10 +11594,10 @@ function renderAstroMatchCollapsedExtras(
                         type="button"
                         data-target-id="${escapeHtml(id)}"
                         data-relation-quick-profile="${escapeHtml(id)}"
-                        class="v17-favorite-card"
+                        class="relation-favorite-card"
                       >
 
-                        <span class="v17-favorite-avatar">
+                        <span class="relation-favorite-avatar">
 
                           ${
                             avatar
@@ -11640,7 +11640,7 @@ function renderAstroMatchCollapsedExtras(
               </div>
             `
             : `
-              <div class="v17-empty">
+              <div class="relation-empty">
                 ⭐ Ajoute des profils en favoris
                 pour les retrouver ici.
               </div>
@@ -11657,9 +11657,9 @@ function renderAstroMatchCollapsedExtras(
       ${
         recent.length
           ? `
-            <section class="v17-extra-section">
+            <section class="relation-extra-section">
 
-              <div class="v17-extra-head">
+              <div class="relation-extra-head">
 
                 <div>
                   <strong>
@@ -11674,7 +11674,7 @@ function renderAstroMatchCollapsedExtras(
               </div>
 
 
-              <div class="v17-recent-grid">
+              <div class="relation-recent-grid">
 
                 ${recent
                   .map(
@@ -20449,7 +20449,7 @@ function astromatchApplyRelationDomFilter() {
       if (counter) {
 
         /*
-         * ASTROMATCH_RELATIONS_FINAL_FIX_V24
+         * Compteur Relations :
          *
          * En mode normal :
          * le chiffre = nombre TOTAL du groupe.
