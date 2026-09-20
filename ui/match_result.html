@@ -11989,205 +11989,11 @@ function renderTargetSelector(targets, selectedTarget) {
 
 
 
-  /* ASTROMATCH_GROUP_ACCORDION_LISTENER */
-  container
-    .querySelectorAll(
-      "[data-target-group-toggle]"
-    )
-    .forEach(button => {
+  /*
+   * Les interactions Relations utilisent
+   * désormais le contrôleur délégué unique.
+   */
 
-      button.addEventListener(
-        "click",
-        event => {
-
-          event.preventDefault();
-          event.stopPropagation();
-
-          const relation =
-            String(
-              button.dataset
-                .targetGroupToggle || ""
-            );
-
-          if (!relation) return;
-
-
-          const isClosing =
-            ASTROMATCH_OPEN_TARGET_GROUPS
-              .has(relation);
-
-
-          /*
-           * Si la comparaison ouverte appartient
-           * au groupe qu'on ferme, on la ferme aussi.
-           */
-          if (
-            isClosing &&
-            ASTROMATCH_SELECTED_TARGET
-          ) {
-
-            const selectedRelation =
-              dashboardRelationshipMeta(
-                ASTROMATCH_SELECTED_TARGET
-              )?.key;
-
-            if (
-              selectedRelation === relation
-            ) {
-
-              const selectedId =
-                String(
-                  ASTROMATCH_SELECTED_TARGET
-                    ?.profile_id || ""
-                );
-
-              if (selectedId) {
-                selectTargetProfile(
-                  selectedId
-                );
-              }
-
-              ASTROMATCH_RELATION_LAST_SELECTED =
-                null;
-
-              window.__astromatchSelectedTargetId =
-                "";
-
-            }
-          }
-
-
-          if (isClosing) {
-
-            ASTROMATCH_OPEN_TARGET_GROUPS
-              .delete(relation);
-
-          } else {
-
-            ASTROMATCH_OPEN_TARGET_GROUPS
-              .add(relation);
-
-          }
-
-
-          /*
-           * Aucun groupe ouvert :
-           * accueil Relations canonique.
-           */
-          if (
-            ASTROMATCH_OPEN_TARGET_GROUPS
-              .size === 0
-          ) {
-
-            openAstroMatchRelationsHome();
-
-            return;
-          }
-
-
-          rerenderAstroMatchRelations();
-
-        }
-      );
-    });
-
-  container
-    .querySelectorAll("[data-add-relation]")
-    .forEach(button => {
-      button.addEventListener(
-        "click",
-        event => {
-          event.stopPropagation();
-
-          openTargetEditor(null);
-
-          const select =
-            document.getElementById(
-              "targetEditorRelationship"
-            );
-
-          if (select) {
-            select.value =
-              button.dataset.addRelation;
-          }
-        }
-      );
-    });
-
-  container
-    .querySelectorAll("[data-target-id]")
-    .forEach(button => {
-
-      button.addEventListener(
-        "click",
-        () => {
-
-
-          selectTargetProfile(
-            button.dataset.targetId
-          );
-
-          /* ASTROMATCH_REMOVE_PROFILE_AUTOSCROLL_V12 */
-
-        }
-      );
-
-    });
-
-
-  const addButton =
-    document.getElementById("addTargetProfile");
-
-  if (addButton) {
-    addButton.onclick = () => openTargetEditor(null);
-  }
-
-  container
-    .querySelectorAll("[data-natal-target]")
-    .forEach(button => {
-      button.addEventListener("click", event => {
-        event.stopPropagation();
-
-        const profile =
-          safeTargets.find(
-            target =>
-              String(target?.profile_id) ===
-              String(button.dataset.natalTarget)
-          );
-
-        if (profile) {
-          openNatalProfileFor(profile);
-        }
-      });
-    });
-
-  container
-    .querySelectorAll("[data-edit-target]")
-    .forEach(button => {
-      button.addEventListener("click", event => {
-        event.stopPropagation();
-
-        const profile =
-          safeTargets.find(
-            target =>
-              String(target?.profile_id) ===
-              String(button.dataset.editTarget)
-          );
-
-        if (profile) {
-          openTargetEditor(profile);
-        }
-      });
-    });
-
-  container
-    .querySelectorAll("[data-delete-target]")
-    .forEach(button => {
-      button.addEventListener("click", event => {
-        event.stopPropagation();
-        deleteTargetProfile(button.dataset.deleteTarget);
-      });
-    });
   updateTargetSelectionVisual(
     selectedTarget
   );
@@ -21061,13 +20867,228 @@ document.addEventListener(
 );
 
 
-if (!window.__ASTROMATCH_V3_RELATION_EVENTS__) {
+if (!window.__ASTROMATCH_RELATION_EVENTS__) {
 
-  window.__ASTROMATCH_V3_RELATION_EVENTS__ = true;
+  window.__ASTROMATCH_RELATION_EVENTS__ = true;
 
   document.addEventListener(
     "click",
     event => {
+
+      /* GROUPE RELATION */
+      const groupToggle =
+        event.target.closest(
+          "[data-target-group-toggle]"
+        );
+
+      if (groupToggle) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        const relation =
+          String(
+            groupToggle.dataset
+              .targetGroupToggle || ""
+          );
+
+        if (!relation) return;
+
+        const isClosing =
+          ASTROMATCH_OPEN_TARGET_GROUPS
+            .has(relation);
+
+
+        if (
+          isClosing &&
+          ASTROMATCH_SELECTED_TARGET
+        ) {
+
+          const selectedRelation =
+            dashboardRelationshipMeta(
+              ASTROMATCH_SELECTED_TARGET
+            )?.key;
+
+          if (
+            selectedRelation === relation
+          ) {
+
+            const selectedId =
+              String(
+                ASTROMATCH_SELECTED_TARGET
+                  ?.profile_id || ""
+              );
+
+            if (selectedId) {
+              selectTargetProfile(
+                selectedId
+              );
+            }
+
+            ASTROMATCH_RELATION_LAST_SELECTED =
+              null;
+
+            window.__astromatchSelectedTargetId =
+              "";
+          }
+        }
+
+
+        if (isClosing) {
+          ASTROMATCH_OPEN_TARGET_GROUPS
+            .delete(relation);
+        } else {
+          ASTROMATCH_OPEN_TARGET_GROUPS
+            .add(relation);
+        }
+
+
+        if (
+          ASTROMATCH_OPEN_TARGET_GROUPS
+            .size === 0
+        ) {
+
+          openAstroMatchRelationsHome();
+
+          return;
+        }
+
+
+        rerenderAstroMatchRelations();
+
+        return;
+      }
+
+
+      /* AJOUT DANS UNE CATÉGORIE */
+      const addRelation =
+        event.target.closest(
+          "[data-add-relation]"
+        );
+
+      if (addRelation) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        openTargetEditor(null);
+
+        const select =
+          document.getElementById(
+            "targetEditorRelationship"
+          );
+
+        if (select) {
+          select.value =
+            addRelation.dataset.addRelation;
+        }
+
+        return;
+      }
+
+
+      /* AJOUT GLOBAL */
+      const addTarget =
+        event.target.closest(
+          "#addTargetProfile"
+        );
+
+      if (addTarget) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        openTargetEditor(null);
+
+        return;
+      }
+
+
+      /* THÈME ASTRAL CIBLE */
+      const natalTarget =
+        event.target.closest(
+          "[data-natal-target]"
+        );
+
+      if (natalTarget) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        const profile =
+          ASTROMATCH_TARGET_PROFILES.find(
+            target =>
+              String(
+                target?.profile_id
+              ) ===
+              String(
+                natalTarget.dataset
+                  .natalTarget
+              )
+          );
+
+        if (profile) {
+          openNatalProfileFor(
+            profile
+          );
+        }
+
+        return;
+      }
+
+
+      /* MODIFIER CIBLE */
+      const editTarget =
+        event.target.closest(
+          "[data-edit-target]"
+        );
+
+      if (editTarget) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        const profile =
+          ASTROMATCH_TARGET_PROFILES.find(
+            target =>
+              String(
+                target?.profile_id
+              ) ===
+              String(
+                editTarget.dataset
+                  .editTarget
+              )
+          );
+
+        if (profile) {
+          openTargetEditor(
+            profile
+          );
+        }
+
+        return;
+      }
+
+
+      /* SUPPRIMER CIBLE */
+      const deleteTarget =
+        event.target.closest(
+          "[data-delete-target]"
+        );
+
+      if (deleteTarget) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        deleteTargetProfile(
+          deleteTarget.dataset
+            .deleteTarget
+        );
+
+        return;
+      }
+
 
       /*
        * ==========================================
@@ -21458,6 +21479,30 @@ if (!window.__ASTROMATCH_V3_RELATION_EVENTS__) {
         ASTROMATCH_RELATION_SEARCH_OPEN = false;
 
         rerenderAstroMatchRelations();
+
+        return;
+      }
+
+
+      /*
+       * Carte profil.
+       * Toujours après les boutons internes.
+       */
+      const targetCard =
+        event.target.closest(
+          "#targetSelector [data-target-id]"
+        );
+
+      if (targetCard) {
+
+        event.preventDefault();
+        event.stopPropagation();
+
+        selectTargetProfile(
+          targetCard.dataset.targetId
+        );
+
+        return;
       }
 
     },
