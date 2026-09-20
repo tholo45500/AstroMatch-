@@ -10604,6 +10604,36 @@ function renderRelationshipMode() {
         .join("");
     }
   }
+
+  /*
+   * ASTROMATCH_CANONICAL_RELATION_PIPELINE
+   *
+   * Un seul point d'orchestration :
+   * Deep → Impact mutuel → Synastrie → Daily.
+   *
+   * Chaque module reste responsable de son rendu,
+   * mais aucun ne réécrit renderRelationshipMode.
+   */
+  queueMicrotask(() => {
+
+    window
+      .AstroMatchDeepRelation
+      ?.render?.();
+
+    window
+      .AstroMatchMutualImpact
+      ?.render?.();
+
+    window
+      .AstroMatchSynastryExplorer
+      ?.render?.();
+
+    window
+      .AstroMatchRelationshipDaily
+      ?.schedule?.();
+
+  });
+
 }
 
 
@@ -31565,47 +31595,13 @@ document.addEventListener(
 
 
   /*
-   * On se branche sur le rendu relationnel existant.
-   * Aucun changement moteur / synastrie / scoring.
+   * Renderer public utilisé par le pipeline relationnel.
    */
+  window.AstroMatchDeepRelation =
+    Object.freeze({
+      render: renderDeepRelation
+    });
 
-  if (
-    typeof renderRelationshipMode !==
-      "function"
-  ) {
-
-    console.error(
-      "AstroMatch Deep Relation V1 : renderRelationshipMode introuvable"
-    );
-
-    return;
-  }
-
-
-  const originalRenderRelationshipMode =
-    renderRelationshipMode;
-
-
-  renderRelationshipMode =
-    function(...args) {
-
-      const value =
-        originalRenderRelationshipMode
-          .apply(
-            this,
-            args
-          );
-
-      queueMicrotask(
-        renderDeepRelation
-      );
-
-      return value;
-    };
-
-
-  window.renderRelationshipMode =
-    renderRelationshipMode;
 
 
   /*
@@ -32711,45 +32707,13 @@ document.addEventListener(
 
 
   /*
-   * Branche le rendu sur le pipeline
-   * relationnel déjà existant.
+   * Renderer public utilisé par le pipeline relationnel.
    */
-  if (
-    typeof renderRelationshipMode !==
-      "function"
-  ) {
+  window.AstroMatchMutualImpact =
+    Object.freeze({
+      render: renderMutualImpact
+    });
 
-    console.error(
-      "Mutual Impact V1 : renderRelationshipMode introuvable"
-    );
-
-    return;
-  }
-
-
-  const previous =
-    renderRelationshipMode;
-
-
-  renderRelationshipMode =
-    function(...args) {
-
-      const result =
-        previous.apply(
-          this,
-          args
-        );
-
-      queueMicrotask(
-        renderMutualImpact
-      );
-
-      return result;
-    };
-
-
-  window.renderRelationshipMode =
-    renderRelationshipMode;
 
 
   queueMicrotask(
@@ -33620,44 +33584,6 @@ document.addEventListener(
       opened
     );
   }
-
-
-  if (
-    typeof renderRelationshipMode !==
-      "function"
-  ) {
-
-    console.error(
-      "Synastry Explorer V1 : renderRelationshipMode introuvable"
-    );
-
-    return;
-  }
-
-
-  const previous =
-    renderRelationshipMode;
-
-
-  renderRelationshipMode =
-    function(...args) {
-
-      const value =
-        previous.apply(
-          this,
-          args
-        );
-
-      queueMicrotask(
-        renderSynastryExplorer
-      );
-
-      return value;
-    };
-
-
-  window.renderRelationshipMode =
-    renderRelationshipMode;
 
 
   /*
@@ -34828,38 +34754,14 @@ button.relationship-daily-axis:active {
 
 
   /*
-   * Le rendu relationnel est notre point
-   * d'entrée fiable :
-   *
-   * - changement de profil
-   * - changement Amour/Amitié/etc.
-   * - nouveau résultat
+   * Renderer public utilisé par le pipeline relationnel.
    */
-  if (
-    typeof renderRelationshipMode ===
-      "function"
-  ) {
+  window.AstroMatchRelationshipDaily =
+    Object.freeze({
+      schedule,
+      render: renderClimate
+    });
 
-    const original =
-      renderRelationshipMode;
-
-    renderRelationshipMode =
-      function(...args) {
-
-        const output =
-          original.apply(
-            this,
-            args
-          );
-
-        schedule();
-
-        return output;
-      };
-
-    window.renderRelationshipMode =
-      renderRelationshipMode;
-  }
 
 
   schedule();
