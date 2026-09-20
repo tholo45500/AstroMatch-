@@ -31477,6 +31477,15 @@ document.addEventListener(
   display:block;
 }
 
+/*
+ * Une carte ouverte affiche directement
+ * son texte complet : l'aperçu court disparaît.
+ */
+.deep-relation-card.open
+.deep-relation-preview {
+  display:none;
+}
+
 .deep-relation-card.open
 .deep-relation-arrow {
   transform:rotate(180deg);
@@ -31491,6 +31500,7 @@ document.addEventListener(
 }
 
 .deep-relation-evidence {
+  display:none !important;
   margin-top:12px;
 }
 
@@ -32291,38 +32301,6 @@ document.addEventListener(
 })();
 
 </script>
-
-
-<style id="ASTROMATCH_DEEP_RELATION_NO_DUPLICATE_V2">
-
-/*
- * Fermé :
- * aperçu visible.
- *
- * Ouvert :
- * l'aperçu disparaît et le texte complet
- * prend sa place.
- */
-.deep-relation-card.open
-.deep-relation-preview {
-  display:none;
-}
-
-</style>
-
-
-<style id="ASTROMATCH_DEEP_RELATION_CLEAN_V3">
-
-/*
- * L'analyse approfondie reste narrative.
- * Les preuves astrologiques détaillées sont déjà
- * disponibles dans Points d'appui / Points sensibles.
- */
-.deep-relation-evidence {
-  display:none !important;
-}
-
-</style>
 
 
 <style id="ASTROMATCH_MUTUAL_IMPACT_V1_STYLE">
