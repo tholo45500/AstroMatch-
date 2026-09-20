@@ -11544,65 +11544,8 @@ if (!window.__ASTROMATCH_V3_FILTERED_GROUP_TOGGLE__) {
 
 
       /*
-       * Les trois groupes sont fermés :
-       *
-       * on revient automatiquement sur la vue
-       * Relations normale.
-       *
-       * Donc :
-       * - sortie du filtre Favoris
-       * - sortie de la recherche
-       * - affichage Favoris + Ajouts récents
-       */
-      if (
-        ASTROMATCH_OPEN_TARGET_GROUPS.size === 0
-      ) {
-
-        if (
-          typeof ASTROMATCH_RELATION_MODE !==
-          "undefined"
-        ) {
-          ASTROMATCH_RELATION_MODE =
-            "all";
-        }
-
-        if (
-          typeof ASTROMATCH_RELATION_QUERY !==
-          "undefined"
-        ) {
-          ASTROMATCH_RELATION_QUERY =
-            "";
-        }
-
-        if (
-          typeof ASTROMATCH_RELATION_EXACT_TARGET_ID !==
-          "undefined"
-        ) {
-          ASTROMATCH_RELATION_EXACT_TARGET_ID =
-            "";
-        }
-
-        if (
-          typeof ASTROMATCH_RELATION_SEARCH_OPEN !==
-          "undefined"
-        ) {
-          ASTROMATCH_RELATION_SEARCH_OPEN =
-            false;
-        }
-
-      }
-
-
-      /*
-       * Reconstruction propre de Relations.
-       */
-      /*
-       * V24 :
-       * si c'était le DERNIER groupe ouvert,
-       * on appelle directement l'accueil Relations
-       * déjà validé avec le bouton du bas.
-       *
-       * Pas de nouvelle logique parallèle.
+       * Dernier groupe fermé :
+       * retour direct à l'accueil Relations.
        */
       if (
         ASTROMATCH_OPEN_TARGET_GROUPS.size === 0
@@ -11623,7 +11566,7 @@ if (!window.__ASTROMATCH_V3_FILTERED_GROUP_TOGGLE__) {
 }
 
 
-/* ASTROMATCH_COLLAPSED_RELATIONS_EXTRAS_V17 */
+/* ASTROMATCH_COLLAPSED_RELATIONS_EXTRAS */
 
 function astromatchCollapsedMiniProfile(profile) {
 
@@ -11652,7 +11595,7 @@ function astromatchCollapsedMiniProfile(profile) {
     <button
       type="button"
       data-target-id="${escapeHtml(id)}"
-      data-v17-quick-profile="${escapeHtml(id)}"
+      data-relation-quick-profile="${escapeHtml(id)}"
       class="v17-mini-profile"
     >
 
@@ -11767,7 +11710,7 @@ function renderAstroMatchCollapsedExtras(
               ? `
                 <button
                   type="button"
-                  data-v17-show-favorites
+                  data-relation-show-favorites
                   class="v17-see-all"
                 >
                   Voir tout ›
@@ -11813,7 +11756,7 @@ function renderAstroMatchCollapsedExtras(
                       <button
                         type="button"
                         data-target-id="${escapeHtml(id)}"
-                        data-v17-quick-profile="${escapeHtml(id)}"
+                        data-relation-quick-profile="${escapeHtml(id)}"
                         class="v17-favorite-card"
                       >
 
@@ -20845,6 +20788,170 @@ function astromatchApplyRelationDomFilter() {
 }
 
 
+
+function openAstroMatchQuickRelationProfile(
+  profileId
+) {
+
+  const id =
+    String(
+      profileId || ""
+    );
+
+  if (!id) return;
+
+
+  const profiles =
+    Array.isArray(
+      ASTROMATCH_TARGET_PROFILES
+    )
+      ? ASTROMATCH_TARGET_PROFILES
+      : ASTROMATCH_RELATION_LAST_TARGETS;
+
+
+  const profile =
+    profiles.find(
+      item =>
+        String(
+          item?.profile_id || ""
+        ) === id
+    );
+
+  if (!profile) {
+    console.error(
+      "AstroMatch Relations : profil introuvable",
+      id
+    );
+    return;
+  }
+
+
+  const relation =
+    dashboardRelationshipMeta(
+      profile
+    )?.key;
+
+  if (!relation) return;
+
+
+  ASTROMATCH_RELATION_MODE =
+    "all";
+
+  ASTROMATCH_RELATION_QUERY =
+    "";
+
+  ASTROMATCH_RELATION_EXACT_TARGET_ID =
+    "";
+
+
+  ASTROMATCH_OPEN_TARGET_GROUPS.add(
+    relation
+  );
+
+
+  /*
+   * Reconstruit la vraie liste avant
+   * de sélectionner le profil.
+   */
+  renderTargetSelector(
+    profiles,
+    null
+  );
+
+
+  queueMicrotask(() => {
+
+    selectTargetProfile(
+      id
+    );
+
+
+    setTimeout(() => {
+
+      const card =
+        Array.from(
+          document.querySelectorAll(
+            "#targetSelector [data-target-id]"
+          )
+        )
+        .find(
+          element =>
+            String(
+              element.dataset.targetId || ""
+            ) === id &&
+            !element.matches(
+              "[data-relation-quick-profile]"
+            )
+        );
+
+
+      const comparison =
+        document.getElementById(
+          "astromatchComparisonArea"
+        );
+
+
+      (
+        comparison ||
+        card
+      )?.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+
+    }, 180);
+
+  });
+
+}
+
+
+function showAllAstroMatchFavoriteRelations() {
+
+  ASTROMATCH_RELATION_MODE =
+    "favorites";
+
+  ASTROMATCH_RELATION_QUERY =
+    "";
+
+  ASTROMATCH_RELATION_EXACT_TARGET_ID =
+    "";
+
+
+  ASTROMATCH_OPEN_TARGET_GROUPS.clear();
+
+  ASTROMATCH_OPEN_TARGET_GROUPS.add(
+    "romantic"
+  );
+
+  ASTROMATCH_OPEN_TARGET_GROUPS.add(
+    "friendship"
+  );
+
+  ASTROMATCH_OPEN_TARGET_GROUPS.add(
+    "family"
+  );
+
+
+  rerenderAstroMatchRelations();
+
+
+  requestAnimationFrame(() => {
+
+    document
+      .getElementById(
+        "targetSelector"
+      )
+      ?.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
+
+  });
+
+}
+
+
 function rerenderAstroMatchRelations() {
 
   renderTargetSelector(
@@ -21205,6 +21312,43 @@ if (!window.__ASTROMATCH_V3_RELATION_EVENTS__) {
   document.addEventListener(
     "click",
     event => {
+
+      const quickProfile =
+        event.target.closest(
+          "[data-relation-quick-profile]"
+        );
+
+      if (quickProfile) {
+
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+
+        openAstroMatchQuickRelationProfile(
+          quickProfile.dataset
+            .relationQuickProfile
+        );
+
+        return;
+      }
+
+
+      const showFavorites =
+        event.target.closest(
+          "[data-relation-show-favorites]"
+        );
+
+      if (showFavorites) {
+
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+
+        showAllAstroMatchFavoriteRelations();
+
+        return;
+      }
+
 
       const suggestion =
         event.target.closest(
@@ -29010,267 +29154,6 @@ document.addEventListener(
 })();
 </script>
 
-
-
-<script id="ASTROMATCH_V17_QUICK_PROFILE_FIX">
-
-(() => {
-
-  /*
-   * IMPORTANT :
-   * capture=true permet d'intercepter le clic AVANT
-   * l'ancien listener des cartes data-target-id.
-   *
-   * Sinon le comparateur se monte dans la mini-card.
-   */
-  document.addEventListener(
-    "click",
-    event => {
-
-      /* ==========================================
-         CLIC FAVORI / AJOUT RÉCENT
-         ========================================== */
-
-      const quick =
-        event.target.closest(
-          "[data-v17-quick-profile]"
-        );
-
-      if (quick) {
-
-        event.preventDefault();
-        event.stopPropagation();
-        event.stopImmediatePropagation();
-
-        const id =
-          String(
-            quick.dataset.v17QuickProfile || ""
-          );
-
-        if (!id) return;
-
-
-        const profile =
-          ASTROMATCH_TARGET_PROFILES.find(
-            item =>
-              String(item?.profile_id || "") === id
-          );
-
-        if (!profile) {
-          console.error(
-            "AstroMatch V17 : profil introuvable",
-            id
-          );
-          return;
-        }
-
-
-        /*
-         * Trouve son groupe :
-         * Amour / Amitié / Famille
-         */
-        const meta =
-          dashboardRelationshipMeta(profile);
-
-
-        /*
-         * On revient au mode normal.
-         */
-        if (
-          typeof ASTROMATCH_RELATION_MODE !==
-          "undefined"
-        ) {
-          ASTROMATCH_RELATION_MODE =
-            "all";
-        }
-
-        if (
-          typeof ASTROMATCH_RELATION_QUERY !==
-          "undefined"
-        ) {
-          ASTROMATCH_RELATION_QUERY =
-            "";
-        }
-
-        if (
-          typeof ASTROMATCH_RELATION_EXACT_TARGET_ID !==
-          "undefined"
-        ) {
-          ASTROMATCH_RELATION_EXACT_TARGET_ID =
-            "";
-        }
-
-
-        /*
-         * Ouvre automatiquement le bon groupe.
-         */
-        ASTROMATCH_OPEN_TARGET_GROUPS.add(
-          meta.key
-        );
-
-
-        /*
-         * Reconstruit d'abord la vraie liste.
-         * Les blocs Favoris/Récents disparaissent.
-         */
-        renderTargetSelector(
-          ASTROMATCH_TARGET_PROFILES,
-          null
-        );
-
-
-        /*
-         * Puis sélectionne la vraie carte pleine largeur.
-         */
-        queueMicrotask(() => {
-
-          selectTargetProfile(id);
-
-
-          /*
-           * Petit délai pour laisser le moteur
-           * monter la comparaison.
-           */
-          setTimeout(() => {
-
-            const card =
-              Array.from(
-                document.querySelectorAll(
-                  "#targetSelector [data-target-id]"
-                )
-              )
-              .find(
-                element =>
-                  String(
-                    element.dataset.targetId || ""
-                  ) === id &&
-                  !element.matches(
-                    "[data-v17-quick-profile]"
-                  )
-              );
-
-            const comparison =
-              document.getElementById(
-                "astromatchComparisonArea"
-              );
-
-            (
-              comparison ||
-              card
-            )?.scrollIntoView({
-              behavior:"smooth",
-              block:"start"
-            });
-
-          }, 180);
-
-        });
-
-        return;
-      }
-
-
-      /* ==========================================
-         "VOIR TOUT" FAVORIS
-         ========================================== */
-
-      const showFavorites =
-        event.target.closest(
-          "[data-v17-show-favorites]"
-        );
-
-      if (showFavorites) {
-
-        event.preventDefault();
-        event.stopPropagation();
-        event.stopImmediatePropagation();
-
-
-        if (
-          typeof ASTROMATCH_RELATION_MODE !==
-          "undefined"
-        ) {
-          ASTROMATCH_RELATION_MODE =
-            "favorites";
-        }
-
-        if (
-          typeof ASTROMATCH_RELATION_QUERY !==
-          "undefined"
-        ) {
-          ASTROMATCH_RELATION_QUERY =
-            "";
-        }
-
-        if (
-          typeof ASTROMATCH_RELATION_EXACT_TARGET_ID !==
-          "undefined"
-        ) {
-          ASTROMATCH_RELATION_EXACT_TARGET_ID =
-            "";
-        }
-
-
-        /*
-         * Pour "Voir tout", on ouvre les 3 catégories.
-         * Le filtre favoris existant ne laissera
-         * apparaître que les favoris.
-         */
-        ASTROMATCH_OPEN_TARGET_GROUPS.clear();
-
-        ASTROMATCH_OPEN_TARGET_GROUPS.add(
-          "romantic"
-        );
-
-        ASTROMATCH_OPEN_TARGET_GROUPS.add(
-          "friendship"
-        );
-
-        ASTROMATCH_OPEN_TARGET_GROUPS.add(
-          "family"
-        );
-
-
-        if (
-          typeof rerenderAstroMatchRelations ===
-          "function"
-        ) {
-
-          rerenderAstroMatchRelations();
-
-        } else {
-
-          renderTargetSelector(
-            ASTROMATCH_TARGET_PROFILES,
-            null
-          );
-
-        }
-
-
-        requestAnimationFrame(() => {
-
-          document
-            .getElementById(
-              "targetSelector"
-            )
-            ?.scrollIntoView({
-              behavior:"smooth",
-              block:"start"
-            });
-
-        });
-
-        return;
-      }
-
-    },
-    true
-  );
-
-})();
-
-</script>
 
 
 
