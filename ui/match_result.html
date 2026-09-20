@@ -5816,6 +5816,8 @@ summary {
 <style id="ASTROMATCH_ELEMENTS_EXPLAIN_V12">
 
 .natal-element-card {
+  order: 1;
+
   border:
     1px solid rgba(148,163,184,.08);
 }
@@ -5832,6 +5834,9 @@ summary {
 
 
 .natal-element-details {
+  order: 2;
+  grid-column: 1 / -1;
+
   padding:
     0 12px 13px;
 
@@ -5874,15 +5879,6 @@ summary {
   font-size: 10px;
 }
 
-
-/*
- * Une carte ouverte prend toute la largeur.
- */
-.natal-element-card:has(
-  [data-natal-dominant-details]:not(.hidden)
-) {
-  grid-column: 1 / -1;
-}
 
 </style>
 
@@ -14575,7 +14571,7 @@ function renderNatalDominants(chart, points) {
 
               <button
                 type="button"
-                data-natal-dominant-toggle
+                data-natal-dominant-toggle="${key}"
                 class="w-full p-3 text-left"
               >
 
@@ -14621,11 +14617,13 @@ function renderNatalDominants(chart, points) {
 
               </button>
 
+            </div>
 
-              <div
-                data-natal-dominant-details
-                class="hidden natal-element-details"
-              >
+
+            <div
+              data-natal-dominant-details="${key}"
+              class="hidden natal-element-details"
+            >
 
                 <div>
                   <strong>
@@ -14686,8 +14684,6 @@ function renderNatalDominants(chart, points) {
                 </div>
 
               </div>
-
-            </div>
           `;
         })
         .join("");
