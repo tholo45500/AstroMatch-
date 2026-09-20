@@ -821,6 +821,10 @@ header > div:first-child {
   overflow: visible !important;
 }
 
+#targetCalculationState {
+  display: none !important;
+}
+
 main {
   padding-bottom: 24px !important;
 }
@@ -38323,6 +38327,9 @@ body:has(#natalProfileView:not(.hidden))
 
 .astromatch-main-panel {
 
+  margin-top:0 !important;
+  padding-top:0 !important;
+
   width:100vw;
   min-width:100vw;
 
@@ -38338,6 +38345,9 @@ body:has(#natalProfileView:not(.hidden))
 
 
 .astromatch-main-snapshot {
+
+  margin-top:0 !important;
+  padding-top:0 !important;
 
   width:100%;
 
@@ -38376,6 +38386,9 @@ body:has(#natalProfileView:not(.hidden))
 .astromatch-main-panel
 #natalProfileView {
 
+  visibility:visible !important;
+  opacity:1 !important;
+
   position:relative !important;
 
   inset:auto !important;
@@ -38399,6 +38412,8 @@ body:has(#natalProfileView:not(.hidden))
 
 .astromatch-main-panel
 #natalProfileView > div {
+
+  visibility:visible !important;
 
   /*
    * Même valeur que le vrai thème astral.
@@ -39791,93 +39806,6 @@ body {
 })();
 
 </script>
-
-
-<!-- ASTROMATCH_MOI_RAIL_FIX_V15 -->
-<style id="ASTROMATCH_MOI_RAIL_FIX_V15_STYLE">
-
-/*
- * Sécurité :
- * le Moi contenu dans le rail DOIT rester visible.
- */
-#astromatchMainSwipeOverlay
-#natalProfileView {
-
-  visibility:visible !important;
-
-  opacity:1 !important;
-}
-
-
-/*
- * Même principe pour tout son contenu.
- */
-#astromatchMainSwipeOverlay
-#natalProfileView > div {
-
-  visibility:visible !important;
-}
-
-</style>
-
-
-<!-- ASTROMATCH_PERFECT_PAGE_ALIGNMENT_V16 -->
-
-<style id="ASTROMATCH_PERFECT_PAGE_ALIGNMENT_V16_STYLE">
-
-/*
- * Le rail occupe le même système de coordonnées
- * que les vraies pages.
- *
- * Header et navigation restent devant.
- */
-
-#astromatchMainSwipeOverlay {
-
-  top:0 !important;
-
-  background:
-    transparent !important;
-}
-
-
-/*
- * Aucun arrondi vertical entre copie et vraie page.
- */
-.astromatch-main-panel,
-.astromatch-main-snapshot {
-
-  margin-top:0 !important;
-
-  padding-top:0 !important;
-}
-
-
-/*
- * Le header reste toujours au-dessus du rail.
- */
-#astromatchGlobalHeader {
-
-  z-index:9500 !important;
-}
-
-
-/*
- * La navigation basse reste au-dessus également.
- */
-#astromatchMainNav {
-
-  z-index:9999 !important;
-}
-
-</style>
-  <script type="module" src="../js/i18n/current_ui_i18n.js?v=5"></script>
+<script type="module" src="../js/i18n/current_ui_i18n.js?v=5"></script>
 </body>
 </html>
-
-
-<style id="ASTROMATCH_HIDE_READY_LABEL_V17">
-#targetCalculationState {
-  display:none !important;
-}
-</style>
