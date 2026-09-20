@@ -301,41 +301,59 @@
 
 
 <style id="ASTROMATCH_TARGET_GROUPS_V2">
-
 .target-group-title {
-  position: sticky;
-  top: 0;
-  z-index: 8;
+  position:relative !important;
+  top:auto !important;
+  z-index:2 !important;
 
-  min-height: 50px;
+  min-height:50px;
 
-  margin: 12px 0 8px;
-  padding: 10px 10px 10px 13px !important;
+  margin:12px 0 8px;
 
-  border-radius: 16px;
-  border: 1px solid rgba(255,255,255,.10);
+  padding:
+    10px 10px 10px 13px
+    !important;
 
-  background: rgba(15,23,42,.96);
-  backdrop-filter: blur(12px);
+  display:flex !important;
+  align-items:center !important;
 
-  display: flex;
-  align-items: center;
-  gap: 9px;
+  gap:6px !important;
 
-  font-size: 13px;
-  font-weight: 900;
-  letter-spacing: .03em;
+  border-radius:16px;
 
-  color: white;
-  text-transform: none;
+  border:
+    1px solid rgba(255,255,255,.10);
+
+  background:
+    rgba(15,23,42,.96);
+
+  opacity:1 !important;
+
+  backdrop-filter:none !important;
+  -webkit-backdrop-filter:none !important;
+
+  color:white;
+
+  font-size:13px;
+  font-weight:900;
+  letter-spacing:.03em;
+
+  text-transform:none;
+
+  cursor:default;
 }
 
-.target-group-title > span:first-child {
-  font-size: 19px;
+
+.target-group-title
+> span:first-child {
+  font-size:19px;
 }
+
 
 .target-group-title[data-relation="Amour"] {
-  border-color: rgba(244,63,94,.25);
+  border-color:
+    rgba(244,63,94,.25);
+
   background:
     linear-gradient(
       90deg,
@@ -344,8 +362,11 @@
     );
 }
 
+
 .target-group-title[data-relation="Amitié"] {
-  border-color: rgba(59,130,246,.25);
+  border-color:
+    rgba(59,130,246,.25);
+
   background:
     linear-gradient(
       90deg,
@@ -354,8 +375,11 @@
     );
 }
 
+
 .target-group-title[data-relation="Famille"] {
-  border-color: rgba(34,197,94,.25);
+  border-color:
+    rgba(34,197,94,.25);
+
   background:
     linear-gradient(
       90deg,
@@ -364,71 +388,190 @@
     );
 }
 
-.target-group-count {
-  margin-left: auto;
 
-  min-width: 26px;
-  height: 26px;
+.target-group-toggle-main {
+  flex:1;
+  min-width:0;
 
-  padding: 0 8px;
+  display:flex;
+  align-items:center;
 
-  border-radius: 999px;
+  gap:10px;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  padding:2px 0;
 
-  background: rgba(255,255,255,.08);
+  color:white;
 
-  color: #cbd5e1;
+  text-align:left;
 
-  font-size: 11px;
-  font-weight: 900;
+  cursor:pointer;
 }
 
-/* profil actuellement sélectionné beaucoup plus évident */
+
+.target-group-toggle-main
+.target-group-label {
+  font-size:15px;
+  font-weight:900;
+
+  color:
+    rgb(226 232 240);
+}
+
+
+.target-group-toggle-main
+.target-group-icon {
+  font-size:21px;
+}
+
+
+.target-group-count {
+  margin-left:auto !important;
+
+  min-width:26px;
+  height:26px;
+
+  padding:0 8px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  border-radius:999px;
+
+  background:
+    rgba(255,255,255,.08);
+
+  color:#cbd5e1;
+
+  font-size:11px;
+  font-weight:900;
+}
+
+
+.target-group-chevron {
+  width:22px;
+
+  text-align:center;
+
+  font-size:17px;
+
+  color:
+    rgb(167 139 250);
+
+  transition:
+    transform .18s ease;
+}
+
+
+[data-target-group-toggle]
+[aria-hidden="true"] {
+  display:none;
+}
+
+
+[data-target-group-toggle]
+.target-group-chevron {
+  transform:
+    rotate(-90deg);
+}
+
+
+[data-target-group-toggle]
+.target-group-chevron.open {
+  transform:
+    rotate(0deg);
+}
+
+
+.target-group-add {
+  width:32px;
+  height:32px;
+
+  flex:0 0 32px;
+
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+
+  margin-left:4px;
+
+  border-radius:11px;
+
+  border:
+    1px solid rgba(196,181,253,.32);
+
+  background:
+    rgba(139,92,246,.22);
+
+  color:
+    rgb(237 233 254);
+
+  font-size:22px;
+  font-weight:800;
+  line-height:1;
+}
+
+
+.target-group-add:active {
+  transform:
+    scale(.9);
+
+  background:
+    rgba(139,92,246,.38);
+}
+
+
+.target-group-body {
+  position:relative !important;
+  z-index:1 !important;
+
+  padding-top:10px !important;
+  padding-bottom:5px;
+}
+
+
+.target-group-empty {
+  padding:18px;
+
+  border-radius:18px;
+
+  border:
+    1px dashed rgba(148,163,184,.18);
+
+  color:
+    rgb(100 116 139);
+
+  text-align:center;
+
+  font-size:12px;
+}
+
+
 [data-target-id].selected {
-  border-color: rgba(167,139,250,.65) !important;
+  border-color:
+    rgba(167,139,250,.65)
+    !important;
 
   box-shadow:
     0 0 0 1px rgba(167,139,250,.25),
     0 10px 30px rgba(0,0,0,.22);
 }
 
-.target-group-add {
-  width: 32px;
-  height: 32px;
 
-  flex: 0 0 32px;
+.target-profile-card {
+  position:relative !important;
+  z-index:1 !important;
 
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-
-  margin-left: 4px;
-
-  border-radius: 11px;
-
-  background:
-    rgba(139,92,246,.22);
-
-  border:
-    1px solid rgba(196,181,253,.32);
-
-  color: rgb(237 233 254);
-
-  font-size: 22px;
-  font-weight: 800;
-  line-height: 1;
+  cursor:pointer !important;
+  pointer-events:auto !important;
 }
 
-.target-group-add:active {
-  transform: scale(.9);
 
-  background:
-    rgba(139,92,246,.38);
+.target-profile-card button,
+.target-profile-card a {
+  position:relative;
+  z-index:5;
 }
-
 </style>
 
 
@@ -544,169 +687,6 @@
 </style>
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-<style id="ASTROMATCH_HEADER_ACCORDION_V1">
-
-header > div:first-child {
-  display: grid !important;
-
-  grid-template-columns:
-    auto minmax(0, 1fr) auto !important;
-
-  align-items: center !important;
-  gap: 8px !important;
-
-  width: 100%;
-}
-
-#primaryCompactSection {
-  grid-column: 1;
-  justify-self: start;
-
-  margin: 0 !important;
-}
-
-#astromatchHeaderLogo {
-  grid-column: 2;
-
-  position: static !important;
-
-  left: auto !important;
-  top: auto !important;
-
-  transform: none !important;
-
-  justify-self: center !important;
-
-  width: 100%;
-
-  text-align: center;
-
-  font-size:
-    clamp(16px, 4.8vw, 23px) !important;
-
-  white-space: nowrap;
-}
-
-#appSettingsButton {
-  grid-column: 3;
-
-  justify-self: end;
-
-  margin: 0 !important;
-}
-
-/* ======================================================
-   GROUPES PLIABLES
-   ====================================================== */
-
-.target-group-title {
-  display: flex !important;
-  align-items: center !important;
-
-  gap: 6px !important;
-
-  cursor: default;
-}
-
-.target-group-toggle-main {
-  flex: 1;
-  min-width: 0;
-
-  display: flex;
-  align-items: center;
-  gap: 10px;
-
-  padding: 2px 0;
-
-  color: white;
-
-  text-align: left;
-
-  cursor: pointer;
-}
-
-.target-group-toggle-main
-.target-group-label {
-  font-size: 15px;
-
-  font-weight: 900;
-
-  color: rgb(226 232 240);
-}
-
-.target-group-toggle-main
-.target-group-icon {
-  font-size: 21px;
-}
-
-.target-group-toggle-main
-.target-group-count {
-  margin-left: auto !important;
-}
-
-.target-group-chevron {
-  width: 22px;
-
-  text-align: center;
-
-  font-size: 17px;
-
-  color: rgb(167 139 250);
-
-  transition:
-    transform .18s ease;
-}
-
-[data-target-group-toggle]
-[aria-hidden="true"] {
-  display: none;
-}
-
-[data-target-group-toggle]
-.target-group-chevron {
-  transform: rotate(-90deg);
-}
-
-[data-target-group-toggle]
-.target-group-chevron.open {
-  transform: rotate(0deg);
-}
-
-.target-group-body {
-  padding-top: 8px;
-  padding-bottom: 5px;
-}
-
-.target-group-empty {
-  padding: 18px;
-
-  border-radius: 18px;
-
-  border:
-    1px dashed rgba(148,163,184,.18);
-
-  color: rgb(100 116 139);
-
-  text-align: center;
-
-  font-size: 12px;
-}
-
-</style>
-
-
 <style id="ASTROMATCH_RELATIONS_LAYOUT_BASE">
 
 #targetSelector {
@@ -722,48 +702,6 @@ header > div:first-child {
 
 main {
   padding-bottom: 24px !important;
-}
-
-</style>
-
-
-<style id="ASTROMATCH_CARDS_CLICK_FIX_V2">
-
-/* Les bandeaux ne collent PLUS pendant le scroll */
-.target-group-title {
-  position: relative !important;
-  top: auto !important;
-  z-index: 2 !important;
-
-  opacity: 1 !important;
-
-  backdrop-filter: none !important;
-  -webkit-backdrop-filter: none !important;
-}
-
-/* vraie séparation avec les profils */
-.target-group-body {
-  position: relative !important;
-  z-index: 1 !important;
-
-  padding-top: 10px !important;
-}
-
-/* les cartes restent au-dessus du fond */
-.target-profile-card {
-  position: relative !important;
-  z-index: 1 !important;
-
-  cursor: pointer !important;
-
-  pointer-events: auto !important;
-}
-
-/* les boutons d'action restent au-dessus de la carte */
-.target-profile-card button,
-.target-profile-card a {
-  position: relative;
-  z-index: 5;
 }
 
 </style>
