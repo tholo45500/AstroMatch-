@@ -1,0 +1,477 @@
+/*
+ * AstroMatch — Scenario Cache / Carousel
+ *
+ * CSS extrait du monolithe.
+ * Aucun comportement JS modifié.
+ */
+
+/* ASTROMATCH_SCENARIO_CACHE_V7 */
+
+
+/* ----------------------------------------------------------
+   L'ANCIENNE GROSSE BARRE RESTE TECHNIQUEMENT DANS LE DOM
+   MAIS ELLE N'EST PLUS AFFICHÉE.
+---------------------------------------------------------- */
+
+#relationshipTabsContainer {
+  display:none !important;
+}
+
+#relationshipTabsContainer
+  .relationship-tab {
+  display:none !important;
+}
+
+
+/* ----------------------------------------------------------
+   MINI SÉLECTEUR
+---------------------------------------------------------- */
+
+.astromatch-scenario-switcher {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  gap:6px;
+
+  margin:
+    -5px 0 15px;
+}
+
+.astromatch-scenario-pill {
+  padding:
+    6px 9px;
+
+  border-radius:999px;
+
+  border:
+    1px solid
+    rgba(255,255,255,.055);
+
+  background:
+    rgba(2,6,23,.38);
+
+  color:#64748b;
+
+  font-size:9px;
+  font-weight:850;
+
+  white-space:nowrap;
+
+  transition:
+    background .18s ease,
+    color .18s ease,
+    border-color .18s ease,
+    transform .12s ease;
+}
+
+.astromatch-scenario-pill:active {
+  transform:
+    scale(.95);
+}
+
+.astromatch-scenario-pill.active {
+  color:#f8fafc;
+
+  background:
+    rgba(124,58,237,.21);
+
+  border-color:
+    rgba(167,139,250,.25);
+}
+
+
+/* ----------------------------------------------------------
+   INDICATION DE SWIPE
+---------------------------------------------------------- */
+
+.astromatch-scenario-dots {
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  gap:6px;
+
+  margin-top:7px;
+}
+
+.astromatch-scenario-dot {
+  width:6px;
+  height:6px;
+
+  border-radius:999px;
+
+  background:#334155;
+
+  transition:
+    width .18s ease,
+    background .18s ease;
+}
+
+.astromatch-scenario-dot.active {
+  width:17px;
+
+  background:#a78bfa;
+}
+
+
+/* ----------------------------------------------------------
+   LE BLOC ENTIER PEUT BOUGER AVEC LE DOIGT
+---------------------------------------------------------- */
+
+#astromatchComparisonArea {
+  overflow-anchor:none;
+
+  will-change:transform;
+
+  touch-action:pan-y;
+}
+
+#astromatchComparisonArea
+  .astromatch-relationship-daily,
+#astromatchComparisonArea
+  #relationshipDynamicCard,
+#astromatchComparisonArea
+  .astromatch-deep-relation,
+#astromatchComparisonArea
+  .astromatch-mutual-impact,
+#astromatchComparisonArea
+  > section {
+  overflow-anchor:none;
+}
+
+
+/* ----------------------------------------------------------
+   VIEW TRANSITION :
+   ON NE VOIT JAMAIS UN ÉCRAN VIDE ENTRE 2 SCÉNARIOS
+---------------------------------------------------------- */
+
+#astromatchComparisonArea {
+  view-transition-name:
+    astromatch-scenario;
+}
+
+::view-transition-group(astromatch-scenario) {
+  animation-duration:
+    .24s;
+}
+
+html.astromatch-scenario-forward
+::view-transition-old(astromatch-scenario) {
+  animation:
+    .24s ease both
+    astromatchScenarioOutLeft;
+}
+
+html.astromatch-scenario-forward
+::view-transition-new(astromatch-scenario) {
+  animation:
+    .24s ease both
+    astromatchScenarioInRight;
+}
+
+html.astromatch-scenario-backward
+::view-transition-old(astromatch-scenario) {
+  animation:
+    .24s ease both
+    astromatchScenarioOutRight;
+}
+
+html.astromatch-scenario-backward
+::view-transition-new(astromatch-scenario) {
+  animation:
+    .24s ease both
+    astromatchScenarioInLeft;
+}
+
+
+@keyframes astromatchScenarioOutLeft {
+
+  from {
+    transform:
+      translateX(0);
+    opacity:1;
+  }
+
+  to {
+    transform:
+      translateX(-14%);
+    opacity:.35;
+  }
+
+}
+
+
+@keyframes astromatchScenarioInRight {
+
+  from {
+    transform:
+      translateX(14%);
+    opacity:.35;
+  }
+
+  to {
+    transform:
+      translateX(0);
+    opacity:1;
+  }
+
+}
+
+
+@keyframes astromatchScenarioOutRight {
+
+  from {
+    transform:
+      translateX(0);
+    opacity:1;
+  }
+
+  to {
+    transform:
+      translateX(14%);
+    opacity:.35;
+  }
+
+}
+
+
+@keyframes astromatchScenarioInLeft {
+
+  from {
+    transform:
+      translateX(-14%);
+    opacity:.35;
+  }
+
+  to {
+    transform:
+      translateX(0);
+    opacity:1;
+  }
+
+}
+
+
+/*
+ * Le clone temporaire pendant la préparation
+ * empêche de voir AstroMatch construire
+ * Amour / Amitié / Flirt.
+ */
+.astromatch-scenario-build-shield {
+  position:fixed !important;
+
+  z-index:9998;
+
+  pointer-events:none;
+
+  overflow:hidden;
+
+  margin:0 !important;
+
+  background:#020617;
+}
+
+html,
+body {
+  overflow-x:hidden;
+}
+
+
+
+/* ASTROMATCH_FULL_SCENARIO_CAROUSEL_V9 */
+
+.astromatch-full-scenario-carousel {
+  position:relative;
+  width:100%;
+  margin-bottom:8px;
+}
+
+
+.astromatch-full-scenario-viewport {
+  position:relative;
+
+  width:100%;
+
+  overflow:hidden;
+
+  /*
+   * Scroll vertical normal.
+   * Le JS prend uniquement les vrais gestes horizontaux.
+   */
+  touch-action:pan-y;
+}
+
+
+.astromatch-full-scenario-track {
+  display:flex;
+
+  align-items:flex-start;
+
+  gap:12px;
+
+  will-change:transform;
+
+  transition:
+    transform .28s
+    cubic-bezier(.22,.76,.24,1);
+}
+
+
+.astromatch-full-scenario-live,
+.astromatch-full-scenario-preview {
+  flex:0 0 auto;
+
+  min-width:0;
+}
+
+
+/*
+ * Les pages voisines sont de vrais snapshots
+ * déjà calculés, uniquement visuels.
+ */
+.astromatch-full-scenario-preview {
+  position:relative;
+
+  overflow:hidden;
+
+  opacity:.78;
+
+  transform:scale(.987);
+
+  transform-origin:top center;
+
+  pointer-events:none;
+
+  transition:
+    opacity .22s ease,
+    transform .22s ease;
+}
+
+
+.astromatch-full-scenario-preview.incoming {
+  opacity:1;
+
+  transform:scale(1);
+}
+
+
+/*
+ * La première grosse carte des snapshots
+ * perd son ID pour éviter tout conflit DOM.
+ * On reproduit donc son look ici.
+ */
+.astromatch-full-scenario-preview
+[data-preview-id="relationshipDynamicCard"] {
+  position:relative;
+
+  overflow:hidden;
+
+  border-radius:26px !important;
+
+  padding:19px !important;
+
+  background:
+    radial-gradient(
+      circle at 95% 0%,
+      rgba(139,92,246,.16),
+      transparent 38%
+    ),
+    linear-gradient(
+      150deg,
+      rgba(30,41,59,.82),
+      rgba(2,6,23,.94)
+    ) !important;
+
+  border:
+    1px solid
+    rgba(167,139,250,.12) !important;
+
+  box-shadow:
+    0 16px 42px
+    rgba(0,0,0,.18);
+}
+
+
+.astromatch-full-scenario-preview
+[data-preview-id="relationshipDynamicCard"]::after {
+  content:"✦";
+
+  position:absolute;
+
+  top:14px;
+  right:17px;
+
+  color:
+    rgba(196,181,253,.13);
+
+  font-size:37px;
+}
+
+
+/*
+ * Toute la page voisine est légèrement atténuée,
+ * mais reste réellement visible pendant le geste.
+ */
+.astromatch-full-scenario-preview::after {
+  content:"";
+
+  position:absolute;
+
+  inset:0;
+
+  pointer-events:none;
+
+  border-radius:24px;
+
+  box-shadow:
+    inset 0 0 0 1px
+    rgba(167,139,250,.035);
+}
+
+
+/*
+ * Petit aperçu latéral.
+ */
+.astromatch-full-scenario-carousel-hint {
+  display:flex;
+
+  justify-content:center;
+  align-items:center;
+
+  gap:9px;
+
+  margin-top:7px;
+
+  color:#475569;
+
+  font-size:9px;
+  font-weight:750;
+}
+
+
+.astromatch-full-scenario-carousel-hint
+span {
+  color:#64748b;
+
+  font-size:17px;
+}
+
+
+/*
+ * Le mini sélecteur V7 reste au-dessus
+ * des grandes pages.
+ */
+.astromatch-scenario-switcher {
+  margin:
+    2px 0 11px !important;
+}
+
+
+/*
+ * L'ancien conteneur des onglets ne doit
+ * laisser aucun espace vide.
+ */
+.astromatch-hidden-relationship-tabs {
+  display:none !important;
+}
